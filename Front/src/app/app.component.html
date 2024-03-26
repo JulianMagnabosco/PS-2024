@@ -1,0 +1,48 @@
+<nav class="navbar navbar-expand-lg bg-danger" data-bs-theme="dark">
+  <div class="container-xl" >
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link"  aria-current="page" routerLink="uno">Solicitudes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" routerLink="dos">Catalogo</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Administrar
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Registrar Producto</a></li>
+            <li><a class="dropdown-item" href="#">Listar Ventas</a></li>
+            <li><a class="dropdown-item" href="#">Listar Solicitudes</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Estadisticas</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+      <form class="input-group my-1 me-1" role="search" >
+        <input class="form-control" type="search"
+               placeholder="producto, componente,etc" aria-label="Search">
+        <button class="btn btn-light" type="submit">Buscar</button>
+      </form>
+
+      <button class="btn btn-warning text-nowrap me-1">
+        <i class="bi bi-person-circle"> Iniciar Secion</i>
+      </button>
+      <button class="btn btn-warning">
+        <i class="bi bi-cart-fill"> </i>
+      </button>
+    </div>
+
+  </div>
+</nav>
+
+<router-outlet></router-outlet>
