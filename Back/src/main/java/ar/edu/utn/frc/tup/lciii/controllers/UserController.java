@@ -1,5 +1,7 @@
 package ar.edu.utn.frc.tup.lciii.controllers;
 
+import ar.edu.utn.frc.tup.lciii.dtos.LoginRequest;
+import ar.edu.utn.frc.tup.lciii.dtos.LoginResponce;
 import ar.edu.utn.frc.tup.lciii.dtos.NewUserRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.UserDto;
 import ar.edu.utn.frc.tup.lciii.services.UserService;
@@ -21,5 +23,9 @@ public class UserController {
     @GetMapping("/users")
     public List<UserDto> getAll() {
         return userService.getAll();
+    }
+    @PostMapping("/login")
+    public LoginResponce login(@RequestBody LoginRequest request){
+        return userService.login(request);
     }
 }

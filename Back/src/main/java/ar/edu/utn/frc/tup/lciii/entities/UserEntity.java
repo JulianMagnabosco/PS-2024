@@ -13,11 +13,11 @@ import lombok.NoArgsConstructor;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long Id;
-    String Name;
-    String Password;
-    String Email;
-    String Icon;
-    Long IdDirection;
-    String NumberDir;
+    Long id;
+    String name;
+    String password;
+    String email;
+    String icon;
+    Long idDirection;
+    String numberDir;
 }

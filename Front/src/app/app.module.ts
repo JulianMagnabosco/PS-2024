@@ -8,11 +8,13 @@ import { CatalogoComponent } from './components/catalogo/catalogo.component';
 import {HttpClientModule} from "@angular/common/http";
 import {ReactiveFormsModule} from "@angular/forms";
 import {NgxEchartsDirective, provideEcharts} from "ngx-echarts";
+import { RegisterComponent } from './components/user/register/register.component';
 @NgModule({
   declarations: [
     AppComponent,
     StadisticsComponent,
-    CatalogoComponent
+    CatalogoComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
