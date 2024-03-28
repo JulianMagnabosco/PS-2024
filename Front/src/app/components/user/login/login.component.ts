@@ -5,22 +5,18 @@ import {UserService} from "../../../services/user/user.service";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
-export class RegisterComponent implements OnInit,OnDestroy {
+export class LoginComponent implements OnInit,OnDestroy {
   private subs: Subscription = new Subscription();
   form: FormGroup = this.fb.group({});
 
   constructor(private fb: FormBuilder, private service: UserService, private router: Router) {
     this.form = this.fb.group({
       name: ["", [Validators.required, Validators.maxLength(50 )]],
-      email: ["", [Validators.required, Validators.email]],
-      password: ["", [Validators.required, Validators.maxLength(50)]],
-      password2: ["", [Validators.required, Validators.maxLength(50)]]
-    },{
-      validators: this.checkPasswords
+      password: ["", [Validators.required, Validators.maxLength(50)]]
     });
 
   }
@@ -42,18 +38,17 @@ export class RegisterComponent implements OnInit,OnDestroy {
 
     let user = {
       "name": this.form.controls['name'].value,
-      "email": this.form.controls['email'].value,
       "password": this.form.controls['password'].value
     }
 
     console.log(user);
 
     this.subs.add(
-      this.service.postUser(user).subscribe(
+      this.service.postLogin(user).subscribe(
         {
           next: value => {
             alert("La yerba fue guardada con éxito");
-            this.exit();
+            this.router.navigate(["/explore"])
           },
           error: err => { alert("Hubo un error al guardar"); }
         }
@@ -62,7 +57,7 @@ export class RegisterComponent implements OnInit,OnDestroy {
   }
 
   exit(){
-    this.router.navigate(["/login"]);
+    this.router.navigate(["/register"]);
   }
 
   checkPasswords: ValidatorFn = (group: AbstractControl):  ValidationErrors | null => {
@@ -70,5 +65,5 @@ export class RegisterComponent implements OnInit,OnDestroy {
     let confirmPass = group.get('password2')?.value
     return pass === confirmPass ? null : { notSame: true }
   }
-}
 
+}

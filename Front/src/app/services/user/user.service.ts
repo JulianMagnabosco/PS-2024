@@ -25,8 +25,12 @@ export class UserService {
     return false
   }
 
+  postLogin(user: any):Observable<any>{
+    return this.client.post(this.baseUrl + "login", user);
+  }
+
   postUser(user: any):Observable<any>{
-      return this.client.post(this.baseUrl + "herb", user);
+      return this.client.post(this.baseUrl + "user", user);
   }
   salir(){
     this.usuarioActual=undefined

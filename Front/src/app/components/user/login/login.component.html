@@ -1,0 +1,44 @@
+<div class="container mt-4 p-2 bg-light rounded-5 border border-warning-subtle border-5">
+  <h1 class="text-center"> ENTRAR </h1>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="row g-3">
+    <div class="col-12">
+      <label for="nameInput" class="form-label">Nombre</label>
+      <input type="text" formControlName="name" class="form-control" id="nameInput"
+             [class.is-invalid]="(form.controls['name'].touched || form.controls['name'].dirty)
+      && form.controls['name'].invalid">
+      <div class="invalid-feedback" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)
+      && form.controls['name'].hasError('required')">
+        El nombre es requerido.
+      </div>
+      <div class="invalid-feedback" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)
+      && form.controls['name'].hasError('maxlength')">
+        El nombre no puede superar los 50 caracteres.
+      </div>
+    </div>
+
+    <div class="col-12">
+      <label for="passwordInput" class="form-label">Contraseña</label>
+      <input type="text" formControlName="password" class="form-control" id="passwordInput"
+             [class.is-invalid]="(form.controls['password'].touched || form.controls['password'].dirty)
+      && form.controls['password'].invalid">
+      <div class="invalid-feedback" *ngIf="(form.controls['password'].touched || form.controls['password'].dirty)
+      && form.controls['password'].hasError('required')">a
+        El código es requerido.
+      </div>
+      <div class="invalid-feedback" *ngIf="(form.controls['password'].touched || form.controls['password'].dirty)
+      && form.controls['password'].hasError('maxlength')">
+        El código no puede superar los 50 caracteres.
+      </div>
+    </div>
+
+
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary w-100">INICIAR SECION</button>
+    </div>
+
+    <div class="col-12 d-flex justify-content-center gap-1">
+      <span class="align-self-center">No tenes cuenta?</span>
+      <button type="button" class="btn btn-primary" (click)="exit()">REGISTRARSE</button>
+    </div>
+  </form>
+</div>

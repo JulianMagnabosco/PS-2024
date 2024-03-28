@@ -9,12 +9,18 @@ import {HttpClientModule} from "@angular/common/http";
 import {ReactiveFormsModule} from "@angular/forms";
 import {NgxEchartsDirective, provideEcharts} from "ngx-echarts";
 import { RegisterComponent } from './components/user/register/register.component';
+import { LoginComponent } from './components/user/login/login.component';
+import { ListPublicationsComponent } from './components/publications/list-publications/list-publications.component';
+import { AddPublicationComponent } from './components/publications/add-publication/add-publication.component';
 @NgModule({
   declarations: [
     AppComponent,
     StadisticsComponent,
     CatalogoComponent,
-    RegisterComponent
+    RegisterComponent,
+    LoginComponent,
+    ListPublicationsComponent,
+    AddPublicationComponent
   ],
   imports: [
     BrowserModule,
