@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {UserService} from "../../../services/user/user.service";
 import {Router} from "@angular/router";
 
@@ -15,14 +15,15 @@ export class RegisterComponent implements OnInit,OnDestroy {
 
   constructor(private fb: FormBuilder, private service: UserService, private router: Router) {
     this.form = this.fb.group({
-      name: ["", [Validators.required, Validators.maxLength(200)]],
-      email: ["", [Validators.required, Validators.maxLength(10)]],
-      password: ["", [Validators.max(1000)]],
-      password2: ["", [Validators.max(1000)]]
+      name: ["", [Validators.required, Validators.maxLength(50 )]],
+      email: ["", [Validators.required, Validators.email]],
+      password: ["", [Validators.required, Validators.maxLength(50)]],
+      password2: ["", [Validators.required, Validators.maxLength(50)]]
+    },{
+      validators: this.checkPasswords
     });
 
   }
-
 
   ngOnInit(): void {
 
@@ -58,6 +59,12 @@ export class RegisterComponent implements OnInit,OnDestroy {
         }
       )
     );
+  }
+
+  checkPasswords: ValidatorFn = (group: AbstractControl):  ValidationErrors | null => {
+    let pass = group.get('password')?.value;
+    let confirmPass = group.get('password2')?.value
+    return pass === confirmPass ? null : { notSame: true }
   }
 }
 

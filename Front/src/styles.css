@@ -1,2 +1,14 @@
 /* You can add global styles to this */
+.btn-primary {
+  background-color: #DB5E0D;
+  border-color: #DB5E0D;
+}
+.btn-primary:hover {
+  background-color: #f6751e;
+  border-color: #f6751e;
+}
+
+h1{
+  letter-spacing: 20px
+}
 

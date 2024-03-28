@@ -1,4 +1,5 @@
-<div class="container mt-4">
+<div class="container mt-4 p-2 bg-light rounded-2 border border-primary ">
+  <h1 class="text-center"> REGISTRO </h1>
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="row g-3">
     <div class="col-12">
       <label for="nameInput" class="form-label">Nombre</label>
@@ -11,7 +12,7 @@
       </div>
       <div class="invalid-feedback" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)
       && form.controls['name'].hasError('maxlength')">
-        El nombre no puede superar los 200 caracteres.
+        El nombre no puede superar los 50 caracteres.
       </div>
     </div>
 
@@ -19,19 +20,19 @@
       <label for="nameInput" class="form-label">Email</label>
       <input type="text" formControlName="email" class="form-control" id="emailInput"
              [class.is-invalid]="(form.controls['email'].touched || form.controls['email'].dirty)
-      && form.controls['name'].invalid">
+      && form.controls['email'].invalid">
       <div class="invalid-feedback" *ngIf="(form.controls['email'].touched || form.controls['email'].dirty)
-      && form.controls['name'].hasError('required')">
-        El nombre es requerido.
+      && form.controls['email'].hasError('required')">
+        El email es requerido.
       </div>
       <div class="invalid-feedback" *ngIf="(form.controls['email'].touched || form.controls['email'].dirty)
-      && form.controls['name'].hasError('maxlength')">
-        El nombre no puede superar los 200 caracteres.
+      && form.controls['email'].hasError('email')">
+        El email debe ser valido.
       </div>
     </div>
 
     <div class="col-12">
-      <label for="passwordInput" class="form-label">Código</label>
+      <label for="passwordInput" class="form-label">Contraseña</label>
       <input type="text" formControlName="password" class="form-control" id="passwordInput"
              [class.is-invalid]="(form.controls['password'].touched || form.controls['password'].dirty)
       && form.controls['password'].invalid">
@@ -41,28 +42,31 @@
       </div>
       <div class="invalid-feedback" *ngIf="(form.controls['password'].touched || form.controls['password'].dirty)
       && form.controls['password'].hasError('maxlength')">
-        El código no puede superar los 10 caracteres.
+        El código no puede superar los 50 caracteres.
       </div>
     </div>
 
     <div class="col-12">
-      <label for="passwordInput" class="form-label">Contraseña</label>
-      <input type="text" formControlName="password" class="form-control" id="passwordInput2"
-             [class.is-invalid]="(form.controls['password'].touched || form.controls['password'].dirty)
-      && form.controls['password'].invalid">
-      <div class="invalid-feedback" *ngIf="(form.controls['password'].touched || form.controls['password'].dirty)
-      && form.controls['password'].hasError('required')">a
-        El código es requerido.
+      <label for="passwordInput2" class="form-label">Reescribir Contraseña</label>
+      <input type="text" formControlName="password2" class="form-control" id="passwordInput2"
+             [class.is-invalid]="(form.controls['password2'].touched || form.controls['password2'].dirty)
+      && form.controls['password2'].invalid">
+      <div class="invalid-feedback" *ngIf="(form.controls['password2'].touched || form.controls['password2'].dirty)
+      && form.controls['password2'].hasError('required')">a
+        La contraseña es requerido.
       </div>
-      <div class="invalid-feedback" *ngIf="(form.controls['password'].touched || form.controls['password'].dirty)
-      && form.controls['password'].hasError('maxlength')">
-        El código no puede superar los 10 caracteres.
+      <div class="invalid-feedback" *ngIf="(form.controls['password2'].touched || form.controls['password2'].dirty)
+      && form.controls['password2'].hasError('maxlength')">
+        La contraseña no puede superar los 50 caracteres.
       </div>
+    </div>
+    <div class="text-danger " *ngIf="form.hasError('notSame')">
+      La contraseña debe coincidir.
     </div>
 
 
     <div class="col-12">
-      <button type="submit" class="btn btn-primary w-100">Submit</button>
+      <button type="submit" class="btn btn-primary w-100">REGISTRARSE</button>
     </div>
   </form>
 </div>
