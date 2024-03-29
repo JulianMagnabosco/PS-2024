@@ -10,13 +10,25 @@ import {Router} from "@angular/router";
   styleUrls: ['./add-publication.component.css']
 })
 export class AddPublicationComponent implements OnInit,OnDestroy {
+  showConditions=true
+  showMaterials=true
+  showSteps=true
+  showPurchasedata=true
+
   private subs: Subscription = new Subscription();
   form: FormGroup = this.fb.group({});
 
   constructor(private fb: FormBuilder, private service: UserService, private router: Router) {
     this.form = this.fb.group({
       name: ["", [Validators.required, Validators.maxLength(50 )]],
-      password: ["", [Validators.required, Validators.maxLength(50)]]
+      description: ["", [Validators.required]],
+      image: [""],
+      type: ["0", [Validators.required]],
+      difficulty: ["0", [Validators.required]],
+      conditions: [""],
+      materials: [""],
+      steps: [""],
+      purchasedata: [""]
     });
 
   }
