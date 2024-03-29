@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
     public LoginResponce login(LoginRequest request){
 
-        Optional<UserEntity> userEntityO = userRepository.findByName(request.getName());
+        Optional<UserEntity> userEntityO = userRepository.findFirstByName(request.getName());
 
         if(userEntityO.isEmpty()){
             throw new EntityNotFoundException();
