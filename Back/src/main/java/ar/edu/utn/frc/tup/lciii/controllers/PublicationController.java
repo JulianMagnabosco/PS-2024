@@ -1,5 +1,6 @@
 package ar.edu.utn.frc.tup.lciii.controllers;
 
+import ar.edu.utn.frc.tup.lciii.dtos.LoginRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.NewUserRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.PublicationRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.UserDto;
@@ -16,8 +17,13 @@ public class PublicationController {
     @Autowired
     PublicationService publicationService;
 
-    @PostMapping("/user")
+    @PostMapping("/new")
     public PublicationEntity post(@RequestBody PublicationRequest request) {
         return publicationService.register(request);
+    }
+
+    @PostMapping("/ping")
+    public LoginRequest post(@RequestBody LoginRequest request) {
+        return request;
     }
 }
