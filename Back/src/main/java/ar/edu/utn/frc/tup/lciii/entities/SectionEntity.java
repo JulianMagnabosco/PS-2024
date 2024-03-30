@@ -5,25 +5,21 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
 @Data
-@Table(name = "publications")
+@Table(name = "sections")
 @AllArgsConstructor
 @NoArgsConstructor
-public class PublicationEntity {
+public class SectionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    String name;
-    String description;
     String type;
-    String dificulty;
-    String image;
-    boolean canSold;
-    BigDecimal price;
-    @OneToMany(mappedBy="publication")
-    List<SectionEntity> sections;
+    @Column(columnDefinition="TEXT")
+    String text;
+    @ManyToOne
+    @JoinColumn(name="idPublication")
+    PublicationEntity publication;
 }

@@ -4,7 +4,7 @@ import ar.edu.utn.frc.tup.lciii.enums.UserRole;
 import lombok.Data;
 
 @Data
-public class NewUserRequest {
+public class UserRequest {
     String name;
     String password;
     String email;
