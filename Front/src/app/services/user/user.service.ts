@@ -8,29 +8,22 @@ import {Observable} from "rxjs";
 })
 export class UserService {
   usuarioActual?:User
-  listaUsuarios:User[]=[
-    {name:"legajo@frc.utn.edu.ar",password:"11111111"},
+  token:string=""
 
-    {name:"a@a",password:"11111111"}
-  ]
-
-  private baseUrl = "https://herb.nhorenstein.com/api/";
+  private baseUrl = "http://localhost:8080/";
   constructor(private client: HttpClient) { }
 
-  logear(usuario: User):boolean{
-    if(this.listaUsuarios.find(u=>u.name==usuario.name && u.password==usuario.password)){
-      this.usuarioActual=usuario
-      return true
-    }
-    return false
+  login(user: User, token:string):User{
+    this.usuarioActual=user
+    this.token=token
+    return user;
   }
-
   postLogin(user: any):Observable<any>{
-    return this.client.post(this.baseUrl + "login", user);
+    return this.client.post(this.baseUrl + "signin", user);
   }
 
   postUser(user: any):Observable<any>{
-      return this.client.post(this.baseUrl + "user", user);
+      return this.client.post(this.baseUrl + "signup", user);
   }
   salir(){
     this.usuarioActual=undefined

@@ -12,6 +12,7 @@ import {
 import {UserService} from "../../../services/user/user.service";
 import {Router} from "@angular/router";
 import {PublicationsService} from "../../../services/publications/publications.service";
+import {Publication} from "../../../models/publication/publication";
 
 @Component({
   selector: 'app-add-publication',
@@ -31,13 +32,15 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     this.form = this.fb.group({
       name: ["", [Validators.required, Validators.maxLength(50 )]],
       description: ["", [Validators.required]],
-      image: [""],
       type: ["", [Validators.required]],
       difficulty: ["", [Validators.required]],
+      image: [""],
       conditions: this.fb.array([],{validators:Validators.required}),
       materials: this.fb.array([],{validators:Validators.required}),
       steps: this.fb.array([]),
-      purchasedata: [""]
+      cansold: [""],
+      price: [""],
+      count: [""]
     });
 
   }
@@ -81,7 +84,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
       return;
     }
 
-    let data = {
+    let data: Publication = {
       "name": this.form.controls['name'].value,
       "description": this.form.controls['description'].value,
       "image": this.form.controls['image'].value,
@@ -90,8 +93,9 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
       "conditions": this.form.controls['conditions'].value,
       "materials": this.form.controls['materials'].value,
       "steps": this.form.controls['steps'].value,
-      "canSold": this.form.controls['purchasedata'].value!="",
-      "purchasedata": this.form.controls['purchasedata'].value
+      "canSold": this.form.controls['canSold'].value,
+      "price": this.form.controls['price'].value,
+      "count": this.form.controls['count'].value
     }
 
     console.log(data);
