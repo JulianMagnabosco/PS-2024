@@ -17,6 +17,9 @@ public class PublicationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    @ManyToOne
+    @JoinColumn(name="idUser")
+    UserEntity user;
     String name;
     String description;
     String type;

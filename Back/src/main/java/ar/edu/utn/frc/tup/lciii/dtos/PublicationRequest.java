@@ -7,6 +7,7 @@ import java.util.List;
 
 @Data
 public class PublicationRequest {
+    Long user;
     String name;
     String description;
     String type;
