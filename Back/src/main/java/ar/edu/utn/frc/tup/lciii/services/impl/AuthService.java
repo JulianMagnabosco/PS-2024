@@ -30,22 +30,22 @@ public class AuthService implements UserDetailsService {
   @Autowired
   ModelMapper modelMapper;
 
-  public UserDto register(UserRequest request){
-    UserDto responce;
-
-    Optional<UserEntity> userEntityO = repository.findByEmailOrName(request.getEmail(),request.getName());
-
-    if(userEntityO.isPresent()){
-      throw new IllegalArgumentException();
-    }
-
-    UserEntity user = modelMapper.map(request, UserEntity.class);
-
-    repository.save(user);
-    responce = modelMapper.map(user, UserDto.class);
-
-    return responce;
-  }
+//  public UserDto oldregister(UserRequest request){
+//    UserDto responce;
+//
+//    Optional<UserEntity> userEntityO = repository.findByEmailOrName(request.getEmail(),request.getName());
+//
+//    if(userEntityO.isPresent()){
+//      throw new IllegalArgumentException();
+//    }
+//
+//    UserEntity user = modelMapper.map(request, UserEntity.class);
+//
+//    repository.save(user);
+//    responce = modelMapper.map(user, UserDto.class);
+//
+//    return responce;
+//  }
 
   public LoginResponce login(LoginRequest request){
 

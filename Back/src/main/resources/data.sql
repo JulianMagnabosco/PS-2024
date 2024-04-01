@@ -1,1 +1,2 @@
-insert into users (name, password, email) values ('marcos', '123', 'a@a')
+insert into users (name, password, email, role) values ('admin', '$2a$10$2DzM5TZpZQWI2W4EZdJbGO4OUxlgTmEEs4WXug8RIXa9mkpTBtjmO', 'a@a', 'ADMIN');
+insert into users (name, password, email, role) values ('aaa', '$2a$10$2DzM5TZpZQWI2W4EZdJbGO4OUxlgTmEEs4WXug8RIXa9mkpTBtjmO', 'a@a', 'USER');
