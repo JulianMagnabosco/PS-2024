@@ -4,16 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserDto {
+public class PublicationMinDto {
     Long id;
     String name;
-    String password;
-    String role;
-    String email;
-    String icon;
-    Long idDirection;
-    String numberDir;
+    String description;
+    String type;
+    String dificulty;
+    String image;
+    boolean canSold;
+    BigDecimal price;
 }

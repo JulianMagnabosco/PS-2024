@@ -1,2 +1,2 @@
-insert into users (name, password, email, role) values ('admin', '$2a$10$2DzM5TZpZQWI2W4EZdJbGO4OUxlgTmEEs4WXug8RIXa9mkpTBtjmO', 'a@a', 'ADMIN');
-insert into users (name, password, email, role) values ('aaa', '$2a$10$2DzM5TZpZQWI2W4EZdJbGO4OUxlgTmEEs4WXug8RIXa9mkpTBtjmO', 'a@a', 'USER');
+insert into users (name, password, email,role) values ('admin', '$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2', 'a@a', 'ADMIN');
+insert into users (name, password, email,role) values ('user', '$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2', 'a@a', 'USER');

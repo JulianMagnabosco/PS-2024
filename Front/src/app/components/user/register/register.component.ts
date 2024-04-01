@@ -43,7 +43,8 @@ export class RegisterComponent implements OnInit,OnDestroy {
     let user = {
       "name": this.form.controls['name'].value,
       "email": this.form.controls['email'].value,
-      "password": this.form.controls['password'].value
+      "password": this.form.controls['password'].value,
+      "role":"USER"
     }
 
     console.log(user);
@@ -52,7 +53,7 @@ export class RegisterComponent implements OnInit,OnDestroy {
       this.service.postUser(user).subscribe(
         {
           next: value => {
-            alert("La yerba fue guardada con éxito");
+            alert("La usuario fue guardado con éxito");
             this.exit();
           },
           error: err => { alert("Hubo un error al guardar"); }

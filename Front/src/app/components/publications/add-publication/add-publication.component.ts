@@ -1,8 +1,18 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
-import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from "@angular/forms";
 import {UserService} from "../../../services/user/user.service";
 import {Router} from "@angular/router";
+import {PublicationsService} from "../../../services/publications/publications.service";
+import {Publication} from "../../../models/publication/publication";
 
 @Component({
   selector: 'app-add-publication',
@@ -18,27 +28,53 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
   private subs: Subscription = new Subscription();
   form: FormGroup = this.fb.group({});
 
-  constructor(private fb: FormBuilder, private service: UserService, private router: Router) {
+  constructor(private fb: FormBuilder, private service: PublicationsService, private router: Router) {
     this.form = this.fb.group({
       name: ["", [Validators.required, Validators.maxLength(50 )]],
       description: ["", [Validators.required]],
+      type: ["", [Validators.required]],
+      difficulty: ["", [Validators.required]],
       image: [""],
-      type: ["0", [Validators.required]],
-      difficulty: ["0", [Validators.required]],
-      conditions: [""],
-      materials: [""],
-      steps: [""],
-      purchasedata: [""]
+      conditions: this.fb.array([],{validators:Validators.required}),
+      materials: this.fb.array([],{validators:Validators.required}),
+      steps: this.fb.array([]),
+      cansold: [""],
+      price: [""],
+      count: [""]
     });
 
   }
-
-  ngOnInit(): void {
-
-  }
-
+  ngOnInit(): void {  }
   ngOnDestroy(): void {
     this.subs.unsubscribe();
+  }
+
+  get detailsConditions(){
+    return this.form.get("conditions") as FormArray
+  }
+  addDetailCondition(){
+    let v = this.fb.group({
+      text: ["",[Validators.required,Validators.minLength(500)]]
+    })
+    this.detailsConditions.push(v)
+    this.detailsConditions.markAsTouched()
+  }
+  removeDetailCondition(id:number){
+    this.detailsConditions.removeAt(id)
+  }
+
+  get detailsMaterials(){
+    return this.form.get("materials") as FormArray
+  }
+  addDetailMaterials(){
+    let v = this.fb.group({
+      text: ["",[Validators.required,Validators.minLength(500)]]
+    })
+    this.detailsMaterials.push(v)
+    this.detailsMaterials.markAsTouched()
+  }
+  removeDetailMaterials(id:number){
+    this.detailsMaterials.removeAt(id)
   }
 
   onSubmit(){
@@ -48,15 +84,24 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
       return;
     }
 
-    let user = {
+    let data: Publication = {
       "name": this.form.controls['name'].value,
-      "password": this.form.controls['password'].value
+      "description": this.form.controls['description'].value,
+      "image": this.form.controls['image'].value,
+      "type": this.form.controls['type'].value,
+      "difficulty": this.form.controls['difficulty'].value,
+      "conditions": this.form.controls['conditions'].value,
+      "materials": this.form.controls['materials'].value,
+      "steps": this.form.controls['steps'].value,
+      "canSold": this.form.controls['canSold'].value,
+      "price": this.form.controls['price'].value,
+      "count": this.form.controls['count'].value
     }
 
-    console.log(user);
+    console.log(data);
 
     this.subs.add(
-      this.service.postLogin(user).subscribe(
+      this.service.postPublication(data).subscribe(
         {
           next: value => {
             alert("La yerba fue guardada con éxito");
@@ -66,16 +111,6 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
         }
       )
     );
-  }
-
-  exit(){
-    this.router.navigate(["/register"]);
-  }
-
-  checkPasswords: ValidatorFn = (group: AbstractControl):  ValidationErrors | null => {
-    let pass = group.get('password')?.value;
-    let confirmPass = group.get('password2')?.value
-    return pass === confirmPass ? null : { notSame: true }
   }
 
 }

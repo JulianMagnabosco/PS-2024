@@ -79,10 +79,10 @@ public class AuthService implements UserDetailsService {
     return user;
   }
 
-  public UserDetails signUp(UserRequest data) throws ChangeSetPersister.NotFoundException {
+  public UserDetails signUp(UserRequest data) {
 
     if (repository.findByName(data.getName()) != null) {
-      throw new ChangeSetPersister.NotFoundException();
+      throw new EntityNotFoundException();
     }
 
     String encryptedPassword = new BCryptPasswordEncoder().encode(data.getPassword());

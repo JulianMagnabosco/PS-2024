@@ -8,7 +8,7 @@
   border-color: #f6751e;
 }
 
-h1{
-  letter-spacing: 20px
+h1, .space-text{
+  letter-spacing: 0.5em
 }
 

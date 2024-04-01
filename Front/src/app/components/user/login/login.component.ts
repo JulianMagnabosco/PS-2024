@@ -3,6 +3,7 @@ import {Subscription} from "rxjs";
 import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {UserService} from "../../../services/user/user.service";
 import {Router} from "@angular/router";
+import {User} from "../../../models/user/user";
 
 @Component({
   selector: 'app-login',
@@ -36,10 +37,8 @@ export class LoginComponent implements OnInit,OnDestroy {
       return;
     }
 
-    let user = {
-      "name": this.form.controls['name'].value,
-      "password": this.form.controls['password'].value
-    }
+    let user = new User(this.form.controls['name'].value,
+      this.form.controls['password'].value)
 
     console.log(user);
 
@@ -47,10 +46,11 @@ export class LoginComponent implements OnInit,OnDestroy {
       this.service.postLogin(user).subscribe(
         {
           next: value => {
-            alert("La yerba fue guardada con éxito");
+            alert("Inicio de secion éxitoso");
+            this.service.login(user,value["token"])
             this.router.navigate(["/explore"])
           },
-          error: err => { alert("Hubo un error al guardar"); }
+          error: err => { alert("Hubo un error"); }
         }
       )
     );

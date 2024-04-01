@@ -31,7 +31,7 @@ public class UserController {
     private TokenProvider tokenService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@RequestBody UserRequest data)throws ChangeSetPersister.NotFoundException {
+    public ResponseEntity<?> signUp(@RequestBody UserRequest data){
         service.signUp(data);
         return ResponseEntity.status(HttpStatus.CREATED).build();
 

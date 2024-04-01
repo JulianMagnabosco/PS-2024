@@ -1,12 +1,16 @@
 package ar.edu.utn.frc.tup.lciii.services.impl;
 
+import ar.edu.utn.frc.tup.lciii.dtos.PublicationDto;
+import ar.edu.utn.frc.tup.lciii.dtos.PublicationMinDto;
 import ar.edu.utn.frc.tup.lciii.dtos.PublicationRequest;
 import ar.edu.utn.frc.tup.lciii.entities.PublicationEntity;
 import ar.edu.utn.frc.tup.lciii.entities.SectionEntity;
 import ar.edu.utn.frc.tup.lciii.repository.PublicationRepository;
 import ar.edu.utn.frc.tup.lciii.repository.SectionRepository;
 import ar.edu.utn.frc.tup.lciii.services.PublicationService;
+import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,5 +52,19 @@ public class PublicationServiceImpl implements PublicationService {
         }
 
         return publication;
+    }
+
+    @Override
+    public List<PublicationMinDto> getAll() {
+        return modelMapper.map(pRepository.findAll(),new TypeToken<List<PublicationMinDto>>() {}.getType());
+    }
+
+    @Override
+    public PublicationDto get(Long id) throws EntityNotFoundException {
+        PublicationEntity p = pRepository.getReferenceById(id);
+        if(p==null){
+            throw new EntityNotFoundException();
+        }
+        return modelMapper.map(p,PublicationDto.class);
     }
 }
