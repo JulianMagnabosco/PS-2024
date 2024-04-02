@@ -1,31 +1,55 @@
-<div class="container">
-  <h1>Explorar</h1>
-  <div class="card">
+<div class="container-fluid">
+  <div class="row justify-content-between p-1">
+    <h1 class="col">Explorar</h1>
+    <div class="col-auto align-middle">
+      <button class="btn btn-primary align-middle">
+        NUEVA OBRA <i class="bi bi-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+  <div class="card border-orange mb-3">
     <form [formGroup]="form" class="row g-3 justify-content-center p-3 d-flex">
       <div class="col">
-        <div class="mb-2">
-          <input type="text" formControlName="name" class="form-control" id="nameInput"
-                 placeholder="Nombre o tags"
-                 [class.is-invalid]="(form.controls['name'].touched || form.controls['name'].dirty)
-      && form.controls['name'].invalid">
-          <div class="invalid-feedback" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)
-      && form.controls['name'].hasError('required')">
-            El nombre es requerido.
+        <div class="mb-1">
+          <input type="text" formControlName="text" class="form-control sel-orange" id="nameInput"
+                 placeholder="Nombre o tags">
+        </div>
+        <div class="row g-1 mb-1">
+          <div class="col-4">
+            <select class="form-select sel-orange" aria-label="Default select example">
+              <option selected>Open this select menu</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
           </div>
-          <div class="invalid-feedback" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)
-      && form.controls['name'].hasError('maxlength')">
-            El nombre no puede superar los 50 caracteres.
+          <div class="col-auto ">
+            <div class="rounded-2 sel-orange">
+
+              <span class="px-1">Calificacion minima</span>
+              <input type="radio" class="btn-check" name="options" id="option0" autocomplete="off" checked>
+              <label class="btn bi bi bi-x-lg " for="option0"></label>
+
+              <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off">
+              <label class="btn bi bi-star-fill text-warning" for="option1"></label>
+
+              <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
+              <label class="btn bi bi-star-fill text-warning" for="option2"></label>
+
+              <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
+              <label class="btn bi bi-star-fill text-warning" for="option3"></label>
+
+              <input type="radio" class="btn-check" name="options" id="option4" autocomplete="off">
+              <label class="btn bi bi-star-fill text-warning" for="option4"></label>
+
+              <input type="radio" class="btn-check" name="options" id="option5" autocomplete="off">
+              <label class="btn bi bi-star-fill text-warning" for="option5"></label>
+            </div>
           </div>
         </div>
-        <div class="d-flex">
+        <div class="row g-1">
           <div class="col-auto">
-            <select class="form-select" aria-label="Default select example">
-              <option selected>Open this select menu</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </select>
-            <select class="form-select" aria-label="Default select example">
+            <select class="form-select sel-orange" aria-label="Default select example">
               <option selected>Open this select menu</option>
               <option value="1">One</option>
               <option value="2">Two</option>
@@ -33,24 +57,49 @@
             </select>
           </div>
           <div class="col-auto">
-            <div class="p-1">
-              <label>Dificultad</label>
-              <button type="button" class="btn m-0" data-bs-toggle="button"><i class="bi bi-star-fill"></i></button>
-            </div>
-            <select class="form-select" aria-label="Default select example">
+            <select class="form-select sel-orange" aria-label="Default select example">
               <option selected>Open this select menu</option>
               <option value="1">One</option>
               <option value="2">Two</option>
               <option value="3">Three</option>
             </select>
+          </div>
+          <div class="col-auto p-2">
+            <div class="form-check ">
+              <input class="form-check-input bg-secondary" type="checkbox" value="" id="flexCheckDefault">
+              <label class="form-check-label" for="flexCheckDefault">
+                Default checkbox
+              </label>
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-auto">
-        <button class="btn btn-primary h-100">
-          BUSCAR
+      <div class="col-12 col-sm-auto  d-flex flex-column ">
+        <div class="mb-1 flex-fill">
+          <button class="btn btn-primary w-100 h-100" (click)="onSubmit()">
+            BUSCAR
+          </button>
+        </div >
+        <div  class="mb-1">
+          <button class="btn btn-warning text-break w-100">
+          LIMPIAR
+          FILTROS
         </button>
+        </div>
       </div>
     </form>
+  </div>
+
+  <div class="gap-1 row justify-content-center p-3">
+    <div class="col-1 card btn border-orange bg-body-tertiary" href="#"  style="width: 15rem;" *ngFor="let p of list">
+      <div class="d-flex justify-content-between">
+        <h3 class="card-title">{{ p.name }}</h3>
+        <h4 class="text-secondary">{{ p.difficulty }}</h4>
+      </div>
+      <img [src]="p.image" class="card-img" [alt]="p.name" style=" max-height: 15rem;">
+      <div class="card-body">
+        <p class="card-text">{{p.description}}</p>
+      </div>
+    </div>
   </div>
 </div>

@@ -15,19 +15,69 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
   private subs: Subscription = new Subscription();
   form: FormGroup = this.fb.group({});
 
+  list: Publication[] = [
+    {
+      name: "a",
+      description: "a",
+      type: "a",
+      difficulty: "a",
+      image: "https://fcb-abj-pre.s3.amazonaws.com/img/jugadors/MESSI.jpg",
+      conditions: [],
+      materials: [],
+      steps: [],
+      canSold: true,
+      price: 20,
+      count: 1
+    },
+    {
+      name: "a",
+      description: "a",
+      type: "a",
+      difficulty: "a",
+      image: "https://fcb-abj-pre.s3.amazonaws.com/img/jugadors/MESSI.jpg",
+      conditions: [],
+      materials: [],
+      steps: [],
+      canSold: true,
+      price: 20,
+      count: 1
+    },
+    {
+      name: "a",
+      description: "a",
+      type: "a",
+      difficulty: "a",
+      image: "https://fcb-abj-pre.s3.amazonaws.com/img/jugadors/MESSI.jpg",
+      conditions: [],
+      materials: [],
+      steps: [],
+      canSold: true,
+      price: 20,
+      count: 1
+    },
+    {
+      name: "a",
+      description: "a",
+      type: "a",
+      difficulty: "a",
+      image: "https://fcb-abj-pre.s3.amazonaws.com/img/jugadors/MESSI.jpg",
+      conditions: [],
+      materials: [],
+      steps: [],
+      canSold: true,
+      price: 20,
+      count: 1
+    }
+  ];
+
   constructor(private fb: FormBuilder, private service: PublicationsService, private router: Router) {
     this.form = this.fb.group({
-      name: ["", [Validators.required, Validators.maxLength(50 )]],
-      description: ["", [Validators.required]],
+      text: ["", [Validators.required, Validators.maxLength(200 )]],
       type: ["", [Validators.required]],
-      difficulty: ["", [Validators.required]],
-      image: [""],
-      conditions: this.fb.array([],{validators:Validators.required}),
-      materials: this.fb.array([],{validators:Validators.required}),
-      steps: this.fb.array([]),
-      cansold: [""],
-      price: [""],
-      count: [""]
+      diffMin: ["", [Validators.required]],
+      diffMax: ["", [Validators.required]],
+      points: ["", [Validators.required]],
+      mine: ["", [Validators.required]]
     });
 
   }
