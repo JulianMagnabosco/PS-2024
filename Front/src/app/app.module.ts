@@ -12,6 +12,7 @@ import { RegisterComponent } from './components/user/register/register.component
 import { LoginComponent } from './components/user/login/login.component';
 import { ListPublicationsComponent } from './components/publications/list-publications/list-publications.component';
 import { AddPublicationComponent } from './components/publications/add-publication/add-publication.component';
+import { ShowPublicationComponent } from './components/publications/show-publication/show-publication.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +21,8 @@ import { AddPublicationComponent } from './components/publications/add-publicati
     RegisterComponent,
     LoginComponent,
     ListPublicationsComponent,
-    AddPublicationComponent
+    AddPublicationComponent,
+    ShowPublicationComponent
   ],
   imports: [
     BrowserModule,

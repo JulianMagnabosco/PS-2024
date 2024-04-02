@@ -5,6 +5,7 @@ import {CatalogoComponent} from "./components/catalogo/catalogo.component";
 import {RegisterComponent} from "./components/user/register/register.component";
 import {LoginComponent} from "./components/user/login/login.component";
 import {AddPublicationComponent} from "./components/publications/add-publication/add-publication.component";
+import {ListPublicationsComponent} from "./components/publications/list-publications/list-publications.component";
 
 const routes: Routes = [
   { path: 'uno', component: StadisticsComponent },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'publicate', component: AddPublicationComponent },
+  { path: 'explore', component: ListPublicationsComponent },
 ]
 
 @NgModule({
