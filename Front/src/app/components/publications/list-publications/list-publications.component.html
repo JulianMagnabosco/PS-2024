@@ -2,12 +2,12 @@
   <div class="row justify-content-between p-1">
     <h1 class="col">Explorar</h1>
     <div class="col-auto align-middle">
-      <button class="btn btn-primary align-middle">
+      <button class="btn btn-primary align-middle" (click)="gonew()">
         NUEVA OBRA <i class="bi bi-arrow-right"></i>
       </button>
     </div>
   </div>
-  <div class="card border-orange mb-3">
+  <div class="card border-orange-n mb-3">
     <form [formGroup]="form" class="row g-3 justify-content-center p-3 d-flex">
       <div class="col">
         <div class="mb-1">
@@ -15,7 +15,7 @@
                  placeholder="Nombre o tags">
         </div>
         <div class="row g-1 mb-1">
-          <div class="col-4">
+          <div class="col-auto">
             <select class="form-select sel-orange" aria-label="Default select example">
               <option selected>Open this select menu</option>
               <option value="1">One</option>
@@ -91,15 +91,22 @@
   </div>
 
   <div class="gap-1 row justify-content-center p-3">
-    <div class="col-1 card btn border-orange bg-body-tertiary" href="#"  style="width: 15rem;" *ngFor="let p of list">
+    <div class="col-1 card btn border-orange bg-body-tertiary" href="#"  style="width: 15rem;" *ngFor="let p of list"
+    (click)="go(p.id)">
       <div class="d-flex justify-content-between">
         <h3 class="card-title">{{ p.name }}</h3>
-        <h4 class="text-secondary">{{ p.difficulty }}</h4>
+        <h5 class="text-secondary">{{ p.difficulty }}</h5>
       </div>
-      <img [src]="p.image" class="card-img" [alt]="p.name" style=" max-height: 15rem;">
+      <div class="position-relative">
+        <img [src]="p.image" class="card-img-top" [alt]="p.name" style=" max-height: 15rem;">
+        <span class="position-absolute bottom-0 start-0 rounded-pill text-bg-secondary p-1 text-warning">
+          <i class="bi bi-star-fill" *ngFor="let s of [].constructor(p.calification)"></i>
+        </span>
+      </div>
       <div class="card-body">
         <p class="card-text">{{p.description}}</p>
       </div>
     </div>
+    <h2 *ngIf="list.length<=0" class="text-center text-secondary text-break">No se encontraron publicaciones...</h2>
   </div>
 </div>

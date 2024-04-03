@@ -10,7 +10,7 @@ export class UserService {
   usuarioActual?:User
   token:string=""
 
-  private baseUrl = "http://localhost:8080/";
+  private baseUrl = "http://localhost:8080/auth/";
   constructor(private client: HttpClient) { }
 
   login(user: User, token:string):User{
@@ -27,6 +27,7 @@ export class UserService {
   }
   salir(){
     this.usuarioActual=undefined
+    this.token=""
   }
 
 }

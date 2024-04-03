@@ -68,7 +68,7 @@ public class PublicationServiceImpl implements PublicationService {
     //Listar
     @Override
     public List<PublicationMinDto> getAll() {
-        List<PublicationEntity> list = pRepository.findAll(Sort.by(Sort.Direction.DESC,"ty"));
+        List<PublicationEntity> list = pRepository.findAll();
         return modelMapper.map(list,new TypeToken<List<PublicationMinDto>>() {}.getType());
     }
 

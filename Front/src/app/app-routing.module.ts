@@ -6,6 +6,7 @@ import {RegisterComponent} from "./components/user/register/register.component";
 import {LoginComponent} from "./components/user/login/login.component";
 import {AddPublicationComponent} from "./components/publications/add-publication/add-publication.component";
 import {ListPublicationsComponent} from "./components/publications/list-publications/list-publications.component";
+import {ShowPublicationComponent} from "./components/publications/show-publication/show-publication.component";
 
 const routes: Routes = [
   { path: 'uno', component: StadisticsComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'publicate', component: AddPublicationComponent },
   { path: 'explore', component: ListPublicationsComponent },
+  { path: 'pub/:id', component: ShowPublicationComponent }
 ]
 
 @NgModule({

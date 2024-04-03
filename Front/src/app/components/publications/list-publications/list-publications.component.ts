@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {PublicationsService} from "../../../services/publications/publications.service";
 import {Router} from "@angular/router";
 import {Publication} from "../../../models/publication/publication";
+import {PublicationMin} from "../../../models/publication/publication-min";
 
 @Component({
   selector: 'app-list-publications',
@@ -15,73 +16,32 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
   private subs: Subscription = new Subscription();
   form: FormGroup = this.fb.group({});
 
-  list: Publication[] = [
+  list: PublicationMin[] = [
     {
-      name: "a",
-      description: "a",
+      id: 1,
+      name: "Cracion",
+      description: "Border",
       type: "a",
-      difficulty: "a",
-      image: "https://fcb-abj-pre.s3.amazonaws.com/img/jugadors/MESSI.jpg",
-      conditions: [],
-      materials: [],
-      steps: [],
-      canSold: true,
-      price: 20,
-      count: 1
-    },
-    {
-      name: "a",
-      description: "a",
-      type: "a",
-      difficulty: "a",
-      image: "https://fcb-abj-pre.s3.amazonaws.com/img/jugadors/MESSI.jpg",
-      conditions: [],
-      materials: [],
-      steps: [],
-      canSold: true,
-      price: 20,
-      count: 1
-    },
-    {
-      name: "a",
-      description: "a",
-      type: "a",
-      difficulty: "a",
-      image: "https://fcb-abj-pre.s3.amazonaws.com/img/jugadors/MESSI.jpg",
-      conditions: [],
-      materials: [],
-      steps: [],
-      canSold: true,
-      price: 20,
-      count: 1
-    },
-    {
-      name: "a",
-      description: "a",
-      type: "a",
-      difficulty: "a",
-      image: "https://fcb-abj-pre.s3.amazonaws.com/img/jugadors/MESSI.jpg",
-      conditions: [],
-      materials: [],
-      steps: [],
-      canSold: true,
-      price: 20,
-      count: 1
+      difficulty: "Dificil",
+      calification: 1,
+      image: "https://fcb-abj-pre.s3.amazonaws.com/img/jugadors/MESSI.jpg"
     }
   ];
 
   constructor(private fb: FormBuilder, private service: PublicationsService, private router: Router) {
     this.form = this.fb.group({
-      text: ["", [Validators.required, Validators.maxLength(200 )]],
-      type: ["", [Validators.required]],
-      diffMin: ["", [Validators.required]],
-      diffMax: ["", [Validators.required]],
-      points: ["", [Validators.required]],
-      mine: ["", [Validators.required]]
+      text: ["", [Validators.maxLength(200 )]],
+      type: [""],
+      diffMin: [""],
+      diffMax: [""],
+      points: [""],
+      mine: [""]
     });
 
   }
-  ngOnInit(): void {  }
+  ngOnInit(): void {
+
+  }
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
@@ -92,33 +52,35 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
       return;
     }
 
-    let data: Publication = {
-      "name": this.form.controls['name'].value,
-      "description": this.form.controls['description'].value,
-      "image": this.form.controls['image'].value,
+    let data = {
+      "text": this.form.controls['text'].value,
       "type": this.form.controls['type'].value,
-      "difficulty": this.form.controls['difficulty'].value,
-      "conditions": this.form.controls['conditions'].value,
-      "materials": this.form.controls['materials'].value,
-      "steps": this.form.controls['steps'].value,
-      "canSold": this.form.controls['canSold'].value,
-      "price": this.form.controls['price'].value,
-      "count": this.form.controls['count'].value
+      "diffMin": this.form.controls['diffMin'].value,
+      "diffMax": this.form.controls['diffMax'].value,
+      "points": this.form.controls['points'].value,
+      "mine": this.form.controls['mine'].value,
     }
 
     console.log(data);
 
     this.subs.add(
-      this.service.postPublication(data).subscribe(
+      this.service.postSearch(data).subscribe(
         {
           next: value => {
             alert("La yerba fue guardada con éxito");
-            this.router.navigate(["/explore"])
           },
-          error: err => { alert("Hubo un error al guardar"); }
+          error: err => { alert("Hubo un error al buscar"); }
         }
       )
     );
   }
 
+  go(id:number){
+    this.router.navigate(["/pub/"+id])
+
+  }
+  gonew(){
+    this.router.navigate(["/publicate"])
+
+  }
 }

@@ -35,10 +35,10 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
       type: ["", [Validators.required]],
       difficulty: ["", [Validators.required]],
       image: [""],
-      conditions: this.fb.array([],{validators:Validators.required}),
-      materials: this.fb.array([],{validators:Validators.required}),
+      conditions: this.fb.array([]),
+      materials: this.fb.array([]),
       steps: this.fb.array([]),
-      cansold: [""],
+      cansold: [false],
       price: [""],
       count: [""]
     });
@@ -54,7 +54,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
   }
   addDetailCondition(){
     let v = this.fb.group({
-      text: ["",[Validators.required,Validators.minLength(500)]]
+      text: ["",[Validators.required,Validators.maxLength(500)]]
     })
     this.detailsConditions.push(v)
     this.detailsConditions.markAsTouched()
@@ -68,7 +68,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
   }
   addDetailMaterials(){
     let v = this.fb.group({
-      text: ["",[Validators.required,Validators.minLength(500)]]
+      text: ["",[Validators.required,Validators.maxLength(500)]]
     })
     this.detailsMaterials.push(v)
     this.detailsMaterials.markAsTouched()
@@ -84,7 +84,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
       return;
     }
 
-    let data: Publication = {
+    let data = {
       "name": this.form.controls['name'].value,
       "description": this.form.controls['description'].value,
       "image": this.form.controls['image'].value,

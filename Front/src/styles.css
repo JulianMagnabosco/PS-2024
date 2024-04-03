@@ -17,9 +17,12 @@ h1, .space-text{
   background-color: #f1e8e8;
 }
 
+.border-orange-n{
+  border: 3px solid #f6751e;
+}
+
 .border-orange{
   border: 3px solid #f6751e;
 }.border-orange:hover{
    border: 3px solid #f6cb1e;
  }
-

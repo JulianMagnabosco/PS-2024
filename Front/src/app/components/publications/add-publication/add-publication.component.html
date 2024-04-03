@@ -10,7 +10,7 @@
   <form [formGroup]="form" class="row g-3 justify-content-center p-3">
     <div class="col-8">
       <div class="mb-2">
-        <label for="nameInput" class="form-label h2">Nombre</label>
+        <label for="nameInput" class="form-label h5">Nombre</label>
         <input type="text" formControlName="name" class="form-control" id="nameInput"
                [class.is-invalid]="(form.controls['name'].touched || form.controls['name'].dirty)
       && form.controls['name'].invalid">
@@ -25,19 +25,21 @@
       </div>
 
       <div class="mb-3">
-        <label for="descriptionInput" class="form-label h2">Descripcion</label>
+        <label for="descriptionInput" class="form-label h5">Descripcion</label>
         <textarea class="form-control" id="descriptionInput" rows="3"
                   formControlName="description" [class.is-invalid]="(form.controls['description'].touched
                   || form.controls['description'].dirty) && form.controls['description'].invalid"></textarea>
         <div class="invalid-feedback" *ngIf="(form.controls['description'].touched || form.controls['description'].dirty)
       && form.controls['description'].hasError('required')">
-          El description es requerido.
+          La descripcion es requerida.
         </div>
+        <div class="form-text fst-italic">Puedes agregar tags en la descripción con el simbolo '#' </div>
+
       </div>
 
       <div class="row g-3 align-items-center my-3">
-       <div class="col-auto col-xl-6 row">
-         <div class="col-auto  ">
+       <div class="col-auto col-xl-6 row pb-1">
+         <div class="col-auto ">
            <label for="typeInput" class="col-form-label">Tipo:</label>
          </div>
          <div class="col-auto ">
@@ -50,6 +52,10 @@
              <option value="Tecnologico">Artistico</option>
              <option value="Otro">Tecnologico</option>
            </select>
+           <div class="invalid-feedback" *ngIf="(form.controls['type'].touched || form.controls['type'].dirty)
+      && form.controls['type'].hasError('required')">
+             El tipo de obra es requerido.
+           </div>
          </div>
        </div>
        <div class="col-auto col-xl-6 row">
@@ -66,6 +72,10 @@
              <option value="3">Dificil</option>
              <option value="4">Muy Dificil</option>
            </select>
+           <div class="invalid-feedback" *ngIf="(form.controls['difficulty'].touched || form.controls['difficulty'].dirty)
+      && form.controls['difficulty'].hasError('required')">
+             El nivel de dificultad de la obra es requerido.
+           </div>
          </div>
        </div>
       </div>
@@ -82,16 +92,18 @@
         <i class="bi bi-caret-down-fill text-warning" *ngIf="!showConditions"></i>
       </a>
       <div class="collapse" id="collapseConditions" formArrayName="conditions">
-          <div *ngFor="let d of detailsConditions.controls; index as i" [formGroupName]="i" class="d-flex mb-1">
+          <div *ngFor="let d of detailsConditions.controls; index as i" [formGroupName]="i">
 
-            <button class="btn btn-danger me-1 col-auto" (click)="removeDetailCondition(i)"><i class="bi bi-dash-lg"></i></button>
 
-            <input type="text" class="form-control col" formControlName="text"
-                   [placeholder]="'Condicion '+(i+1)"
-                   [class.is-invalid]="d.get('text')?.invalid
-               && (d.get('text')?.dirty || d.get('text')?.touched)">
+            <div  class="d-flex mb-1  is-invalid">
+              <button class="btn btn-danger me-1 col-auto" (click)="removeDetailCondition(i)"><i class="bi bi-dash-lg"></i></button>
 
-            <div class="invalid-feedback col"
+              <input type="text" class="form-control col" formControlName="text"
+                     [placeholder]="'Condicion '+(i+1)"
+                     [class.is-invalid]="d.get('text')?.invalid
+               && (d.get('text')?.dirty || d.get('text')?.touched)"></div>
+
+            <div class="invalid-feedback"
                  *ngIf="d.get('text')?.invalid
                      && (d.get('text')?.dirty || d.get('text')?.touched)">
               <div *ngIf="d.get('text')?.hasError('required')">
@@ -101,9 +113,6 @@
 
           </div>
           <button class="btn btn-warning mb-2 w-100" (click)="addDetailCondition()"> Agregar Condicion</button>
-          <div class="text-danger" *ngIf="detailsConditions.hasError('required') && detailsConditions.touched">
-            No hay partes
-          </div>
 
       </div>
     </div>
@@ -115,18 +124,18 @@
         <i class="bi bi-caret-down-fill text-warning" *ngIf="!showMaterials"></i>
       </a>
       <div class="collapse" id="collapseMaterials" formArrayName="materials">
-        <div *ngFor="let d of detailsMaterials.controls; index as i" [formGroupName]="i" class="d-flex mb-1">
-
-          <button class="btn btn-danger me-1 col-auto" (click)="removeDetailMaterials(i)">
+        <div *ngFor="let d of detailsMaterials.controls; index as i" [formGroupName]="i">
+          <div  class="d-flex mb-1  is-invalid">
+            <button class="btn btn-danger me-1 col-auto" (click)="removeDetailMaterials(i)">
             <i class="bi bi-dash-lg"></i></button>
 
-          <input type="text" class="form-control col" formControlName="text"
-                 [placeholder]="'Material '+(i+1)"
-                 [class.is-invalid]="d.get('text')?.invalid
-               && (d.get('text')?.dirty || d.get('text')?.touched)">
+            <input type="text" class="form-control col" formControlName="text"
+                   [placeholder]="'Material '+(i+1)"
+                   [class.is-invalid]="d.get('text')?.invalid
+               && (d.get('text')?.dirty || d.get('text')?.touched)"></div>
 
-          <div class="invalid-feedback col"
-               *ngIf="d.get('text')?.invalid
+
+          <div class="invalid-feedback" *ngIf="d.get('text')?.invalid
                      && (d.get('text')?.dirty || d.get('text')?.touched)">
             <div *ngIf="d.get('text')?.hasError('required')">
               Es requerido (Completar o eliminar)
@@ -135,9 +144,6 @@
 
         </div>
         <button class="btn btn-warning mb-2 w-100" (click)="addDetailMaterials()"> Agregar Material</button>
-        <div class="text-danger" *ngIf="detailsMaterials.hasError('required') && detailsMaterials.touched">
-          No hay partes
-        </div>
 
       </div>
     </div>

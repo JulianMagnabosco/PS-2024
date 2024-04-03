@@ -31,7 +31,7 @@ public class PingController {
                             schema = @Schema(implementation = ErrorApi.class))
             )
     })
-    @GetMapping("/ping")
+    @GetMapping("/auth/ping")
     public String pong() {
         return "pong";
     }

@@ -32,7 +32,7 @@ public class PublicationController {
     }
 
     @GetMapping("/{id}")
-    public PublicationDto getAll(@PathVariable Long id) throws EntityNotFoundException {
+    public PublicationDto get(@PathVariable Long id) throws EntityNotFoundException {
         return publicationService.get(id);
     }
 }

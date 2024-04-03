@@ -16,10 +16,10 @@ export class CatalogoComponent implements OnInit,OnDestroy{
 
   ngOnInit(): void {
     this.subs.add(
-      this.service.get().subscribe(
+      this.service.get2().subscribe(
         {
           next: value => {
-            this.mes = value
+            this.mes = "value"
           }
         }
       )

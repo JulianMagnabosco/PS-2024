@@ -50,7 +50,10 @@ export class LoginComponent implements OnInit,OnDestroy {
             this.service.login(user,value["token"])
             this.router.navigate(["/explore"])
           },
-          error: err => { alert("Hubo un error"); }
+          error: err => {
+            console.log(err)
+            alert("Hubo un error");
+          }
         }
       )
     );
