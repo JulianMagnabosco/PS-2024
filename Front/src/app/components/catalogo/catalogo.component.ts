@@ -16,7 +16,7 @@ export class CatalogoComponent implements OnInit,OnDestroy{
 
   ngOnInit(): void {
     this.subs.add(
-      this.service.get2().subscribe(
+      this.service.get().subscribe(
         {
           next: value => {
             this.mes = "value"

@@ -61,15 +61,17 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
       "mine": this.form.controls['mine'].value,
     }
 
-    console.log(data);
 
     this.subs.add(
       this.service.postSearch(data).subscribe(
         {
           next: value => {
-            alert("La yerba fue guardada con éxito");
+            alert("Busqueda completada");
+            this.list=value
           },
-          error: err => { alert("Hubo un error al buscar"); }
+          error: err => {
+            console.log(err)
+            alert("Hubo un error al buscar"); }
         }
       )
     );

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/pub")
 public class PublicationController {
     @Autowired
@@ -25,7 +24,7 @@ public class PublicationController {
     public List<PublicationMinDto> getAll() {
         return publicationService.getAll();
     }
-    @PostMapping("/list")
+    @PostMapping("/search")
     public List<PublicationMinDto> getAll(@RequestBody List<FilterDTO> filterDTOList,
                                           @RequestParam int page, @RequestParam int size) {
         return publicationService.getAllFilthered(filterDTOList,page,size);
