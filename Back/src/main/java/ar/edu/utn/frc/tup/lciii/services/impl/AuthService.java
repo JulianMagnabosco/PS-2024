@@ -1,15 +1,14 @@
 package ar.edu.utn.frc.tup.lciii.services.impl;
 
-import ar.edu.utn.frc.tup.lciii.dtos.LoginRequest;
+import ar.edu.utn.frc.tup.lciii.dtos.requests.LoginRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.LoginResponce;
-import ar.edu.utn.frc.tup.lciii.dtos.UserRequest;
+import ar.edu.utn.frc.tup.lciii.dtos.requests.UserRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.UserDto;
 import ar.edu.utn.frc.tup.lciii.entities.UserEntity;
 import ar.edu.utn.frc.tup.lciii.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

@@ -3,9 +3,12 @@ package ar.edu.utn.frc.tup.lciii.services.impl;
 import ar.edu.utn.frc.tup.lciii.dtos.FilterDTO;
 import ar.edu.utn.frc.tup.lciii.dtos.PublicationDto;
 import ar.edu.utn.frc.tup.lciii.dtos.PublicationMinDto;
-import ar.edu.utn.frc.tup.lciii.dtos.PublicationRequest;
+import ar.edu.utn.frc.tup.lciii.dtos.SearchResponce;
+import ar.edu.utn.frc.tup.lciii.dtos.requests.PublicationRequest;
+import ar.edu.utn.frc.tup.lciii.dtos.requests.SearchRequest;
 import ar.edu.utn.frc.tup.lciii.entities.PublicationEntity;
 import ar.edu.utn.frc.tup.lciii.entities.SectionEntity;
+import ar.edu.utn.frc.tup.lciii.enums.TypePub;
 import ar.edu.utn.frc.tup.lciii.repository.PublicationRepository;
 import ar.edu.utn.frc.tup.lciii.repository.SectionRepository;
 import ar.edu.utn.frc.tup.lciii.services.PublicationService;
@@ -20,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -73,21 +75,29 @@ public class PublicationServiceImpl implements PublicationService {
     }
 
     @Override
-    public List<PublicationMinDto> getAllFilthered(List<FilterDTO> filterDTOList, int page, int size) { if(page < 1)
-        page = 1;
-
-        if(size < 1)
-            size = 10;
+    public SearchResponce getAllFilthered(SearchRequest searchRequest) {
+        SearchResponce responce = new SearchResponce();
+        if(searchRequest.getPage() < 1) searchRequest.setPage(1);
+        if(searchRequest.getSize() < 10) searchRequest.setSize(10);
 
         //The third Sort parameter is optional
-        Pageable pageable = PageRequest.of(page-1, size,Sort.by("id").descending());
+        Pageable pageable = PageRequest.of(searchRequest.getPage()-1, searchRequest.getSize());
 
-        Page<PublicationEntity> list = pRepository.findAll(columnEqual(filterDTOList),pageable);
-        return modelMapper.map(list,new TypeToken<List<PublicationMinDto>>() {}.getType());
+        Page<PublicationEntity> all = pRepository.findAll(createFilter(searchRequest),pageable);
+        List<PublicationMinDto> list=new ArrayList<>();
+        for (PublicationEntity p: all
+             ) {
+            list.add(modelMapper.map(p, PublicationMinDto.class));
+        }
+        responce.setList(list);
+
+        responce.setCountTotal(pRepository.count(createFilter(searchRequest)));
+
+        return responce;
     }
 
     //Filtros
-    public static Specification<PublicationEntity> columnEqual(List<FilterDTO> filterDTOList)
+    public static Specification<PublicationEntity> createFilter(SearchRequest searchRequest)
     {
         return new Specification<PublicationEntity>()
         {
@@ -97,11 +107,11 @@ public class PublicationServiceImpl implements PublicationService {
             public Predicate toPredicate(Root<PublicationEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder)
             {
                 List<Predicate> predicates = new ArrayList<>();
-                filterDTOList.forEach(filter ->
+                if(searchRequest.getType()!= TypePub.TODO)
                 {
-                    Predicate predicate = criteriaBuilder.equal(root.get(filter.getColumnName()),filter.getColumnValue());
+                    Predicate predicate = criteriaBuilder.equal(root.get("type"),searchRequest.getType().toString());
                     predicates.add(predicate);
-                });
+                };
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             }
         }; //columnEqual() function ends

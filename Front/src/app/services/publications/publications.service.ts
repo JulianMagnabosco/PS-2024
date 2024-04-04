@@ -16,10 +16,15 @@ export class PublicationsService {
   postPublication(user: any):Observable<any>{
     return this.client.post(this.baseUrl + "new", user);
   }
-  postSearch(search: any):Observable<any>{
+  search():Observable<any>{
         return this.client.get(this.baseUrl + "list", {
           headers: new HttpHeaders({'Authorization': 'Bearer ' + this.userService.token})
         })
+  }
+  postSearch(search: any):Observable<any>{
+    return this.client.post(this.baseUrl + "search",search, {
+      headers: new HttpHeaders({'Authorization': 'Bearer ' + this.userService.token})
+    })
   }
 
   get(id: string):Observable<any>{

@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PublicationRepository extends JpaRepository<PublicationEntity,Long>, JpaSpecificationExecutor<PublicationEntity> {
+
 }

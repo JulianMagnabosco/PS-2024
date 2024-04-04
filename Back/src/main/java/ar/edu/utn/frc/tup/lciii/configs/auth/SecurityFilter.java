@@ -25,10 +25,7 @@ public class SecurityFilter extends OncePerRequestFilter {
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
     var token = this.recoverToken(request);
-    var l = request.getHeaderNames();
-    while (l.hasMoreElements()){
-      System.out.println("Headers: "+l.nextElement());
-    }
+
     if (token != null) {
       var name = tokenService.validateToken(token);
       var user = userRepository.findByName(name);

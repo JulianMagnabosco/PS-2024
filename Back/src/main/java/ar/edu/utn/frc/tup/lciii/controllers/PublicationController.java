@@ -1,6 +1,8 @@
 package ar.edu.utn.frc.tup.lciii.controllers;
 
 import ar.edu.utn.frc.tup.lciii.dtos.*;
+import ar.edu.utn.frc.tup.lciii.dtos.requests.PublicationRequest;
+import ar.edu.utn.frc.tup.lciii.dtos.requests.SearchRequest;
 import ar.edu.utn.frc.tup.lciii.entities.PublicationEntity;
 import ar.edu.utn.frc.tup.lciii.services.PublicationService;
 import jakarta.persistence.EntityNotFoundException;
@@ -25,9 +27,8 @@ public class PublicationController {
         return publicationService.getAll();
     }
     @PostMapping("/search")
-    public List<PublicationMinDto> getAll(@RequestBody List<FilterDTO> filterDTOList,
-                                          @RequestParam int page, @RequestParam int size) {
-        return publicationService.getAllFilthered(filterDTOList,page,size);
+    public SearchResponce getAll(@RequestBody SearchRequest searchRequest) {
+        return publicationService.getAllFilthered(searchRequest);
     }
 
     @GetMapping("/{id}")

@@ -1,4 +1,4 @@
-package ar.edu.utn.frc.tup.lciii.dtos;
+package ar.edu.utn.frc.tup.lciii.dtos.requests;
 
 import ar.edu.utn.frc.tup.lciii.enums.UserRole;
 import lombok.Data;

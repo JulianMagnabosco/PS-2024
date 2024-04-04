@@ -40,7 +40,18 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
 
   }
   ngOnInit(): void {
-
+    this.subs.add(
+      this.service.search().subscribe(
+        {
+          next: value => {
+            this.list=value
+          },
+          error: err => {
+            console.log(err)
+            alert("Hubo un error al buscar"); }
+        }
+      )
+    );
   }
   ngOnDestroy(): void {
     this.subs.unsubscribe();
@@ -59,6 +70,8 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
       "diffMax": this.form.controls['diffMax'].value,
       "points": this.form.controls['points'].value,
       "mine": this.form.controls['mine'].value,
+      "page": 1,
+      "size": 3
     }
 
 
@@ -66,7 +79,6 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
       this.service.postSearch(data).subscribe(
         {
           next: value => {
-            alert("Busqueda completada");
             this.list=value
           },
           error: err => {

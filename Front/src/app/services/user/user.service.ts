@@ -9,12 +9,19 @@ import {Login} from "../../models/login/login";
 })
 export class UserService {
   usuarioActual?:User
-  token:string=""
+  token:string|null=""
 
   private baseUrl = "http://localhost:8080/auth/";
-  constructor(private client: HttpClient) { }
+  constructor(private client: HttpClient) {
+
+    this.usuarioActual = JSON.parse(localStorage.getItem("user")as string)
+    this.token = localStorage.getItem("token")
+
+  }
 
   login(user: User, token:string):User{
+    localStorage.setItem("user",JSON.stringify(user))
+    localStorage.setItem("token",token)
     this.usuarioActual=user
     this.token=token
     return user;
