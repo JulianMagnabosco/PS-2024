@@ -40,8 +40,6 @@ export class LoginComponent implements OnInit,OnDestroy {
     let user = new User(this.form.controls['name'].value,
       this.form.controls['password'].value)
 
-    console.log(user);
-
     this.subs.add(
       this.service.postLogin(user).subscribe(
         {

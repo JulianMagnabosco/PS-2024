@@ -1,5 +1,6 @@
 package ar.edu.utn.frc.tup.lciii.dtos.requests;
 
+import ar.edu.utn.frc.tup.lciii.dtos.SectionDto;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -13,9 +14,7 @@ public class PublicationRequest {
     String type;
     String dificulty;
     String image;
-    List<String> conditions;
-    List<String> materials;
-    List<String> steps;
+    List<SectionDto> sections;
     boolean canSold;
     BigDecimal price;
     Long count;

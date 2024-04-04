@@ -1,14 +1,12 @@
 package ar.edu.utn.frc.tup.lciii.services.impl;
 
-import ar.edu.utn.frc.tup.lciii.dtos.FilterDTO;
-import ar.edu.utn.frc.tup.lciii.dtos.PublicationDto;
-import ar.edu.utn.frc.tup.lciii.dtos.PublicationMinDto;
-import ar.edu.utn.frc.tup.lciii.dtos.SearchResponce;
+import ar.edu.utn.frc.tup.lciii.dtos.*;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.PublicationRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.SearchRequest;
 import ar.edu.utn.frc.tup.lciii.entities.PublicationEntity;
 import ar.edu.utn.frc.tup.lciii.entities.SectionEntity;
 import ar.edu.utn.frc.tup.lciii.enums.TypePub;
+import ar.edu.utn.frc.tup.lciii.enums.TypeSec;
 import ar.edu.utn.frc.tup.lciii.repository.PublicationRepository;
 import ar.edu.utn.frc.tup.lciii.repository.SectionRepository;
 import ar.edu.utn.frc.tup.lciii.services.PublicationService;
@@ -17,6 +15,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,28 +37,17 @@ public class PublicationServiceImpl implements PublicationService {
     @Autowired
     ModelMapper modelMapper;
     @Override
+    @Transactional
     public PublicationEntity register(PublicationRequest request) {
 
         PublicationEntity publication = modelMapper.map(request, PublicationEntity.class);
         pRepository.save(publication);
 
-        List<SectionEntity> conditions = new ArrayList<>();
-        for (String cond: request.getConditions()) {
-            SectionEntity s = new SectionEntity();
-            s.setText(cond);
-            s.setType("CONDITION");
+//        List<SectionEntity> sectionEntities = new ArrayList<>();
+        for (SectionDto sectionDto: request.getSections()) {
+            SectionEntity s = modelMapper.map(sectionDto, SectionEntity.class);
             s.setPublication(publication);
-            conditions.add(s);
-            sRepository.save(s);
-        }
-
-        List<SectionEntity> materials = new ArrayList<>();
-        for (String cond: request.getConditions()) {
-            SectionEntity s = new SectionEntity();
-            s.setText(cond);
-            s.setType("MATERIAL");
-            s.setPublication(publication);
-            materials.add(s);
+//            sectionEntities.add(s);
             sRepository.save(s);
         }
 
@@ -120,10 +108,17 @@ public class PublicationServiceImpl implements PublicationService {
 
     @Override
     public PublicationDto get(Long id) throws EntityNotFoundException {
+        PublicationDto responce;
         PublicationEntity p = pRepository.getReferenceById(id);
         if(p==null){
             throw new EntityNotFoundException();
         }
-        return modelMapper.map(p,PublicationDto.class);
+        responce = modelMapper.map(p,PublicationDto.class);
+        responce.setSections(new ArrayList<>());
+        for (SectionEntity s : sRepository.findAllByPublication(p)) {
+            responce.getSections().add(modelMapper.map(s,SectionDto.class));
+        }
+
+        return responce;
     }
 }

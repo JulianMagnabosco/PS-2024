@@ -1,5 +1,6 @@
 package ar.edu.utn.frc.tup.lciii.entities;
 
+import ar.edu.utn.frc.tup.lciii.enums.Difficulty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,10 +24,12 @@ public class PublicationEntity {
     String name;
     String description;
     String type;
-    String dificulty;
+    @Enumerated(EnumType.ORDINAL)
+    Difficulty difficulty;
     String image;
     boolean canSold;
     BigDecimal price;
+    Long count;
     @OneToMany(mappedBy="publication")
     List<SectionEntity> sections;
 }

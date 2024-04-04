@@ -1,5 +1,6 @@
 package ar.edu.utn.frc.tup.lciii.entities;
 
+import ar.edu.utn.frc.tup.lciii.enums.TypeSec;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,9 +17,13 @@ public class SectionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    String type;
+    Long number;
+    @Enumerated(EnumType.STRING)
+    TypeSec type;
     @Column(columnDefinition="TEXT")
     String text;
+    @Column(nullable = true)
+    String image;
     @ManyToOne
     @JoinColumn(name="idPublication")
     PublicationEntity publication;

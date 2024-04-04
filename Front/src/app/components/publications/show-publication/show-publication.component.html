@@ -5,18 +5,18 @@
       <div class="d-flex mb-3">
         <div class="col-8">
           <h2 class="mb-2">
-            {{pub.name}}
+            {{publication.name}}
           </h2>
           <div class="d-flex align-items-center gap-1 mb-2">
             <div class="col-auto rounded-3 bg-warning px-1">
-              {{pub.type}}
+              {{publication.type}}
             </div>
             <div class="col-auto rounded-3 bg-danger px-1">
-              {{pub.difficulty}}
+              {{publication.difficulty}}
             </div>
           </div>
           <div class="mb-2 p-1 me-1 rounded-2 bg-body-secondary">
-            {{pub.description }}
+            {{publication.description }}
           </div>
 
 
@@ -29,11 +29,11 @@
       <div class="p-2 rounded-3 border border-warning-subtle border-5 mb-3">
         <h5 class="text-uppercase">Condiciones</h5>
         <div class="">
-          <div *ngFor="let d of pub.conditions; index as i" class="d-flex mb-1">
+          <div *ngFor="let d of conditions; index as i" class="d-flex mb-1">
 
             <div class="me-1 rounded-circle bg-danger text-center text-white rounded-2 align-middle"
             style="width: 3vw; height: 3vw">!</div>
-            <div class="rounded-2 bg-body-secondary p-1">{{ d }}</div>
+            <div class="rounded-2 bg-body-secondary p-1">{{ d.text }}</div>
           </div>
 
         </div>
@@ -41,12 +41,12 @@
       <div class="p-2 rounded-3 border border-warning-subtle border-5 mb-3">
         <h5 class="text-uppercase">Materiales</h5>
         <div class="">
-          <div *ngFor="let d of pub.materials; index as i" class="d-flex mb-1">
+          <div *ngFor="let d of materials; index as i" class="d-flex mb-1">
 
 
             <div class="me-1 rounded-circle bg-danger text-center text-white rounded-2 align-middle"
                  style="width: 3vw; height: 3vw">{{ i + 1 }}</div>
-            <div class="rounded-2 bg-body-secondary p-1">{{ d }}</div>
+            <div class="rounded-2 bg-body-secondary p-1">{{ d.text }}</div>
           </div>
 
         </div>
@@ -54,12 +54,12 @@
       <div class="p-2 rounded-3 border border-warning-subtle border-5 mb-3">
         <h5 class="text-uppercase">Pasos</h5>
         <div class="">
-          <div *ngFor="let d of pub.materials; index as i" class="d-flex mb-1">
+          <div *ngFor="let d of conditions; index as i" class="d-flex mb-1">
 
 
             <div class="me-1 rounded-circle bg-danger text-center text-white rounded-2 align-middle"
                  style="width: 3vw; height: 3vw">{{ i + 1 }}</div>
-            <div class="rounded-2 bg-body-secondary p-1">{{ d }}</div>
+            <div class="rounded-2 bg-body-secondary p-1">{{ d.text }}</div>
           </div>
 
         </div>

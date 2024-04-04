@@ -1,5 +1,6 @@
 package ar.edu.utn.frc.tup.lciii.dtos;
 
+import ar.edu.utn.frc.tup.lciii.enums.Difficulty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,13 +17,11 @@ public class PublicationDto {
     String name;
     String description;
     String type;
-    String dificulty;
+    Difficulty difficulty;
     String image;
-    List<String> conditions;
-    List<String> materials;
-    List<String> steps;
-    List<String> stepPhothos;
+    List<SectionDto> sections;
     boolean canSold;
     BigDecimal price;
+    Long count;
 
 }

@@ -14,8 +14,12 @@ export class UserService {
   private baseUrl = "http://localhost:8080/auth/";
   constructor(private client: HttpClient) {
 
-    this.usuarioActual = JSON.parse(localStorage.getItem("user")as string)
-    this.token = localStorage.getItem("token")
+    try {
+      this.usuarioActual = JSON.parse(localStorage.getItem("user")as string)
+      this.token = localStorage.getItem("token")
+    }catch (e) {
+      console.log("sincuenta")
+    }
 
   }
 
@@ -36,6 +40,8 @@ export class UserService {
   salir(){
     this.usuarioActual=undefined
     this.token=""
+    localStorage.setItem("user","")
+    localStorage.setItem("token","")
   }
 
 }
