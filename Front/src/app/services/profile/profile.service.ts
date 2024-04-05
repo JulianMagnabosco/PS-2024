@@ -8,7 +8,7 @@ import {User} from "../../models/user/user";
   providedIn: 'root'
 })
 export class ProfileService {
-  url = "http://localhost:8080"
+  baseUrl = this.userService.url
   token = ""
   private subs: Subscription = new Subscription();
 
@@ -39,7 +39,7 @@ export class ProfileService {
     //   'Access-Control-Allow-Origin':'*'
     // })
     console.log(headers)
-    return this.client.get(this.url + "/pub/list",{headers:headers});
+    return this.client.get(this.baseUrl + "pub/list",{headers:headers});
   }
 
 }

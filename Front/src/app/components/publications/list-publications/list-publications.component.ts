@@ -27,15 +27,16 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
       image: "https://fcb-abj-pre.s3.amazonaws.com/img/jugadors/MESSI.jpg"
     }
   ];
+  countTotal=0;
 
   constructor(private fb: FormBuilder, private service: PublicationsService, private router: Router) {
     this.form = this.fb.group({
       text: ["", [Validators.maxLength(200 )]],
-      type: [""],
+      type: ["TODO"],
       diffMin: [""],
       diffMax: [""],
       points: [""],
-      mine: [""]
+      mine: [false]
     });
 
   }
@@ -74,12 +75,14 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
       "size": 3
     }
 
+    console.log(data)
 
     this.subs.add(
       this.service.postSearch(data).subscribe(
         {
           next: value => {
-            this.list=value
+            this.countTotal=value["countTotal"]
+            this.list=value["list"]
           },
           error: err => {
             console.log(err)

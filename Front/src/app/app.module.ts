@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -13,6 +13,12 @@ import { LoginComponent } from './components/user/login/login.component';
 import { ListPublicationsComponent } from './components/publications/list-publications/list-publications.component';
 import { AddPublicationComponent } from './components/publications/add-publication/add-publication.component';
 import { ShowPublicationComponent } from './components/publications/show-publication/show-publication.component';
+import {UserService} from "./services/user/user.service";
+
+export function initializeApp(initService: UserService) {
+  return () => initService.init();
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +38,13 @@ import { ShowPublicationComponent } from './components/publications/show-publica
     NgxEchartsDirective
   ],
   providers: [
-    provideEcharts()
+    provideEcharts(),
+    {
+      provide: APP_INITIALIZER,
+      multi: true,
+      useFactory: initializeApp,
+      deps: [UserService]
+    }
   ],
   bootstrap: [AppComponent]
 })

@@ -4,16 +4,21 @@ import {HttpClient, HttpHeaders, HttpRequest} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Publication} from "../../models/publication/publication";
 import {UserService} from "../user/user.service";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PublicationsService {
 
-  private baseUrl = "http://localhost:8080/pub/";
-  constructor(private client: HttpClient, private userService:UserService) { }
+  url = this.userService.url
+  private baseUrl = this.url+"pub/";
+  constructor(private client: HttpClient, private userService:UserService, private sanitizer: DomSanitizer) { }
 
   postPublication(user: any):Observable<any>{
+    return this.client.post(this.baseUrl + "new", user);
+  }
+  postImages(user: any):Observable<any>{
     return this.client.post(this.baseUrl + "new", user);
   }
   search():Observable<any>{

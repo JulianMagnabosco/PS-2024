@@ -26,7 +26,8 @@ public class PublicationEntity {
     String type;
     @Enumerated(EnumType.ORDINAL)
     Difficulty difficulty;
-    String image;
+    @Lob
+    byte[] image;
     boolean canSold;
     BigDecimal price;
     Long count;

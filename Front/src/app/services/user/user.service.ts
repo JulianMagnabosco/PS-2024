@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {User} from "../../models/user/user";
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {map, Observable, Subscription} from "rxjs";
 import {Login} from "../../models/login/login";
 
 @Injectable({
@@ -11,16 +11,25 @@ export class UserService {
   usuarioActual?:User
   token:string|null=""
 
-  private baseUrl = "http://localhost:8080/auth/";
+  url = "http://localhost:8080/";
+  private baseUrl = this.url+"auth/";
+
+  private subs: Subscription = new Subscription();
+
   constructor(private client: HttpClient) {
 
-    try {
-      this.usuarioActual = JSON.parse(localStorage.getItem("user")as string)
-      this.token = localStorage.getItem("token")
-    }catch (e) {
-      console.log("sincuenta")
-    }
 
+  }
+
+  init() {
+    this.usuarioActual = JSON.parse(localStorage.getItem("user")as string)
+    return this.postLogin(this.usuarioActual).pipe(
+      map((value) => {
+        localStorage.setItem("token",value["token"])
+        this.token=value["token"]
+        console.log("inicio")
+      })
+    );
   }
 
   login(user: User, token:string):User{

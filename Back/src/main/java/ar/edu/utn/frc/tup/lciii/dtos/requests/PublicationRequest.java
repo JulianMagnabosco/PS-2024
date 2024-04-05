@@ -8,12 +8,11 @@ import java.util.List;
 
 @Data
 public class PublicationRequest {
-    Long user;
     String name;
     String description;
     String type;
     String dificulty;
-    String image;
+    Long imageId;
     List<SectionDto> sections;
     boolean canSold;
     BigDecimal price;
