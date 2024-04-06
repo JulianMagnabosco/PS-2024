@@ -21,12 +21,12 @@ export class PublicationsService {
   postImages(user: any):Observable<any>{
     return this.client.post(this.baseUrl + "new", user);
   }
-  search():Observable<any>{
+  oldsearch():Observable<any>{
         return this.client.get(this.baseUrl + "list", {
           headers: new HttpHeaders({'Authorization': 'Bearer ' + this.userService.token})
         })
   }
-  postSearch(search: any):Observable<any>{
+  search(search: any):Observable<any>{
     return this.client.post(this.baseUrl + "search",search, {
       headers: new HttpHeaders({'Authorization': 'Bearer ' + this.userService.token})
     })
@@ -34,6 +34,15 @@ export class PublicationsService {
 
   get(id: string):Observable<any>{
     return this.client.get(this.baseUrl + id);
+  }
+
+  getImages(pub: string, index: string):Observable<any>{
+    return this.client.get(this.baseUrl+ "image", {
+      params: {
+        pub:pub,
+        index:index
+      }
+    });
   }
 
 

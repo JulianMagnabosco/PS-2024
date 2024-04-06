@@ -16,6 +16,8 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
   private subs: Subscription = new Subscription();
   form: FormGroup = this.fb.group({});
 
+  data: any ;
+
   list: PublicationMin[] = [
     {
       id: 1,
@@ -24,10 +26,12 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
       type: "a",
       difficulty: "Dificil",
       calification: 1,
-      image: "https://fcb-abj-pre.s3.amazonaws.com/img/jugadors/MESSI.jpg"
+      imageUrl: "https://fcb-abj-pre.s3.amazonaws.com/img/jugadors/MESSI.jpg"
     }
   ];
   countTotal=0;
+  count=3;
+  page=1;
 
   constructor(private fb: FormBuilder, private service: PublicationsService, private router: Router) {
     this.form = this.fb.group({
@@ -38,33 +42,32 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
       points: [""],
       mine: [false]
     });
-
   }
   ngOnInit(): void {
-    this.subs.add(
-      this.service.search().subscribe(
-        {
-          next: value => {
-            this.list=value
-          },
-          error: err => {
-            console.log(err)
-            alert("Hubo un error al buscar"); }
-        }
-      )
-    );
+    this.charge(1)
   }
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
-  onSubmit(){
+
+
+  charge(page: number){
+    this.page=page;
+    if(page<1){
+      this.page=1;
+    }
+
+    if(page>this.countTotal/this.count){
+      this.page=Math.ceil(this.countTotal/this.count);
+    }
+
     if(this.form.invalid){
       alert("El formulario es invalido");
       this.form.markAllAsTouched();
       return;
     }
 
-    let data = {
+    this.data = {
       "text": this.form.controls['text'].value,
       "type": this.form.controls['type'].value,
       "diffMin": this.form.controls['diffMin'].value,
@@ -75,10 +78,9 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
       "size": 3
     }
 
-    console.log(data)
 
     this.subs.add(
-      this.service.postSearch(data).subscribe(
+      this.service.search(this.data).subscribe(
         {
           next: value => {
             this.countTotal=value["countTotal"]

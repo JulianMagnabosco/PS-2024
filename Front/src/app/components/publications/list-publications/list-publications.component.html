@@ -1,8 +1,8 @@
 <div class="container-fluid">
   <div class="row justify-content-between p-1">
     <h1 class="col">Explorar</h1>
-    <div class="col-auto align-middle">
-      <button class="btn btn-primary align-middle" (click)="gonew()">
+    <div class="col-auto align-content-center">
+      <button class="btn btn-primary" (click)="gonew()">
         NUEVA OBRA <i class="bi bi-arrow-right"></i>
       </button>
     </div>
@@ -76,7 +76,7 @@
       </div>
       <div class="col-12 col-sm-auto  d-flex flex-column ">
         <div class="mb-1 flex-fill">
-          <button class="btn btn-primary w-100 h-100" (click)="onSubmit()">
+          <button class="btn btn-primary w-100 h-100" (click)="charge(1)">
             BUSCAR
           </button>
         </div >
@@ -98,7 +98,7 @@
         <h5 class="text-secondary">{{ p.difficulty }}</h5>
       </div>
       <div class="position-relative">
-        <img [src]="p.image" class="card-img-top" [alt]="p.name" style=" max-height: 15rem;">
+        <img [src]="p.imageUrl" class="card-img-top" [alt]="p.name" style=" max-height: 15rem;">
         <span class="position-absolute bottom-0 start-0 rounded-pill text-bg-secondary p-1 text-warning">
           <i class="bi bi-star-fill" *ngFor="let s of [].constructor(p.calification)"></i>
         </span>
@@ -111,10 +111,13 @@
   </div>
 
   <div >
-    <ul class="pagination justify-content-center">
-      <li class="page-item border-orange-n rounded-start"><a class="page-link text-black" href="#">Previous</a></li>
-      <li class="page-item border-orange-n"><a class="page-link text-black" href="#">1</a></li>
-      <li class="page-item border-orange-n rounded-end"><a class="page-link text-black" href="#">Next</a></li>
+    <ul class="pagination justify-content-center ">
+      <li class="page-item ">
+        <button class="page-link border-orange text-black" (click)="charge(page-1)">Previous</button></li>
+      <li class="page-item ">
+        <button class="page-link border-orange text-black" (click)="charge(1)">1</button></li>
+      <li class="page-item ">
+        <button class="page-link border-orange text-black" (click)="charge(page+1)">Next</button></li>
     </ul>
   </div>
 </div>

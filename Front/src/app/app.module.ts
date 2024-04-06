@@ -14,6 +14,7 @@ import { ListPublicationsComponent } from './components/publications/list-public
 import { AddPublicationComponent } from './components/publications/add-publication/add-publication.component';
 import { ShowPublicationComponent } from './components/publications/show-publication/show-publication.component';
 import {UserService} from "./services/user/user.service";
+import {NgOptimizedImage} from "@angular/common";
 
 export function initializeApp(initService: UserService) {
   return () => initService.init();
@@ -35,7 +36,8 @@ export function initializeApp(initService: UserService) {
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    NgxEchartsDirective
+    NgxEchartsDirective,
+    NgOptimizedImage
   ],
   providers: [
     provideEcharts(),

@@ -7,6 +7,7 @@ import ar.edu.utn.frc.tup.lciii.dtos.SearchResponce;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.PublicationRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.SearchRequest;
 import ar.edu.utn.frc.tup.lciii.entities.PublicationEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -21,4 +22,5 @@ public interface PublicationService {
     SearchResponce getAllFilthered(SearchRequest searchRequest);
 
     PublicationDto get(Long id);
+    byte[] getImage(String pub, String index);
 }

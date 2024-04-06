@@ -20,6 +20,7 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +44,9 @@ public class PublicationServiceImpl implements PublicationService {
     SectionRepository sRepository;
     @Autowired
     ModelMapper modelMapper;
+
+    @Value("${app.url}") private String url;
+
     @Override
     @Transactional
     public PublicationEntity register(PublicationRequest request) {
@@ -103,12 +107,14 @@ public class PublicationServiceImpl implements PublicationService {
 
         Page<PublicationEntity> all = pRepository.findAll(createFilter(searchRequest),pageable);
         List<PublicationMinDto> list=new ArrayList<>();
-        for (PublicationEntity p: all
-             ) {
+        for (PublicationEntity p: all) {
+            PublicationMinDto dto = modelMapper.map(p, PublicationMinDto.class);
+
             if(p.getImage()!=null){
-                p.setImage(decompressBytes(p.getImage()));
+                dto.setImageUrl(url+"/pub/image?pub="+p.getId()+"&index=0");
             }
-            list.add(modelMapper.map(p, PublicationMinDto.class));
+
+            list.add(dto);
         }
         responce.setList(list);
 
@@ -146,21 +152,47 @@ public class PublicationServiceImpl implements PublicationService {
         if(p==null){
             throw new EntityNotFoundException();
         }
+
         responce = modelMapper.map(p,PublicationDto.class);
         if(p.getImage()!=null){
-            p.setImage(decompressBytes(p.getImage()));
+            responce.setImageUrl(url+"/pub/image?pub="+p.getId()+"&index=0");
         }
+
         List<SectionDto> sections = new ArrayList<>();
         for (SectionEntity s : sRepository.findAllByPublication(p)) {
             SectionDto r = modelMapper.map(s,SectionDto.class);
-            if(r.getImage()!=null){
-                r.setImage(decompressBytes(r.getImage()));
+            if(s.getImage()!=null){
+                r.setImageUrl(url+"/pub/image?pub="+p.getId()+"&index="+r.getNumber());
             }
             sections.add(r);
         }
         responce.setSections(sections);
 
         return responce;
+    }
+
+    @Override
+    public byte[] getImage(String pub, String index) {
+        byte[] result;
+
+        Long pubId=Long.parseLong(pub);
+        Long indexId=Long.parseLong(index);
+
+        PublicationEntity p = pRepository.getReferenceById(pubId);
+        if(p==null){
+            throw new EntityNotFoundException();
+        }
+
+        if(indexId.equals(0L)){
+            result = decompressBytes(p.getImage());
+        }else {
+            SectionEntity s = sRepository.getByPublicationAndNumber(p,indexId);
+            if(s==null){
+                throw new EntityNotFoundException();
+            }
+            result = decompressBytes(s.getImage());
+        }
+        return result;
     }
 
     // compress the image bytes before storing it in the database

@@ -62,7 +62,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
   removeDetailCondition(id:number){
     this.detailsConditions.removeAt(id)
   }
-
+//MAteriales
   get detailsMaterials(){
     return this.form.get("materials") as FormArray
   }
@@ -76,7 +76,24 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
   removeDetailMaterials(id:number){
     this.detailsMaterials.removeAt(id)
   }
+  //pasos
+  get detailsSteps(){
+    return this.form.get("conditions") as FormArray
+  }
+  addDetailsSteps(){
+    let v = this.fb.group({
+      text: ["",[Validators.required,Validators.maxLength(500)]],
+      image: [""]
+    })
+    this.detailsSteps.push(v)
+    this.detailsSteps.markAsTouched()
+  }
+  removeDetailsSteps(id:number){
+    this.detailsSteps.removeAt(id)
+  }
 
+
+  //guardar
   onSubmit(){
     if(this.form.invalid){
       alert("El formulario es invalido");
@@ -84,15 +101,39 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
       return;
     }
 
+    let sections:any[] = [];
+    for (let s in this.detailsConditions.controls){
+      sections.push({
+        "number":s,
+        "type":"COND",
+        "text":this.detailsConditions.controls[s].value["text"],
+        "imageUrl":0
+      })
+    }
+    for (let s in this.detailsMaterials.controls){
+      sections.push({
+        "number":s,
+        "type":"MAT",
+        "text":this.detailsMaterials.controls[s].value["text"],
+        "imageUrl":0
+      })
+    }
+    for (let s in this.detailsSteps.controls){
+      sections.push({
+        "number":s,
+        "type":"STEP",
+        "text":this.detailsSteps.controls[s].value["text"],
+        "imageUrl":0
+      })
+    }
+
+
     let data = {
       "name": this.form.controls['name'].value,
       "description": this.form.controls['description'].value,
-      "image": this.form.controls['image'].value,
       "type": this.form.controls['type'].value,
       "difficulty": this.form.controls['difficulty'].value,
-      "conditions": this.form.controls['conditions'].value,
-      "materials": this.form.controls['materials'].value,
-      "steps": this.form.controls['steps'].value,
+      "sections": sections,
       "canSold": this.form.controls['canSold'].value,
       "price": this.form.controls['price'].value,
       "count": this.form.controls['count'].value
@@ -104,7 +145,31 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
       this.service.postPublication(data).subscribe(
         {
           next: value => {
-            alert("La yerba fue guardada con éxito");
+            alert("La publicacion fue guardada con éxito");
+            this.uploadImages(value["id"])
+          },
+          error: err => { alert("Hubo un error al guardar"); }
+        }
+      )
+    );
+  }
+
+  uploadImages(pub:number){
+    let data = new FormData()
+    let imgs = []
+    imgs.push(this.form.get("image")?.value)
+    let indexes = "0_"
+    for (let s in this.detailsSteps.controls){
+      imgs.push(this.detailsSteps.controls[s].value["image"])
+      indexes += s+"_"
+    }
+    // data.append()
+
+    this.subs.add(
+      this.service.postImages(data).subscribe(
+        {
+          next: value => {
+            alert("Imagenes guardada con éxito");
             this.router.navigate(["/explore"])
           },
           error: err => { alert("Hubo un error al guardar"); }

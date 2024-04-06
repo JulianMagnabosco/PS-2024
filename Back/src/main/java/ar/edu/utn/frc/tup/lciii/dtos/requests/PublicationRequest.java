@@ -12,7 +12,6 @@ public class PublicationRequest {
     String description;
     String type;
     String dificulty;
-    Long imageId;
     List<SectionDto> sections;
     boolean canSold;
     BigDecimal price;

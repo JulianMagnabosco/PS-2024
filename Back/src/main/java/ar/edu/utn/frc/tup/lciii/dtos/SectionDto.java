@@ -14,5 +14,5 @@ public class SectionDto {
     Long number;
     TypeSec type;
     String text;
-    byte[] image;
+    String imageUrl;
 }

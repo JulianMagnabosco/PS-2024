@@ -5,5 +5,5 @@ export interface PublicationMin {
   type: string;
   difficulty: string;
   calification: number;
-  image: string;
+  imageUrl: string;
 }

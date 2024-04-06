@@ -18,7 +18,7 @@ public class PublicationDto {
     String description;
     String type;
     Difficulty difficulty;
-    byte[] image;
+    String imageUrl;
     List<SectionDto> sections;
     boolean canSold;
     BigDecimal price;

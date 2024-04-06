@@ -45,4 +45,12 @@ public class PublicationController {
     public PublicationDto get(@PathVariable Long id) throws EntityNotFoundException {
         return publicationService.get(id);
     }
+
+
+    @GetMapping(value="/image", produces = {MediaType.IMAGE_PNG_VALUE,
+            MediaType.IMAGE_JPEG_VALUE,MediaType.IMAGE_GIF_VALUE})
+    public byte[] getImage(@RequestParam("pub")String pub,
+            @RequestParam("index") String index) throws EntityNotFoundException {
+        return publicationService.getImage(pub, index);
+    }
 }
