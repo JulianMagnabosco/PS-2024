@@ -11,7 +11,7 @@ public class PublicationRequest {
     String name;
     String description;
     String type;
-    String dificulty;
+    String difficulty;
     List<SectionDto> sections;
     boolean canSold;
     BigDecimal price;

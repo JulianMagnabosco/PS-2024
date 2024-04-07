@@ -18,8 +18,8 @@ export class PublicationsService {
   postPublication(user: any):Observable<any>{
     return this.client.post(this.baseUrl + "new", user);
   }
-  postImages(user: any):Observable<any>{
-    return this.client.post(this.baseUrl + "new", user);
+  postImages(data: any):Observable<any>{
+    return this.client.post(this.baseUrl + "image", data,{});
   }
   oldsearch():Observable<any>{
         return this.client.get(this.baseUrl + "list", {

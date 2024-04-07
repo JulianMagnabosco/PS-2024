@@ -55,12 +55,15 @@
         <h5 class="text-uppercase">Pasos</h5>
         <div class="">
           <div *ngFor="let d of steps; index as i" class="d-flex mb-1">
-
-
-            <div class="me-1 rounded-circle bg-danger text-center text-white rounded-2 align-middle"
+            <div class="me-1 rounded-1 bg-danger text-center text-white rounded-2 text-center fs-5"
                  style="width: 3vw; height: 3vw">{{ d.number}}</div>
-            <div class="rounded-2 bg-body-secondary p-1">{{ d.text }}</div>
-            <img [src]="d.imageUrl" alt="step">
+            <div>
+
+              <img [src]="d.imageUrl" alt="step" class="w-100 border border-5 border-danger
+              rounded rounded-top-5">
+              <div class="rounded-2 bg-body-secondary p-1 border
+              border-5 border-warning-subtle border-top-0">{{ d.text }}</div>
+            </div>
           </div>
 
         </div>

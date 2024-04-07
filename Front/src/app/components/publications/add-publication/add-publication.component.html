@@ -82,7 +82,12 @@
       </div>
     </div>
     <div class="col-4">
-      <img src="assets/camera.png" class="card w-100 border border-warning-subtle border-5">
+      <img [src]="images[0].url" class="card w-100 border border-warning-subtle border-5">
+
+      <input class="form-control col" type="file"
+             (change)="selectFile($event, 0)"
+             formControlName="image" accept="image/png, image/jpeg" >
+      <!--             -->
     </div>
 
     <div class="col-12 rounded-3 border border-warning-subtle border-5">
@@ -155,16 +160,37 @@
         <i class="bi bi-caret-left-fill text-warning" *ngIf="showSteps"></i>
         <i class="bi bi-caret-down-fill text-warning" *ngIf="!showSteps"></i>
       </a>
-      <div class="collapse" id="collapseSteps">
+      <div class="collapse" id="collapseSteps" formArrayName="steps">
         <div *ngFor="let d of detailsSteps.controls; index as i" [formGroupName]="i">
           <div  class="d-flex mb-1  is-invalid">
-            <button class="btn btn-danger me-1 col-auto" (click)="removeDetailsSteps(i)">
-              <i class="bi bi-dash-lg"></i></button>
+            <div class="d-flex flex-column">
+              <button class="btn btn-danger me-1 col-auto" (click)="moveDetailsSteps(i,-1)"
+                      [hidden]="!(i>0)">
+                <i class="bi bi-arrow-up"></i></button>
+              <button class="btn btn-danger me-1 col-auto" (click)="removeDetailsSteps(i)">
+                <i class="bi bi-dash-lg"></i></button>
+              <button class="btn btn-danger me-1 col-auto" (click)="moveDetailsSteps(i,1)"
+                      [hidden]="!(i<detailsSteps.controls.length-1)">
+                <i class="bi bi-arrow-down"></i></button>
+            </div>
 
-            <input type="text" class="form-control col" formControlName="text"
-                   [placeholder]="'Paso '+(i+1)"
-                   [class.is-invalid]="d.get('text')?.invalid
-               && (d.get('text')?.dirty || d.get('text')?.touched)"></div>
+            <textarea class="form-control col"
+                      formControlName="text" [placeholder]="'Paso '+(i+1)"
+                      [class.is-invalid]="d.get('text')?.invalid
+               && (d.get('text')?.dirty || d.get('text')?.touched)"></textarea>
+<!--            <input type="text" class="form-control col" formControlName="text"-->
+<!--                   [placeholder]="'Material '+(i+1)"-->
+<!--                   [class.is-invalid]="d.get('text')?.invalid-->
+<!--               && (d.get('text')?.dirty || d.get('text')?.touched)">-->
+
+            <div class="col">
+              <img [src]="images[i+1].url" class="card w-100 border border-warning-subtle border-5">
+
+              <input class="form-control" type="file"
+                     (change)="selectFile($event, i+1)"
+                     formControlName="image" accept="image/png, image/jpeg" >
+            </div>
+          </div>
 
 
           <div class="invalid-feedback" *ngIf="d.get('text')?.invalid
@@ -175,7 +201,7 @@
           </div>
 
         </div>
-        <button class="btn btn-warning mb-2 w-100" (click)="addDetailMaterials()"> Agregar Paso</button>
+        <button class="btn btn-warning mb-2 w-100" (click)="addDetailsSteps()"> Agregar Paso</button>
       </div>
     </div>
     <div class="col-12 rounded-3 border border-warning-subtle border-5">
@@ -194,3 +220,4 @@
   </form>
 </div>
 </div>
+<div>{{form.value|json}}</div>

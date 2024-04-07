@@ -28,6 +28,8 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
   private subs: Subscription = new Subscription();
   form: FormGroup = this.fb.group({});
 
+  images: { url:any, file:File }[]=[{url:"assets/camera.png", file:new File([],"") }]
+
   constructor(private fb: FormBuilder, private service: PublicationsService, private router: Router) {
     this.form = this.fb.group({
       name: ["", [Validators.required, Validators.maxLength(50 )]],
@@ -38,7 +40,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
       conditions: this.fb.array([]),
       materials: this.fb.array([]),
       steps: this.fb.array([]),
-      cansold: [false],
+      canSold: [false],
       price: [""],
       count: [""]
     });
@@ -58,6 +60,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     })
     this.detailsConditions.push(v)
     this.detailsConditions.markAsTouched()
+
   }
   removeDetailCondition(id:number){
     this.detailsConditions.removeAt(id)
@@ -78,7 +81,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
   }
   //pasos
   get detailsSteps(){
-    return this.form.get("conditions") as FormArray
+    return this.form.get("steps") as FormArray
   }
   addDetailsSteps(){
     let v = this.fb.group({
@@ -87,9 +90,28 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     })
     this.detailsSteps.push(v)
     this.detailsSteps.markAsTouched()
+
+    this.images.push({url:"assets/camera.png", file:new File([],"") })
   }
+  moveDetailsSteps(id:number,dir:number){
+    let val = this.detailsSteps.at(id).value;
+    this.detailsSteps.removeAt(id)
+    let d = this.fb.group({
+      text: ["",[Validators.required,Validators.maxLength(500)]],
+      image: [""]
+    })
+    d.setValue(val)
+    this.detailsSteps.insert(id+dir,d)
+    this.detailsSteps.markAsTouched()
+
+    let img = this.images[id+1]
+    this.images[id+1] = this.images[id+1+dir];
+    this.images[id+1+dir] = img;
+  }
+
   removeDetailsSteps(id:number){
     this.detailsSteps.removeAt(id)
+    this.images.slice(id)
   }
 
 
@@ -104,7 +126,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     let sections:any[] = [];
     for (let s in this.detailsConditions.controls){
       sections.push({
-        "number":s,
+        "number":s+1,
         "type":"COND",
         "text":this.detailsConditions.controls[s].value["text"],
         "imageUrl":0
@@ -112,7 +134,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     }
     for (let s in this.detailsMaterials.controls){
       sections.push({
-        "number":s,
+        "number":s+1,
         "type":"MAT",
         "text":this.detailsMaterials.controls[s].value["text"],
         "imageUrl":0
@@ -120,13 +142,12 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     }
     for (let s in this.detailsSteps.controls){
       sections.push({
-        "number":s,
+        "number":s+1,
         "type":"STEP",
         "text":this.detailsSteps.controls[s].value["text"],
         "imageUrl":0
       })
     }
-
 
     let data = {
       "name": this.form.controls['name'].value,
@@ -138,8 +159,6 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
       "price": this.form.controls['price'].value,
       "count": this.form.controls['count'].value
     }
-
-    console.log(data);
 
     this.subs.add(
       this.service.postPublication(data).subscribe(
@@ -154,16 +173,40 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     );
   }
 
+  selectFile(event:any, index:number){
+    if (event.target.files && event.target.files[0] && this.images.at(index)) {
+      var reader = new FileReader();
+
+      this.images[index].file = event.target.files[0]
+      reader.readAsDataURL(event.target.files[0]); // read file as data url
+
+      reader.onload = (event) => { // called once readAsDataURL is completed
+        this.images[index].url=event.target?.result
+      }
+    }
+
+  }
+
+
   uploadImages(pub:number){
     let data = new FormData()
-    let imgs = []
-    imgs.push(this.form.get("image")?.value)
-    let indexes = "0_"
+
+    data.append("images",this.images[0].file);
+    let indexes = "0"
     for (let s in this.detailsSteps.controls){
-      imgs.push(this.detailsSteps.controls[s].value["image"])
-      indexes += s+"_"
+      // imgs.push(this.detailsSteps.controls[s].value["image"] as File)
+      if(this.detailsSteps.controls[s].value["image"]){
+        let i = parseInt(s)+1
+        console.log(i)
+        data.append("images",this.images[i].file);
+        indexes += "_" + i
+      }
     }
-    // data.append()
+
+    data.append("pub",pub.toString());
+    data.append("indexes",indexes);
+
+    console.log(data.getAll("images"))
 
     this.subs.add(
       this.service.postImages(data).subscribe(
