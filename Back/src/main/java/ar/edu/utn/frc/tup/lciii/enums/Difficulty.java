@@ -2,8 +2,9 @@ package ar.edu.utn.frc.tup.lciii.enums;
 
 public enum Difficulty {
     NONE,
-    EASY,
+    FASIL,
     NORMAL,
-    HARD;
+    DIFICIL,
+    MUY_DIFICIL;
 
 }

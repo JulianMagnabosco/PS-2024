@@ -10,7 +10,6 @@ import ar.edu.utn.frc.tup.lciii.enums.TypeSec;
 import ar.edu.utn.frc.tup.lciii.repository.PublicationRepository;
 import ar.edu.utn.frc.tup.lciii.repository.SectionRepository;
 import ar.edu.utn.frc.tup.lciii.services.PublicationService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -134,7 +133,7 @@ public class PublicationServiceImpl implements PublicationService {
             public Predicate toPredicate(Root<PublicationEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder)
             {
                 List<Predicate> predicates = new ArrayList<>();
-                if(searchRequest.getType()!= TypePub.TODO)
+                if(searchRequest.getType()!= TypePub.NONE)
                 {
                     Predicate predicate = criteriaBuilder.equal(root.get("type"),searchRequest.getType().toString());
                     predicates.add(predicate);

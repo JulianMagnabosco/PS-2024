@@ -47,10 +47,10 @@
                    formControlName="type" [class.is-invalid]="(form.controls['type'].touched
                   || form.controls['type'].dirty) && form.controls['type'].invalid">
              <option value="" selected>--Seleccionar--</option>
-             <option value="Cientifico">Cientifico</option>
-             <option value="Artistico">Artistico</option>
-             <option value="Tecnologico">Artistico</option>
-             <option value="Otro">Tecnologico</option>
+             <option value="ARTE">Cientifico</option>
+             <option value="CIENCIA">Artistico</option>
+             <option value="TECNOLOGIA">Artistico</option>
+             <option value="OTRO">Otro</option>
            </select>
            <div class="invalid-feedback" *ngIf="(form.controls['type'].touched || form.controls['type'].dirty)
       && form.controls['type'].hasError('required')">
@@ -68,10 +68,10 @@
                    formControlName="difficulty" [class.is-invalid]="(form.controls['difficulty'].touched
                   || form.controls['difficulty'].dirty) && form.controls['difficulty'].invalid">
              <option value="" selected>--Seleccionar--</option>
-             <option value="1">Facil</option>
-             <option value="2">Normal</option>
-             <option value="3">Dificil</option>
-             <option value="4">Muy Dificil</option>
+             <option value="FASIL">Facil</option>
+             <option value="NORMAL">Normal</option>
+             <option value="DIFICIL">Dificil</option>
+             <option value="MUY_DIFICIL">Muy Dificil</option>
            </select>
            <div class="invalid-feedback" *ngIf="(form.controls['difficulty'].touched || form.controls['difficulty'].dirty)
       && form.controls['difficulty'].hasError('required')">

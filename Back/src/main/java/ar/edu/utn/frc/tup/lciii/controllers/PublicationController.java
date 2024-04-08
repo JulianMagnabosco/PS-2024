@@ -47,8 +47,7 @@ public class PublicationController {
     }
 
 
-    @GetMapping(value="/image", produces = {MediaType.IMAGE_PNG_VALUE,
-            MediaType.IMAGE_JPEG_VALUE,MediaType.IMAGE_GIF_VALUE})
+    @GetMapping("/image")
     public byte[] getImage(@RequestParam("pub")String pub,
             @RequestParam("index") String index) throws EntityNotFoundException {
         return publicationService.getImage(pub, index);

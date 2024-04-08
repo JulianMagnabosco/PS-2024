@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StadisticsComponent } from './components/stadistics/stadistics.component';
-import { CatalogoComponent } from './components/catalogo/catalogo.component';
+import { TestComponent } from './components/test/test.component';
 import {HttpClientModule} from "@angular/common/http";
 import {ReactiveFormsModule} from "@angular/forms";
 import {NgxEchartsDirective, provideEcharts} from "ngx-echarts";
@@ -15,6 +15,7 @@ import { AddPublicationComponent } from './components/publications/add-publicati
 import { ShowPublicationComponent } from './components/publications/show-publication/show-publication.component';
 import {UserService} from "./services/user/user.service";
 import {NgOptimizedImage} from "@angular/common";
+import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
 
 export function initializeApp(initService: UserService) {
   return () => initService.init();
@@ -24,7 +25,7 @@ export function initializeApp(initService: UserService) {
   declarations: [
     AppComponent,
     StadisticsComponent,
-    CatalogoComponent,
+    TestComponent,
     RegisterComponent,
     LoginComponent,
     ListPublicationsComponent,
@@ -37,7 +38,8 @@ export function initializeApp(initService: UserService) {
     HttpClientModule,
     ReactiveFormsModule,
     NgxEchartsDirective,
-    NgOptimizedImage
+    NgOptimizedImage,
+    SweetAlert2Module.forRoot()
   ],
   providers: [
     provideEcharts(),

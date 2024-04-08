@@ -36,7 +36,7 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
   constructor(private fb: FormBuilder, private service: PublicationsService, private router: Router) {
     this.form = this.fb.group({
       text: ["", [Validators.maxLength(200 )]],
-      type: ["TODO"],
+      type: ["NONE"],
       diffMin: [""],
       diffMax: [""],
       points: [""],

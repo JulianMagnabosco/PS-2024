@@ -1,6 +1,7 @@
 package ar.edu.utn.frc.tup.lciii.entities;
 
 import ar.edu.utn.frc.tup.lciii.enums.Difficulty;
+import ar.edu.utn.frc.tup.lciii.enums.TypePub;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,8 +24,9 @@ public class PublicationEntity {
     UserEntity user;
     String name;
     String description;
-    String type;
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
+    TypePub type;
+    @Enumerated(EnumType.STRING)
     Difficulty difficulty;
     @Lob
     byte[] image;

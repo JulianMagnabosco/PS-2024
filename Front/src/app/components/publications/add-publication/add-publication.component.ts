@@ -36,7 +36,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
       description: ["", [Validators.required]],
       type: ["", [Validators.required]],
       difficulty: ["", [Validators.required]],
-      image: [""],
+      image: ["", [Validators.required]],
       conditions: this.fb.array([]),
       materials: this.fb.array([]),
       steps: this.fb.array([]),
