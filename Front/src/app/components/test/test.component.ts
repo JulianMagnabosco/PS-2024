@@ -3,7 +3,6 @@ import {Subscription} from "rxjs";
 import {ProfileService} from "../../services/profile/profile.service";
 import {PublicationsService} from "../../services/publications/publications.service";
 import {DomSanitizer} from "@angular/platform-browser";
-import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-test',
@@ -34,12 +33,5 @@ export class TestComponent implements OnInit,OnDestroy{
   ngOnDestroy(): void {
     this.subs.unsubscribe()
   }
-  abrir(){
-    Swal.fire({
-      title: 'Error!',
-      text: 'Do you want to continue',
-      icon: 'error',
-      confirmButtonText: 'Cool'
-    })
-  }
+
 }

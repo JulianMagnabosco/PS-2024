@@ -81,14 +81,33 @@
        </div>
       </div>
     </div>
-    <div class="col-4">
-      <img [src]="images[0].url" class="card w-100 border border-warning-subtle border-5">
 
-      <input class="form-control col" type="file"
-             (change)="selectFile($event, 0)"
-             formControlName="image" accept="image/png, image/jpeg" >
-      <!--             -->
+    <div class="col-4">
+      <div class="border border-warning-subtle border-5 card" [swal]="fotovideo">
+        <img [src]="images[0].url" class=" w-100 p-1">
+<!--        <video class="video-js vjs-default-skin" controls *ngIf="this.form.get('video')?.value!=''"-->
+<!--               data-setup='{ "aspectRatio":"1:1" }'>-->
+<!--          <source [src]="this.form.get('video')?.value" type='video/mp4' />-->
+<!--&lt;!&ndash;          <source [src]="this.form.get('video')?.value" type='video/webm' />&ndash;&gt;-->
+<!--        </video>-->
+        <iframe *ngIf="this.form.get('video')?.value!=''"
+                [src]="this.form.get('video')?.value">
+        </iframe>
+        <div class="text-center" >Agregar o Cambiar Foto/Video</div>
+      </div>
     </div>
+    <swal #fotovideo title="Seleccione una foto/video" confirmButtonColor="#d46820">
+      <ng-container *swalPortal="swalTargets.content">
+
+        <label for="formFile" class="form-label">Imagen</label>
+        <input class="form-control col mb-1" type="file" id="formFile"
+               (change)="selectFile($event, 0)"
+               formControlName="image" accept="image/png, image/jpeg" >
+        <label for="formFile" class="form-label">Video</label>
+        <input class="form-control col" placeholder="Url del video"
+               formControlName="video" type="text">
+      </ng-container>
+    </swal>
 
     <div class="col-12 rounded-3 border border-warning-subtle border-5">
       <a class="link-underline link-underline-opacity-0 link-dark text-uppercase h5" data-bs-toggle="collapse"

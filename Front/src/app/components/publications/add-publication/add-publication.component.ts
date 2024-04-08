@@ -13,6 +13,7 @@ import {UserService} from "../../../services/user/user.service";
 import {Router} from "@angular/router";
 import {PublicationsService} from "../../../services/publications/publications.service";
 import {Publication} from "../../../models/publication/publication";
+import {SwalPortalTargets} from "@sweetalert2/ngx-sweetalert2";
 
 @Component({
   selector: 'app-add-publication',
@@ -30,13 +31,15 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
 
   images: { url:any, file:File }[]=[{url:"assets/camera.png", file:new File([],"") }]
 
-  constructor(private fb: FormBuilder, private service: PublicationsService, private router: Router) {
+  constructor(private fb: FormBuilder, private service: PublicationsService,
+              public readonly swalTargets: SwalPortalTargets, private router: Router) {
     this.form = this.fb.group({
       name: ["", [Validators.required, Validators.maxLength(50 )]],
       description: ["", [Validators.required]],
       type: ["", [Validators.required]],
       difficulty: ["", [Validators.required]],
       image: ["", [Validators.required]],
+      video: [""],
       conditions: this.fb.array([]),
       materials: this.fb.array([]),
       steps: this.fb.array([]),
@@ -154,6 +157,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
       "description": this.form.controls['description'].value,
       "type": this.form.controls['type'].value,
       "difficulty": this.form.controls['difficulty'].value,
+      "video": this.form.controls['video'].value,
       "sections": sections,
       "canSold": this.form.controls['canSold'].value,
       "price": this.form.controls['price'].value,

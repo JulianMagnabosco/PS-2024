@@ -1,7 +1,8 @@
 <h1>Hola</h1>
 <!--<p>{{ mes }}</p>-->
+<swal #alerta title="Delete?" ></swal>
 
-<button [class]="abrir()">Abrir</button>
+<button [swal]="alerta">Abrir</button>
 <video id="my_video_1" class="video-js vjs-default-skin" width="640px" height="267px" controls preload="none"
        data-setup='{ "aspectRatio":"267:640", "playbackRates": [1, 1.5, 2] }'>
   <source src="https://vjs.zencdn.net/v/oceans.mp4" type='video/mp4' />
