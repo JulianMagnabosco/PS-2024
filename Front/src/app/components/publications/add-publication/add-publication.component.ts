@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subscription} from "rxjs";
 import {
   AbstractControl,
@@ -15,6 +15,7 @@ import {PublicationsService} from "../../../services/publications/publications.s
 import {Publication} from "../../../models/publication/publication";
 import {SwalPortalTargets} from "@sweetalert2/ngx-sweetalert2";
 import {Section} from "../../../models/publication/section";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-add-publication',
@@ -32,15 +33,18 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
 
   pubImages: {url: any, file: File }[]=[]
   stepImages: {url: any, file: File }[]=[]
+  video:any=""
+  @ViewChild('img1') img1?: ElementRef<HTMLDivElement>;
+
 
   constructor(private fb: FormBuilder, private service: PublicationsService,
-              public readonly swalTargets: SwalPortalTargets, private router: Router) {
+              private router: Router) {
     this.form = this.fb.group({
       name: ["", [Validators.required, Validators.maxLength(50 )]],
       description: ["", [Validators.required]],
       type: ["", [Validators.required]],
       difficulty: ["", [Validators.required]],
-      image: ["", [Validators.required]],
+      image: [false, [Validators.required]],
       video: [""],
       conditions: this.fb.array([]),
       materials: this.fb.array([]),
@@ -185,7 +189,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
 
   selectPubImages(event:any){
     if (event.target.files) {
-
+      this.form.get("image")?.setValue(true)
       this.pubImages = []
       for (let f of event.target.files){
         var reader = new FileReader();
@@ -210,7 +214,13 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     }
 
   }
-
+  changeVideo(event:any){
+    let value=event.target.value as string
+    value=value.replace("https://www.youtube.com/watch?v=","")
+      .replace("https://www.youtube.com/shorts/","")
+    this.video=value.split("&")[0];
+    console.log(this.video)
+  }
 
   uploadImages(sections: Section[]){
     let data = new FormData()

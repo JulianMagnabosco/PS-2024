@@ -27,3 +27,10 @@ h1, .space-text{
 }.border-orange:hover{
    border: 3px solid #f6cb1e;
  }
+
+.borderless{
+  border: 3px solid #ffffff;
+}.borderless:hover{
+   border: 3px solid #f6981e;
+ }
+

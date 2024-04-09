@@ -16,6 +16,7 @@ import { ShowPublicationComponent } from './components/publications/show-publica
 import {UserService} from "./services/user/user.service";
 import {NgOptimizedImage} from "@angular/common";
 import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
+import {YouTubePlayer} from "@angular/youtube-player";
 
 export function initializeApp(initService: UserService) {
   return () => initService.init();
@@ -32,15 +33,16 @@ export function initializeApp(initService: UserService) {
     AddPublicationComponent,
     ShowPublicationComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    NgxEchartsDirective,
-    NgOptimizedImage,
-    SweetAlert2Module.forRoot()
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        ReactiveFormsModule,
+        NgxEchartsDirective,
+        NgOptimizedImage,
+        SweetAlert2Module.forRoot(),
+        YouTubePlayer
+    ],
   providers: [
     provideEcharts(),
     {

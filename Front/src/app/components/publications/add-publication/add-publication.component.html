@@ -8,7 +8,7 @@
 
   <div class="container mt-4 p-2 bg-light rounded-5 border border-warning-subtle border-5">
   <form [formGroup]="form" class="row g-3 justify-content-center p-3">
-    <div class="col-sm-8 col-12">
+    <div class="col-lg-8 col-12">
       <div class="mb-2">
         <label for="nameInput" class="form-label h5">Nombre</label>
         <input type="text" formControlName="name" class="form-control" id="nameInput"
@@ -82,10 +82,26 @@
       </div>
     </div>
 
-    <div class="col-sm-4 col-12">
-      <div class="border border-warning-subtle border-5 card" [swal]="fotovideo">
-        <img [src]="pubImages[0].url " class=" w-100 p-1"
-             [alt]="pubImages[0].url" *ngIf="pubImages.length>0">
+    <div class="col-lg-4 col-sm-8 col-12">
+      <div class="border border-warning-subtle border-5 card" #img1>
+<!--        <img [src]="pubImages[0].url " class=" w-100 p-1"-->
+<!--             [alt]="pubImages[0].url" *ngIf="pubImages.length>0">-->
+        <div id="carouselExample" class="carousel slide border border-5 border-warning-subtle rounded-2 p-1"
+             *ngIf="pubImages.length>0">
+          <div class="carousel-inner">
+            <div class="carousel-item " *ngFor="let p of pubImages; index as i" [class.active]="i==0">
+              <img [src]="p.url || 'assets/camera.png'" class="d-block w-100">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="bi-caret-left-fill text-black fs-1" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="bi-caret-right-fill text-black fs-1" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
         <img src="assets/camera.png" class=" w-100 p-1"
              alt="assets/camera.png" *ngIf="pubImages.length<=0">
         <!--        <video class="video-js vjs-default-skin" controls *ngIf="this.form.get('video')?.value!=''"-->
@@ -93,24 +109,40 @@
 <!--          <source [src]="this.form.get('video')?.value" type='video/mp4' />-->
 <!--&lt;!&ndash;          <source [src]="this.form.get('video')?.value" type='video/webm' />&ndash;&gt;-->
 <!--        </video>-->
-<!--        <iframe *ngIf="this.form.get('video')?.value!=''"-->
-<!--                [src]="this.form.get('video')?.value">-->
-<!--        </iframe>-->
-        <div class="text-center" >Agregar o Cambiar Foto/Video</div>
+        <youtube-player #youTubePlayer
+          *ngIf="video!=''"
+          [videoId]="video"
+          [width]="img1?.clientWidth||50"
+          [height]="img1?.clientWidth||50">
+        </youtube-player>
+
+        <button class="text-center borderless bg-white"   data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar o Cambiar Foto/Video</button>
       </div>
     </div>
-    <swal #fotovideo title="Seleccione una foto/video" confirmButtonColor="#d46820">
-      <ng-container *swalPortal="swalTargets.content">
 
-        <label for="formFile" class="form-label">Imagen</label>
-        <input class="form-control  form-control-sm col mb-1" type="file" id="formFile"
-               (change)="selectPubImages($event)"
-               formControlName="image" accept="image/png, image/jpeg" multiple >
-        <label for="formFile" class="form-label">Video</label>
-        <input class="form-control col" placeholder="Url del video"
-               formControlName="video" type="text">
-      </ng-container>
-    </swal>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Seleccionar imagen/video</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <label for="formFile" class="form-label">Imagen</label>
+            <input class="form-control form-control-sm col mb-1" type="file" id="formFile"
+                   accept="image/png, image/jpeg" multiple
+                   (change)="selectPubImages($event)">
+            <label for="formFile" class="form-label">Video</label>
+            <input class="form-control col" placeholder="Url del video"
+                   formControlName="video" type="text"
+                   (change)="changeVideo($event)">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="col-12 rounded-3 border border-warning-subtle border-5">
       <a class="link-underline link-underline-opacity-0 link-dark text-uppercase h5" data-bs-toggle="collapse"
