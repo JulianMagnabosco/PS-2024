@@ -72,10 +72,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "PS-Front:build:production"
+              "buildTarget": "PS-Front:build:production"
             },
             "development": {
-              "browserTarget": "PS-Front:build:development"
+              "buildTarget": "PS-Front:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -83,7 +83,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "PS-Front:build"
+            "buildTarget": "PS-Front:build"
           }
         },
         "test": {
