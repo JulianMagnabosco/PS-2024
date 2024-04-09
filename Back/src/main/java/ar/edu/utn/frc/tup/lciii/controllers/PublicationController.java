@@ -21,15 +21,14 @@ public class PublicationController {
     PublicationService publicationService;
 
     @PostMapping("/new")
-    public PublicationEntity post(@RequestBody PublicationRequest request) {
+    public PublicationDto post(@RequestBody PublicationRequest request) {
         return publicationService.register(request);
     }
 
     @PostMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public boolean postImage(@RequestParam("images") MultipartFile[] images,
-                                       @RequestParam("pub")String pub,
                                        @RequestParam("indexes") String indexes) throws IOException {
-        return publicationService.registerImg(images,pub,indexes);
+        return publicationService.registerImg(images,indexes);
     }
 
     @GetMapping("/list")
@@ -47,9 +46,9 @@ public class PublicationController {
     }
 
 
-    @GetMapping("/image")
-    public byte[] getImage(@RequestParam("pub")String pub,
-            @RequestParam("index") String index) throws EntityNotFoundException {
-        return publicationService.getImage(pub, index);
+    @GetMapping(value = "/image/{id}", produces = {MediaType.IMAGE_JPEG_VALUE,
+            MediaType.IMAGE_PNG_VALUE,MediaType.IMAGE_GIF_VALUE})
+    public byte[] getImage(@PathVariable Long id) throws EntityNotFoundException {
+        return publicationService.getImage(id);
     }
 }

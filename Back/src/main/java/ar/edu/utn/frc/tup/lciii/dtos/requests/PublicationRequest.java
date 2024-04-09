@@ -12,7 +12,8 @@ public class PublicationRequest {
     String description;
     String type;
     String difficulty;
-    List<SectionDto> sections;
+    String video;
+    List<SectionRequest> sections;
     boolean canSold;
     BigDecimal price;
     Long count;

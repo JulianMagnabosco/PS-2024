@@ -15,12 +15,12 @@ import java.util.List;
 
 public interface PublicationService {
 
-    PublicationEntity register(PublicationRequest request);
-    boolean registerImg(MultipartFile[] images, String pub, String indexes) throws IOException;
+    PublicationDto register(PublicationRequest request);
+    boolean registerImg(MultipartFile[] images, String indexes) throws IOException;
     List<PublicationMinDto> getAll();
 
     SearchResponce getAllFilthered(SearchRequest searchRequest);
 
     PublicationDto get(Long id);
-    byte[] getImage(String pub, String index);
+    byte[] getImage(Long id);
 }

@@ -8,7 +8,7 @@
 
   <div class="container mt-4 p-2 bg-light rounded-5 border border-warning-subtle border-5">
   <form [formGroup]="form" class="row g-3 justify-content-center p-3">
-    <div class="col-8">
+    <div class="col-sm-8 col-12">
       <div class="mb-2">
         <label for="nameInput" class="form-label h5">Nombre</label>
         <input type="text" formControlName="name" class="form-control" id="nameInput"
@@ -82,17 +82,20 @@
       </div>
     </div>
 
-    <div class="col-4">
+    <div class="col-sm-4 col-12">
       <div class="border border-warning-subtle border-5 card" [swal]="fotovideo">
-        <img [src]="images[0].url" class=" w-100 p-1">
-<!--        <video class="video-js vjs-default-skin" controls *ngIf="this.form.get('video')?.value!=''"-->
+        <img [src]="pubImages[0].url " class=" w-100 p-1"
+             [alt]="pubImages[0].url" *ngIf="pubImages.length>0">
+        <img src="assets/camera.png" class=" w-100 p-1"
+             alt="assets/camera.png" *ngIf="pubImages.length<=0">
+        <!--        <video class="video-js vjs-default-skin" controls *ngIf="this.form.get('video')?.value!=''"-->
 <!--               data-setup='{ "aspectRatio":"1:1" }'>-->
 <!--          <source [src]="this.form.get('video')?.value" type='video/mp4' />-->
 <!--&lt;!&ndash;          <source [src]="this.form.get('video')?.value" type='video/webm' />&ndash;&gt;-->
 <!--        </video>-->
-        <iframe *ngIf="this.form.get('video')?.value!=''"
-                [src]="this.form.get('video')?.value">
-        </iframe>
+<!--        <iframe *ngIf="this.form.get('video')?.value!=''"-->
+<!--                [src]="this.form.get('video')?.value">-->
+<!--        </iframe>-->
         <div class="text-center" >Agregar o Cambiar Foto/Video</div>
       </div>
     </div>
@@ -100,9 +103,9 @@
       <ng-container *swalPortal="swalTargets.content">
 
         <label for="formFile" class="form-label">Imagen</label>
-        <input class="form-control col mb-1" type="file" id="formFile"
-               (change)="selectFile($event, 0)"
-               formControlName="image" accept="image/png, image/jpeg" >
+        <input class="form-control  form-control-sm col mb-1" type="file" id="formFile"
+               (change)="selectPubImages($event)"
+               formControlName="image" accept="image/png, image/jpeg" multiple >
         <label for="formFile" class="form-label">Video</label>
         <input class="form-control col" placeholder="Url del video"
                formControlName="video" type="text">
@@ -118,7 +121,6 @@
       </a>
       <div class="collapse" id="collapseConditions" formArrayName="conditions">
           <div *ngFor="let d of detailsConditions.controls; index as i" [formGroupName]="i">
-
 
             <div  class="d-flex mb-1  is-invalid">
               <button class="btn btn-danger me-1 col-auto" (click)="removeDetailCondition(i)"><i class="bi bi-dash-lg"></i></button>
@@ -203,10 +205,10 @@
 <!--               && (d.get('text')?.dirty || d.get('text')?.touched)">-->
 
             <div class="col">
-              <img [src]="images[i+1].url" class="card w-100 border border-warning-subtle border-5">
+              <img [src]="stepImages[i].url" class="card w-100 border border-warning-subtle border-5">
 
-              <input class="form-control" type="file"
-                     (change)="selectFile($event, i+1)"
+              <input class="form-control  form-control-sm" type="file"
+                     (change)="selectStepFile($event, i)"
                      formControlName="image" accept="image/png, image/jpeg" >
             </div>
           </div>

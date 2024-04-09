@@ -7,7 +7,8 @@ insert into publications (id_user, name, description, type, difficulty,can_sold)
 values (1,'Panal de abejas', 'esto es un panal de abejas', 'ARTE','DIFICIL',false);
 
 insert into sections (id_publication, type, text)
-values (1,'COND', 'esto es un panal de abejasasdasdasdasdesto es un panal de abejasasdasdasdasdesto es un panal de abejasasdasdasdasdesto es un panal de abejasasdasdasdasdesto es un panal de abejasasdasdasdasd');
+values (1,'PHOTO', 'esto es un panal de abejas');
+
 insert into sections (id_publication, type, text)
 values (1,'COND', 'esto es un panal de abejas');
 insert into sections (id_publication, type, text)

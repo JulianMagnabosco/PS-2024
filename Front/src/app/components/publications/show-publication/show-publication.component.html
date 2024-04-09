@@ -21,7 +21,21 @@
 
         </div>
         <div class="col-sm-6">
-          <img [src]="publication.imageUrl || 'assets/camera.png'" class="card w-100 border border-warning-subtle border-5">
+          <div id="carouselExample" class="carousel slide border border-5 border-warning-subtle rounded-2 p-1">
+            <div class="carousel-inner">
+              <div class="carousel-item " *ngFor="let p of photos; index as i" [class.active]="i==0">
+                <img [src]="p.imageUrl || 'assets/camera.png'" class="d-block w-100">
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+              <span class="bi-caret-left-fill text-black fs-1" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+              <span class="bi-caret-right-fill text-black fs-1" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
         </div>
       </div>
 

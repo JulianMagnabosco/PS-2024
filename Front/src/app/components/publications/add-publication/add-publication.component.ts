@@ -14,6 +14,7 @@ import {Router} from "@angular/router";
 import {PublicationsService} from "../../../services/publications/publications.service";
 import {Publication} from "../../../models/publication/publication";
 import {SwalPortalTargets} from "@sweetalert2/ngx-sweetalert2";
+import {Section} from "../../../models/publication/section";
 
 @Component({
   selector: 'app-add-publication',
@@ -29,7 +30,8 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
   private subs: Subscription = new Subscription();
   form: FormGroup = this.fb.group({});
 
-  images: { url:any, file:File }[]=[{url:"assets/camera.png", file:new File([],"") }]
+  pubImages: {url: any, file: File }[]=[]
+  stepImages: {url: any, file: File }[]=[]
 
   constructor(private fb: FormBuilder, private service: PublicationsService,
               public readonly swalTargets: SwalPortalTargets, private router: Router) {
@@ -94,7 +96,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     this.detailsSteps.push(v)
     this.detailsSteps.markAsTouched()
 
-    this.images.push({url:"assets/camera.png", file:new File([],"") })
+    this.stepImages.push({url:"assets/camera.png", file:new File([],"") })
   }
   moveDetailsSteps(id:number,dir:number){
     let val = this.detailsSteps.at(id).value;
@@ -107,14 +109,14 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     this.detailsSteps.insert(id+dir,d)
     this.detailsSteps.markAsTouched()
 
-    let img = this.images[id+1]
-    this.images[id+1] = this.images[id+1+dir];
-    this.images[id+1+dir] = img;
+    let img = this.stepImages[id+1]
+    this.stepImages[id+1] = this.stepImages[id+1+dir];
+    this.stepImages[id+1+dir] = img;
   }
 
   removeDetailsSteps(id:number){
     this.detailsSteps.removeAt(id)
-    this.images.slice(id)
+    this.stepImages.slice(id)
   }
 
 
@@ -127,28 +129,32 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     }
 
     let sections:any[] = [];
+    for (let s in this.pubImages){
+      sections.push({
+        "number":"",
+        "type":"PHOTO",
+        "text":""
+      })
+    }
     for (let s in this.detailsConditions.controls){
       sections.push({
         "number":s+1,
         "type":"COND",
-        "text":this.detailsConditions.controls[s].value["text"],
-        "imageUrl":0
+        "text":this.detailsConditions.controls[s].value["text"]
       })
     }
     for (let s in this.detailsMaterials.controls){
       sections.push({
         "number":s+1,
         "type":"MAT",
-        "text":this.detailsMaterials.controls[s].value["text"],
-        "imageUrl":0
+        "text":this.detailsMaterials.controls[s].value["text"]
       })
     }
     for (let s in this.detailsSteps.controls){
       sections.push({
         "number":s+1,
         "type":"STEP",
-        "text":this.detailsSteps.controls[s].value["text"],
-        "imageUrl":0
+        "text":this.detailsSteps.controls[s].value["text"]
       })
     }
 
@@ -169,7 +175,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
         {
           next: value => {
             alert("La publicacion fue guardada con éxito");
-            this.uploadImages(value["id"])
+            this.uploadImages(value["sections"])
           },
           error: err => { alert("Hubo un error al guardar"); }
         }
@@ -177,40 +183,59 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     );
   }
 
-  selectFile(event:any, index:number){
-    if (event.target.files && event.target.files[0] && this.images.at(index)) {
+  selectPubImages(event:any){
+    if (event.target.files) {
+
+      this.pubImages = []
+      for (let f of event.target.files){
+        var reader = new FileReader();
+        reader.readAsDataURL(f); // read file as data url
+
+        reader.onload = (event) => { // called once readAsDataURL is completed
+          this.pubImages.push({url: event.target?.result, file: f})
+        }
+      }
+    }
+  }
+  selectStepFile(event:any, index:number){
+    if (event.target.files && event.target.files[0] && this.stepImages.at(index)) {
       var reader = new FileReader();
 
-      this.images[index].file = event.target.files[0]
+      this.stepImages[index].file = event.target.files[0]
       reader.readAsDataURL(event.target.files[0]); // read file as data url
 
       reader.onload = (event) => { // called once readAsDataURL is completed
-        this.images[index].url=event.target?.result
+        this.stepImages[index].url=event.target?.result
       }
     }
 
   }
 
 
-  uploadImages(pub:number){
+  uploadImages(sections: Section[]){
     let data = new FormData()
+    let indexes = ""
 
-    data.append("images",this.images[0].file);
-    let indexes = "0"
-    for (let s in this.detailsSteps.controls){
-      // imgs.push(this.detailsSteps.controls[s].value["image"] as File)
-      if(this.detailsSteps.controls[s].value["image"]){
-        let i = parseInt(s)+1
-        console.log(i)
-        data.append("images",this.images[i].file);
-        indexes += "_" + i
+    let sectionsPhoto = sections.filter((s) => s.type=="PHOTO");
+
+    for (let i in sectionsPhoto){
+      data.append("images",this.pubImages[i].file);
+      indexes += sectionsPhoto[i].id + "_"
+    }
+
+    let sectionsStep = sections.filter((s) => s.type=="STEP")
+      .sort((a,b) => a.number-b.number);
+
+    for (let i in sectionsStep){
+      if(this.detailsSteps.controls[i].value["image"]){
+        data.append("images",this.stepImages[i].file);
+        indexes += sectionsStep[i].id + "_"
       }
     }
 
-    data.append("pub",pub.toString());
-    data.append("indexes",indexes);
+    console.log(indexes)
 
-    console.log(data.getAll("images"))
+    data.append("indexes",indexes);
 
     this.subs.add(
       this.service.postImages(data).subscribe(

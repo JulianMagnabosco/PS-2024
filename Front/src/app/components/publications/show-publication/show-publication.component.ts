@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Publication} from "../../../models/publication/publication";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
@@ -10,7 +10,7 @@ import {DomSanitizer} from "@angular/platform-browser";
   templateUrl: './show-publication.component.html',
   styleUrls: ['./show-publication.component.css']
 })
-export class ShowPublicationComponent implements OnInit{
+export class ShowPublicationComponent implements OnInit, OnDestroy{
 
   private subs: Subscription = new Subscription();
 
@@ -20,9 +20,9 @@ export class ShowPublicationComponent implements OnInit{
     description: "esto es un panal de bellotas",
     type: "ARTE",
     difficulty: "Hard",
-    imageUrl: "a",
     sections: [
       {
+        id:1,
         number: 1,
         type: "COND",
         text: "esto es un panal de bellotas",
@@ -54,6 +54,10 @@ export class ShowPublicationComponent implements OnInit{
     return  this.sanitizer.bypassSecurityTrustUrl(objectURL);
   }
 
+  get photos(){
+    return this.publication.sections.filter((s) => s.type=="PHOTO")
+  }
+
   get conditions(){
     return this.publication.sections.filter((s) => s.type=="COND")
   }
@@ -62,7 +66,9 @@ export class ShowPublicationComponent implements OnInit{
   }
 
   get steps(){
-    return this.publication.sections.filter((s) => s.type=="STEP")
+    return this.publication.sections
+      .filter((s) => s.type=="STEP")
+      .sort((a,b) => a.number-b.number)
   }
 
 

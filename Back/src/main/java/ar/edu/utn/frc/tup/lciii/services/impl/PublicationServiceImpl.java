@@ -3,6 +3,7 @@ package ar.edu.utn.frc.tup.lciii.services.impl;
 import ar.edu.utn.frc.tup.lciii.dtos.*;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.PublicationRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.SearchRequest;
+import ar.edu.utn.frc.tup.lciii.dtos.requests.SectionRequest;
 import ar.edu.utn.frc.tup.lciii.entities.PublicationEntity;
 import ar.edu.utn.frc.tup.lciii.entities.SectionEntity;
 import ar.edu.utn.frc.tup.lciii.enums.TypePub;
@@ -44,73 +45,69 @@ public class PublicationServiceImpl implements PublicationService {
     @Autowired
     ModelMapper modelMapper;
 
-    @Value("${app.url}") private String url;
+    @Value("${app.url}")
+    private String url;
 
     @Override
     @Transactional
-    public PublicationEntity register(PublicationRequest request) {
+    public PublicationDto register(PublicationRequest request) {
 
         PublicationEntity publication = modelMapper.map(request, PublicationEntity.class);
         pRepository.save(publication);
 
-//        List<SectionEntity> sectionEntities = new ArrayList<>();
-        for (SectionDto sectionDto: request.getSections()) {
+        List<SectionEntity> sectionEntities = new ArrayList<>();
+        for (SectionRequest sectionDto : request.getSections()) {
             SectionEntity s = modelMapper.map(sectionDto, SectionEntity.class);
             s.setPublication(publication);
-//            sectionEntities.add(s);
-            sRepository.save(s);
-        }
 
-        return publication;
+            sectionEntities.add(sRepository.save(s));
+        }
+        publication.setSections(sectionEntities);
+
+        return get(publication.getId());
     }
 
     @Override
     @Transactional
-    public boolean registerImg(MultipartFile[] images, String pub, String indexes) throws IOException {
-        PublicationEntity publication = pRepository.getReferenceById(Long.parseLong(pub));
-        List<SectionEntity> sections = sRepository.findAllByPublicationAndType(publication, TypeSec.STEP);
+    public boolean registerImg(MultipartFile[] images, String indexes) throws IOException {
 
-
+        int i=0;
         for (String c : indexes.split("_")) {
-            int index = Integer.parseInt(c);
-            if (index==0){
-                publication.setImage(compressBytes(images[index].getBytes()));
-                pRepository.save(publication);
-            }else {
-                for (SectionEntity s : sections) {
-                    if(s.getNumber() == index){
-                        s.setImage(compressBytes(images[index].getBytes()));
-                        sRepository.save(s);
-                    }
-                }
-            }
+            Long id = Long.parseLong(c);
+            SectionEntity s = sRepository.getReferenceById(id);
+            s.setImage(compressBytes(images[i].getBytes()));
+            sRepository.save(s);
+            i++;
         }
 
         return true;
     }
+
     //Listar
     @Override
     public List<PublicationMinDto> getAll() {
         List<PublicationEntity> list = pRepository.findAll();
-        return modelMapper.map(list,new TypeToken<List<PublicationMinDto>>() {}.getType());
+        return modelMapper.map(list, new TypeToken<List<PublicationMinDto>>() {
+        }.getType());
     }
 
     @Override
     public SearchResponce getAllFilthered(SearchRequest searchRequest) {
         SearchResponce responce = new SearchResponce();
-        if(searchRequest.getPage() < 1) searchRequest.setPage(1);
-        if(searchRequest.getSize() < 10) searchRequest.setSize(10);
+        if (searchRequest.getPage() < 1) searchRequest.setPage(1);
+        if (searchRequest.getSize() < 10) searchRequest.setSize(10);
 
         //The third Sort parameter is optional
-        Pageable pageable = PageRequest.of(searchRequest.getPage()-1, searchRequest.getSize());
+        Pageable pageable = PageRequest.of(searchRequest.getPage() - 1, searchRequest.getSize());
 
-        Page<PublicationEntity> all = pRepository.findAll(createFilter(searchRequest),pageable);
-        List<PublicationMinDto> list=new ArrayList<>();
-        for (PublicationEntity p: all) {
+        Page<PublicationEntity> all = pRepository.findAll(createFilter(searchRequest), pageable);
+        List<PublicationMinDto> list = new ArrayList<>();
+        for (PublicationEntity p : all) {
             PublicationMinDto dto = modelMapper.map(p, PublicationMinDto.class);
 
-            if(p.getImage()!=null){
-                dto.setImageUrl(url+"/pub/image?pub="+p.getId()+"&index=0");
+            SectionEntity sectionImage = sRepository.findFirstByPublicationAndType(p,TypeSec.PHOTO);
+            if (sectionImage != null) {
+                dto.setImageUrl(url + "/pub/image/" + sectionImage.getId());
             }
 
             list.add(dto);
@@ -123,21 +120,19 @@ public class PublicationServiceImpl implements PublicationService {
     }
 
     //Filtros
-    public static Specification<PublicationEntity> createFilter(SearchRequest searchRequest)
-    {
-        return new Specification<PublicationEntity>()
-        {
+    public static Specification<PublicationEntity> createFilter(SearchRequest searchRequest) {
+        return new Specification<PublicationEntity>() {
             private static final long serialVersionUID = 1L;
 
             @Override
-            public Predicate toPredicate(Root<PublicationEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder)
-            {
+            public Predicate toPredicate(Root<PublicationEntity> root, CriteriaQuery<?> query,
+                                         CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<>();
-                if(searchRequest.getType()!= TypePub.NONE)
-                {
-                    Predicate predicate = criteriaBuilder.equal(root.get("type"),searchRequest.getType().toString());
+                if (searchRequest.getType() != TypePub.NONE) {
+                    Predicate predicate = criteriaBuilder.equal(root.get("type"), searchRequest.getType().toString());
                     predicates.add(predicate);
-                };
+                }
+                ;
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             }
         }; //columnEqual() function ends
@@ -148,20 +143,17 @@ public class PublicationServiceImpl implements PublicationService {
     public PublicationDto get(Long id) throws EntityNotFoundException {
         PublicationDto responce;
         PublicationEntity p = pRepository.getReferenceById(id);
-        if(p==null){
+        if (p == null) {
             throw new EntityNotFoundException();
         }
 
-        responce = modelMapper.map(p,PublicationDto.class);
-        if(p.getImage()!=null){
-            responce.setImageUrl(url+"/pub/image?pub="+p.getId()+"&index=0");
-        }
+        responce = modelMapper.map(p, PublicationDto.class);
 
         List<SectionDto> sections = new ArrayList<>();
         for (SectionEntity s : sRepository.findAllByPublication(p)) {
-            SectionDto r = modelMapper.map(s,SectionDto.class);
-            if(s.getImage()!=null){
-                r.setImageUrl(url+"/pub/image?pub="+p.getId()+"&index="+r.getNumber());
+            SectionDto r = modelMapper.map(s, SectionDto.class);
+            if (s.getImage() != null) {
+                r.setImageUrl(url + "/pub/image/" + r.getId());
             }
             sections.add(r);
         }
@@ -171,27 +163,14 @@ public class PublicationServiceImpl implements PublicationService {
     }
 
     @Override
-    public byte[] getImage(String pub, String index) {
-        byte[] result;
+    public byte[] getImage(Long id) {
 
-        Long pubId=Long.parseLong(pub);
-        Long indexId=Long.parseLong(index);
-
-        PublicationEntity p = pRepository.getReferenceById(pubId);
-        if(p==null){
+        SectionEntity s = sRepository.getReferenceById(id);
+        if (s == null) {
             throw new EntityNotFoundException();
         }
 
-        if(indexId.equals(0L)){
-            result = decompressBytes(p.getImage());
-        }else {
-            SectionEntity s = sRepository.getByPublicationAndNumber(p,indexId);
-            if(s==null){
-                throw new EntityNotFoundException();
-            }
-            result = decompressBytes(s.getImage());
-        }
-        return result;
+        return decompressBytes(s.getImage());
     }
 
     // compress the image bytes before storing it in the database

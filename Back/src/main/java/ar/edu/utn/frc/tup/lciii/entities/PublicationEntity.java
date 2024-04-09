@@ -28,8 +28,6 @@ public class PublicationEntity {
     TypePub type;
     @Enumerated(EnumType.STRING)
     Difficulty difficulty;
-    @Lob
-    byte[] image;
     boolean canSold;
     BigDecimal price;
     Long count;

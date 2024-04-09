@@ -17,8 +17,8 @@ public class PublicationDto {
     String name;
     String description;
     String type;
-    Difficulty difficulty;
-    String imageUrl;
+    String difficulty;
+    String video;
     List<SectionDto> sections;
     boolean canSold;
     BigDecimal price;
