@@ -42,9 +42,16 @@ public class UserController {
 
         var authUser = authenticationManager.authenticate(usernamePassword);
 
-        var accessToken = tokenService.generateAccessToken((UserEntity) authUser.getPrincipal());
+        UserEntity u = (UserEntity) authUser.getPrincipal();
+        var accessToken = tokenService.generateAccessToken(u);
 
-        return ResponseEntity.ok(new LoginResponce(data.getName(),accessToken));
+        LoginResponce r = new LoginResponce( u.getId(),
+                u.getName(),
+                u.getRole().toString(),
+                u.getEmail(),
+                "",
+                accessToken);
+        return ResponseEntity.ok(r);
     }
 
 //    @PostMapping("/test")
@@ -62,6 +69,4 @@ public class UserController {
     public LoginResponce prelogin(@RequestBody LoginRequest request){
         return service.login(request);
     }
-
-
 }

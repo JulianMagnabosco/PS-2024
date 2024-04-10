@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class LoginResponce {
-    String state;
+    Long id;
+    String name;
+    String role;
+    String email;
+    String iconUrl;
     String token;
 }

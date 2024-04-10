@@ -48,6 +48,7 @@ public class AuthService implements UserDetailsService {
 
   public LoginResponce login(LoginRequest request){
 
+    LoginResponce r = new LoginResponce();
     Optional<UserEntity> userEntityO = repository.findFirstByName(request.getName());
 
     if(userEntityO.isEmpty()){
@@ -55,10 +56,12 @@ public class AuthService implements UserDetailsService {
     }
 
     if(!request.getPassword().equals(userEntityO.get().getPassword())){
-      return new LoginResponce("error","");
+      r.setName("ERROR");
+      return r;
     }
 
-    return new LoginResponce("ok","a");
+    r.setName("ok");
+    return r;
   }
 
 

@@ -9,6 +9,7 @@ import {Login} from "../../models/login/login";
 })
 export class UserService {
   usuarioActual?:User
+  usuarioData?:Login;
   token:string|null=""
 
   url = "http://localhost:8080/";
@@ -26,8 +27,8 @@ export class UserService {
     return this.postLogin(this.usuarioActual).pipe(
       map((value) => {
         localStorage.setItem("token",value["token"])
+        this.usuarioData=value
         this.token=value["token"]
-        console.log("inicio")
       })
     );
   }

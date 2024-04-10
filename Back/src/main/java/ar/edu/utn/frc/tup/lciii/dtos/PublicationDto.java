@@ -18,6 +18,7 @@ public class PublicationDto {
     String description;
     String type;
     String difficulty;
+    String calification;
     String video;
     List<SectionDto> sections;
     boolean canSold;

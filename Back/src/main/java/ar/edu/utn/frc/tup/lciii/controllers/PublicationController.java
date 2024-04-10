@@ -1,6 +1,7 @@
 package ar.edu.utn.frc.tup.lciii.controllers;
 
 import ar.edu.utn.frc.tup.lciii.dtos.*;
+import ar.edu.utn.frc.tup.lciii.dtos.requests.CalificationRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.PublicationRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.SearchRequest;
 import ar.edu.utn.frc.tup.lciii.entities.PublicationEntity;
@@ -29,6 +30,10 @@ public class PublicationController {
     public boolean postImage(@RequestParam("images") MultipartFile[] images,
                                        @RequestParam("indexes") String indexes) throws IOException {
         return publicationService.registerImg(images,indexes);
+    }
+    @PostMapping("/cal")
+    public boolean calificate(@RequestBody CalificationRequest request) {
+        return publicationService.calificate(request);
     }
 
     @GetMapping("/list")

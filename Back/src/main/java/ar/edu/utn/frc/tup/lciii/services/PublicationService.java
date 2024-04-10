@@ -4,6 +4,7 @@ import ar.edu.utn.frc.tup.lciii.dtos.FilterDTO;
 import ar.edu.utn.frc.tup.lciii.dtos.PublicationDto;
 import ar.edu.utn.frc.tup.lciii.dtos.PublicationMinDto;
 import ar.edu.utn.frc.tup.lciii.dtos.SearchResponce;
+import ar.edu.utn.frc.tup.lciii.dtos.requests.CalificationRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.PublicationRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.SearchRequest;
 import ar.edu.utn.frc.tup.lciii.entities.PublicationEntity;
@@ -17,6 +18,9 @@ public interface PublicationService {
 
     PublicationDto register(PublicationRequest request);
     boolean registerImg(MultipartFile[] images, String indexes) throws IOException;
+
+    boolean calificate(CalificationRequest request);
+
     List<PublicationMinDto> getAll();
 
     SearchResponce getAllFilthered(SearchRequest searchRequest);
