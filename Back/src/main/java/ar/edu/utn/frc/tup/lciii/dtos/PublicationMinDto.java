@@ -15,7 +15,7 @@ public class PublicationMinDto {
     String description;
     String type;
     String dificulty;
-    String calification;
+    BigDecimal calification;
     String imageUrl;
     boolean canSold;
     BigDecimal price;

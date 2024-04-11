@@ -1,5 +1,4 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ProfileService} from "../../services/profile/profile.service";
 import {Subscription} from "rxjs";
 import {ThemeOption} from "ngx-echarts";
 import type {EChartsOption} from "echarts";

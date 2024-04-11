@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {PublicationsService} from "../../../services/publications/publications.service";
 import {DomSanitizer} from "@angular/platform-browser";
+import {UserService} from "../../../services/user/user.service";
 
 @Component({
   selector: 'app-show-publication',
@@ -15,26 +16,22 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
   private subs: Subscription = new Subscription();
 
   publication:Publication={
-    id: 2,
-    name: "Panal de bellotas",
-    description: "esto es un panal de bellotas",
-    type: "ARTE",
-    difficulty: "Hard",
-    sections: [
-      {
-        id:1,
-        number: 1,
-        type: "COND",
-        text: "esto es un panal de bellotas",
-        imageUrl: "a"
-      }
-    ],
+    id: 1,
+    name: "",
+    description: "",
+    type: "",
+    difficulty: "",
+    userId: 1,
+    calification: 0,
+    myCalification: 0,
+    sections: [  ],
     canSold: false,
     price: 0,
     count: 0
   };
-  constructor(private activeRoute:ActivatedRoute, private service: PublicationsService,
-              private router: Router, private sanitizer:DomSanitizer) {
+  constructor(private service: PublicationsService, public userService: UserService,
+              private activeRoute:ActivatedRoute, private router: Router,
+              private sanitizer:DomSanitizer) {
 
   }
   ngOnInit(): void {
@@ -71,6 +68,22 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
       .sort((a,b) => a.number-b.number)
   }
 
+  calificate(points :number){
+    this.subs.add(
+      this.service.postCalification({
+        userId:this.userService.usuarioData?.id,
+        pubId:this.publication.id,
+        value:points
+      }).subscribe(
+        {
+          next: value => {
+            alert("Calificado")
+            this.charge()
+          }
+        }
+      )
+    );
+  }
 
   charge(){
     let id="" ;
@@ -80,14 +93,14 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
           next: value => {
             id = value["id"]
             this.subs.add(
-              this.service.get(id).subscribe(
+              this.service.get(id,this.userService.usuarioData?.id||"1").subscribe(
                 {
                   next: value => {
                     console.log(value)
                     this.publication=value
                   },
                   error: err => {
-                    alert("Hubo un error al guardar");
+                    alert("Hubo un error al cargar");
                   }
                 }
               )
@@ -96,8 +109,19 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
         }
       )
     );
+  }
 
-
+  delete(){
+    this.subs.add(
+      this.service.delete(this.publication.id.toString()).subscribe({
+        next: value => {
+          this.router.navigate(["/explore"])
+        },
+        error:err => {
+          alert("Hubo un error al eliminar");
+        }
+      })
+    )
   }
 
 }

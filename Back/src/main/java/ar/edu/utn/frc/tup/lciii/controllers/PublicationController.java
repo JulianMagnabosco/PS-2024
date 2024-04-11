@@ -28,14 +28,14 @@ public class PublicationController {
 
     @PostMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public boolean postImage(@RequestParam("images") MultipartFile[] images,
-                                       @RequestParam("indexes") String indexes) throws IOException {
+                             @RequestParam("indexes") String indexes) throws IOException {
         return publicationService.registerImg(images,indexes);
     }
     @PostMapping("/cal")
     public boolean calificate(@RequestBody CalificationRequest request) {
         return publicationService.calificate(request);
     }
-
+    //Busqueda
     @GetMapping("/list")
     public List<PublicationMinDto> getAll() {
         return publicationService.getAll();
@@ -45,15 +45,21 @@ public class PublicationController {
         return publicationService.getAllFilthered(searchRequest);
     }
 
-    @GetMapping("/{id}")
-    public PublicationDto get(@PathVariable Long id) throws EntityNotFoundException {
-        return publicationService.get(id);
+    @GetMapping("/{id}/{userId}")
+    public PublicationDto get(@PathVariable Long id,@PathVariable Long userId) throws EntityNotFoundException {
+        return publicationService.get(id,userId);
     }
 
 
     @GetMapping(value = "/image/{id}", produces = {MediaType.IMAGE_JPEG_VALUE,
-            MediaType.IMAGE_PNG_VALUE,MediaType.IMAGE_GIF_VALUE})
+                                MediaType.IMAGE_PNG_VALUE,MediaType.IMAGE_GIF_VALUE})
     public byte[] getImage(@PathVariable Long id) throws EntityNotFoundException {
         return publicationService.getImage(id);
+    }
+
+    //Delete
+    @DeleteMapping("/{id}")
+    public boolean delete(@PathVariable Long id) throws EntityNotFoundException {
+        return publicationService.delete(id);
     }
 }

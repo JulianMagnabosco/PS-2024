@@ -43,6 +43,7 @@ public class AuthConfig {
 //      filterChain.doFilter(request, response);
 //    }
 //  }
+
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
     return httpSecurity

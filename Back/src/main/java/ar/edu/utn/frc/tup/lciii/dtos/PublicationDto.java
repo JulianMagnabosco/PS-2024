@@ -16,9 +16,11 @@ public class PublicationDto {
     Long id;
     String name;
     String description;
+    Long userId;
     String type;
     String difficulty;
     String calification;
+    String myCalification;
     String video;
     List<SectionDto> sections;
     boolean canSold;

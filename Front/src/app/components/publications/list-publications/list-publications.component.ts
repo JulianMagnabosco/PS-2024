@@ -29,36 +29,38 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
       imageUrl: "https://fcb-abj-pre.s3.amazonaws.com/img/jugadors/MESSI.jpg"
     }
   ];
-  countTotal=0;
-  count=3;
-  page=1;
+  countTotal=1;
+  size=3;
+  page=0;
 
   constructor(private fb: FormBuilder, private service: PublicationsService, private router: Router) {
     this.form = this.fb.group({
       text: ["", [Validators.maxLength(200 )]],
       type: ["NONE"],
-      diffMin: [""],
-      diffMax: [""],
-      points: [""],
+      diffMin: ["1"],
+      diffMax: ["4"],
+      points: ["0"],
       mine: [false]
     });
   }
   ngOnInit(): void {
-    this.charge(1)
+    this.charge(0)
   }
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
 
-
+  get pages(){
+    return Array(Math.ceil(this.countTotal/this.size)).fill(0).map((x,i)=>i);
+  }
   charge(page: number){
     this.page=page;
-    if(page<1){
-      this.page=1;
+    if(page<0){
+      this.page=0;
     }
 
-    if(page>this.countTotal/this.count){
-      this.page=Math.ceil(this.countTotal/this.count);
+    if(page>this.countTotal/this.size){
+      this.page=Math.ceil(this.countTotal/this.size);
     }
 
     if(this.form.invalid){
@@ -74,8 +76,8 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
       "diffMax": this.form.controls['diffMax'].value,
       "points": this.form.controls['points'].value,
       "mine": this.form.controls['mine'].value,
-      "page": 1,
-      "size": 3
+      "page": this.page,
+      "size": this.size
     }
 
 
@@ -85,6 +87,7 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
           next: value => {
             this.countTotal=value["countTotal"]
             this.list=value["list"]
+            console.log(Math.ceil(this.countTotal/this.size))
           },
           error: err => {
             console.log(err)

@@ -38,7 +38,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
 
 
   constructor(private fb: FormBuilder, private service: PublicationsService,
-              private router: Router) {
+              private userService: UserService,private router: Router) {
     this.form = this.fb.group({
       name: ["", [Validators.required, Validators.maxLength(50 )]],
       description: ["", [Validators.required]],
@@ -163,6 +163,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     }
 
     let data = {
+      "userId": this.userService.usuarioData?.id,
       "name": this.form.controls['name'].value,
       "description": this.form.controls['description'].value,
       "type": this.form.controls['type'].value,

@@ -9,6 +9,7 @@ import ar.edu.utn.frc.tup.lciii.entities.CalificationEntity;
 import ar.edu.utn.frc.tup.lciii.entities.PublicationEntity;
 import ar.edu.utn.frc.tup.lciii.entities.SectionEntity;
 import ar.edu.utn.frc.tup.lciii.entities.UserEntity;
+import ar.edu.utn.frc.tup.lciii.enums.Difficulty;
 import ar.edu.utn.frc.tup.lciii.enums.TypePub;
 import ar.edu.utn.frc.tup.lciii.enums.TypeSec;
 import ar.edu.utn.frc.tup.lciii.repository.CalificationRepository;
@@ -18,10 +19,7 @@ import ar.edu.utn.frc.tup.lciii.repository.UserRepository;
 import ar.edu.utn.frc.tup.lciii.services.PublicationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -35,6 +33,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Console;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -67,6 +66,7 @@ public class PublicationServiceImpl implements PublicationService {
     public PublicationDto register(PublicationRequest request) {
 
         PublicationEntity publication = modelMapper.map(request, PublicationEntity.class);
+        publication.setUser(userRepository.getReferenceById(request.getUserId()));
         publicationRepository.save(publication);
 
         List<SectionEntity> sectionEntities = new ArrayList<>();
@@ -78,7 +78,8 @@ public class PublicationServiceImpl implements PublicationService {
         }
         publication.setSections(sectionEntities);
 
-        return get(publication.getId());
+
+        return get(publication.getId(),1l);
     }
 
     @Override
@@ -100,7 +101,7 @@ public class PublicationServiceImpl implements PublicationService {
     @Override
     public boolean calificate(CalificationRequest request){
         PublicationEntity p = publicationRepository.getReferenceById(request.getPubId());
-        UserEntity u = userRepository.getReferenceById(request.getPubId());
+        UserEntity u = userRepository.getReferenceById(request.getUserId());
         Optional<CalificationEntity> calificationAsk = calificationRepository.getByUserAndPublication(u,p);
         CalificationEntity calification;
         if(calificationAsk.isEmpty()){
@@ -111,7 +112,7 @@ public class PublicationServiceImpl implements PublicationService {
             calification=calificationAsk.get();
         }
 
-        calification.setValue(request.getValue());
+        calification.setPoints(request.getValue());
         calificationRepository.save(calification);
 
         return true;
@@ -128,62 +129,79 @@ public class PublicationServiceImpl implements PublicationService {
     public SearchResponce getAllFilthered(SearchRequest searchRequest) {
 
         SearchResponce responce = new SearchResponce();
-        if (searchRequest.getPage() < 1) searchRequest.setPage(1);
-        if (searchRequest.getSize() < 10) searchRequest.setSize(10);
 
-        //The third Sort parameter is optional
-        Pageable pageable = PageRequest.of(searchRequest.getPage() - 1, searchRequest.getSize());
 
-        Page<PublicationEntity> all = publicationRepository.findAll(createFilter(searchRequest), pageable);
+        List<PublicationEntity> all = publicationRepository.findAll();
+
         List<PublicationMinDto> list = new ArrayList<>();
         for (PublicationEntity p : all) {
+            if(p.isDeleted()){
+                continue;
+            }
+
+            if(searchRequest.getType()!=TypePub.NONE){
+                if(searchRequest.getType()!=p.getType()){
+                    continue;
+                }
+            }
+            if(p.getDifficulty()<searchRequest.getDiffMin() || p.getDifficulty()>searchRequest.getDiffMax()){
+                continue;
+            }
+            BigDecimal cal = calificationList(p);
+            if(cal.compareTo(searchRequest.getPoints())<0){
+                continue;
+            }
+            if(!searchRequest.getText().isBlank()){
+                if(!p.getDescription().contains(searchRequest.getText())
+                || !p.getName().contains(searchRequest.getText())){
+                    continue;
+                }
+            }
+
             PublicationMinDto dto = modelMapper.map(p, PublicationMinDto.class);
 
+            dto.setCalification(cal);
             SectionEntity sectionImage = sectionRepository.findFirstByPublicationAndType(p,TypeSec.PHOTO);
+            dto.setDificulty(Difficulty.values()[p.getDifficulty()].name());
             if (sectionImage != null) {
                 dto.setImageUrl(url + "/pub/image/" + sectionImage.getId());
             }
-            dto.setCalification(calificationList(p).toString());
-
             list.add(dto);
         }
-        responce.setList(list);
 
-        responce.setCountTotal(publicationRepository.count(createFilter(searchRequest)));
+        int firstIndex= searchRequest.getPage()*searchRequest.getSize();
+        firstIndex=Integer.min(firstIndex, list.size());
+
+        int lastIndex= firstIndex + searchRequest.getSize();
+        lastIndex=Integer.min(lastIndex, list.size());
+
+        responce.setList(list.subList(firstIndex,lastIndex));
+//        searchRequest.getSize()));
+//        responce.setList(list);
+
+        responce.setCountTotal(list.size());
 
         return responce;
     }
 
-    //Filtros
-    public static Specification<PublicationEntity> createFilter(SearchRequest searchRequest) {
-        return new Specification<PublicationEntity>() {
-            private static final long serialVersionUID = 1L;
 
-            @Override
-            public Predicate toPredicate(Root<PublicationEntity> root, CriteriaQuery<?> query,
-                                         CriteriaBuilder criteriaBuilder) {
-                List<Predicate> predicates = new ArrayList<>();
-                if (searchRequest.getType() != TypePub.NONE) {
-                    Predicate predicate = criteriaBuilder.equal(root.get("type"), searchRequest.getType().toString());
-                    predicates.add(predicate);
-                }
-
-                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
-            }
-        }; //columnEqual() function ends
-    }
 
     BigDecimal calificationList(PublicationEntity p){
         List<CalificationEntity> list = calificationRepository.findAllByPublication(p);
-        BigDecimal value=BigDecimal.ZERO;
-        for (CalificationEntity c:list){
-            value= value.add(c.getValue());
+        if(list.size()>0){
+            BigDecimal value=BigDecimal.ZERO;
+            int count=0;
+            for (CalificationEntity c:list){
+                value= value.add(c.getPoints());
+                count++;
+            }
+            return value.divide(BigDecimal.valueOf(count));
         }
-        return value;
+        return BigDecimal.ZERO;
     }
 
     @Override
-    public PublicationDto get(Long id) throws EntityNotFoundException {
+    public PublicationDto get(Long id, Long userId) throws EntityNotFoundException {
         PublicationDto responce;
         PublicationEntity p = publicationRepository.getReferenceById(id);
         if (p == null) {
@@ -200,7 +218,17 @@ public class PublicationServiceImpl implements PublicationService {
             }
             sections.add(r);
         }
+        responce.setUserId(p.getUser().getId());
         responce.setCalification(calificationList(p).toString());
+        responce.setDifficulty(Difficulty.values()[p.getDifficulty()].name());
+        Optional<CalificationEntity> calificationEntity =
+                calificationRepository.getByUserAndPublication(userRepository.getReferenceById(userId),p);
+        if(calificationEntity.isPresent()){
+            responce.setMyCalification(calificationEntity.get().getPoints().toString());
+        }else {
+            responce.setMyCalification("0");
+        }
+
         responce.setSections(sections);
 
         return responce;
@@ -255,5 +283,13 @@ public class PublicationServiceImpl implements PublicationService {
         } catch (DataFormatException e) {
         }
         return outputStream.toByteArray();
+    }
+
+    @Override
+    public boolean delete(Long id) {
+        PublicationEntity p = publicationRepository.getReferenceById(id);
+        p.setDeleted(true);
+        publicationRepository.save(p);
+        return true;
     }
 }

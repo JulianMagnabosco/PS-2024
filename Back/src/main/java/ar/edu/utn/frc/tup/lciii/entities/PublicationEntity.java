@@ -6,6 +6,11 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -19,6 +24,7 @@ public class PublicationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    boolean deleted = Boolean.FALSE;
     @ManyToOne
     @JoinColumn(name="idUser")
     UserEntity user;
@@ -26,11 +32,12 @@ public class PublicationEntity {
     String description;
     @Enumerated(EnumType.STRING)
     TypePub type;
-    @Enumerated(EnumType.STRING)
-    Difficulty difficulty;
+    int difficulty;
     boolean canSold;
     BigDecimal price;
     Long count;
     @OneToMany(mappedBy="publication")
     List<SectionEntity> sections;
+    @OneToMany(mappedBy="publication")
+    List<CalificationEntity> califications;
 }

@@ -3,8 +3,8 @@ values ('admin', '$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2',
 insert into users (name, password, email,role)
 values ('user', '$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2', 'a@a', 'USER');
 
-insert into publications (id_user, name, description, type, difficulty,can_sold)
-values (1,'Panal de abejas', 'esto es un panal de abejas', 'ARTE','DIFICIL',false);
+insert into publications (id_user, name, description, type, difficulty,can_sold,deleted)
+values (1,'Panal de abejas', 'esto es un panal de abejas', 'ARTE',1,false,false);
 
 insert into sections (id_publication, type, text)
 values (1,'PHOTO', 'esto es un panal de abejas');

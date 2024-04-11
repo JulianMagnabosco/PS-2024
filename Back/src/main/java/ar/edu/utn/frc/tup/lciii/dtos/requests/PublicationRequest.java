@@ -8,10 +8,11 @@ import java.util.List;
 
 @Data
 public class PublicationRequest {
+    Long userId;
     String name;
     String description;
     String type;
-    String difficulty;
+    int difficulty;
     String video;
     List<SectionRequest> sections;
     boolean canSold;

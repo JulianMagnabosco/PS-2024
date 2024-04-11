@@ -25,6 +25,7 @@ public interface PublicationService {
 
     SearchResponce getAllFilthered(SearchRequest searchRequest);
 
-    PublicationDto get(Long id);
+    PublicationDto get(Long id,Long userId);
     byte[] getImage(Long id);
+    boolean delete(Long id);
 }

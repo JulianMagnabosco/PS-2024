@@ -21,6 +21,9 @@ export class PublicationsService {
   postImages(data: any):Observable<any>{
     return this.client.post(this.baseUrl + "image", data,{});
   }
+  postCalification(data: any):Observable<any>{
+    return this.client.post(this.baseUrl + "cal", data,{});
+  }
   oldsearch():Observable<any>{
         return this.client.get(this.baseUrl + "list", {
           headers: new HttpHeaders({'Authorization': 'Bearer ' + this.userService.token})
@@ -32,8 +35,8 @@ export class PublicationsService {
     })
   }
 
-  get(id: string):Observable<any>{
-    return this.client.get(this.baseUrl + id);
+  get(id: string,user:string):Observable<any>{
+    return this.client.get(this.baseUrl + id+"/"+user);
   }
 
   getImages(pub: string, index: string):Observable<any>{
@@ -46,4 +49,7 @@ export class PublicationsService {
   }
 
 
+  delete(id: string):Observable<any>{
+    return this.client.delete(this.baseUrl + id);
+  }
 }
