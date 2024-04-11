@@ -1,7 +1,7 @@
-insert into users (name, password, email,role)
-values ('admin', '$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2', 'a@a', 'ADMIN');
-insert into users (name, password, email,role)
-values ('user', '$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2', 'a@a', 'USER');
+insert into users (username, name, lastname, password, email,role)
+values ('admin','admin','admin', '$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2', 'a@a', 'ADMIN');
+insert into users (username, name, lastname, password, email,role)
+values ('user','a','a', '$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2', 'a@a', 'USER');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted)
 values (1,'Panal de abejas', 'esto es un panal de abejas', 'ARTE',1,false,false);

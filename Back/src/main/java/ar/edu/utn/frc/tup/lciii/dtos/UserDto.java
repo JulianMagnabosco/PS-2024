@@ -9,11 +9,15 @@ import lombok.NoArgsConstructor;
 @Data
 public class UserDto {
     Long id;
-    String name;
-    String password;
-    String role;
+    String username;
     String email;
     String icon;
-    Long idDirection;
+    String name;
+    String lastname;
+    Long idState;
+    String direction;
     String numberDir;
+    String postalNum;
+    String floor;
+    String room;
 }
