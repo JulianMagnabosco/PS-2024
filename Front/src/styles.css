@@ -34,7 +34,11 @@ h1, .space-text{
 
 .borderless{
   border: 3px solid #ffffff;
-}.borderless:hover{
+}
+.borderless:hover{
    border: 3px solid #f6981e;
- }
+}
 
+.bg-orange{
+  background-color: #f6a977;
+}

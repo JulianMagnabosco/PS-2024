@@ -1,0 +1,46 @@
+<div class="container-fluid">
+  <div class="row justify-content-between p-1">
+    <h1 class="col">Usuarios</h1>
+
+  </div>
+  <div class="card border-orange-n mb-3">
+    <form [formGroup]="form" class="row g-3 justify-content-center p-3 d-flex">
+      <div class="col-10">
+        <input type="text" formControlName="text" class="form-control form-orange" id="nameInput"
+               placeholder="Nombre o tags">
+      </div>
+      <div class="col-2">
+        <button class="btn btn-primary w-100 h-100" (click)="charge()">
+          BUSCAR
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="p-1 border-orange-n rounded-2">
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col"class="text-end">ID</th>
+        <th scope="col">USUARIO</th>
+        <th scope="col">EMAIL</th>
+        <th scope="col">PUBLICACIONES</th>
+        <th scope="col">VENTAS</th>
+        <th scope="col" class="text-center">ACCIONES</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let u of list">
+        <th scope="row" class="text-end">{{ u.id }}</th>
+        <td>{{ u.username }}</td>
+        <td>{{ u.email }}</td>
+        <td>&#64;mdo</td>
+        <td>&#64;mdo</td>
+        <td class="text-center"><button class="btn btn-warning" (click)="go(u.id)">VER</button></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+<!--<div>{{form.value|json}}</div>-->

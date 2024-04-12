@@ -13,13 +13,17 @@ import { LoginComponent } from './components/user/login/login.component';
 import { ListPublicationsComponent } from './components/publications/list-publications/list-publications.component';
 import { AddPublicationComponent } from './components/publications/add-publication/add-publication.component';
 import { ShowPublicationComponent } from './components/publications/show-publication/show-publication.component';
-import {UserService} from "./services/user/user.service";
+import {AuthService} from "./services/user/auth.service";
 import {NgOptimizedImage} from "@angular/common";
 import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
 import {YouTubePlayer} from "@angular/youtube-player";
 
-export function initializeApp(initService: UserService) {
-  return () => initService.init();
+export function initializeApp(initService: AuthService) {
+  return () => initService.init().subscribe({
+    error: err => {
+      console.log("Sin datos")
+    }
+  });
 }
 
 @NgModule({
@@ -49,7 +53,7 @@ export function initializeApp(initService: UserService) {
       provide: APP_INITIALIZER,
       multi: true,
       useFactory: initializeApp,
-      deps: [UserService]
+      deps: [AuthService]
     }
   ],
   bootstrap: [AppComponent]

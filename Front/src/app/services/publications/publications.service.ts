@@ -3,7 +3,7 @@ import {User} from "../../models/user/user";
 import {HttpClient, HttpHeaders, HttpRequest} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Publication} from "../../models/publication/publication";
-import {UserService} from "../user/user.service";
+import {AuthService} from "../user/auth.service";
 import {DomSanitizer} from "@angular/platform-browser";
 
 @Injectable({
@@ -11,9 +11,9 @@ import {DomSanitizer} from "@angular/platform-browser";
 })
 export class PublicationsService {
 
-  url = this.userService.url
+  url = this.authService.url
   private baseUrl = this.url+"pub/";
-  constructor(private client: HttpClient, private userService:UserService, private sanitizer: DomSanitizer) { }
+  constructor(private client: HttpClient, private authService:AuthService, private sanitizer: DomSanitizer) { }
 
   postPublication(user: any):Observable<any>{
     return this.client.post(this.baseUrl + "new", user);
@@ -26,12 +26,12 @@ export class PublicationsService {
   }
   oldsearch():Observable<any>{
         return this.client.get(this.baseUrl + "list", {
-          headers: new HttpHeaders({'Authorization': 'Bearer ' + this.userService.token})
+          headers: new HttpHeaders({'Authorization': 'Bearer ' + this.authService.user?.token})
         })
   }
   search(search: any):Observable<any>{
     return this.client.post(this.baseUrl + "search",search, {
-      headers: new HttpHeaders({'Authorization': 'Bearer ' + this.userService.token})
+      headers: new HttpHeaders({'Authorization': 'Bearer ' + this.authService.user?.token})
     })
   }
 

@@ -14,7 +14,7 @@ public class UserDto {
     String icon;
     String name;
     String lastname;
-    Long idState;
+    String state;
     String direction;
     String numberDir;
     String postalNum;

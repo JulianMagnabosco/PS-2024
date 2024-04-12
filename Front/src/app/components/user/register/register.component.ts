@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
-import {UserService} from "../../../services/user/user.service";
+import {AuthService} from "../../../services/user/auth.service";
 import {Router} from "@angular/router";
 
 @Component({
@@ -13,7 +13,7 @@ export class RegisterComponent implements OnInit,OnDestroy {
   private subs: Subscription = new Subscription();
   form: FormGroup = this.fb.group({});
 
-  constructor(private fb: FormBuilder, private service: UserService, private router: Router) {
+  constructor(private fb: FormBuilder, private service: AuthService, private router: Router) {
     this.form = this.fb.group({
       name: ["", [Validators.required, Validators.maxLength(50 )]],
       email: ["", [Validators.required, Validators.email]],
@@ -41,9 +41,9 @@ export class RegisterComponent implements OnInit,OnDestroy {
     }
 
     let user = {
-      "name": this.form.controls['name'].value,
-      "email": this.form.controls['email'].value,
+      "username": this.form.controls['name'].value,
       "password": this.form.controls['password'].value,
+      "email": this.form.controls['email'].value,
       "role":"USER"
     }
 

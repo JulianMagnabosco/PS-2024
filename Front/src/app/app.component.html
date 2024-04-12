@@ -18,11 +18,9 @@
             Administrar
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Registrar Producto</a></li>
-            <li><a class="dropdown-item" href="#">Listar Ventas</a></li>
-            <li><a class="dropdown-item" href="#">Listar Solicitudes</a></li>
+            <li><a class="dropdown-item" routerLink="users">Listar Usuarios</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Estadisticas</a></li>
+<!--            <li><a class="dropdown-item" href="#">Estadisticas</a></li>-->
           </ul>
         </li>
       </ul>
@@ -32,13 +30,13 @@
 <!--        <button class="btn btn-light" type="submit">Buscar</button>-->
 <!--      </form>-->
 
-      <button class="btn btn-warning text-nowrap me-1"  routerLink="login" *ngIf="!service.usuarioActual">
+      <button class="btn btn-warning text-nowrap me-1"  routerLink="login" *ngIf="!service.user">
         <i class="bi bi-person-circle" > Iniciar Secion</i>
       </button>
-        <div class="dropdown" *ngIf="service.usuarioActual">
+        <div class="dropdown" *ngIf="service.user">
           <button class="btn btn-warning text-nowrap me-1 dropdown-toggle" type="button"  data-bs-toggle="dropdown" >
             <i class="bi bi-person-circle"></i>
-            <span class="px-1">{{ service.usuarioActual.name }}</span>
+            <span class="px-1">{{ service.user.username }}</span>
           </button>
           <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="dropdown-item" href="#" routerLink="login">Cambiar cuenta</a></li>

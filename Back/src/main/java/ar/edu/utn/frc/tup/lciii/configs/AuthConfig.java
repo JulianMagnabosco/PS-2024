@@ -52,6 +52,7 @@ public class AuthConfig {
         .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/pub/**").permitAll()
+                .requestMatchers("/user/**").permitAll()
                 .anyRequest().authenticated())
         .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
         .build();

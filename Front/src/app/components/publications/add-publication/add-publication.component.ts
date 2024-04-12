@@ -9,7 +9,7 @@ import {
   ValidatorFn,
   Validators
 } from "@angular/forms";
-import {UserService} from "../../../services/user/user.service";
+import {AuthService} from "../../../services/user/auth.service";
 import {Router} from "@angular/router";
 import {PublicationsService} from "../../../services/publications/publications.service";
 import {Publication} from "../../../models/publication/publication";
@@ -38,7 +38,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
 
 
   constructor(private fb: FormBuilder, private service: PublicationsService,
-              private userService: UserService,private router: Router) {
+              private userService: AuthService, private router: Router) {
     this.form = this.fb.group({
       name: ["", [Validators.required, Validators.maxLength(50 )]],
       description: ["", [Validators.required]],
@@ -163,7 +163,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     }
 
     let data = {
-      "userId": this.userService.usuarioData?.id,
+      "userId": this.userService.user?.id,
       "name": this.form.controls['name'].value,
       "description": this.form.controls['description'].value,
       "type": this.form.controls['type'].value,

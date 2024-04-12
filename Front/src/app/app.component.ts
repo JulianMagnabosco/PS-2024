@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {UserService} from "./services/user/user.service";
+import {AuthService} from "./services/user/auth.service";
 
 @Component({
   selector: 'app-root',
@@ -9,7 +9,7 @@ import {UserService} from "./services/user/user.service";
 export class AppComponent {
   title = 'PS-Front';
 
-  constructor(public service:UserService) {
+  constructor(public service:AuthService) {
 
   }
 

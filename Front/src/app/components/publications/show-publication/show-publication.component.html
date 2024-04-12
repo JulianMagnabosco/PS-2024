@@ -1,7 +1,7 @@
 
 <div class="container mt-4">
   <div class=" mt-4 p-3 bg-light rounded-5 border border-warning-subtle border-5 d-flex justify-content-between"
-  *ngIf="userService.usuarioData?.id==publication.userId.toString()">
+  *ngIf="userService.user?.id==publication.userId.toString()">
     <span class="fs-3">Editar:</span>
     <span>
       <button class="btn btn-warning me-1">MODIFICAR</button>

@@ -3,7 +3,7 @@ import {Subscription} from "rxjs";
 import {PublicationsService} from "../../services/publications/publications.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {UserService} from "../../services/user/user.service";
+import {AuthService} from "../../services/user/auth.service";
 
 @Component({
   selector: 'app-test',
@@ -15,13 +15,13 @@ export class TestComponent implements OnInit,OnDestroy{
   mes:string =""
   subs=new Subscription()
   image:any;
-  constructor(private service:UserService,private http:HttpClient
+  constructor(private service:AuthService, private http:HttpClient
     , private sanitizer:DomSanitizer) {
   }
 
   ngOnInit(): void {
     this.http.get("http://localhost:8080/api/v1/books", {
-      headers: new HttpHeaders({'Authorization': 'Bearer ' + this.service.token})
+      headers: new HttpHeaders({'Authorization': 'Bearer ' + this.service.user?.token})
     })
     // this.subs.add(
     //   this.service.get().subscribe(

@@ -5,6 +5,7 @@ import ar.edu.utn.frc.tup.lciii.dtos.LoginResponce;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.UserRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.UserDto;
 import ar.edu.utn.frc.tup.lciii.entities.UserEntity;
+import ar.edu.utn.frc.tup.lciii.repository.StateRepository;
 import ar.edu.utn.frc.tup.lciii.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -24,8 +25,8 @@ public class AuthService implements UserDetailsService {
 
   @Autowired
   UserRepository repository;
-
-
+  @Autowired
+  StateRepository stateRepository;
   @Autowired
   ModelMapper modelMapper;
 
@@ -56,11 +57,11 @@ public class AuthService implements UserDetailsService {
     }
 
     if(!request.getPassword().equals(userEntityO.get().getPassword())){
-      r.setName("ERROR");
+      r.setUsername("ERROR");
       return r;
     }
 
-    r.setName("ok");
+    r.setUsername("ok");
     return r;
   }
 
@@ -89,7 +90,9 @@ public class AuthService implements UserDetailsService {
 
     for (UserEntity u : repository.findAll()){
       if(u.getName().contains(text) || u.getLastname().contains(text) || u.getUsername().contains(text))
+      {
         responce.add(modelMapper.map(u, UserDto.class));
+      }
     }
 
     return responce;
@@ -99,6 +102,7 @@ public class AuthService implements UserDetailsService {
 
     UserEntity u = repository.getReferenceById(id);
     responce = modelMapper.map(u, UserDto.class);
+    responce.setState(stateRepository.getReferenceById(u.getIdState()).getName());
 
     return responce;
   }

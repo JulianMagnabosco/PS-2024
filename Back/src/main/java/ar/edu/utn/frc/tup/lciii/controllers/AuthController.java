@@ -7,6 +7,7 @@ import ar.edu.utn.frc.tup.lciii.dtos.requests.UserRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.UserDto;
 import ar.edu.utn.frc.tup.lciii.entities.UserEntity;
 import ar.edu.utn.frc.tup.lciii.services.impl.AuthService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,6 +29,8 @@ public class AuthController {
     private AuthService service;
     @Autowired
     private TokenProvider tokenService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody UserRequest data){

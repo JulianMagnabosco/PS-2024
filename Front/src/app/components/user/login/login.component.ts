@@ -1,9 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
-import {UserService} from "../../../services/user/user.service";
+import {AuthService} from "../../../services/user/auth.service";
 import {Router} from "@angular/router";
 import {User} from "../../../models/user/user";
+import {Login} from "../../../models/login/login";
 
 @Component({
   selector: 'app-login',
@@ -14,9 +15,9 @@ export class LoginComponent implements OnInit,OnDestroy {
   private subs: Subscription = new Subscription();
   form: FormGroup = this.fb.group({});
 
-  constructor(private fb: FormBuilder, private service: UserService, private router: Router) {
+  constructor(private fb: FormBuilder, private service: AuthService, private router: Router) {
     this.form = this.fb.group({
-      name: ["", [Validators.required, Validators.maxLength(50 )]],
+      username: ["", [Validators.required, Validators.maxLength(50 )]],
       password: ["", [Validators.required, Validators.maxLength(50)]]
     });
 
@@ -37,15 +38,17 @@ export class LoginComponent implements OnInit,OnDestroy {
       return;
     }
 
-    let user = new User(this.form.controls['name'].value,
-      this.form.controls['password'].value)
+    let data:Login = {
+      username: this.form.controls['username'].value,
+      password: this.form.controls['password'].value
+    }
 
     this.subs.add(
-      this.service.postLogin(user).subscribe(
+      this.service.postLogin(data).subscribe(
         {
           next: value => {
             alert("Inicio de secion éxitoso");
-            this.service.login(user,value["token"])
+            this.service.login(value,data.password)
             this.router.navigate(["/explore"])
           },
           error: err => {

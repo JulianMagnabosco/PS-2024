@@ -4,7 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {PublicationsService} from "../../../services/publications/publications.service";
 import {DomSanitizer} from "@angular/platform-browser";
-import {UserService} from "../../../services/user/user.service";
+import {AuthService} from "../../../services/user/auth.service";
 
 @Component({
   selector: 'app-show-publication',
@@ -29,7 +29,7 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
     price: 0,
     count: 0
   };
-  constructor(private service: PublicationsService, public userService: UserService,
+  constructor(private service: PublicationsService, public userService: AuthService,
               private activeRoute:ActivatedRoute, private router: Router,
               private sanitizer:DomSanitizer) {
 
@@ -71,7 +71,7 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
   calificate(points :number){
     this.subs.add(
       this.service.postCalification({
-        userId:this.userService.usuarioData?.id,
+        userId:this.userService.user?.id,
         pubId:this.publication.id,
         value:points
       }).subscribe(
@@ -93,7 +93,7 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
           next: value => {
             id = value["id"]
             this.subs.add(
-              this.service.get(id,this.userService.usuarioData?.id||"1").subscribe(
+              this.service.get(id,this.userService.user?.id||"1").subscribe(
                 {
                   next: value => {
                     console.log(value)

@@ -1,0 +1,97 @@
+
+<div class="container mt-4">
+
+  <div class="mt-4 d-flex position-relative">
+    <span>
+      <button class="btn btn-warning me-1" (click)="back()"><i class="bi bi-arrow-left"></i> VOLVER</button>
+    </span>
+    <h1 class="fs-3 position-absolute top-50 start-50 translate-middle">USUARIO: #{{ user.id }}</h1>
+  </div>
+  <div class=" mt-4 p-3 px-5 bg-light rounded-5 border border-warning-subtle border-5">
+    <div class="row mb-3">
+      <div class="col-sm-8">
+        <div class="mb-2 me-1 px-3 rounded-3 bg-orange">
+          <div class="fs-6 fw-bold">Nombre de usuario</div>
+          <div class="fs-5 pb-2">{{user.username }}</div>
+        </div>
+
+        <div class="mb-2 me-1 px-3 rounded-3 bg-orange">
+          <div class="fs-6 fw-bold">Email</div>
+          <div class="fs-5 pb-2">{{user.email }}</div>
+        </div>
+
+      </div>
+      <div class="col-sm-4">
+        <div class="border-orange-n border-5 rounded-2 p-1">
+          <img [src]="user.iconUrl || 'assets/camera.png'" class="d-block w-100">
+        </div>
+      </div>
+    </div>
+
+    <h5 >Datos de entrega</h5>
+
+   <div class="d-flex gap-3">
+     <div class="col-6 mb-2">
+       <div class=" me-1 px-3 rounded-3 bg-orange">
+         <div class="fs-6 fw-bold">Nombre</div>
+         <div class="fs-5 pb-2">{{user.name }}</div>
+       </div>
+     </div>
+
+     <div class="col-6 mb-2 me-1 px-3 rounded-3 bg-orange">
+       <div class=" me-1 px-3 rounded-3 bg-orange">
+         <div class="fs-6 fw-bold">Apellido/s</div>
+         <div class="fs-5 pb-2">{{user.lastname }}</div></div>
+     </div>
+   </div>
+
+    <div class="d-flex">
+      <div class="col-4 mb-2 me-1 px-3 rounded-3 bg-orange">
+        <div class="fs-6 fw-bold">Provincia</div>
+        <div class="fs-5 pb-2">{{user.state }}</div>
+      </div>
+
+    </div>
+
+    <div class="d-flex gap-3">
+      <div class="col-8">
+        <div class="mb-2 px-3 rounded-3 bg-orange">
+          <div class="fs-6 fw-bold">Direccion o calle</div>
+          <div class="fs-5 pb-2">{{user.direction||"--"  }}</div>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="mb-2 px-3 rounded-3 bg-orange">
+          <div class="fs-6 fw-bold">Numero</div>
+          <div class="fs-5 pb-2">{{user.numberDir||"--" }}</div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="d-flex gap-3">
+      <div class="col-4">
+        <div class="mb-2 px-3 rounded-3 bg-orange">
+          <div class="fs-6 fw-bold">Codigo Postal</div>
+          <div class="fs-5 pb-2">{{user.postalNum||"--" }}</div>
+        </div>
+      </div>
+
+
+      <div class="col-4">
+        <div class="mb-2 px-3 rounded-3 bg-orange">
+          <div class="fs-6 fw-bold">Piso</div>
+          <div class="fs-5 pb-2">{{user.floor||"--" }}</div></div>
+      </div>
+
+
+      <div class="col-4">
+        <div class="mb-2 px-3 rounded-3 bg-orange">
+          <div class="fs-6 fw-bold">Habitacion</div>
+          <div class="fs-5 pb-2">{{user.room||"--" }}</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
