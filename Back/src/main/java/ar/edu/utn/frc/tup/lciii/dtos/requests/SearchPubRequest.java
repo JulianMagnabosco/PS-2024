@@ -6,7 +6,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-public class SearchRequest {
+public class SearchPubRequest {
     String text;
     TypePub type;
     int diffMin;

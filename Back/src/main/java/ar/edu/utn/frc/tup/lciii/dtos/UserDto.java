@@ -11,13 +11,16 @@ public class UserDto {
     Long id;
     String username;
     String email;
-    String icon;
+    String iconUrl;
     String name;
     String lastname;
+    Long idState;
     String state;
     String direction;
     String numberDir;
     String postalNum;
     String floor;
     String room;
+    Long publications;
+    Long sales;
 }

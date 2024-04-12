@@ -3,7 +3,7 @@ package ar.edu.utn.frc.tup.lciii.services.impl;
 import ar.edu.utn.frc.tup.lciii.dtos.*;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.CalificationRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.PublicationRequest;
-import ar.edu.utn.frc.tup.lciii.dtos.requests.SearchRequest;
+import ar.edu.utn.frc.tup.lciii.dtos.requests.SearchPubRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.SectionRequest;
 import ar.edu.utn.frc.tup.lciii.entities.CalificationEntity;
 import ar.edu.utn.frc.tup.lciii.entities.PublicationEntity;
@@ -19,21 +19,15 @@ import ar.edu.utn.frc.tup.lciii.repository.UserRepository;
 import ar.edu.utn.frc.tup.lciii.services.PublicationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.criteria.*;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
-import java.io.Console;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -126,9 +120,9 @@ public class PublicationServiceImpl implements PublicationService {
     }
 
     @Override
-    public SearchResponce getAllFilthered(SearchRequest searchRequest) {
+    public SearchPubResponce getAllFilthered(SearchPubRequest searchPubRequest) {
 
-        SearchResponce responce = new SearchResponce();
+        SearchPubResponce responce = new SearchPubResponce();
 
 
         List<PublicationEntity> all = publicationRepository.findAll();
@@ -139,21 +133,21 @@ public class PublicationServiceImpl implements PublicationService {
                 continue;
             }
 
-            if(searchRequest.getType()!=TypePub.NONE){
-                if(searchRequest.getType()!=p.getType()){
+            if(searchPubRequest.getType()!=TypePub.NONE){
+                if(searchPubRequest.getType()!=p.getType()){
                     continue;
                 }
             }
-            if(p.getDifficulty()<searchRequest.getDiffMin() || p.getDifficulty()>searchRequest.getDiffMax()){
+            if(p.getDifficulty()< searchPubRequest.getDiffMin() || p.getDifficulty()> searchPubRequest.getDiffMax()){
                 continue;
             }
             BigDecimal cal = calificationList(p);
-            if(cal.compareTo(searchRequest.getPoints())<0){
+            if(cal.compareTo(searchPubRequest.getPoints())<0){
                 continue;
             }
-            if(!searchRequest.getText().isBlank()){
-                if(!p.getDescription().contains(searchRequest.getText())
-                || !p.getName().contains(searchRequest.getText())){
+            if(!searchPubRequest.getText().isBlank()){
+                if(!p.getDescription().contains(searchPubRequest.getText())
+                || !p.getName().contains(searchPubRequest.getText())){
                     continue;
                 }
             }
@@ -169,15 +163,13 @@ public class PublicationServiceImpl implements PublicationService {
             list.add(dto);
         }
 
-        int firstIndex= searchRequest.getPage()*searchRequest.getSize();
+        int firstIndex= searchPubRequest.getPage()* searchPubRequest.getSize();
         firstIndex=Integer.min(firstIndex, list.size());
 
-        int lastIndex= firstIndex + searchRequest.getSize();
+        int lastIndex= firstIndex + searchPubRequest.getSize();
         lastIndex=Integer.min(lastIndex, list.size());
 
         responce.setList(list.subList(firstIndex,lastIndex));
-//        searchRequest.getSize()));
-//        responce.setList(list);
 
         responce.setCountTotal(list.size());
 

@@ -3,8 +3,7 @@ package ar.edu.utn.frc.tup.lciii.controllers;
 import ar.edu.utn.frc.tup.lciii.dtos.*;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.CalificationRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.PublicationRequest;
-import ar.edu.utn.frc.tup.lciii.dtos.requests.SearchRequest;
-import ar.edu.utn.frc.tup.lciii.entities.PublicationEntity;
+import ar.edu.utn.frc.tup.lciii.dtos.requests.SearchPubRequest;
 import ar.edu.utn.frc.tup.lciii.services.PublicationService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +40,8 @@ public class PublicationController {
         return publicationService.getAll();
     }
     @PostMapping("/search")
-    public SearchResponce getAll(@RequestBody SearchRequest searchRequest) {
-        return publicationService.getAllFilthered(searchRequest);
+    public SearchPubResponce getAll(@RequestBody SearchPubRequest searchPubRequest) {
+        return publicationService.getAllFilthered(searchPubRequest);
     }
 
     @GetMapping("/{id}/{userId}")

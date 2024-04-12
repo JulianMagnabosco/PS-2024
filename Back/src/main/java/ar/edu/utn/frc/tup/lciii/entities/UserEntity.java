@@ -24,10 +24,13 @@ public class UserEntity implements UserDetails {
     String username;
     String email;
     String password;
-    String icon;
+    @Lob
+    byte[] icon;
     String name;
     String lastname;
-    Long idState;
+    @ManyToOne
+    @JoinColumn(name="idState")
+    StateEntity state;
     String direction;
     String numberDir;
     String postalNum;

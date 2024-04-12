@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SearchResponce {
+public class SearchPubResponce {
     int countTotal;
     List<PublicationMinDto> list;
 }
