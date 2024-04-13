@@ -60,7 +60,7 @@ public class PublicationServiceImpl implements PublicationService {
     public PublicationDto register(PublicationRequest request) {
 
         PublicationEntity publication = modelMapper.map(request, PublicationEntity.class);
-        publication.setUser(userRepository.getReferenceById(request.getUserId()));
+        publication.setUser(userRepository.getReferenceById(request.getUser()));
         publicationRepository.save(publication);
 
         List<SectionEntity> sectionEntities = new ArrayList<>();

@@ -68,10 +68,10 @@
                    formControlName="difficulty" [class.is-invalid]="(form.controls['difficulty'].touched
                   || form.controls['difficulty'].dirty) && form.controls['difficulty'].invalid">
              <option value="" selected>--Seleccionar--</option>
-             <option value="FASIL">Facil</option>
-             <option value="NORMAL">Normal</option>
-             <option value="DIFICIL">Dificil</option>
-             <option value="MUY_DIFICIL">Muy Dificil</option>
+             <option value="1">Facil</option>
+             <option value="2">Normal</option>
+             <option value="3">Dificil</option>
+             <option value="4">Muy Dificil</option>
            </select>
            <div class="invalid-feedback" *ngIf="(form.controls['difficulty'].touched || form.controls['difficulty'].dirty)
       && form.controls['difficulty'].hasError('required')">
@@ -92,7 +92,15 @@
             <div class="carousel-item " *ngFor="let p of pubImages; index as i" [class.active]="i==0">
               <img [src]="p.url || 'assets/camera.png'" class="d-block w-100">
             </div>
+            <div class="carousel-item " *ngIf="video!=''">
+              <youtube-player #youTubePlayer
+                              [videoId]="video"
+                              [width]="img1?.clientWidth||50"
+                              [height]="img1?.clientWidth||50">
+              </youtube-player>
+            </div>
           </div>
+
           <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
             <span class="bi-caret-left-fill text-black fs-1" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
@@ -109,12 +117,7 @@
 <!--          <source [src]="this.form.get('video')?.value" type='video/mp4' />-->
 <!--&lt;!&ndash;          <source [src]="this.form.get('video')?.value" type='video/webm' />&ndash;&gt;-->
 <!--        </video>-->
-        <youtube-player #youTubePlayer
-          *ngIf="video!=''"
-          [videoId]="video"
-          [width]="img1?.clientWidth||50"
-          [height]="img1?.clientWidth||50">
-        </youtube-player>
+
 
         <button class="text-center borderless bg-white"   data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar o Cambiar Foto/Video</button>
       </div>

@@ -17,13 +17,15 @@ export class AuthService {
   private subs: Subscription = new Subscription();
 
   constructor(private client: HttpClient) {
-
-
   }
 
   init() {
-    this.user = JSON.parse(localStorage.getItem("user")as string)
-    this.password = localStorage.getItem("password")as string
+    try {
+      this.user = JSON.parse(localStorage.getItem("user")as string)
+      this.password = localStorage.getItem("password")as string
+    }catch (e){
+
+    }
 
     let data:Login= {username:this.user?.username||"",password:this.password||""}
     return this.postLogin(data).pipe(

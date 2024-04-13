@@ -21,6 +21,7 @@ import {YouTubePlayer} from "@angular/youtube-player";
 export function initializeApp(initService: AuthService) {
   return () => initService.init().subscribe({
     error: err => {
+      initService.salir()
       console.log("Sin datos")
     }
   });

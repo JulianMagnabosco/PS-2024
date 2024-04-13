@@ -44,7 +44,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
       description: ["", [Validators.required]],
       type: ["", [Validators.required]],
       difficulty: ["", [Validators.required]],
-      image: [false, [Validators.required]],
+      image: [false, [Validators.requiredTrue]],
       video: [""],
       conditions: this.fb.array([]),
       materials: this.fb.array([]),
@@ -163,7 +163,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     }
 
     let data = {
-      "userId": this.userService.user?.id,
+      "user": this.userService.user?.id,
       "name": this.form.controls['name'].value,
       "description": this.form.controls['description'].value,
       "type": this.form.controls['type'].value,
@@ -220,7 +220,6 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     value=value.replace("https://www.youtube.com/watch?v=","")
       .replace("https://www.youtube.com/shorts/","")
     this.video=value.split("&")[0];
-    console.log(this.video)
   }
 
   uploadImages(sections: Section[]){
@@ -228,6 +227,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     let indexes = ""
 
     let sectionsPhoto = sections.filter((s) => s.type=="PHOTO");
+    console.log(sectionsPhoto)
 
     for (let i in sectionsPhoto){
       data.append("images",this.pubImages[i].file);
@@ -243,8 +243,6 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
         indexes += sectionsStep[i].id + "_"
       }
     }
-
-    console.log(indexes)
 
     data.append("indexes",indexes);
 
