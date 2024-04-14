@@ -14,4 +14,8 @@ public class LoginResponce {
     String email;
     String iconUrl;
     String token;
+
+    public LoginResponce(String token){
+        this.token = token;
+    }
 }

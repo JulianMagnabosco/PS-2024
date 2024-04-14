@@ -25,6 +25,10 @@ public class UserController {
                                     @RequestParam(required = false,defaultValue = "5") int size) {
         return service.getAll(text,page,size);
     }
+    @GetMapping("/name/{name}")
+    public UserDto get(@PathVariable String name) {
+        return service.getByName(name);
+    }
     @GetMapping("/{id}")
     public UserDto get(@PathVariable Long id) {
         return service.get(id);

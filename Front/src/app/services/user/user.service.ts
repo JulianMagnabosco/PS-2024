@@ -3,21 +3,24 @@ import {User} from "../../models/user/user";
 import {Observable, Subscription} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {AuthService} from "./auth.service";
+import {environment} from "../../../environments/environment";
+import {Userget} from "../../models/user/userget";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private baseUrl = this.authService.url+"user/";
+  private baseUrl = environment.apiUrl+"user/";
 
-  private subs: Subscription = new Subscription();
-
-  constructor(private client: HttpClient, private  authService:AuthService) {
+  constructor(private client: HttpClient) {
 
   }
   get(id: any){
     return this.client.get<any>(this.baseUrl + id);
+  }
+  getByName(name: any):Observable<Userget>{
+    return this.client.get<Userget>(this.baseUrl +"name/"+ name);
   }
   getAll(text: any){
     if(text!=""){

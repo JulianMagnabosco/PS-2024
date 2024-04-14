@@ -14,6 +14,6 @@ export class AppComponent {
   }
 
   salir(){
-    this.service.salir()
+    this.service.logout()
   }
 }

@@ -2,56 +2,38 @@ import { Injectable } from '@angular/core';
 import {User} from "../../models/user/user";
 import {HttpClient} from "@angular/common/http";
 import {map, Observable, Subscription} from "rxjs";
-import {Login} from "../../models/login/login";
+import {environment} from "../../../environments/environment";
+import {Userget} from "../../models/user/userget";
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  user?:User;
-  password?:string;
+  user?:Userget;
 
-  url = "http://localhost:8080/";
-  private baseUrl = this.url+"auth/";
-
-  private subs: Subscription = new Subscription();
+  private baseUrl = environment.apiUrl+"auth/";
 
   constructor(private client: HttpClient) {
   }
 
-  init() {
-    try {
-      this.user = JSON.parse(localStorage.getItem("user")as string)
-      this.password = localStorage.getItem("password")as string
-    }catch (e){
-
-    }
-
-    let data:Login= {username:this.user?.username||"",password:this.password||""}
-    return this.postLogin(data).pipe(
-      map((value) => {
-        this.user=value
-        localStorage.setItem("user",JSON.stringify(value))
-      })
-    );
+  login(token:string):string{
+    sessionStorage.setItem("app.token",token);
+    return token;
   }
-
-  login(user: User, password:string):User{
-    localStorage.setItem("user",JSON.stringify(user))
-    localStorage.setItem("password",password as string)
-    this.user= user
-    this.password=password
-    return user;
+  logout(){
+    sessionStorage.setItem("app.token","");
   }
-  postLogin(user: any):Observable<User>{
-    return this.client.post<User>(this.baseUrl + "signin", user);
+  postLogin(username: string, password:string):Observable<string>{
+    const httpOptions = {
+    headers: {
+      Authorization: 'Basic ' + window.btoa(username + ':' + password)
+    },
+  };
+    return this.client.post<string>("/signin", null, httpOptions);
   }
 
   postUser(user: any):Observable<any>{
       return this.client.post(this.baseUrl + "signup", user);
-  }
-  salir(){
-    this.user=undefined
-    localStorage.setItem("user","")
   }
 }

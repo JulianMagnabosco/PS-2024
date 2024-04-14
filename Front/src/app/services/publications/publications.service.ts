@@ -5,15 +5,15 @@ import {Observable} from "rxjs";
 import {Publication} from "../../models/publication/publication";
 import {AuthService} from "../user/auth.service";
 import {DomSanitizer} from "@angular/platform-browser";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PublicationsService {
 
-  url = this.authService.url
-  private baseUrl = this.url+"pub/";
-  constructor(private client: HttpClient, private authService:AuthService, private sanitizer: DomSanitizer) { }
+  private baseUrl = environment.apiUrl+"pub/";
+  constructor(private client: HttpClient) { }
 
   postPublication(user: any):Observable<any>{
     return this.client.post(this.baseUrl + "new", user);
@@ -24,15 +24,8 @@ export class PublicationsService {
   postCalification(data: any):Observable<any>{
     return this.client.post(this.baseUrl + "cal", data,{});
   }
-  oldsearch():Observable<any>{
-        return this.client.get(this.baseUrl + "list", {
-          headers: new HttpHeaders({'Authorization': 'Bearer ' + this.authService.user?.token})
-        })
-  }
   search(search: any):Observable<any>{
-    return this.client.post(this.baseUrl + "search",search, {
-      headers: new HttpHeaders({'Authorization': 'Bearer ' + this.authService.user?.token})
-    })
+    return this.client.post(this.baseUrl + "search",search)
   }
 
   get(id: string,user:string):Observable<any>{

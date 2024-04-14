@@ -20,8 +20,9 @@ export class TestComponent implements OnInit,OnDestroy{
   }
 
   ngOnInit(): void {
-    this.http.get("http://localhost:8080/api/v1/books", {
-      headers: new HttpHeaders({'Authorization': 'Bearer ' + this.service.user?.token})
+    let token = sessionStorage.getItem("app.token");
+    this.http.get("http://localhost:8080/ping", {
+      headers: new HttpHeaders({'Authorization': 'Bearer ' + token})
     })
     // this.subs.add(
     //   this.service.get().subscribe(

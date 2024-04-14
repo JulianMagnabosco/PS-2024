@@ -3,9 +3,10 @@ import {inject} from "@angular/core";
 import {AuthService} from "../services/user/auth.service";
 
 export const authGuard: CanActivateFn = (route, state) => {
-  const service = inject(AuthService)
+  let token = sessionStorage.getItem("app.token");
+
   const router = inject(Router)
-  if(service.user!=null){
+  if(token!="null"){
     return true
   }
   router.navigate(["/login"])
@@ -13,8 +14,9 @@ export const authGuard: CanActivateFn = (route, state) => {
 };
 
 export const authGuardLogin: CanDeactivateFn<any> = (route, state) => {
-  const service = inject(AuthService)
-  if(service.user!=null){
+  let token = sessionStorage.getItem("app.token");
+
+  if(token!="null"){
     return true
   }
   return false

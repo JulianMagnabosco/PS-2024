@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StadisticsComponent } from './components/stadistics/stadistics.component';
 import { TestComponent } from './components/test/test.component';
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {ReactiveFormsModule} from "@angular/forms";
 import {NgxEchartsDirective, provideEcharts} from "ngx-echarts";
 import { RegisterComponent } from './components/user/register/register.component';
@@ -17,15 +17,8 @@ import {AuthService} from "./services/user/auth.service";
 import {NgOptimizedImage} from "@angular/common";
 import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
 import {YouTubePlayer} from "@angular/youtube-player";
+import {authInterceptor} from "./services/user/auth.interceptor";
 
-export function initializeApp(initService: AuthService) {
-  return () => initService.init().subscribe({
-    error: err => {
-      initService.salir()
-      console.log("Sin datos")
-    }
-  });
-}
 
 @NgModule({
   declarations: [
@@ -49,13 +42,15 @@ export function initializeApp(initService: AuthService) {
         YouTubePlayer
     ],
   providers: [
-    provideEcharts(),
-    {
-      provide: APP_INITIALIZER,
-      multi: true,
-      useFactory: initializeApp,
-      deps: [AuthService]
-    }
+    {provide: HTTP_INTERCEPTORS, useFactory: authInterceptor, multi: true},
+    provideEcharts()
+    // ,
+    // {
+    //   provide: APP_INITIALIZER,
+    //   multi: true,
+    //   useFactory: initializeApp,
+    //   deps: [AuthService]
+    // }
   ],
   bootstrap: [AppComponent]
 })

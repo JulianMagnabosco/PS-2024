@@ -15,6 +15,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -42,43 +43,29 @@ public class AuthService implements UserDetailsService {
   @Value("${app.url}")
   private String url;
 
-//  public UserDto oldregister(UserRequest request){
-//    UserDto responce;
-//
-//    Optional<UserEntity> userEntityO = repository.findByEmailOrName(request.getEmail(),request.getName());
-//
-//    if(userEntityO.isPresent()){
-//      throw new IllegalArgumentException();
-//    }
-//
-//    UserEntity user = modelMapper.map(request, UserEntity.class);
-//
-//    repository.save(user);
-//    responce = modelMapper.map(user, UserDto.class);
-//
-//    return responce;
-//  }
+  public UserDto getByName(String username) {
+    UserDto responce;
 
-  public LoginResponce login(LoginRequest request){
+    UserEntity u = repository.getByUsername(username);
+    responce = modelMapper.map(u, UserDto.class);
+    responce.setIdState(u.getState().getId());
+    responce.setState(u.getState().getName());
+    responce.setIconUrl(url + "/user/image/" + u.getId());
 
-    LoginResponce r = new LoginResponce();
-    Optional<UserEntity> userEntityO = repository.findFirstByUsername(request.getUsername());
-
-    if(userEntityO.isEmpty()){
-      throw new EntityNotFoundException();
-    }
-
-    if(!request.getPassword().equals(userEntityO.get().getPassword())){
-      r.setUsername("ERROR");
-      return r;
-    }
-
-    r.setUsername("ok");
-    return r;
+    return responce;
   }
 
   @Override
   public UserDetails loadUserByUsername(String username) {
+    //        UserEntity u1 = new UserEntity();
+//        u1.setUsername("pablo");
+//        u1.setPassword(passwordEncoder.encode("pablo"));
+//    System.out.println("passp");
+//    return User.builder()
+//            .username("pablo")
+//            .password(passwordEncoder.encode("pablo"))
+//            .roles("USER")
+//            .build();
     var user = repository.findByUsername(username);
     return user;
   }
