@@ -10,14 +10,14 @@
                placeholder="Nombre o tags">
       </div>
       <div class="col-2">
-        <button class="btn btn-primary w-100 h-100" (click)="charge()">
+        <button class="btn btn-primary w-100 h-100" (click)="charge(0)">
           BUSCAR
         </button>
       </div>
     </form>
   </div>
 
-  <div class="p-1 border-orange-n rounded-2">
+  <div class="p-1 border-orange-n rounded-2 mb-1">
     <table class="table">
       <thead>
       <tr>
@@ -37,10 +37,24 @@
         <td>&#64;mdo</td>
         <td>&#64;mdo</td>
         <td class="text-center"><button class="btn btn-warning" (click)="go(u.id)">VER</button></td>
+      </tr><tr *ngIf="list.length<=0">
+        <th scope="row" class="text-end" colspan="6"> Sin datos</th>
       </tr>
       </tbody>
     </table>
   </div>
 
+  <div >
+    <ul class="pagination justify-content-center ">
+      <li class="page-item ">
+        <button class="page-link border-orange text-black" (click)="charge(page-1)">Previous</button></li>
+      <li class="page-item " *ngFor="let p of pages; ">
+        <button class="page-link " (click)="charge(p)"
+                [ngClass]="p == page ? 'bg-orange border-orange text-white':'border-orange text-black'"
+        >{{ p+1 }}</button></li>
+      <li class="page-item ">
+        <button class="page-link border-orange text-black" (click)="charge(page+1)">Next</button></li>
+    </ul>
+  </div>
 </div>
 <!--<div>{{form.value|json}}</div>-->

@@ -6,9 +6,9 @@ import {PublicationsService} from "../../../services/publications/publications.s
 import {AuthService} from "../../../services/user/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DomSanitizer} from "@angular/platform-browser";
-import {User} from "../../../models/user/user";
+import {Loginuser} from "../../../models/user/loginuser";
 import {UserService} from "../../../services/user/user.service";
-import {Userget} from "../../../models/user/userget";
+import {User} from "../../../models/user/user";
 
 @Component({
   selector: 'app-show-user',
@@ -24,7 +24,7 @@ export class ShowUserComponent  implements OnInit, OnDestroy{
 
   private subs: Subscription = new Subscription();
 
-  user:Userget={
+  user:User={
     id:"",
     username:"",
     role:"",

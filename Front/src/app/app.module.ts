@@ -1,11 +1,11 @@
-import {APP_INITIALIZER, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StadisticsComponent } from './components/stadistics/stadistics.component';
 import { TestComponent } from './components/test/test.component';
-import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {HttpClientModule, provideHttpClient, withInterceptors} from "@angular/common/http";
 import {ReactiveFormsModule} from "@angular/forms";
 import {NgxEchartsDirective, provideEcharts} from "ngx-echarts";
 import { RegisterComponent } from './components/user/register/register.component';
@@ -13,11 +13,11 @@ import { LoginComponent } from './components/user/login/login.component';
 import { ListPublicationsComponent } from './components/publications/list-publications/list-publications.component';
 import { AddPublicationComponent } from './components/publications/add-publication/add-publication.component';
 import { ShowPublicationComponent } from './components/publications/show-publication/show-publication.component';
-import {AuthService} from "./services/user/auth.service";
 import {NgOptimizedImage} from "@angular/common";
 import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
 import {YouTubePlayer} from "@angular/youtube-player";
 import {authInterceptor} from "./services/user/auth.interceptor";
+import {ListUsersComponent} from "./components/user/list-users/list-users.component";
 
 
 @NgModule({
@@ -29,7 +29,8 @@ import {authInterceptor} from "./services/user/auth.interceptor";
     LoginComponent,
     ListPublicationsComponent,
     AddPublicationComponent,
-    ShowPublicationComponent
+    ShowPublicationComponent,
+    ListUsersComponent
   ],
     imports: [
         BrowserModule,
@@ -42,7 +43,7 @@ import {authInterceptor} from "./services/user/auth.interceptor";
         YouTubePlayer
     ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useFactory: authInterceptor, multi: true},
+    provideHttpClient(withInterceptors([authInterceptor])),
     provideEcharts()
     // ,
     // {

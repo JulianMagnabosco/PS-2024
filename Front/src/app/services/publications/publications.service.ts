@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
-import {User} from "../../models/user/user";
+import {Loginuser} from "../../models/user/loginuser";
 import {HttpClient, HttpHeaders, HttpRequest} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Publication} from "../../models/publication/publication";
 import {AuthService} from "../user/auth.service";
 import {DomSanitizer} from "@angular/platform-browser";
-import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PublicationsService {
 
-  private baseUrl = environment.apiUrl+"pub/";
+  private baseUrl = "api/pub/";
   constructor(private client: HttpClient) { }
 
   postPublication(user: any):Observable<any>{

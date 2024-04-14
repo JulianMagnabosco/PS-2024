@@ -3,7 +3,6 @@ import {Subscription} from "rxjs";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {PublicationsService} from "../../../services/publications/publications.service";
 import {Router} from "@angular/router";
-import {Publication} from "../../../models/publication/publication";
 import {PublicationMin} from "../../../models/publication/publication-min";
 
 @Component({
@@ -19,15 +18,6 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
   data: any ;
 
   list: PublicationMin[] = [
-    {
-      id: 1,
-      name: "Cracion",
-      description: "Border",
-      type: "a",
-      difficulty: "Dificil",
-      calification: 1,
-      imageUrl: "https://fcb-abj-pre.s3.amazonaws.com/img/jugadors/MESSI.jpg"
-    }
   ];
   countTotal=1;
   size=3;
@@ -53,14 +43,25 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
   get pages(){
     return Array(Math.ceil(this.countTotal/this.size)).fill(0).map((x,i)=>i);
   }
+  clear(){
+    this.form.setValue({
+
+      text: "",
+      type: "NONE",
+      diffMin: "1",
+      diffMax: "4",
+      points: "0",
+      mine: false
+    })
+  }
   charge(page: number){
     this.page=page;
     if(page<0){
       this.page=0;
     }
 
-    if(page>this.countTotal/this.size){
-      this.page=Math.ceil(this.countTotal/this.size);
+    if(page>Math.ceil(this.countTotal/this.size)-1){
+      this.page=Math.ceil(this.countTotal/this.size)-1;
     }
 
     if(this.form.invalid){
@@ -87,7 +88,6 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
           next: value => {
             this.countTotal=value["countTotal"]
             this.list=value["list"]
-            console.log(Math.ceil(this.countTotal/this.size))
           },
           error: err => {
             console.log(err)

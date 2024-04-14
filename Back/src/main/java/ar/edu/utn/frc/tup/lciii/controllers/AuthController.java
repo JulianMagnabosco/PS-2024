@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
     @Autowired
     private JwtEncoder encoder;
@@ -37,7 +37,7 @@ public class AuthController {
     private ModelMapper modelMapper;
 
     @PostMapping("/signin")
-    public String auth(Authentication authentication) {
+    public LoginResponce auth(Authentication authentication) {
         Instant now = Instant.now();
         long expiry = 36000L;
         String scope = authentication.getAuthorities().stream()
@@ -50,7 +50,10 @@ public class AuthController {
                 .subject(authentication.getName())
                 .claim("scope", scope)
                 .build();
-        return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+        System.out.println(authentication.getName());
+        LoginResponce loginResponce = service.login(authentication.getName());
+        loginResponce.setToken(this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue());
+        return loginResponce;
     }
 
     @PostMapping("/signup")
@@ -59,9 +62,8 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
 
     }
-
-    @PostMapping("/prelogin")
-    public LoginResponce prelogin(@RequestBody LoginRequest request){
-        return service.login(request);
+    @GetMapping("/whatuser")
+    public LoginResponce get(Authentication authentication) {
+        return service.login(authentication.getName());
     }
 }

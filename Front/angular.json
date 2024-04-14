@@ -75,7 +75,8 @@
               "buildTarget": "PS-Front:build:production"
             },
             "development": {
-              "buildTarget": "PS-Front:build:development"
+              "buildTarget": "PS-Front:build:development",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

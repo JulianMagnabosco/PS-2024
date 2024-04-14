@@ -1,36 +1,46 @@
 import { Injectable } from '@angular/core';
-import {User} from "../../models/user/user";
+import {Loginuser} from "../../models/user/loginuser";
 import {HttpClient} from "@angular/common/http";
 import {map, Observable, Subscription} from "rxjs";
-import {environment} from "../../../environments/environment";
-import {Userget} from "../../models/user/userget";
+import {User} from "../../models/user/user";
+import {UserService} from "./user.service";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  user?:Userget;
 
-  private baseUrl = environment.apiUrl+"auth/";
+  private baseUrl = "api/auth/";
 
-  constructor(private client: HttpClient) {
+  constructor(private client: HttpClient, private userService:UserService) {
   }
 
-  login(token:string):string{
-    sessionStorage.setItem("app.token",token);
-    return token;
+  get user():Loginuser|undefined{
+
+    try {
+      return JSON.parse( sessionStorage.getItem("app.user") || "");
+    }catch (e) {
+      return undefined
+    }
+  }
+
+  login(user:Loginuser):string{
+    sessionStorage.setItem("app.user",JSON.stringify(user));
+    sessionStorage.setItem("app.token",user.token);
+    return user.token;
   }
   logout(){
+    sessionStorage.setItem("app.user","");
     sessionStorage.setItem("app.token","");
   }
-  postLogin(username: string, password:string):Observable<string>{
+  postLogin(username: string, password:string):Observable<any>{
     const httpOptions = {
-    headers: {
-      Authorization: 'Basic ' + window.btoa(username + ':' + password)
-    },
-  };
-    return this.client.post<string>("/signin", null, httpOptions);
+      headers: {
+        Authorization: 'Basic ' + window.btoa(username + ':' + password)
+      },
+    };
+    return this.client.post(this.baseUrl +"signin", null, httpOptions);
   }
 
   postUser(user: any):Observable<any>{

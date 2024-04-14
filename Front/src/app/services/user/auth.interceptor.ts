@@ -5,8 +5,8 @@ import {Router} from "@angular/router";
 import {AuthService} from "./auth.service";
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const router = inject(AuthService);
 
+  const router = inject(Router);
   let token = sessionStorage.getItem("app.token");
   if (token) {
     req = req.clone({
@@ -17,12 +17,11 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   return next(req).pipe(
-    catchError((error: HttpErrorResponse) => handleErrorRes(error))
+    catchError((error: HttpErrorResponse) => handleErrorRes(error,router))
   );
 };
 
-export function handleErrorRes(error: HttpErrorResponse): Observable<never> {
-  const router = inject(Router);
+export function handleErrorRes(error: HttpErrorResponse,router:Router): Observable<never> {
   if (error.status === 401) {
     router.navigateByUrl("/login", {replaceUrl: true});
   }

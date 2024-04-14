@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
     @Autowired
     private AuthService service;
@@ -25,18 +25,9 @@ public class UserController {
                                     @RequestParam(required = false,defaultValue = "5") int size) {
         return service.getAll(text,page,size);
     }
-    @GetMapping("/name/{name}")
-    public UserDto get(@PathVariable String name) {
-        return service.getByName(name);
-    }
     @GetMapping("/{id}")
     public UserDto get(@PathVariable Long id) {
         return service.get(id);
-    }
-    @GetMapping(value = "/image/{id}",produces = {MediaType.IMAGE_PNG_VALUE,
-            MediaType.IMAGE_JPEG_VALUE,MediaType.IMAGE_GIF_VALUE})
-    public byte[] getImage(@PathVariable Long id) {
-        return service.getImage(id);
     }
 //    @PutMapping("/mod")
 //    public UserDto getImage(@RequestBody PutUserRequest request) {

@@ -50,10 +50,11 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((authorize) -> authorize.requestMatchers("/auth/signup").permitAll()
+                .authorizeHttpRequests((authorize) -> authorize.requestMatchers("/api/auth/signup").permitAll()
+                        .requestMatchers("/api/image/**").permitAll()
                                 .anyRequest().authenticated())
-                .csrf((csrf) -> csrf.ignoringRequestMatchers("/auth/signin")
-                        .ignoringRequestMatchers("/auth/signup"))
+                .csrf((csrf) -> csrf.ignoringRequestMatchers("/api/auth/signin")
+                        .ignoringRequestMatchers("/api/auth/signup"))
                 .httpBasic(Customizer.withDefaults())
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -64,6 +65,10 @@ public class SecurityConfiguration {
         return http.build();
     }
 
+//    .authorizeHttpRequests((authorize) -> authorize.requestMatchers("/auth/signup").permitAll()
+//                                .anyRequest().authenticated())
+//                .csrf((csrf) -> csrf.ignoringRequestMatchers("/auth/signin")
+//                        .ignoringRequestMatchers("/auth/signup"))
 //    @Bean
 //    UserDetailsService users() {
 //        UserServiceImpl userService=new UserServiceImpl();

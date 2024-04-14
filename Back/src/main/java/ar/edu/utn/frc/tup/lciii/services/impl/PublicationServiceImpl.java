@@ -158,7 +158,7 @@ public class PublicationServiceImpl implements PublicationService {
             SectionEntity sectionImage = sectionRepository.findFirstByPublicationAndType(p,TypeSec.PHOTO);
             dto.setDificulty(Difficulty.values()[p.getDifficulty()].name());
             if (sectionImage != null) {
-                dto.setImageUrl(url + "/pub/image/" + sectionImage.getId());
+                dto.setImageUrl(url + "/api/image/pub/" + sectionImage.getId());
             }
             list.add(dto);
         }
@@ -206,7 +206,7 @@ public class PublicationServiceImpl implements PublicationService {
         for (SectionEntity s : sectionRepository.findAllByPublication(p)) {
             SectionDto r = modelMapper.map(s, SectionDto.class);
             if (s.getImage() != null) {
-                r.setImageUrl(url + "/pub/image/" + r.getId());
+                r.setImageUrl(url + "/api/image/pub/" + r.getId());
             }
             sections.add(r);
         }

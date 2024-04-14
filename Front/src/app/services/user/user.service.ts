@@ -1,26 +1,22 @@
 import { Injectable } from '@angular/core';
-import {User} from "../../models/user/user";
+import {Loginuser} from "../../models/user/loginuser";
 import {Observable, Subscription} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {AuthService} from "./auth.service";
-import {environment} from "../../../environments/environment";
-import {Userget} from "../../models/user/userget";
+import {User} from "../../models/user/user";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private baseUrl = environment.apiUrl+"user/";
+  private baseUrl = "api/user/";
 
   constructor(private client: HttpClient) {
 
   }
   get(id: any){
     return this.client.get<any>(this.baseUrl + id);
-  }
-  getByName(name: any):Observable<Userget>{
-    return this.client.get<Userget>(this.baseUrl +"name/"+ name);
   }
   getAll(text: any){
     if(text!=""){

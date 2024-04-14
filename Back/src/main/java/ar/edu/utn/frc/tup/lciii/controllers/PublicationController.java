@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pub")
+@RequestMapping("/api/pub")
 public class PublicationController {
     @Autowired
     PublicationService publicationService;
@@ -49,12 +49,6 @@ public class PublicationController {
         return publicationService.get(id,userId);
     }
 
-
-    @GetMapping(value = "/image/{id}", produces = {MediaType.IMAGE_JPEG_VALUE,
-                                MediaType.IMAGE_PNG_VALUE,MediaType.IMAGE_GIF_VALUE})
-    public byte[] getImage(@PathVariable Long id) throws EntityNotFoundException {
-        return publicationService.getImage(id);
-    }
 
     //Delete
     @DeleteMapping("/{id}")

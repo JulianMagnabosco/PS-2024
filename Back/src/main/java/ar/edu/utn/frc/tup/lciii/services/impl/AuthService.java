@@ -43,14 +43,15 @@ public class AuthService implements UserDetailsService {
   @Value("${app.url}")
   private String url;
 
-  public UserDto getByName(String username) {
-    UserDto responce;
+  public LoginResponce login(String username) {
+    LoginResponce responce = new LoginResponce();
 
     UserEntity u = repository.getByUsername(username);
-    responce = modelMapper.map(u, UserDto.class);
-    responce.setIdState(u.getState().getId());
-    responce.setState(u.getState().getName());
-    responce.setIconUrl(url + "/user/image/" + u.getId());
+    responce.setId(u.getId());
+    responce.setUsername(u.getUsername());
+    responce.setEmail(u.getEmail());
+    responce.setRole(u.getRole().toString());
+    responce.setIconUrl(url + "/api/image/user/" + u.getId());
 
     return responce;
   }
@@ -95,7 +96,7 @@ public class AuthService implements UserDetailsService {
         UserDto r = modelMapper.map(u, UserDto.class);
         r.setIdState(u.getState().getId());
         r.setState(u.getState().getName());
-        r.setIconUrl(url + "/user/image/" + u.getId());
+        r.setIconUrl(url + "/api/image/user/" + u.getId());
         list.add(r);
       }
     }
@@ -119,7 +120,7 @@ public class AuthService implements UserDetailsService {
     responce = modelMapper.map(u, UserDto.class);
     responce.setIdState(u.getState().getId());
     responce.setState(u.getState().getName());
-    responce.setIconUrl(url + "/user/image/" + u.getId());
+    responce.setIconUrl(url + "/api/image/user/" + u.getId());
 
     return responce;
   }
