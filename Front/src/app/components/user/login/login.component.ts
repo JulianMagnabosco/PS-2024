@@ -47,14 +47,17 @@ export class LoginComponent implements OnInit,OnDestroy {
       this.service.postLogin(username,password).subscribe(
         {
           next: value => {
-            alert("Inicio de secion éxitoso");
+            // alert("Inicio de secion éxitoso");
             this.service.login(value)
 
             this.router.navigate(["/explore"])
           },
           error: err => {
-            console.log(err)
-            alert("Hubo un error");
+            if(err["status"]==401){
+              alert("No existe usuario con esas credenciales")
+            }else {
+              alert("Error inesperado")
+            }
           }
         }
       )

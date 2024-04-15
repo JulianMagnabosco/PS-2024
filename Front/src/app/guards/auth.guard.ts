@@ -6,7 +6,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   let token = sessionStorage.getItem("app.token");
 
   const router = inject(Router)
-  if(token!="null"){
+  if(token){
     return true
   }
   router.navigate(["/login"])
@@ -16,7 +16,7 @@ export const authGuard: CanActivateFn = (route, state) => {
 export const authGuardLogin: CanDeactivateFn<any> = (route, state) => {
   let token = sessionStorage.getItem("app.token");
 
-  if(token!="null"){
+  if(token){
     return true
   }
   return false

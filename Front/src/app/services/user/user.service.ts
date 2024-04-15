@@ -25,4 +25,7 @@ export class UserService {
       return this.client.get<any>(this.baseUrl + "list");
     }
   }
+  put(data: any){
+    return this.client.get<any>(this.baseUrl + "mod", data);
+  }
 }

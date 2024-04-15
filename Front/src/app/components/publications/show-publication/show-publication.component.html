@@ -2,7 +2,7 @@
 <div class="container mt-4">
   <div class=" mt-4 p-3 bg-light rounded-5 border border-warning-subtle border-5 d-flex justify-content-between"
   *ngIf="userService.user?.id==publication.userId.toString()">
-    <span class="fs-3">Editar:</span>
+    <span class="fs-5 align-content-center">Editar:</span>
     <span>
       <button class="btn btn-warning me-1">MODIFICAR</button>
       <button class="btn btn-danger" (click)="delete()">ELIMINAR</button>
@@ -22,6 +22,11 @@
             <div class="col-auto rounded-3 bg-danger px-1">
               {{publication.difficulty}}
             </div>
+          </div>
+          <div class="mb-2 p-1 me-1 btn" (click)="goUser()">
+            <img [src]="publication.userIconUrl" *ngIf="publication.userIconUrl!=''"
+                 style="width: 50px; height: 50px;" class="rounded-circle">
+            <span>{{publication.username}}</span>
           </div>
           <div class="mb-2 p-1 me-1 rounded-2 bg-body-secondary">
             {{publication.description }}

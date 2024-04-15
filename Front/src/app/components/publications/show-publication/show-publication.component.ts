@@ -16,6 +16,7 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
   private subs: Subscription = new Subscription();
 
   publication:Publication={
+    userIconUrl: "", username: "",
     id: 1,
     name: "",
     description: "",
@@ -41,15 +42,15 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
     this.subs.unsubscribe();
   }
 
-  imageGet(baseImage:any){
-    // let retrieveResonse = baseImage;
-    // let base64Data = retrieveResonse.picByte;
-    // return  'data:image/png;base64,' + base64Data;
-    console.log(JSON.stringify(baseImage));
-    let objectURL = 'data:image/png;base64,' + baseImage;
-
-    return  this.sanitizer.bypassSecurityTrustUrl(objectURL);
-  }
+  // imageGet(baseImage:any){
+  //   // let retrieveResonse = baseImage;
+  //   // let base64Data = retrieveResonse.picByte;
+  //   // return  'data:image/png;base64,' + base64Data;
+  //   console.log(JSON.stringify(baseImage));
+  //   let objectURL = 'data:image/png;base64,' + baseImage;
+  //
+  //   return  this.sanitizer.bypassSecurityTrustUrl(objectURL);
+  // }
 
   get photos(){
     return this.publication.sections.filter((s) => s.type=="PHOTO")
@@ -83,6 +84,10 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
         }
       )
     );
+  }
+
+  goUser(){
+    this.router.navigate(["/user/"+this.publication.userId])
   }
 
   charge(){

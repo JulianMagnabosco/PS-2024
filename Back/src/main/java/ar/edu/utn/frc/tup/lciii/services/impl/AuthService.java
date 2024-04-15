@@ -7,6 +7,7 @@ import ar.edu.utn.frc.tup.lciii.dtos.LoginResponce;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.PutUserRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.UserRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.UserDto;
+import ar.edu.utn.frc.tup.lciii.entities.StateEntity;
 import ar.edu.utn.frc.tup.lciii.entities.UserEntity;
 import ar.edu.utn.frc.tup.lciii.repository.StateRepository;
 import ar.edu.utn.frc.tup.lciii.repository.UserRepository;
@@ -74,7 +75,7 @@ public class AuthService implements UserDetailsService {
   public UserDetails signUp(UserRequest data) {
 
     if (repository.findByUsername(data.getUsername()) != null) {
-      throw new EntityNotFoundException();
+      throw new RuntimeException("Username alredy exists");
     }
 
     String encryptedPassword = new BCryptPasswordEncoder().encode(data.getPassword());
@@ -137,19 +138,24 @@ public class AuthService implements UserDetailsService {
   public UserDto put(String requestRaw, MultipartFile icon) throws IOException {
 
     PutUserRequest request = objectMapper.readValue(requestRaw, PutUserRequest.class);
-    UserEntity u = repository.getReferenceById(request.getId());
+    UserEntity user = repository.getReferenceById(request.getId());
+    UserEntity newUser = modelMapper.map(request, UserEntity.class);
 
-    if (u == null) {
-      throw new EntityNotFoundException();
-    }
-    u = modelMapper.map(request, UserEntity.class);
     if(request.isChangePass()){
       String encryptedPassword = new BCryptPasswordEncoder().encode(request.getPassword());
-      u.setPassword(encryptedPassword);
+      newUser.setPassword(encryptedPassword);
+    }else {
+      newUser.setPassword(user.getPassword());
     }
-    u.setIcon(icon.getBytes());
-    repository.save(u);
-    return get(u.getId());
+    newUser.setRole(user.getRole());
+    if(!user.getState().getId().equals(request.getIdState())){
+      StateEntity state = stateRepository.getReferenceById(request.getIdState());
+      newUser.setState(state);
+    }
+    newUser.setIcon(icon.getBytes());
+
+    repository.save(newUser);
+    return get(newUser.getId());
   }
 
 }

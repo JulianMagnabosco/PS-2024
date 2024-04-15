@@ -17,6 +17,8 @@ public class PublicationDto {
     String name;
     String description;
     Long userId;
+    String username;
+    String userIconUrl;
     String type;
     String difficulty;
     String calification;

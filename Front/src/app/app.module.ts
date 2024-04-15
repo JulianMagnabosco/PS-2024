@@ -18,6 +18,8 @@ import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
 import {YouTubePlayer} from "@angular/youtube-player";
 import {authInterceptor} from "./services/user/auth.interceptor";
 import {ListUsersComponent} from "./components/user/list-users/list-users.component";
+import {ShowUserComponent} from "./components/user/show-user/show-user.component";
+import {ModUserComponent} from "./components/user/mod-user/mod-user.component";
 
 
 @NgModule({
@@ -30,7 +32,9 @@ import {ListUsersComponent} from "./components/user/list-users/list-users.compon
     ListPublicationsComponent,
     AddPublicationComponent,
     ShowPublicationComponent,
-    ListUsersComponent
+    ListUsersComponent,
+    ShowUserComponent,
+    ModUserComponent
   ],
     imports: [
         BrowserModule,

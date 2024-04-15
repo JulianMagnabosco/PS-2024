@@ -12,11 +12,6 @@ import {User} from "../../../models/user/user";
 
 @Component({
   selector: 'app-show-user',
-  standalone: true,
-    imports: [
-        NgForOf,
-        NgIf
-    ],
   templateUrl: './show-user.component.html',
   styleUrl: './show-user.component.css'
 })

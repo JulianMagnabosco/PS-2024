@@ -75,7 +75,7 @@ export class ListUsersComponent implements OnInit,OnDestroy {
   }
 
   go(id:string){
-    this.router.navigate(["/pub/"+id])
+    this.router.navigate(["/user/"+id])
 
   }
 }
