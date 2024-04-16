@@ -21,14 +21,14 @@ h1, .space-text{
   background-color: rgba(241, 232, 232, 0);
 }
 
-.border-orange-n{
-  border: 3px solid #f6751e;
-}
-
 .border-orange{
   border: 3px solid #f6751e;
 }
-.border-orange:hover{
+
+.button-orange{
+  border: 3px solid #f6751e;
+}
+.button-orange:hover{
    border: 3px solid #f6cb1e;
  }
 

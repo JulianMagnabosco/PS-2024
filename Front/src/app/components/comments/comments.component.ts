@@ -21,8 +21,27 @@ export class CommentsComponent implements OnInit, OnDestroy{
   @Input() idUser:any;
   @Input() idPub:any;
 
-  list:Comment[]=[];
+  list:Comment[]=[{
+    id: 1,
+    pub: 1,
+    userId: 1,
+    username: 'PAblo',
+    userIconUrl: '',
+    text: 'Comentario1',
+    fatherText: '',
+    childs: [{
+      id: 2,
+      pub: 1,
+      userId: 1,
+      username: 'Roller',
+      userIconUrl: '',
+      text: 'Comentario2',
+      fatherText: '',
+      childs: []
+    }]
+  }];
   countTotal:number=0;
+  textList:string[]=[];
 
   form: FormGroup = this.fb.group({});
   constructor(private fb: FormBuilder,private service: CommentService) {
@@ -32,39 +51,55 @@ export class CommentsComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(): void {
-    this.subs.add(
-      this.service.getAll(this.idPub).subscribe(
-        {
-          next: value => {
-            this.countTotal=value["countTotal"]
-            this.list=value["list"]
-          }
-        }
-      )
-    )
+    this.charge();
   }
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
 
-  submit(){
+  charge(){
+
+    this.subs.add(
+      this.service.getAll(this.idPub).subscribe(
+        {
+          next: value => {
+            this.countTotal=value["countTotal"]
+            this.textList.fill("",0,this.countTotal-1)
+            this.list=value["list"]
+            console.log(value["list"])
+          }
+        }
+      )
+    )
+  }
+  submit(textInput:HTMLElement|null, id:number, grandid:number){
+    if(!textInput){
+      return
+    }
+    if(!(textInput instanceof HTMLInputElement)){
+      return
+    }
+
     let data = {
       "pub":this.idPub,
-      "userId":this.idUser,
-      "text":this.form.controls["text"].value
+      "user":this.idUser,
+      "father":id,
+      "grandfather":grandid,
+      "text":textInput.value
     }
 
     this.subs.add(
       this.service.post(data).subscribe(
         {
           next: value => {
-            this.countTotal=value["countTotal"]
-            this.list=value["list"]
+            this.charge();
+            textInput.value=""
           }
         }
       )
     )
   }
 
+  protected readonly document = document;
 }

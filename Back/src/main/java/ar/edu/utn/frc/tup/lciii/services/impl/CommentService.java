@@ -34,7 +34,12 @@ public class CommentService {
         CommentEntity comment = new CommentEntity();
         comment.setPublication(publicationRepository.getReferenceById(request.getPub()));
         comment.setUser(userRepository.getReferenceById(request.getUser()));
-        comment.setFather(commentRepository.getReferenceById(request.getFather()));
+        if(request.getFather()!=0){
+            comment.setFather(commentRepository.getReferenceById(request.getFather()));
+        }
+        if(request.getGrandfather()!=0){
+            comment.setGrandfather(commentRepository.getReferenceById(request.getGrandfather()));
+        }
         comment.setText(request.getText());
         commentRepository.save(comment);
         return modelMapper.map(comment,CommentDto.class);
@@ -47,22 +52,27 @@ public class CommentService {
         for (CommentEntity c : commentRepository.findAllByPublication_Id(id)) {
             if(c.getFather()==null){
                 List<CommentDto> childs = new ArrayList<>();
-                for (CommentEntity cc : commentRepository.findAllByFather_Id(c.getId())) {
+                for (CommentEntity cc : commentRepository.findAllByGrandfather_Id(c.getId())) {
                     childs.add(new CommentDto(
+                            cc.getId(),
                             cc.getPublication().getId(),
                             cc.getUser().getId(),
                             cc.getUser().getUsername(),
                             url + "/api/image/user/" + cc.getUser().getId(),
-                            cc.getText(), null
+                            cc.getText(),
+                            cc.getFather().getText(),
+                            null
                             ));
                     countTotal++;
                 }
                 list.add(new CommentDto(
+                        c.getId(),
                         c.getPublication().getId(),
                         c.getUser().getId(),
                         c.getUser().getUsername(),
                         url + "/api/image/user/" + c.getUser().getId(),
                         c.getText(),
+                        null,
                         childs
                 ));
                 countTotal++;

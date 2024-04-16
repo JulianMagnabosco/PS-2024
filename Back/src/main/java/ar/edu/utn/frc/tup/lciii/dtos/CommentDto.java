@@ -10,10 +10,12 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class CommentDto {
+    Long id;
     Long pub;
     Long userId;
     String username;
     String userIconUrl;
     String text;
+    String fatherText;
     List<CommentDto> childs;
 }

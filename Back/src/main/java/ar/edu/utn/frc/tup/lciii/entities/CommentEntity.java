@@ -23,6 +23,9 @@ public class CommentEntity {
     @JoinColumn(name="idFather")
     CommentEntity father;
     @ManyToOne
+    @JoinColumn(name="idGrandfather")
+    CommentEntity grandfather;
+    @ManyToOne
     @JoinColumn(name="idPublication")
     PublicationEntity publication;
 }
