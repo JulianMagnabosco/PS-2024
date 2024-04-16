@@ -121,7 +121,10 @@ public class AuthService implements UserDetailsService {
     responce = modelMapper.map(u, UserDto.class);
     responce.setIdState(u.getState().getId());
     responce.setState(u.getState().getName());
-    responce.setIconUrl(url + "/api/image/user/" + u.getId());
+    responce.setIconUrl("");
+    if(u.getIcon()!=null && u.getIcon().length>0){
+      responce.setIconUrl(url + "/api/image/user/" + u.getId());
+    }
 
     return responce;
   }
@@ -152,7 +155,9 @@ public class AuthService implements UserDetailsService {
       StateEntity state = stateRepository.getReferenceById(request.getIdState());
       newUser.setState(state);
     }
-    newUser.setIcon(icon.getBytes());
+    if(icon!=null){
+      newUser.setIcon(icon.getBytes());
+    }
 
     repository.save(newUser);
     return get(newUser.getId());

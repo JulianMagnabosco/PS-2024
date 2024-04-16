@@ -227,15 +227,16 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     let indexes = ""
 
     let sectionsPhoto = sections.filter((s) => s.type=="PHOTO");
+    let sectionsStep = sections.filter((s) => s.type=="STEP")
+      .sort((a,b) => a.number-b.number);
+
     console.log(sectionsPhoto)
+    console.log(sectionsStep)
 
     for (let i in sectionsPhoto){
       data.append("images",this.pubImages[i].file);
       indexes += sectionsPhoto[i].id + "_"
     }
-
-    let sectionsStep = sections.filter((s) => s.type=="STEP")
-      .sort((a,b) => a.number-b.number);
 
     for (let i in sectionsStep){
       if(this.detailsSteps.controls[i].value["image"]){
@@ -245,6 +246,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     }
 
     data.append("indexes",indexes);
+    console.log(indexes)
 
     this.subs.add(
       this.service.postImages(data).subscribe(

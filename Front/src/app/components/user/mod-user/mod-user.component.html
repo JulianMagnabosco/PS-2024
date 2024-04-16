@@ -1,107 +1,205 @@
-
 <div class="container mt-4">
 
-  <div class="mt-4 d-flex position-relative">
-    <h1 class="fs-3 position-absolute top-50 start-50 translate-middle">MODIFICAR</h1>
+  <div class="mt-4 d-flex justify-content-between">
+    <h1 class="fs-3">MODIFICAR</h1>
 
     <span>
-      <button class="btn btn-warning me-1" (click)="submit()">GUARDAR PERFIL</button>
+      <button class="btn btn-primary me-1" (click)="submit()">GUARDAR PERFIL</button>
     </span>
   </div>
-  <div class=" mt-4 p-3 px-5 bg-light rounded-5 border border-warning-subtle border-5">
-    <form [formGroup]="form" class="row g-3">
+  <div class=" mt-4 p-5 bg-light rounded-5 border border-warning-subtle border-5">
+    <form [formGroup]="form" class="g-3">
 
-    <div class="row mb-3">
+      <div class="row mb-3">
         <div class="col-sm-8">
-          <div class="bg-orange ">
-            <input type="text" formControlName="name" class="form-control" id="nameInput"
-                   [class.is-invalid]="(form.controls['name'].touched || form.controls['name'].dirty)
-      && form.controls['name'].invalid">
-            <div class="invalid-feedback" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)
-      && form.controls['name'].hasError('required')">
-              El nombre es requerido.
+          <div class="bg-orange rounded-2 border mb-3"
+               [class.border-danger]="(form.controls['username'].touched || form.controls['username'].dirty)
+                && form.controls['username'].invalid">
+            <label class="fs-6 fw-bold px-2" for="usernameInput">Nombre de usuario</label>
+            <input type="text" formControlName="username" class="form-control bg-orange
+              border-transparent" id="usernameInput" placeholder="---"
+                   [class.fst-italic]="form.controls['username'].value!=user.username">
+
+            <div class="px-1 text-danger fs-6 fst-italic" *ngIf="(form.controls['username'].touched || form.controls['username'].dirty)
+              && form.controls['username'].hasError('required')">
+              El nombre de usuario es requerido.
             </div>
-            <div class="invalid-feedback" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)
-      && form.controls['name'].hasError('maxlength')">
+            <div class="invalid-feedback" *ngIf="(form.controls['username'].touched || form.controls['username'].dirty)
+      && form.controls['username'].hasError('maxlength')">
               El nombre no puede superar los 50 caracteres.
             </div>
-            <label class="fs-6 fw-bold" for="nameInput">Nombre de usuario</label>
           </div>
 
-          <div class="form-floating">
-            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-            <label for="floatingInput">Email address</label>
+          <div class="bg-orange rounded-2 border mb-3"
+               [class.border-danger]="(form.controls['email'].touched || form.controls['email'].dirty)
+                && form.controls['email'].invalid">
+            <label class="fs-6 fw-bold px-2" for="emailInput">Email</label>
+            <input type="text" formControlName="email" class="form-control bg-orange
+              border-transparent" id="emailInput" placeholder="---"
+                   [class.fst-italic]="form.controls['email'].value!=user.email">
+
+            <div class="px-1 text-danger fs-6 fst-italic"
+                 *ngIf="(form.controls['email'].touched || form.controls['email'].dirty)
+              && form.controls['email'].hasError('required')">
+              El email es requerido.
+            </div>
+            <div class="invalid-feedback" *ngIf="(form.controls['email'].touched || form.controls['email'].dirty)
+      && form.controls['email'].hasError('email')">
+              El tiene formato invalido.
+            </div>
           </div>
 
         </div>
         <div class="col-sm-4">
           <div class="border-orange-n border-5 rounded-2 p-1">
-            <img [src]="user.iconUrl || 'assets/camera.png'" class="d-block w-100">
+
+            <img [src]="'assets/camera.png'" class="d-block w-100"
+            *ngIf="form.controls['icon'].value">
+
+            <img [src]="iconUrl" class="d-block w-100"
+            *ngIf="!form.controls['icon'].value">
+
+            <button class="text-center borderless bg-white" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">Agregar o Cambiar Foto de perfil
+            </button>
           </div>
         </div>
       </div>
 
-      <h5 >Datos de entrega</h5>
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Seleccionar imagen de perfil</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <label for="formFile" class="form-label">Imagen</label>
+              <input class="form-control form-control-sm col mb-1" type="file" id="formFile"
+                     accept="image/png, image/jpeg"
+                     (change)="selectIcon($event)">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h5>Datos de entrega</h5>
 
       <div class="d-flex justify-content-between">
         <div class="col-6 p-2">
-          <div class="px-3 rounded-3 bg-orange">
-            <div class="fs-6 fw-bold">Nombre</div>
-            <div class="fs-5 pb-2">{{user.name }}</div>
+          <div class="bg-orange rounded-2 border"
+               [class.border-danger]="(form.controls['name'].touched || form.controls['name'].dirty)
+                && form.controls['name'].invalid">
+            <label class="fs-6 fw-bold px-2" for="nameInput">Nombre</label>
+            <input type="text" formControlName="name" class="form-control bg-orange
+              border-transparent" id="nameInput" placeholder="---"
+                   [class.fst-italic]="form.controls['name'].value!=user.name">
+
+
+            <div class="invalid-feedback" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)
+      && form.controls['name'].hasError('maxlenght')">
+              El nombre es muy largo.
+            </div>
           </div>
         </div>
 
         <div class="col-6 p-2">
-          <div class="px-3 rounded-3 bg-orange">
-            <div class="fs-6 fw-bold">Apellido/s</div>
-            <div class="fs-5 pb-2">{{user.lastname }}</div></div>
+          <div class="bg-orange rounded-2 border"
+               [class.border-danger]="(form.controls['lastname'].touched || form.controls['lastname'].dirty)
+                && form.controls['lastname'].invalid">
+            <label class="fs-6 fw-bold px-2" for="lastnameInput">Apellido/s</label>
+            <input type="text" formControlName="lastname" class="form-control bg-orange
+              border-transparent" id="lastnameInput" placeholder="---"
+                   [class.fst-italic]="form.controls['lastname'].value!=user.lastname">
+
+            <div class="invalid-feedback" *ngIf="(form.controls['lastname'].touched || form.controls['lastname'].dirty)
+      && form.controls['lastname'].hasError('maxlenght')">
+              El apellido es muy largo.
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="d-flex p-2">
-        <div class="col-4 px-3 rounded-3 bg-orange">
-          <div class="fs-6 fw-bold">Provincia</div>
-          <div class="fs-5 pb-2">{{user.state }}</div>
+        <div class="bg-orange rounded-2 border"
+             [class.border-danger]="(form.controls['state'].touched || form.controls['state'].dirty)
+                && form.controls['state'].invalid">
+          <label class="fs-6 fw-bold px-2" for="stateInput">Provincia</label>
+          <select formControlName="state" class="form-select bg-orange
+              border-transparent" id="stateInput"
+                 [class.fst-italic]="form.controls['lastname'].value!=user.lastname">
+            <option value="0">---</option>
+            <option value="1">CÓRDOBA</option>
+          </select>
+          <div class="invalid-feedback" *ngIf="(form.controls['lastname'].touched || form.controls['lastname'].dirty)
+      && form.controls['state'].hasError('state')">
+            El apellido es muy largo.
+          </div>
         </div>
-
       </div>
 
       <div class="d-flex justify-content-between mb-2">
         <div class="col p-2">
-          <div class="px-3 rounded-3 bg-orange">
-            <div class="fs-6 fw-bold">Direccion o calle</div>
-            <div class="fs-5 pb-2">{{user.direction||"--" }}</div>
+          <div class="bg-orange rounded-2 border"
+               [class.border-danger]="(form.controls['direction'].touched || form.controls['direction'].dirty)
+                && form.controls['direction'].invalid">
+            <label class="fs-6 fw-bold px-2" for="directionInput">Direccion o calle</label>
+            <input type="text" formControlName="direction" class="form-control bg-orange
+              border-transparent" id="directionInput" placeholder="---"
+                   [class.fst-italic]="form.controls['direction'].value!=user.direction">
+
           </div>
         </div>
 
         <div class="col-4 p-2">
-          <div class="px-3 rounded-3 bg-orange">
-            <div class="fs-6 fw-bold">Numero</div>
-            <div class="fs-5 pb-2">{{user.numberDir||"--" }}</div>
+          <div class="bg-orange rounded-2 border"
+               [class.border-danger]="(form.controls['numberDir'].touched || form.controls['numberDir'].dirty)
+                && form.controls['numberDir'].invalid">
+            <label class="fs-6 fw-bold px-2" for="numberDirInput">Número</label>
+            <input type="text" formControlName="direction" class="form-control bg-orange
+              border-transparent" id="numberDirInput" placeholder="---"
+                   [class.fst-italic]="form.controls['numberDir'].value!=user.numberDir">
           </div>
         </div>
       </div>
 
       <div class="d-flex justify-content-between mb-2">
         <div class="col-4 p-2">
-          <div class="px-3 rounded-3 bg-orange">
-            <div class="fs-6 fw-bold">Codigo Postal</div>
-            <div class="fs-5 pb-2">{{user.postalNum||"--" }}</div>
+          <div class="bg-orange rounded-2 border"
+               [class.border-danger]="(form.controls['postalNum'].touched || form.controls['postalNum'].dirty)
+                && form.controls['postalNum'].invalid">
+            <label class="fs-6 fw-bold px-2" for="postalNumInput">Codigo Postal</label>
+            <input type="text" formControlName="postalNum" class="form-control bg-orange
+              border-transparent" id="postalNumInput" placeholder="---"
+                   [class.fst-italic]="form.controls['postalNum'].value!=user.postalNum">
           </div>
         </div>
 
 
         <div class="col-4 p-2">
-          <div class="px-3 rounded-3 bg-orange">
-            <div class="fs-6 fw-bold">Piso</div>
-            <div class="fs-5 pb-2">{{user.floor||"--" }}</div></div>
+          <div class="bg-orange rounded-2 border"
+               [class.border-danger]="(form.controls['floor'].touched || form.controls['floor'].dirty)
+                && form.controls['floor'].invalid">
+            <label class="fs-6 fw-bold px-2" for="floorInput">Piso</label>
+            <input type="text" formControlName="floor" class="form-control bg-orange
+              border-transparent" id="floorInput" placeholder="---"
+                   [class.fst-italic]="form.controls['floor'].value!=user.floor">
+          </div>
         </div>
 
 
         <div class="col-4 p-2">
-          <div class="px-3 rounded-3 bg-orange">
-            <div class="fs-6 fw-bold">Habitacion</div>
-            <div class="fs-5 pb-2">{{user.room||"--" }}</div></div>
+          <div class="bg-orange rounded-2 border"
+               [class.border-danger]="(form.controls['room'].touched || form.controls['room'].dirty)
+                && form.controls['room'].invalid">
+            <label class="fs-6 fw-bold px-2" for="roomInput">Habitacion</label>
+            <input type="text" formControlName="room" class="form-control bg-orange
+              border-transparent" id="roomInput" placeholder="---"
+                   [class.fst-italic]="form.controls['room'].value!=user.room">
+          </div>
         </div>
       </div>
 

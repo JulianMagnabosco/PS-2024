@@ -34,8 +34,8 @@ public class UserController {
 //        return service.put(request);
 //    }
     @PutMapping(value = "/mod", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public UserDto put(@RequestParam("icon") MultipartFile[] icon,
+    public UserDto put(@RequestParam(value = "icon",required = false) MultipartFile icon,
                              @RequestParam("data") String data) throws IOException {
-        return service.put(data,icon[0]);
+        return service.put(data,icon);
     }
 }

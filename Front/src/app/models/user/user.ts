@@ -7,6 +7,7 @@ export interface User {
   token:string;
   name:string ;
   lastname:string ;
+  idState:string ;
   state:string ;
   direction:string ;
   numberDir:string ;

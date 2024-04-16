@@ -26,7 +26,8 @@ export class ShowUserComponent  implements OnInit, OnDestroy{
     email:"",
     iconUrl:"",
     token:"",
-    direction: "", floor: "", lastname: "", name: "", numberDir: "", postalNum: "", room: "", state: ""
+    direction: "", floor: "", lastname: "", name: "", numberDir: "", postalNum: "", room: "", state: "",
+    idState:""
   };
   constructor(private service: UserService,
               private activeRoute:ActivatedRoute, private router: Router) {

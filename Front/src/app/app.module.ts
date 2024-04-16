@@ -20,6 +20,7 @@ import {authInterceptor} from "./services/user/auth.interceptor";
 import {ListUsersComponent} from "./components/user/list-users/list-users.component";
 import {ShowUserComponent} from "./components/user/show-user/show-user.component";
 import {ModUserComponent} from "./components/user/mod-user/mod-user.component";
+import {CommentsComponent} from "./components/comments/comments.component";
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import {ModUserComponent} from "./components/user/mod-user/mod-user.component";
     ShowPublicationComponent,
     ListUsersComponent,
     ShowUserComponent,
-    ModUserComponent
+    ModUserComponent,
+    CommentsComponent
   ],
     imports: [
         BrowserModule,

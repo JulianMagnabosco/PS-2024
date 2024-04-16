@@ -42,3 +42,7 @@ h1, .space-text{
 .bg-orange{
   background-color: #ffd1b7;
 }
+
+.border-transparent{
+  border: 3px solid rgba(255, 255, 255, 0);
+}

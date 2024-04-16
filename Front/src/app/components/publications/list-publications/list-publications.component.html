@@ -91,8 +91,10 @@
         <h5 class="text-secondary">{{ p.difficulty }}</h5>
       </div>
       <div class="position-relative">
-        <img [src]="p.imageUrl" class="card-img-top" [alt]="p.name" style=" max-height: 15rem;">
-        <span class="position-absolute bottom-0 start-0 rounded-pill text-bg-secondary p-1 text-warning">
+        <img [src]="p.imageUrl" class="card-img-top" [alt]="p.name" style=" max-height: 15rem;"
+             *ngIf="p.imageUrl!=''">
+        <span class="position-absolute bottom-0 start-0 rounded-pill text-bg-secondary p-1 text-warning"
+        *ngIf="p.calification!=0">
           <i class="bi bi-star-fill" *ngFor="let s of [].constructor(p.calification)"></i>
         </span>
       </div>
