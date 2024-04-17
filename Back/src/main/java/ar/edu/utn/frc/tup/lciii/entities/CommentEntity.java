@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Data
 @Table(name = "comments")
@@ -28,4 +30,6 @@ public class CommentEntity {
     @ManyToOne
     @JoinColumn(name="idPublication")
     PublicationEntity publication;
+    @OneToMany(mappedBy="father")
+    List<CommentEntity> childs;
 }

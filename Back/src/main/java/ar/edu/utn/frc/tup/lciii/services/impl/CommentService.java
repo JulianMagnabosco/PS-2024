@@ -51,8 +51,15 @@ public class CommentService {
         int countTotal=0;
         for (CommentEntity c : commentRepository.findAllByPublication_Id(id)) {
             if(c.getFather()==null){
+//                if(c.isDeleted() && c.getChilds().isEmpty()){
+//                    continue;
+//                }
+
                 List<CommentDto> childs = new ArrayList<>();
                 for (CommentEntity cc : commentRepository.findAllByGrandfather_Id(c.getId())) {
+//                    if(cc.isDeleted() && cc.getChilds().isEmpty()){
+//                        continue;
+//                    }
                     childs.add(new CommentDto(
                             cc.getId(),
                             cc.getPublication().getId(),
@@ -61,10 +68,15 @@ public class CommentService {
                             url + "/api/image/user/" + cc.getUser().getId(),
                             cc.getText(),
                             cc.getFather().getText(),
-                            null
+                            null,
+                            cc.isDeleted()
                             ));
                     countTotal++;
                 }
+
+//                if(c.isDeleted() && childs.isEmpty()){
+//                    continue;
+//                }
                 list.add(new CommentDto(
                         c.getId(),
                         c.getPublication().getId(),
@@ -73,7 +85,8 @@ public class CommentService {
                         url + "/api/image/user/" + c.getUser().getId(),
                         c.getText(),
                         null,
-                        childs
+                        childs,
+                        c.isDeleted()
                 ));
                 countTotal++;
             }
@@ -82,5 +95,13 @@ public class CommentService {
         responce.setList(list);
         responce.setCountTotal(countTotal);
         return responce;
+    }
+
+    public boolean delete(Long id){
+        CommentEntity comment = commentRepository.getReferenceById(id);
+        comment.setDeleted(true);
+        comment.setText("<Comentario eliminado>");
+        commentRepository.save(comment);
+        return true;
     }
 }

@@ -6,5 +6,6 @@ export interface Comment {
    userIconUrl:string,
   text:string,
   fatherText:string,
-  childs:Comment[]
+  childs:Comment[],
+  deleted:boolean
 }

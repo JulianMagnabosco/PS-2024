@@ -15,4 +15,7 @@ export class CommentService {
   getAll(id: any):Observable<any>{
     return this.client.get(this.baseUrl + "list/"+ id);
   }
+  delete(id: any):Observable<any>{
+    return this.client.delete(this.baseUrl + "del/"+ id);
+  }
 }

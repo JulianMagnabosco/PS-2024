@@ -29,4 +29,8 @@ public class CommentController {
     public ListCommentsResponce getAll(@PathVariable Long id) {
         return commentService.getAll(id);
     }
+    @DeleteMapping(value = "/del/{id}")
+    public boolean delete(@PathVariable Long id) {
+        return commentService.delete(id);
+    }
 }

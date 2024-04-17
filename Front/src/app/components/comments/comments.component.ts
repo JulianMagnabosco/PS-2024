@@ -15,6 +15,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
   styleUrl: './comments.component.css'
 })
 export class CommentsComponent implements OnInit, OnDestroy{
+  protected readonly document = document;
 
   private subs: Subscription = new Subscription();
 
@@ -37,8 +38,10 @@ export class CommentsComponent implements OnInit, OnDestroy{
       userIconUrl: '',
       text: 'Comentario2',
       fatherText: '',
-      childs: []
-    }]
+      childs: [],
+      deleted:false
+    }],
+    deleted:false
   }];
   countTotal:number=0;
   textList:string[]=[];
@@ -101,5 +104,18 @@ export class CommentsComponent implements OnInit, OnDestroy{
     )
   }
 
-  protected readonly document = document;
+  delete(id:number){
+    if(confirm("¿Seguro que quiere eliminar el comentario?")){
+      this.subs.add(
+        this.service.delete(id).subscribe(
+          {
+            next: value => {
+              this.charge();
+            }
+          }
+        )
+      )
+    }
+  }
+
 }

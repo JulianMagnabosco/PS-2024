@@ -18,4 +18,5 @@ public class CommentDto {
     String text;
     String fatherText;
     List<CommentDto> childs;
+    boolean deleted;
 }
