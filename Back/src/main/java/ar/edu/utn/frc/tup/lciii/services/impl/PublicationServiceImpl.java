@@ -212,6 +212,7 @@ public class PublicationServiceImpl implements PublicationService {
         responce.setUserIconUrl(url + "/api/image/user/" + p.getUser().getId());
         responce.setCalification(calificationList(p).toString());
         responce.setDifficulty(Difficulty.values()[p.getDifficulty()].name());
+        responce.setDifficultyValue(p.getDifficulty());
         Optional<CalificationEntity> calificationEntity =
                 calificationRepository.getByUserAndPublication(userRepository.getReferenceById(userId),p);
         if(calificationEntity.isPresent()){

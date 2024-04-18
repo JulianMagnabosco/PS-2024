@@ -21,6 +21,7 @@ import {ListUsersComponent} from "./components/user/list-users/list-users.compon
 import {ShowUserComponent} from "./components/user/show-user/show-user.component";
 import {ModUserComponent} from "./components/user/mod-user/mod-user.component";
 import {CommentsComponent} from "./components/comments/comments.component";
+import {ModPublicationComponent} from "./components/publications/mod-publication/mod-publication.component";
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import {CommentsComponent} from "./components/comments/comments.component";
     ListUsersComponent,
     ShowUserComponent,
     ModUserComponent,
-    CommentsComponent
+    CommentsComponent,
+    ModPublicationComponent
   ],
     imports: [
         BrowserModule,

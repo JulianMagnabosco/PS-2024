@@ -9,8 +9,10 @@ export interface Publication {
   username: string;
   userIconUrl: string;
   difficulty: string;
+  difficultyValue: number;
   calification: number;
   myCalification: number;
+  video: string;
   sections: Section[];
   canSold: boolean;
   price: number;

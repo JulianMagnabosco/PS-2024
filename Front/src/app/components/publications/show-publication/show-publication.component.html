@@ -4,7 +4,7 @@
   *ngIf="userService.user?.id==publication.userId.toString()">
     <span class="fs-5 align-content-center">Editar:</span>
     <span>
-      <button class="btn btn-warning me-1">MODIFICAR</button>
+      <button class="btn btn-warning me-1" routerLink="/editpub/{{publication.id}}">MODIFICAR</button>
       <button class="btn btn-danger" (click)="delete()">ELIMINAR</button>
     </span>
   </div>
@@ -34,10 +34,18 @@
 
         </div>
         <div class="col-sm-6">
-          <div id="carouselExample" class="carousel slide border border-5 border-warning-subtle rounded-2 p-1">
+          <div id="carouselExample" class="carousel slide border border-5 border-warning-subtle rounded-2 p-1"
+               #img1>
             <div class="carousel-inner">
               <div class="carousel-item " *ngFor="let p of photos; index as i" [class.active]="i==0">
                 <img [src]="p.imageUrl || 'assets/camera.png'" class="d-block w-100">
+              </div>
+              <div class="carousel-item " *ngIf="publication.video!=''">
+                <youtube-player #youTubePlayer
+                                [videoId]="publication.video"
+                                [width]="img1?.clientWidth||50"
+                                [height]="img1?.clientWidth||50">
+                </youtube-player>
               </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev"

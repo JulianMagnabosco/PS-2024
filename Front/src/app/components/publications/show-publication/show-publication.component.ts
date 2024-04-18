@@ -16,6 +16,8 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
   private subs: Subscription = new Subscription();
 
   publication:Publication={
+    difficultyValue: 0,
+    video: "",
     userIconUrl: "", username: "",
     id: 1,
     name: "",

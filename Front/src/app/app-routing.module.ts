@@ -11,6 +11,7 @@ import {TestComponent} from "./components/test/test.component";
 import {ShowUserComponent} from "./components/user/show-user/show-user.component";
 import {ListUsersComponent} from "./components/user/list-users/list-users.component";
 import {ModUserComponent} from "./components/user/mod-user/mod-user.component";
+import {ModPublicationComponent} from "./components/publications/mod-publication/mod-publication.component";
 
 const routes: Routes = [
   { path: 'uno', component: StadisticsComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'publicate', component: AddPublicationComponent, canActivate:[authGuard] },
   { path: 'explore', component: ListPublicationsComponent, canActivate:[authGuard] },
   { path: 'pub/:id', component: ShowPublicationComponent, canActivate:[authGuard] },
+  { path: 'editpub/:id', component: ModPublicationComponent, canActivate:[authGuard] },
   { path: 'user/:id', component: ShowUserComponent, canActivate:[authGuard] },
   { path: 'users', component: ListUsersComponent, canActivate:[authGuard] },
   { path: 'edit', component: ModUserComponent, canActivate:[authGuard] }

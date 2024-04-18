@@ -21,6 +21,7 @@ public class PublicationDto {
     String userIconUrl;
     String type;
     String difficulty;
+    int difficultyValue;
     String calification;
     String myCalification;
     String video;
