@@ -14,4 +14,7 @@ public interface SectionRepository extends JpaRepository<SectionEntity,Long> {
     List<SectionEntity> findAllByPublicationAndType(PublicationEntity publication, TypeSec type);
     SectionEntity getByPublicationAndNumber(PublicationEntity publication, Long number);
     SectionEntity findFirstByPublicationAndType(PublicationEntity publication, TypeSec type);
+
+    List<SectionEntity> deleteAllByPublication_Id(Long id);
+
 }

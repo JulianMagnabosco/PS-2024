@@ -1,10 +1,7 @@
 package ar.edu.utn.frc.tup.lciii.services.impl;
 
 import ar.edu.utn.frc.tup.lciii.dtos.*;
-import ar.edu.utn.frc.tup.lciii.dtos.requests.CalificationRequest;
-import ar.edu.utn.frc.tup.lciii.dtos.requests.PublicationRequest;
-import ar.edu.utn.frc.tup.lciii.dtos.requests.SearchPubRequest;
-import ar.edu.utn.frc.tup.lciii.dtos.requests.SectionRequest;
+import ar.edu.utn.frc.tup.lciii.dtos.requests.*;
 import ar.edu.utn.frc.tup.lciii.entities.CalificationEntity;
 import ar.edu.utn.frc.tup.lciii.entities.PublicationEntity;
 import ar.edu.utn.frc.tup.lciii.entities.SectionEntity;
@@ -237,6 +234,31 @@ public class PublicationServiceImpl implements PublicationService {
         }
 
         return decompressBytes(s.getImage());
+    }
+
+    @Override
+    @Transactional
+    public PublicationDto put(PutPublicationRequest request) {
+
+        PublicationEntity publication = modelMapper.map(request, PublicationEntity.class);
+        if(publicationRepository.existsById(publication.getId())){
+            throw new EntityNotFoundException();
+        }
+        publication.setUser(userRepository.getReferenceById(request.getUser()));
+        publicationRepository.save(publication);
+
+        sectionRepository.deleteAllByPublication_Id(request.getId());
+        List<SectionEntity> sectionEntities = new ArrayList<>();
+        for (SectionRequest sectionDto : request.getSections()) {
+            SectionEntity s = modelMapper.map(sectionDto, SectionEntity.class);
+            s.setPublication(publication);
+
+            sectionEntities.add(sectionRepository.save(s));
+        }
+        publication.setSections(sectionEntities);
+
+
+        return get(publication.getId(),1l);
     }
 
     // compress the image bytes before storing it in the database

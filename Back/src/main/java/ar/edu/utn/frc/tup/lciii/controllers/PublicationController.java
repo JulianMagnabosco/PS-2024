@@ -3,6 +3,7 @@ package ar.edu.utn.frc.tup.lciii.controllers;
 import ar.edu.utn.frc.tup.lciii.dtos.*;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.CalificationRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.PublicationRequest;
+import ar.edu.utn.frc.tup.lciii.dtos.requests.PutPublicationRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.SearchPubRequest;
 import ar.edu.utn.frc.tup.lciii.services.PublicationService;
 import jakarta.persistence.EntityNotFoundException;
@@ -49,6 +50,11 @@ public class PublicationController {
         return publicationService.get(id,userId);
     }
 
+    //Put
+    @PutMapping("/mod")
+    public PublicationDto put(@RequestBody PutPublicationRequest request) {
+        return publicationService.put(request);
+    }
 
     //Delete
     @DeleteMapping("/{id}")
