@@ -1,6 +1,7 @@
 package ar.edu.utn.frc.tup.lciii.entities;
 
 import ar.edu.utn.frc.tup.lciii.enums.UserRole;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -22,6 +24,8 @@ public class UserEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String username;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    LocalDateTime creationTime;
     String email;
     String password;
     @Lob
@@ -39,10 +43,10 @@ public class UserEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    public UserEntity(String username, String password, UserRole role) {
+    public UserEntity(String username, String password, UserRole role, LocalDateTime creationTime) {
         this.username = username;
         this.password = password;
-        this.role = role;
+        this.creationTime = creationTime;
     }
 
     @Override
