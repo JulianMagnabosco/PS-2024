@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Subscription} from "rxjs";
+import {Observable, Observer, Subscription} from "rxjs";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {PublicationsService} from "../../../services/publications/publications.service";
 import {AuthService} from "../../../services/user/auth.service";
@@ -13,6 +13,8 @@ import {Publication} from "../../../models/publication/publication";
   styleUrl: './mod-publication.component.css'
 })
 export class ModPublicationComponent implements OnInit,OnDestroy {
+  notfound=false;
+
   showConditions=true
   showMaterials=true
   showSteps=true
@@ -83,6 +85,7 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
                   },
                   error: err => {
                     alert("Hubo un error al cargar");
+                    this.notfound=true;
                   }
                 }
               )
@@ -109,7 +112,6 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
       count: this.publication.count
     })
 
-    console.log(this.publication.sections)
     let sectionsPhoto = this.publication.sections.filter((s) => s.type=="PHOTO");
     let sectionsCond = this.publication.sections.filter((s) => s.type=="COND")
       .sort((a,b) => a.number-b.number);
@@ -118,9 +120,19 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
     let sectionsStep = this.publication.sections.filter((s) => s.type=="STEP")
       .sort((a,b) => a.number-b.number);
 
+
     for (let s of sectionsPhoto){
-      this.pubImages.push(
-        {url: s.imageUrl, file: new File([],"")}
+      this.subs.add(
+        this.service.getImages(s.imageUrl.replace("http://localhost:8080/api/image/pub/","")).subscribe(
+          {
+            next: value => {
+              let v = value as Blob;
+              this.pubImages.push(
+                {url: s.imageUrl, file: new File([v],'image', {type: v.type})}
+              )
+            }
+          }
+        )
       )
     }
     this.video=this.publication.video||""
@@ -132,7 +144,19 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
       this.addDetailMaterials(s.text);
     }
     for (let s of sectionsStep){
-      this.addDetailsSteps(s.text, s.imageUrl);
+      this.subs.add(
+        this.service.getImages(s.imageUrl.replace("http://localhost:8080/api/image/pub/","")).subscribe(
+          {
+            next: value => {
+              let v = value as Blob;
+              this.addDetailsSteps(s.text, s.imageUrl);
+              this.stepImages.push(
+                {url: s.imageUrl, file: new File([v],'image', {type: v.type})}
+              )
+            }
+          }
+        )
+      )
     }
   }
   ngOnDestroy(): void {
@@ -244,6 +268,7 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
     }
 
     let data = {
+      "id": this.publication.id,
       "user": this.userService.user?.id,
       "name": this.form.controls['name'].value,
       "description": this.form.controls['description'].value,
@@ -257,7 +282,7 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
     }
 
     this.subs.add(
-      this.service.postPublication(data).subscribe(
+      this.service.putPublication(data).subscribe(
         {
           next: value => {
             alert("La publicacion fue guardada con éxito");

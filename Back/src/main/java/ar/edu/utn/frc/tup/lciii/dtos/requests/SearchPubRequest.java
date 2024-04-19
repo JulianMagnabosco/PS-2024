@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 @Data
 public class SearchPubRequest {
     String text;
+    String materials;
     TypePub type;
     int diffMin;
     int diffMax;

@@ -11,10 +11,8 @@ import java.util.List;
 @Repository
 public interface SectionRepository extends JpaRepository<SectionEntity,Long> {
     List<SectionEntity> findAllByPublication(PublicationEntity publication);
-    List<SectionEntity> findAllByPublicationAndType(PublicationEntity publication, TypeSec type);
-    SectionEntity getByPublicationAndNumber(PublicationEntity publication, Long number);
+    List<SectionEntity> findAllByPublication_IdAndType(Long id, TypeSec typeSec);
     SectionEntity findFirstByPublicationAndType(PublicationEntity publication, TypeSec type);
-
     List<SectionEntity> deleteAllByPublication_Id(Long id);
 
 }

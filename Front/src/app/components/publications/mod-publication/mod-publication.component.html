@@ -1,9 +1,9 @@
 
-<div class="container mt-4">
+<div class="container mt-4"  *ngIf="!notfound">
   <div class="col-12 d-flex justify-content-between gap-1">
 
-    <h1> NUEVA OBRA </h1>
-    <button type="submit" class="btn btn-primary fs-4 px-5 text-black space-text" (click)="onSubmit()">PUBLICAR</button>
+    <h1>MODIFICAR OBRA</h1>
+    <button type="submit" class="btn btn-primary fs-4 px-5 text-black space-text" (click)="onSubmit()">GUARDAR</button>
   </div>
 
   <div class="container mt-4 p-2 bg-light rounded-5 border border-warning-subtle border-5">
@@ -13,13 +13,13 @@
           <label for="nameInput" class="form-label h5">Nombre</label>
           <input type="text" formControlName="name" class="form-control" id="nameInput"
                  [class.is-invalid]="(form.controls['name'].touched || form.controls['name'].dirty)
-      && form.controls['name'].invalid">
+                  && form.controls['name'].invalid" >
           <div class="invalid-feedback" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)
-      && form.controls['name'].hasError('required')">
+                  && form.controls['name'].hasError('required')">
             El nombre es requerido.
           </div>
           <div class="invalid-feedback" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)
-      && form.controls['name'].hasError('maxlength')">
+                && form.controls['name'].hasError('maxlength')">
             El nombre no puede superar los 50 caracteres.
           </div>
         </div>
@@ -276,3 +276,9 @@
     </form>
   </div>
 </div>
+<ng-container  *ngIf="notfound">
+  <div class="text-center text-break h1 position-absolute top-50 w-100">
+    NO SE ENCONTRÓ LA PUBLICACIÓN
+  </div>
+</ng-container>
+

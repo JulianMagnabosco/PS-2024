@@ -12,6 +12,7 @@ import {AuthService} from "../../../services/user/auth.service";
   styleUrls: ['./show-publication.component.css']
 })
 export class ShowPublicationComponent implements OnInit, OnDestroy{
+  notfound=false;
 
   private subs: Subscription = new Subscription();
 
@@ -107,7 +108,7 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
                     this.publication=value
                   },
                   error: err => {
-                    alert("Hubo un error al cargar");
+                    this.notfound=true;
                   }
                 }
               )

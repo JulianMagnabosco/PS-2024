@@ -31,15 +31,13 @@ export class PublicationsService {
     return this.client.get(this.baseUrl + id+"/"+user);
   }
 
-  getImages(pub: string, index: string):Observable<any>{
-    return this.client.get(this.baseUrl+ "image", {
-      params: {
-        pub:pub,
-        index:index
-      }
-    });
+  getImages(id:string):Observable<any>{
+    return this.client.get("api/image/pub/"+id, {responseType: "blob"});
   }
 
+  putPublication(user: any):Observable<any>{
+    return this.client.put(this.baseUrl + "mod", user);
+  }
 
   delete(id: string):Observable<any>{
     return this.client.delete(this.baseUrl + id);

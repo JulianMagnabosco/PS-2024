@@ -143,8 +143,38 @@ public class PublicationServiceImpl implements PublicationService {
                 continue;
             }
             if(!searchPubRequest.getText().isBlank()){
-                if(!p.getDescription().contains(searchPubRequest.getText())
-                || !p.getName().contains(searchPubRequest.getText())){
+                List<String> textes = List.of(searchPubRequest.getText().toLowerCase()
+                        .split("\\s"));
+                boolean noadd=true;
+                for (String t : textes){
+                    if(p.getName().toLowerCase().contains(t)){
+                        noadd=false;
+                        break;
+                    }
+                    if(t.charAt(0) == '#' &&
+                            p.getDescription().toLowerCase().contains(t)){
+                        noadd=false;
+                        break;
+                    }
+                }
+                if(noadd){
+                    continue;
+                }
+            }
+            if(!searchPubRequest.getMaterials().isBlank()){
+                List<String> mats = List.of(searchPubRequest.getMaterials().toLowerCase()
+                        .split("[\\s,]+"));
+                List<SectionEntity> smats = p.getSections().stream()
+                        .filter(sec -> sec.getType().equals(TypeSec.MAT))
+                        .toList();
+                boolean noadd=true;
+                for (SectionEntity m : smats) {
+                    if(mats.contains(m.getText().toLowerCase())) {
+                        noadd=false;
+                        break;
+                    }
+                }
+                if(noadd){
                     continue;
                 }
             }
@@ -193,7 +223,7 @@ public class PublicationServiceImpl implements PublicationService {
     public PublicationDto get(Long id, Long userId) throws EntityNotFoundException {
         PublicationDto responce;
         PublicationEntity p = publicationRepository.getReferenceById(id);
-        if (p == null) {
+        if (p == null || (p.isDeleted() && p.getUser().getId()!=userId)) {
             throw new EntityNotFoundException();
         }
 
@@ -240,9 +270,9 @@ public class PublicationServiceImpl implements PublicationService {
     @Override
     @Transactional
     public PublicationDto put(PutPublicationRequest request) {
-
         PublicationEntity publication = modelMapper.map(request, PublicationEntity.class);
-        if(publicationRepository.existsById(publication.getId())){
+        if(!publicationRepository.existsById(publication.getId())
+        && !publicationRepository.getReferenceById(publication.getId()).isDeleted()){
             throw new EntityNotFoundException();
         }
         publication.setUser(userRepository.getReferenceById(request.getUser()));

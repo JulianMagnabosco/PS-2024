@@ -26,6 +26,7 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
   constructor(private fb: FormBuilder, private service: PublicationsService, private router: Router) {
     this.form = this.fb.group({
       text: ["", [Validators.maxLength(200 )]],
+      materials: ["", [Validators.maxLength(500 )]],
       type: ["NONE"],
       diffMin: ["1"],
       diffMax: ["4"],
@@ -45,8 +46,8 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
   }
   clear(){
     this.form.setValue({
-
       text: "",
+      materials: "",
       type: "NONE",
       diffMin: "1",
       diffMax: "4",
@@ -56,12 +57,12 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
   }
   charge(page: number){
     this.page=page;
-    if(page<0){
-      this.page=0;
-    }
 
     if(page>Math.ceil(this.countTotal/this.size)-1){
       this.page=Math.ceil(this.countTotal/this.size)-1;
+    }
+    if(page<=0){
+      this.page=0;
     }
 
     if(this.form.invalid){
@@ -72,6 +73,7 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
 
     this.data = {
       "text": this.form.controls['text'].value,
+      "materials": this.form.controls['materials'].value,
       "type": this.form.controls['type'].value,
       "diffMin": this.form.controls['diffMin'].value,
       "diffMax": this.form.controls['diffMax'].value,
@@ -80,6 +82,8 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
       "page": this.page,
       "size": this.size
     }
+
+    console.log(this.data)
 
 
     this.subs.add(
@@ -91,7 +95,8 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
           },
           error: err => {
             console.log(err)
-            alert("Hubo un error al buscar"); }
+            alert("Hubo un error al buscar");
+          }
         }
       )
     );
