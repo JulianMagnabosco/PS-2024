@@ -1,0 +1,25 @@
+
+<div class="container">
+  <div class="h1 w-100 text-center">Estadisticas de publicaciones</div>
+
+  <div class="d-flex gap-2 w-100 mb-2">
+    <select class="form-select w-auto bg-secondary-subtle" [(ngModel)]="selected">
+      <option [ngValue]="this.months[0]" selected>
+        {{this.months[0].year}} {{this.months[0].month | dateCustom}}</option>
+      <option *ngFor="let y of months.slice(1); index as i" [ngValue]="y">
+        {{y.year}} {{y.month | dateCustom}}</option>
+    </select>
+    <button class="btn btn-primary" (click)="charge()">GENERAR</button>
+  </div>
+
+  <div class="card bg-body-tertiary">
+    <div echarts [options]="options"
+         [theme]="service.coolTheme"
+         class="demo-chart"
+          *ngIf="nodata=='n'"></div>
+    <div class="h2 fst-italic  w-100 text-center"
+         *ngIf="nodata=='y'"> Sin Datos</div>
+    <div class="h2 fst-italic  w-100 text-center"
+         *ngIf="nodata=='c'"> Cargando...</div>
+  </div>
+</div>

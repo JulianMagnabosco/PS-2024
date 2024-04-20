@@ -3,13 +3,17 @@ package ar.edu.utn.frc.tup.lciii.services.impl;
 import ar.edu.utn.frc.tup.lciii.dtos.stadistics.StatDto;
 import ar.edu.utn.frc.tup.lciii.dtos.stadistics.StatSeriesDto;
 import ar.edu.utn.frc.tup.lciii.dtos.stadistics.StatsResponce;
+import ar.edu.utn.frc.tup.lciii.entities.PublicationEntity;
 import ar.edu.utn.frc.tup.lciii.entities.UserEntity;
+import ar.edu.utn.frc.tup.lciii.enums.TypePub;
+import ar.edu.utn.frc.tup.lciii.repository.PublicationRepository;
 import ar.edu.utn.frc.tup.lciii.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +22,8 @@ import java.util.List;
 public class StadisticsService {
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    PublicationRepository publicationRepository;
 
     public StatsResponce getUserStadistics(int year){
         StatSeriesDto[] stats = new StatSeriesDto[2];
@@ -48,8 +54,15 @@ public class StadisticsService {
                 new StatDto("Diciembre"),
         };
 
-        List<UserEntity> entities =userRepository.findAllByCreationTimeAfter(
-                LocalDateTime.of(year,1,1,0,0));
+        YearMonth last = YearMonth.from(LocalDateTime.of(year,12,1,0,0));
+        int lastday = last.atEndOfMonth().getDayOfMonth();
+        List<UserEntity> entities =userRepository.findAllByCreationTimeBetween(
+                LocalDateTime.of(year,1,1,0,0),
+                LocalDateTime.of(year,12,lastday,23,59));
+
+        if(entities.isEmpty()){
+            return new StatsResponce(null, true);
+        }
 
         for (UserEntity e : entities) {
             BigDecimal v = vals[e.getCreationTime().getMonthValue()-1].getValue();
@@ -65,6 +78,37 @@ public class StadisticsService {
         }
         stats[1] = new StatSeriesDto("anual", Arrays.stream(vals2).toList());
 
-        return new StatsResponce(Arrays.stream(stats).toList());
+        return new StatsResponce(Arrays.stream(stats).toList(), false);
     }
+    public StatsResponce getPublicationStadistics(int year, int month){
+        StatSeriesDto stats = new StatSeriesDto();
+        StatDto[] vals = {new StatDto("Artisticas"),
+                new StatDto("Cientificas"),
+                new StatDto("Tecnológicas"),
+                new StatDto("Otro"),
+        };
+
+        YearMonth last = YearMonth.from(LocalDateTime.of(year,month,1,0,0));
+        int lastday = last.atEndOfMonth().getDayOfMonth();
+        List<PublicationEntity> entities =
+                publicationRepository.findAllByCreationTimeBetween(
+                        LocalDateTime.of(year,month,1,0,0),
+                        LocalDateTime.of(year,month,lastday,23,59));
+
+        if(entities.isEmpty()){
+            return new StatsResponce(null, true);
+        }
+
+        for (PublicationEntity p : entities){
+            int i = p.getType().ordinal();
+            BigDecimal v = vals[i-1].getValue().add(BigDecimal.ONE);
+            vals[i-1].setValue(v);
+        }
+
+        stats.setName("count");
+        stats.setSeries(Arrays.stream(vals).toList());
+
+        return new StatsResponce(List.of(stats), false);
+    }
+
 }

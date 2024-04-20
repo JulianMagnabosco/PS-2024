@@ -2,6 +2,7 @@ package ar.edu.utn.frc.tup.lciii.entities;
 
 import ar.edu.utn.frc.tup.lciii.enums.Difficulty;
 import ar.edu.utn.frc.tup.lciii.enums.TypePub;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,6 +14,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -25,6 +27,8 @@ public class PublicationEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     boolean deleted = Boolean.FALSE;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    LocalDateTime creationTime;
     @ManyToOne
     @JoinColumn(name="idUser")
     UserEntity user;

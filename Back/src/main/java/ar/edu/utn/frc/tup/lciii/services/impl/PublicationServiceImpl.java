@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -58,6 +59,7 @@ public class PublicationServiceImpl implements PublicationService {
 
         PublicationEntity publication = modelMapper.map(request, PublicationEntity.class);
         publication.setUser(userRepository.getReferenceById(request.getUser()));
+        publication.setCreationTime(LocalDateTime.now());
         publicationRepository.save(publication);
 
         List<SectionEntity> sectionEntities = new ArrayList<>();
@@ -271,11 +273,15 @@ public class PublicationServiceImpl implements PublicationService {
     @Transactional
     public PublicationDto put(PutPublicationRequest request) {
         PublicationEntity publication = modelMapper.map(request, PublicationEntity.class);
+        LocalDateTime date;
         if(!publicationRepository.existsById(publication.getId())
         && !publicationRepository.getReferenceById(publication.getId()).isDeleted()){
             throw new EntityNotFoundException();
+        }else {
+            date = publicationRepository.getReferenceById(publication.getId()).getCreationTime();
         }
         publication.setUser(userRepository.getReferenceById(request.getUser()));
+        publication.setCreationTime(date);
         publicationRepository.save(publication);
 
         sectionRepository.deleteAllByPublication_Id(request.getId());

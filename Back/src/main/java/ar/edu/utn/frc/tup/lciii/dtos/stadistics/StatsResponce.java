@@ -11,4 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 public class StatsResponce {
     List<StatSeriesDto> stats;
+
+    boolean nodata = false;
 }

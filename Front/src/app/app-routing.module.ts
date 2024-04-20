@@ -13,6 +13,7 @@ import {ListUsersComponent} from "./components/user/list-users/list-users.compon
 import {ModUserComponent} from "./components/user/mod-user/mod-user.component";
 import {ModPublicationComponent} from "./components/publications/mod-publication/mod-publication.component";
 import {UserStadisticsComponent} from "./components/stadistics/user-stadistics/user-stadistics.component";
+import {PubStadisticsComponent} from "./components/stadistics/pub-stadistics/pub-stadistics.component";
 
 const routes: Routes = [
   { path: 'uno', component: StadisticsComponent },
@@ -26,7 +27,8 @@ const routes: Routes = [
   { path: 'user/:id', component: ShowUserComponent, canActivate:[authGuard] },
   { path: 'users', component: ListUsersComponent, canActivate:[authGuard] },
   { path: 'edit', component: ModUserComponent, canActivate:[authGuard] },
-  { path: 'stats/users', component: UserStadisticsComponent, canActivate:[authGuard] }
+  { path: 'stats/users', component: UserStadisticsComponent, canActivate:[authGuard] },
+  { path: 'stats/pubs', component: PubStadisticsComponent, canActivate:[authGuard] }
 ]
 
 @NgModule({

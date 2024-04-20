@@ -141,4 +141,7 @@ export class StadisticsService {
   getUserStadistics(year: any):Observable<any>{
     return this.client.get(this.baseUrl + "users/"+year);
   }
+  getPubsStadistics(year: any, month:any):Observable<any>{
+    return this.client.get(this.baseUrl + "pubs/"+year+"/"+month);
+  }
 }

@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { StadisticsComponent } from './components/stadistics/stadistics.component';
 import { TestComponent } from './components/test/test.component';
 import {HttpClientModule, provideHttpClient, withInterceptors} from "@angular/common/http";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgxEchartsDirective, provideEcharts} from "ngx-echarts";
 import { RegisterComponent } from './components/user/register/register.component';
 import { LoginComponent } from './components/user/login/login.component';
@@ -23,6 +23,8 @@ import {ModUserComponent} from "./components/user/mod-user/mod-user.component";
 import {CommentsComponent} from "./components/comments/comments.component";
 import {ModPublicationComponent} from "./components/publications/mod-publication/mod-publication.component";
 import {UserStadisticsComponent} from "./components/stadistics/user-stadistics/user-stadistics.component";
+import {PubStadisticsComponent} from "./components/stadistics/pub-stadistics/pub-stadistics.component";
+import {DateCustomPipe} from "./pipes/date-custom.pipe";
 
 
 @NgModule({
@@ -40,7 +42,8 @@ import {UserStadisticsComponent} from "./components/stadistics/user-stadistics/u
     ModUserComponent,
     CommentsComponent,
     ModPublicationComponent,
-    UserStadisticsComponent
+    UserStadisticsComponent,
+    PubStadisticsComponent
   ],
     imports: [
         BrowserModule,
@@ -50,7 +53,9 @@ import {UserStadisticsComponent} from "./components/stadistics/user-stadistics/u
         NgxEchartsDirective,
         NgOptimizedImage,
         SweetAlert2Module.forRoot(),
-        YouTubePlayer
+        YouTubePlayer,
+        DateCustomPipe,
+        FormsModule
     ],
   providers: [
     provideHttpClient(withInterceptors([authInterceptor])),

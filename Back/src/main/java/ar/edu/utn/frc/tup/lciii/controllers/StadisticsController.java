@@ -20,4 +20,8 @@ public class StadisticsController {
     public StatsResponce getAll(@PathVariable int year) {
         return service.getUserStadistics(year);
     }
+    @GetMapping("/pubs/{year}/{month}")
+    public StatsResponce getAll(@PathVariable int year,@PathVariable int month) {
+        return service.getPublicationStadistics(year,month);
+    }
 }
