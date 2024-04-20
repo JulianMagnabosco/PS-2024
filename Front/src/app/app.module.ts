@@ -22,6 +22,7 @@ import {ShowUserComponent} from "./components/user/show-user/show-user.component
 import {ModUserComponent} from "./components/user/mod-user/mod-user.component";
 import {CommentsComponent} from "./components/comments/comments.component";
 import {ModPublicationComponent} from "./components/publications/mod-publication/mod-publication.component";
+import {UserStadisticsComponent} from "./components/stadistics/user-stadistics/user-stadistics.component";
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import {ModPublicationComponent} from "./components/publications/mod-publication
     ShowUserComponent,
     ModUserComponent,
     CommentsComponent,
-    ModPublicationComponent
+    ModPublicationComponent,
+    UserStadisticsComponent
   ],
     imports: [
         BrowserModule,

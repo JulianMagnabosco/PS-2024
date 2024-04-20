@@ -55,12 +55,13 @@ public class StadisticsService {
             BigDecimal v = vals[e.getCreationTime().getMonthValue()-1].getValue();
             v = v.add(BigDecimal.ONE);
             vals[e.getCreationTime().getMonthValue()-1].setValue(v);
+            vals2[e.getCreationTime().getMonthValue()-1].setValue(v);
         }
         stats[0] = new StatSeriesDto("diary", Arrays.stream(vals).toList());
 
         vals2[0].setValue(vals[0].getValue());
         for (int i=1; i<vals2.length; i++) {
-            vals2[i].setValue(vals[i-1].getValue().add(vals[i].getValue()));
+            vals2[i].setValue(vals2[i].getValue().add(vals2[i-1].getValue()));
         }
         stats[1] = new StatSeriesDto("anual", Arrays.stream(vals2).toList());
 

@@ -1,9 +1,17 @@
 
 <div class="container">
-  <h1>Estadisticas</h1>
+  <div class="h1 w-100 text-center">Estadisticas de usuarios</div>
 
+  <div class="d-flex gap-2 w-100 mb-2">
+    <select class="form-select w-auto bg-secondary-subtle">
+      <option *ngFor="let y of years" [value]="y">{{y}}</option>
+    </select>
+    <button class="btn btn-primary">GENERAR</button>
+  </div>
 
-  <div echarts [options]="options"
-       [theme]="service.coolTheme"
-       class="demo-chart"></div>
+  <div class="card bg-body-tertiary">
+    <div echarts [options]="options"
+         [theme]="service.coolTheme"
+         class="demo-chart"></div>
+  </div>
 </div>

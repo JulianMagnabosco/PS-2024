@@ -10,21 +10,21 @@ export class StadisticsService {
   private baseUrl = "api/stats/";
   coolTheme = {
     color: [
-      '#b21ab4',
-      '#6f0099',
-      '#2a2073',
-      '#0b5ea8',
-      '#17aecc',
-      '#b3b3ff',
-      '#eb99ff',
-      '#fae6ff',
-      '#e6f2ff',
-      '#eeeeee',
+      '#ff0000',
+      '#fc7300',
+      '#ff9100',
+      '#ffbf70',
+      '#fae563',
+      '#ffc400',
+      '#d52e2e',
+      '#fc8f00',
+      '#ff2a04',
+      '#fdc433',
     ],
 
     title: {
       fontWeight: 'normal',
-      color: '#00aecd',
+      color: '#8d0000',
     },
 
     visualMap: {
@@ -139,6 +139,6 @@ export class StadisticsService {
   constructor(private client: HttpClient) { }
 
   getUserStadistics(year: any):Observable<any>{
-    return this.client.get(this.baseUrl + "users"+year);
+    return this.client.get(this.baseUrl + "users/"+year);
   }
 }
