@@ -25,6 +25,7 @@ import {ModPublicationComponent} from "./components/publications/mod-publication
 import {UserStadisticsComponent} from "./components/stadistics/user-stadistics/user-stadistics.component";
 import {PubStadisticsComponent} from "./components/stadistics/pub-stadistics/pub-stadistics.component";
 import {DateCustomPipe} from "./pipes/date-custom.pipe";
+import {HomeComponent} from "./components/home/home.component";
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import {DateCustomPipe} from "./pipes/date-custom.pipe";
     CommentsComponent,
     ModPublicationComponent,
     UserStadisticsComponent,
-    PubStadisticsComponent
+    PubStadisticsComponent,
+    HomeComponent
   ],
     imports: [
         BrowserModule,

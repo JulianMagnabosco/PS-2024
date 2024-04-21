@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit,OnDestroy {
             // alert("Inicio de secion éxitoso");
             this.service.login(value)
 
-            this.router.navigate(["/explore"])
+            this.router.navigate(["/home"])
           },
           error: err => {
             if(err["status"]==401){

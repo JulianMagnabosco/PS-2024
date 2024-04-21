@@ -14,12 +14,17 @@ import {ModUserComponent} from "./components/user/mod-user/mod-user.component";
 import {ModPublicationComponent} from "./components/publications/mod-publication/mod-publication.component";
 import {UserStadisticsComponent} from "./components/stadistics/user-stadistics/user-stadistics.component";
 import {PubStadisticsComponent} from "./components/stadistics/pub-stadistics/pub-stadistics.component";
+import {HomeComponent} from "./components/home/home.component";
 
 const routes: Routes = [
+  { path: 'home', component: HomeComponent },
+  { path: '',   redirectTo: '/home', pathMatch: 'full' }, // redirect to `first-component`
+  //test
   { path: 'uno', component: StadisticsComponent },
   { path: 'test', component: TestComponent },
+  //components
   { path: 'register', component: RegisterComponent },
-  { path: 'login', component: LoginComponent, canDeactivate:[authGuardLogin] },
+  { path: 'login', component: LoginComponent },
   { path: 'publicate', component: AddPublicationComponent, canActivate:[authGuard] },
   { path: 'explore', component: ListPublicationsComponent, canActivate:[authGuard] },
   { path: 'pub/:id', component: ShowPublicationComponent, canActivate:[authGuard] },
@@ -28,7 +33,8 @@ const routes: Routes = [
   { path: 'users', component: ListUsersComponent, canActivate:[authGuard] },
   { path: 'edit', component: ModUserComponent, canActivate:[authGuard] },
   { path: 'stats/users', component: UserStadisticsComponent, canActivate:[authGuard] },
-  { path: 'stats/pubs', component: PubStadisticsComponent, canActivate:[authGuard] }
+  { path: 'stats/pubs', component: PubStadisticsComponent, canActivate:[authGuard] },
+  { path: '**', component: HomeComponent },
 ]
 
 @NgModule({

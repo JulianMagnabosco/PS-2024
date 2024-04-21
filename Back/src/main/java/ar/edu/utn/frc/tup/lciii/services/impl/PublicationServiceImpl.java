@@ -17,15 +17,20 @@ import ar.edu.utn.frc.tup.lciii.services.PublicationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.apache.commons.compress.utils.IOUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -265,8 +270,20 @@ public class PublicationServiceImpl implements PublicationService {
         if (s == null) {
             throw new EntityNotFoundException();
         }
+        if(s.getImage()!=null && s.getImage().length>0) {
+            return decompressBytes(s.getImage());
+        }
+        else {
+            Resource resource = new ClassPathResource("camera.png");
 
-        return decompressBytes(s.getImage());
+            try {
+                InputStream in = resource.getInputStream();
+                return IOUtils.toByteArray(in);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
     }
 
     @Override

@@ -13,9 +13,12 @@ import ar.edu.utn.frc.tup.lciii.repository.StateRepository;
 import ar.edu.utn.frc.tup.lciii.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
+import org.apache.commons.compress.utils.IOUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -135,8 +139,19 @@ public class AuthService implements UserDetailsService {
 
     UserEntity u = repository.getReferenceById(id);
     responce = u.getIcon();
+    if(responce!=null && responce.length>0)   {
+      return responce;
+    }
+    else {
+      Resource resource = new ClassPathResource("user.png");
 
-    return responce;
+      try {
+        InputStream in = resource.getInputStream();
+        return IOUtils.toByteArray(in);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    }
   }
 
   public UserDto put(String requestRaw, MultipartFile icon) throws IOException {
