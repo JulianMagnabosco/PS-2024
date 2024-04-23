@@ -267,9 +267,33 @@
         <i class="bi bi-caret-left-fill text-warning" *ngIf="showPurchasedata"></i>
         <i class="bi bi-caret-down-fill text-warning" *ngIf="!showPurchasedata"></i>
       </a>
-      <div class="collapse" id="collapsePurchasedata">
-        <div class="card card-body">
-          Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+      <div class="collapse p-2" id="collapsePurchasedata">
+        <div class="mb-3">
+          <label class="form-check-label me-1" for="exampleCheck1">Esta a la venta</label>
+          <input type="checkbox" class="btn-check" id="exampleCheck1" autocomplete="off" formControlName="canSold">
+          <label class="btn " for="exampleCheck1"
+                 [class.btn-danger]="!form.controls['canSold'].value"
+                 [class.btn-success]="form.controls['canSold'].value">
+            <i class="bi bi-x-lg" *ngIf="!form.controls['canSold'].value"></i>
+            <i class="bi bi-check-lg" *ngIf="form.controls['canSold'].value"></i>
+          </label>
+        </div>
+        <div class="row g-3 align-items-center">
+          <div class="col-auto">
+            <label class="form-check-label" for="exampleprice">Precio: </label>
+          </div>
+          <div class="col-auto">
+            <div class="input-group">
+              <span class="input-group-text bg-orange">$</span>
+              <input type="number" class="form-control bg-orange-low" id="exampleprice" formControlName="price">
+            </div>
+          </div>
+          <div class="col-auto">
+            <label class="form-check-label" for="examplecount">Cantidad:</label>
+          </div>
+          <div class="col-auto">
+            <input type="number" class="form-control bg-orange-low" id="examplecount" formControlName="price">
+          </div>
         </div>
       </div>
     </div>

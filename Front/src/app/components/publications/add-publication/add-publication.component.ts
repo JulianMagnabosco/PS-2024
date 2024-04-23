@@ -1,21 +1,15 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subscription} from "rxjs";
 import {
-  AbstractControl,
   FormArray,
   FormBuilder,
   FormGroup,
-  ValidationErrors,
-  ValidatorFn,
   Validators
 } from "@angular/forms";
 import {AuthService} from "../../../services/user/auth.service";
 import {Router} from "@angular/router";
 import {PublicationsService} from "../../../services/publications/publications.service";
-import {Publication} from "../../../models/publication/publication";
-import {SwalPortalTargets} from "@sweetalert2/ngx-sweetalert2";
 import {Section} from "../../../models/publication/section";
-import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-add-publication',
@@ -50,12 +44,32 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
       materials: this.fb.array([]),
       steps: this.fb.array([]),
       canSold: [false],
-      price: [""],
-      count: [""]
+      price: ["0"],
+      count: ["0"]
     });
+    this.form.get("price")?.disable()
+    this.form.get("count")?.disable()
 
   }
-  ngOnInit(): void {  }
+  ngOnInit(): void {
+    this.subs.add(this.form.get("canSold")?.valueChanges.subscribe(
+      {
+        next: value => {
+          if(value){
+            this.form.get("price")?.enable()
+            this.form.get("count")?.enable()
+            this.form.get("price")?.setValidators([Validators.min(1)])
+            this.form.get("count")?.setValidators([Validators.min(1)])
+          }else {
+            this.form.get("price")?.disable()
+            this.form.get("count")?.disable()
+            this.form.get("price")?.clearValidators()
+            this.form.get("count")?.clearValidators()
+          }
+        }
+      }
+    ))
+  }
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }

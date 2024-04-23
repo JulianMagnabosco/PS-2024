@@ -40,6 +40,9 @@ h1, .space-text{
 }
 
 .bg-orange{
+  background-color: #f6751e;
+}
+.bg-orange-low{
   background-color: #ffd1b7;
 }
 

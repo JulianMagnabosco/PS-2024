@@ -35,11 +35,11 @@ insert into publications (id_user, name, description, type, difficulty,can_sold,
 values (1,'Casa de pajaros ', 'pajaros', 'ARTE',1,false,false,'2023-1-01 00:00:01');
 
 insert into sections (id_publication, type, text)
-values (1,'PHOTO', '');
+values (2,'PHOTO', '');
 
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted,creation_time)
 values (2,'Casa de perros ', 'pajaros', 'TECNOLOGIA',1,false,false,'2023-1-01 00:00:01');
 
 insert into sections (id_publication, type, text)
-values (1,'PHOTO', '');
+values (3,'PHOTO', '');
