@@ -33,7 +33,7 @@
           </div>
 
           <!--    *ngIf="publication.canSold"-->
-          <div class="p-1 mb-3 d-flex" >
+          <div class="p-1 mb-3 d-flex" *ngIf="publication.canSold">
             <button class="btn btn-primary">COMPRAR</button>
             <div class="p-2">
               <div>

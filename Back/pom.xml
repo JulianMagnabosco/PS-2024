@@ -64,7 +64,18 @@
             <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
         </dependency>
 
-
+        <!--  Mercado pago -->
+        <dependency>
+            <groupId>com.mercadopago</groupId>
+            <artifactId>sdk-java</artifactId>
+            <version>2.1.20</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.alexdlaird/java-ngrok -->
+        <dependency>
+            <groupId>com.github.alexdlaird</groupId>
+            <artifactId>java-ngrok</artifactId>
+            <version>2.3.0</version>
+        </dependency>
 
         <!--    Lombok    -->
         <dependency>
@@ -85,6 +96,7 @@
             <artifactId>modelmapper</artifactId>
             <version>3.1.1</version>
         </dependency>
+        <!--  Resilience -->
         <dependency>
             <groupId>io.github.resilience4j</groupId>
             <artifactId>resilience4j-annotations</artifactId>
@@ -95,6 +107,7 @@
             <artifactId>resilience4j-circuitbreaker</artifactId>
             <version>2.0.2</version>
         </dependency>
+        <!--  Base de datos -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
