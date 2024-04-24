@@ -5,6 +5,7 @@ import {Subscription} from "rxjs";
 import {PublicationsService} from "../../../services/publications/publications.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {AuthService} from "../../../services/user/auth.service";
+import {PurchaseService} from "../../../services/purchase/purchase.service";
 
 @Component({
   selector: 'app-show-publication',
@@ -16,6 +17,7 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
 
   private subs: Subscription = new Subscription();
 
+  countBuy = 1;
   publication:Publication={
     difficultyValue: 0,
     video: "",
@@ -35,7 +37,7 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
   };
   constructor(private service: PublicationsService, public userService: AuthService,
               private activeRoute:ActivatedRoute, private router: Router,
-              private sanitizer:DomSanitizer) {
+              private purchaseService:PurchaseService) {
 
   }
   ngOnInit(): void {
@@ -91,6 +93,27 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
 
   goUser(){
     this.router.navigate(["/user/"+this.publication.userId])
+  }
+
+  buy(){
+    let data = {
+      idUser: this.userService.user?.id,
+      idPub: this.publication.id,
+      count: this.countBuy
+    }
+    this.subs.add(
+      this.purchaseService.postSingleSale(data).subscribe(
+        {
+          next: value => {
+            console.log(value["preference"]["initPoint"])
+            window.location.href = value["preference"]["initPoint"]
+          },
+          error: err => {
+            console.log(err)
+          }
+        }
+      )
+    );
   }
 
   charge(){

@@ -34,16 +34,18 @@
 
           <!--    *ngIf="publication.canSold"-->
           <div class="p-1 mb-3 d-flex" *ngIf="publication.canSold">
-            <button class="btn btn-primary">COMPRAR</button>
+            <button class="btn btn-primary" (click)="buy()">COMPRAR</button>
             <div class="p-2">
               <div>
-              Precio Total: ${{publication.price || 0}}
+              Precio: ${{publication.price || 0}}
               </div>
               <div class="d-flex align-items-center">
                 <div class="col-auto">
                 Unidades:&nbsp;
                 </div>
-                <input class="form-control form-control-sm" type="number" style="width: 60px" value="1">
+                <input class="form-control form-control-sm" type="number"
+                       [(ngModel)]="countBuy"
+                       style="width: 60px" value="1" min="1">
                 <div class="col-auto">
                   &nbsp;de {{publication.count || 0}} disponibles
               </div>

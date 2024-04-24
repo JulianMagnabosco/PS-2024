@@ -3,10 +3,16 @@ package ar.edu.utn.frc.tup.lciii.services.impl;
 import ar.edu.utn.frc.tup.lciii.dtos.purchase.NotPurchaseResponce;
 import ar.edu.utn.frc.tup.lciii.dtos.purchase.PurchaseResponce;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.PurchaseRequest;
+import ar.edu.utn.frc.tup.lciii.entities.PublicationEntity;
+import ar.edu.utn.frc.tup.lciii.entities.SaleDetailEntity;
+import ar.edu.utn.frc.tup.lciii.entities.SaleEntity;
+import ar.edu.utn.frc.tup.lciii.enums.SaleState;
+import ar.edu.utn.frc.tup.lciii.repository.PublicationRepository;
+import ar.edu.utn.frc.tup.lciii.repository.SaleRepository;
 import com.github.alexdlaird.ngrok.protocol.Tunnel;
-import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.merchantorder.MerchantOrderClient;
 import com.mercadopago.client.payment.PaymentClient;
+import com.mercadopago.client.preference.PreferenceBackUrlsRequest;
 import com.mercadopago.client.preference.PreferenceClient;
 import com.mercadopago.client.preference.PreferenceItemRequest;
 import com.mercadopago.client.preference.PreferenceRequest;
@@ -16,11 +22,14 @@ import com.mercadopago.resources.merchantorder.MerchantOrder;
 import com.mercadopago.resources.merchantorder.MerchantOrderPayment;
 import com.mercadopago.resources.payment.Payment;
 import com.mercadopago.resources.preference.Preference;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.net.URI;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -28,30 +37,44 @@ import java.util.List;
 @Service
 public class PurchaseService {
 
+    @Autowired
+    SaleRepository saleRepository;
+    @Autowired
+    PublicationRepository publicationRepository;
 
     @Autowired
     Tunnel tunnel;
 
-    public PurchaseResponce registrar (PurchaseRequest request) throws MPException, MPApiException {
+    @Transactional
+    public PurchaseResponce registerSale(PurchaseRequest request) throws MPException, MPApiException {
 
+        PublicationEntity publication = publicationRepository.getReferenceById(request.getIdPub());
 
+        SaleEntity sale = new SaleEntity();
+        SaleDetailEntity detail = new SaleDetailEntity(null,
+                sale,publication,publication.getPrice(), request.getCount());
+        sale.setDetails(List.of(detail));
+        sale.setSaleState(SaleState.PENDING);
+
+        sale = saleRepository.save(sale);
 
         PreferenceItemRequest itemRequest =
                 PreferenceItemRequest.builder()
-                        .id("1234")
-                        .title("Games")
-                        .description("PS5")
-                        .pictureUrl("http://picture.com/PS5")
-                        .categoryId("games")
-                        .quantity(1)
+                        .id(sale.getId().toString())
+                        .title(publication.getName())
+                        .description("")
+                        .pictureUrl("")
+                        .categoryId("")
+                        .quantity(request.getCount())
                         .currencyId("ARS")
-                        .unitPrice(new BigDecimal("10"))
+                        .unitPrice(publication.getPrice())
                         .build();
         List<PreferenceItemRequest> items = new ArrayList<>();
         items.add(itemRequest);
 
         PreferenceRequest preferenceRequest = PreferenceRequest.builder()
-                .notificationUrl(tunnel.getPublicUrl()+"/not")
+                .backUrls(PreferenceBackUrlsRequest.builder().success("http://localhost:4200/home").build())
+                .notificationUrl(tunnel.getPublicUrl()+"/api/sell/not")
                 .items(items)
                 .build();
 
@@ -107,6 +130,9 @@ public class PurchaseService {
                     }
                 } else { // The merchant_order don't has any shipments
                     System.out.println("Totally paid. Release your item.");
+                    SaleEntity sale = saleRepository.getReferenceById(id);
+                    sale.setSaleState(SaleState.APPROVED);
+                    saleRepository.save(sale);
                 }
             } else {
                 System.out.println("Not paid yet. Do not release your item."+total

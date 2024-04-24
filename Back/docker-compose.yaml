@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  external-api:
+  ngrok:
     container_name: external-api
     image: gabrielarriola/api-loteria
     ports:

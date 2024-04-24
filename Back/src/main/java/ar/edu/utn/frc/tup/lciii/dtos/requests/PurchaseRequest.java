@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class PurchaseRequest {
-    Long idPub;
     Long idUser;
+    Long idPub;
     int count;
 }
