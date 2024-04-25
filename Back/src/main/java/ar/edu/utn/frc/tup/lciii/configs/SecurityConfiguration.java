@@ -50,11 +50,14 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((authorize) -> authorize.requestMatchers("/api/auth/signup").permitAll()
+                .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers("/api/auth/signup").permitAll()
+                        .requestMatchers("/api/sell/not").permitAll()
                         .requestMatchers("/api/image/**").permitAll()
-                                .anyRequest().authenticated())
+                        .anyRequest().authenticated())
                 .csrf((csrf) -> csrf.ignoringRequestMatchers("/api/auth/signin")
-                        .ignoringRequestMatchers("/api/auth/signup"))
+                        .ignoringRequestMatchers("/api/auth/signup")
+                        .ignoringRequestMatchers("/api/sell/not"))
                 .httpBasic(Customizer.withDefaults())
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

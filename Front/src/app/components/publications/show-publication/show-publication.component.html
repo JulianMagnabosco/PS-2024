@@ -28,19 +28,19 @@
                  style="width: 50px; height: 50px;" class="rounded-circle">
             <span>{{publication.username}}</span>
           </div>
-          <div class="mb-2 p-1 me-1 rounded-2 bg-body-secondary">
+          <div class="mb-4 p-1 me-1 rounded-2 bg-body-secondary">
             {{publication.description }}
           </div>
 
           <!--    *ngIf="publication.canSold"-->
           <div class="p-1 mb-3 d-flex" *ngIf="publication.canSold">
             <button class="btn btn-primary" (click)="buy()">COMPRAR</button>
-            <div class="p-2">
+            <div class="px-2">
               <div>
-              Precio: ${{publication.price || 0}}
+              <span class="fw-bold">Precio:</span> ${{publication.price || 0}}
               </div>
               <div class="d-flex align-items-center">
-                <div class="col-auto">
+                <div class="col-auto fw-bold">
                 Unidades:&nbsp;
                 </div>
                 <input class="form-control form-control-sm" type="number"

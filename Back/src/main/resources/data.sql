@@ -15,8 +15,9 @@ values ('user5','a','a', '$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcj
 insert into users (username, name, lastname, password, email,role,id_state,creation_time)
 values ('user6','a','a', '$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2', 'a@a', 'USER',1,'2023-11-01 00:00:01');
 
-insert into publications (id_user, name, description, type, difficulty,can_sold,deleted,creation_time)
-values (1,'Panal artesanal', 'esto es un panal de abejas artesanal #bees', 'ARTE',1,false,false,'2023-1-01 00:00:01');
+insert into publications (id_user, name, description, type, difficulty,can_sold,count,price,deleted,creation_time)
+values (1,'Panal artesanal', 'esto es un panal de abejas artesanal #bees', 'ARTE',1,true,5,5
+       ,false,'2023-1-01 00:00:01');
 
 insert into sections (id_publication, type, text)
 values (1,'PHOTO', '');

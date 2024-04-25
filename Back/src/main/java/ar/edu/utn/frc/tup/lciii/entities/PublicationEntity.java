@@ -44,4 +44,6 @@ public class PublicationEntity {
     List<SectionEntity> sections;
     @OneToMany(mappedBy="publication")
     List<CalificationEntity> califications;
+    @OneToMany(mappedBy="publication")
+    List<SaleDetailEntity> saleDetails;
 }

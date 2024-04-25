@@ -18,6 +18,7 @@ public class SaleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    Long merchantOrder;
     @OneToMany(mappedBy="sale", cascade = CascadeType.ALL)
     List<SaleDetailEntity> details;
     @Enumerated(EnumType.STRING)

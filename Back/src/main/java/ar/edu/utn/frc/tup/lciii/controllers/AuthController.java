@@ -50,7 +50,6 @@ public class AuthController {
                 .subject(authentication.getName())
                 .claim("scope", scope)
                 .build();
-        System.out.println(authentication.getName());
         LoginResponce loginResponce = service.login(authentication.getName());
         loginResponce.setToken(this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue());
         return loginResponce;
