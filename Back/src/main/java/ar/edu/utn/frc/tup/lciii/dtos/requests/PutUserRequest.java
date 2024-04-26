@@ -9,8 +9,13 @@ public class PutUserRequest {
     boolean changePass;
     String password;
     String email;
+
     String name;
     String lastname;
+    String cvu;
+    String dni;
+    String dniType;
+
     Long idState;
     String direction;
     String numberDir;

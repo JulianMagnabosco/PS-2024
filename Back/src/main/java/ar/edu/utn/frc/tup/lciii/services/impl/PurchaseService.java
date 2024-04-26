@@ -88,7 +88,8 @@ public class PurchaseService {
         items.add(itemRequest);
 
         PreferenceRequest preferenceRequest = PreferenceRequest.builder()
-                .backUrls(PreferenceBackUrlsRequest.builder().success("http://localhost:4200/home").build())
+                .backUrls(PreferenceBackUrlsRequest.builder()
+                        .success("http://localhost:4200/pub/"+itemRequest.getId()).build())
                 .notificationUrl(tunnel.getPublicUrl() + "/api/sell/not")
                 .items(items)
                 .build();

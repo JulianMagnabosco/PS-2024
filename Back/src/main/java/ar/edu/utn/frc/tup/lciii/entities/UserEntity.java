@@ -24,14 +24,22 @@ public class UserEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String username;
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     LocalDateTime creationTime;
     String email;
     String password;
     @Lob
     byte[] icon;
+    //Bank
     String name;
     String lastname;
+    String cvu;
+    String dni;
+    String dniType;
+//    String bankCountType;
+    //Direction
     @ManyToOne
     @JoinColumn(name="idState")
     StateEntity state;
@@ -40,8 +48,6 @@ public class UserEntity implements UserDetails {
     String postalNum;
     String floor;
     String room;
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
 
     public UserEntity(String username, String password, UserRole role, LocalDateTime creationTime) {
         this.username = username;
