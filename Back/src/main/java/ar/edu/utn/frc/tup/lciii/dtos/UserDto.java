@@ -12,8 +12,13 @@ public class UserDto {
     String username;
     String email;
     String iconUrl;
+
     String name;
     String lastname;
+    String cvu;
+    String dni;
+    String dniType;
+
     Long idState;
     String state;
     String direction;
@@ -21,6 +26,7 @@ public class UserDto {
     String postalNum;
     String floor;
     String room;
+
     Long publications;
     Long sales;
 }
