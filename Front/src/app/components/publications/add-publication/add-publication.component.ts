@@ -44,8 +44,8 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
       materials: this.fb.array([]),
       steps: this.fb.array([]),
       canSold: [false],
-      price: ["0"],
-      count: ["0"]
+      price: ["1"],
+      count: ["1"]
     });
     this.form.get("price")?.disable()
     this.form.get("count")?.disable()
@@ -66,6 +66,20 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
             this.form.get("price")?.clearValidators()
             this.form.get("count")?.clearValidators()
           }
+        }
+      }
+    ))
+    this.subs.add(this.form.get("price")?.valueChanges.subscribe(
+      {
+        next: value => {
+          if(!value) this.form.get("price")?.setValue(1);
+        }
+      }
+    ))
+    this.subs.add(this.form.get("count")?.valueChanges.subscribe(
+      {
+        next: value => {
+          if(!value) this.form.get("count")?.setValue(1);
         }
       }
     ))

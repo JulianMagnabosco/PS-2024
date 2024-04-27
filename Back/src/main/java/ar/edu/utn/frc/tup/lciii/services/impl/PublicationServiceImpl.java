@@ -239,7 +239,7 @@ public class PublicationServiceImpl implements PublicationService {
         List<SectionDto> sections = new ArrayList<>();
         for (SectionEntity s : sectionRepository.findAllByPublication(p)) {
             SectionDto r = modelMapper.map(s, SectionDto.class);
-            if (s.getImage() != null) {
+            if (s.getImage() != null || s.getType().equals(TypeSec.PHOTO)) {
                 r.setImageUrl(url + "/api/image/pub/" + r.getId());
             }
             sections.add(r);

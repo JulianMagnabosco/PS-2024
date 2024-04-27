@@ -1,5 +1,4 @@
-
-<div class="container mt-4"  *ngIf="!notfound">
+<div class="container mt-4" *ngIf="!notfound">
   <div class="col-12 d-flex justify-content-between gap-1">
 
     <h1>MODIFICAR OBRA</h1>
@@ -13,7 +12,7 @@
           <label for="nameInput" class="form-label h5">Nombre</label>
           <input type="text" formControlName="name" class="form-control" id="nameInput"
                  [class.is-invalid]="(form.controls['name'].touched || form.controls['name'].dirty)
-                  && form.controls['name'].invalid" >
+                  && form.controls['name'].invalid">
           <div class="invalid-feedback" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)
                   && form.controls['name'].hasError('required')">
             El nombre es requerido.
@@ -33,7 +32,7 @@
       && form.controls['description'].hasError('required')">
             La descripcion es requerida.
           </div>
-          <div class="form-text fst-italic">Puedes agregar tags en la descripción con el simbolo '#' </div>
+          <div class="form-text fst-italic">Puedes agregar tags en la descripción con el simbolo '#'</div>
 
         </div>
 
@@ -64,7 +63,7 @@
               <label for="difficultyInput" class="col-form-label">Dificultad:</label>
             </div>
             <div class="col-auto">
-              <select class="form-select" id="difficultyInput"  style="width: 12rem;"
+              <select class="form-select" id="difficultyInput" style="width: 12rem;"
                       formControlName="difficulty" [class.is-invalid]="(form.controls['difficulty'].touched
                   || form.controls['difficulty'].dirty) && form.controls['difficulty'].invalid">
                 <option value="" selected>--Seleccionar--</option>
@@ -119,7 +118,9 @@
           <!--        </video>-->
 
 
-          <button class="text-center borderless bg-white"   data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar o Cambiar Foto/Video</button>
+          <button class="text-center borderless bg-white" data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar
+            o Cambiar Foto/Video
+          </button>
         </div>
       </div>
 
@@ -157,8 +158,9 @@
         <div class="collapse" id="collapseConditions" formArrayName="conditions">
           <div *ngFor="let d of detailsConditions.controls; index as i" [formGroupName]="i">
 
-            <div  class="d-flex mb-1  is-invalid">
-              <button class="btn btn-danger me-1 col-auto" (click)="removeDetailCondition(i)"><i class="bi bi-dash-lg"></i></button>
+            <div class="d-flex mb-1  is-invalid">
+              <button class="btn btn-danger me-1 col-auto" (click)="removeDetailCondition(i)"><i
+                class="bi bi-dash-lg"></i></button>
 
               <input type="text" class="form-control col" formControlName="text"
                      [placeholder]="'Condicion '+(i+1)"
@@ -187,7 +189,7 @@
         </a>
         <div class="collapse" id="collapseMaterials" formArrayName="materials">
           <div *ngFor="let d of detailsMaterials.controls; index as i" [formGroupName]="i">
-            <div  class="d-flex mb-1  is-invalid">
+            <div class="d-flex mb-1  is-invalid">
               <button class="btn btn-danger me-1 col-auto" (click)="removeDetailMaterials(i)">
                 <i class="bi bi-dash-lg"></i></button>
 
@@ -218,7 +220,7 @@
         </a>
         <div class="collapse" id="collapseSteps" formArrayName="steps">
           <div *ngFor="let d of detailsSteps.controls; index as i" [formGroupName]="i">
-            <div  class="d-flex mb-1  is-invalid">
+            <div class="d-flex mb-1  is-invalid">
               <div class="d-flex flex-column">
                 <button class="btn btn-danger me-1 col-auto" (click)="moveDetailsSteps(i,-1)"
                         [hidden]="!(i>0)">
@@ -244,7 +246,7 @@
 
                 <input class="form-control  form-control-sm" type="file"
                        (change)="selectStepFile($event, i)"
-                       formControlName="image" accept="image/png, image/jpeg" >
+                       formControlName="image" accept="image/png, image/jpeg">
               </div>
             </div>
 
@@ -267,16 +269,69 @@
           <i class="bi bi-caret-left-fill text-warning" *ngIf="showPurchasedata"></i>
           <i class="bi bi-caret-down-fill text-warning" *ngIf="!showPurchasedata"></i>
         </a>
-        <div class="collapse" id="collapsePurchasedata">
-          <div class="card card-body">
-            Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+        <div class="collapse  p-2" id="collapsePurchasedata">
+          <div class="mb-3 text-center">
+            <label class="form-check-label me-1" for="exampleCheck1">Esta a la venta</label>
+            <input type="checkbox" class="btn-check" id="exampleCheck1" autocomplete="off" formControlName="canSold">
+            <label class="btn " for="exampleCheck1"
+                   [class.btn-danger]="!form.controls['canSold'].value"
+                   [class.btn-success]="form.controls['canSold'].value">
+              <i class="bi bi-x-lg" *ngIf="!form.controls['canSold'].value"></i>
+              <i class="bi bi-check-lg" *ngIf="form.controls['canSold'].value"></i>
+            </label>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="row align-items-center mb-2">
+                <div class="col-md-6 text-sm-end">
+                  <label class="form-check-label" for="examplepriceold">Precio actual: </label>
+                </div>
+                <div class="col-md-6">
+                  <div class="input-group">
+                    <span class="input-group-text bg-secondary">$</span>
+                    <input type="number" class="form-control" id="examplepriceold" readonly [value]="publication.price">
+                  </div>
+                </div>
+              </div>
+              <div class="row align-items-center mb-2">
+                <div class="col-md-6 text-sm-end">
+                  <label class="form-check-label" for="exampleprice">Precio actualizado: </label>
+                </div>
+                <div class="col-md-6">
+                  <div class="input-group">
+                    <span class="input-group-text bg-orange">$</span>
+                    <input type="number" class="form-control bg-orange-low" id="exampleprice"
+                           formControlName="price" min="1">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="row align-items-center mb-2">
+                <div class="col-md-6  text-sm-end">
+                  <label class="form-check-label" for="examplecountold">Cantidad actual disponible:</label>
+                </div>
+                <div class="col-md-6">
+                  <input type="number" class="form-control" id="examplecountold" readonly [value]="publication.count">
+                </div>
+              </div>
+              <div class="row align-items-center mb-2">
+                <div class="col-md-6 text-sm-end">
+                  <label class="form-check-label " for="examplecount">Cantidad actualizada:</label>
+                </div>
+                <div class="col-md-6">
+                  <input type="number" class="form-control bg-orange-low" id="examplecount"
+                         formControlName="count" min="1">
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </form>
   </div>
 </div>
-<ng-container  *ngIf="notfound">
+<ng-container *ngIf="notfound">
   <div class="text-center text-break h1 position-absolute top-50 w-100">
     NO SE ENCONTRÓ LA PUBLICACIÓN
   </div>

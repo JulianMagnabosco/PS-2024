@@ -60,12 +60,46 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
       materials: this.fb.array([]),
       steps: this.fb.array([]),
       canSold: [false],
-      price: [""],
-      count: [""]
+      price: ["0"],
+      count: ["0"]
     });
+    this.form.get("price")?.disable()
+    this.form.get("count")?.disable()
 
   }
   ngOnInit(): void {
+    this.subs.add(
+      this.form.get("canSold")?.valueChanges.subscribe(
+      {
+        next: value => {
+          if(value){
+            this.form.get("price")?.enable()
+            this.form.get("count")?.enable()
+            this.form.get("price")?.setValidators([Validators.min(1)])
+            this.form.get("count")?.setValidators([Validators.min(1)])
+          }else {
+            this.form.get("price")?.disable()
+            this.form.get("count")?.disable()
+            this.form.get("price")?.clearValidators()
+            this.form.get("count")?.clearValidators()
+          }
+        }
+      }
+    ))
+    this.subs.add(this.form.get("price")?.valueChanges.subscribe(
+      {
+        next: value => {
+          if(!value) this.form.get("price")?.setValue(1);
+        }
+      }
+    ))
+    this.subs.add(this.form.get("count")?.valueChanges.subscribe(
+      {
+        next: value => {
+          if(!value) this.form.get("count")?.setValue(1);
+        }
+      }
+    ))
     this.charge()
   }
 
@@ -81,7 +115,7 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
                 {
                   next: value => {
                     this.publication=value
-                    this.setForm();
+                    this.setForm()
                   },
                   error: err => {
                     alert("Hubo un error al cargar");
@@ -144,6 +178,7 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
       this.addDetailMaterials(s.text);
     }
     for (let s of sectionsStep){
+      if(!s.imageUrl) continue;
       this.subs.add(
         this.service.getImages(s.imageUrl.replace("http://localhost:8080/api/image/pub/","")).subscribe(
           {
@@ -359,7 +394,7 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
         {
           next: value => {
             alert("Imagenes guardada con éxito");
-            this.router.navigate(["/explore"])
+            this.router.navigate(["/pub/"+this.publication.id])
           },
           error: err => { alert("Hubo un error al guardar"); }
         }
