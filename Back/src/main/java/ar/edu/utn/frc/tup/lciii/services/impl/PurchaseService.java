@@ -157,6 +157,7 @@ public class PurchaseService {
                     publicationRepository.saveAndFlush(publication);
                 }
                 sale.setDetails(saleDetails);
+                sale.setDateTime(LocalDateTime.now());
                 sale.setSaleState(SaleState.PENDING);
                 sale.setMerchantOrder(m.getId());
 
@@ -195,9 +196,12 @@ public class PurchaseService {
         return responce;
     }
 
-    public List<SaleDto> getAll() {
+    public List<SaleDto> getPurchases(String firstDate, String lastDate) {
         List<SaleDto> list = new ArrayList<>();
-        for (SaleEntity sale : saleRepository.findAll()) {
+        for (SaleEntity sale : saleRepository.findAllByDateTimeBetween(
+                LocalDateTime.parse(firstDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
+                LocalDateTime.parse(lastDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
+        )) {
 
             List<SaleDetailDto> detailDtos = new ArrayList<>();
             for (SaleDetailEntity detail : sale.getDetails()) {
@@ -209,6 +213,7 @@ public class PurchaseService {
             }
 
             list.add(new SaleDto(sale.getId(),
+                    sale.getDateTime().toString(),
                     detailDtos,
                     sale.getSaleState()));
         }

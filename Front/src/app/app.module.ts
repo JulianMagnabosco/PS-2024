@@ -26,6 +26,8 @@ import {UserStadisticsComponent} from "./components/stadistics/user-stadistics/u
 import {PubStadisticsComponent} from "./components/stadistics/pub-stadistics/pub-stadistics.component";
 import {DateCustomPipe} from "./pipes/date-custom.pipe";
 import {HomeComponent} from "./components/home/home.component";
+import {ListPurchasesComponent} from "./components/purchases/list-purchases/list-purchases.component";
+import {ShowPurchaseComponent} from "./components/purchases/show-purchase/show-purchase.component";
 
 
 @NgModule({
@@ -45,6 +47,8 @@ import {HomeComponent} from "./components/home/home.component";
     ModPublicationComponent,
     UserStadisticsComponent,
     PubStadisticsComponent,
+    ListPurchasesComponent,
+    ShowPurchaseComponent,
     HomeComponent
   ],
     imports: [

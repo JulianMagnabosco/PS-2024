@@ -1,0 +1,39 @@
+<div class="container-fluid">
+    <h1 class="h1">Explorar</h1>
+  <div class="d-flex gap-2">
+    <div class="col-auto">
+      <label for="firstDate" class="col-form-label">De </label>
+    </div>
+    <div class="col-auto">
+      <input type="date" id="firstDate" class="form-control" aria-describedby="passwordHelpInline"
+             name="firstDate"
+             [(ngModel)]="firstDate">
+    </div>
+    <div class="col-auto">
+      <label for="lastDate" class="col-form-label"> A </label>
+    </div>
+    <div class="col-auto">
+      <input type="date" id="lastDate" class="form-control" aria-describedby="passwordHelpInline"
+             name="lastDate"
+            [(ngModel)]="lastDate">
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-primary" (click)="charge(0)">FILTRAR</button>
+    </div>
+  </div>
+  <div class="d-flex gap-2">
+    <div class="border-orange rounded-2 border border-2" *ngFor="let i of list">
+      <div class="d-flex justify-content-between">
+        <div class="col-3 position-relative">
+          <img class="position-absolute top-0 start-0" src="assets/camera.png" style="width: 50px; height: 50px">
+          <img class="position-absolute top-50 start-50 translate-middle" src="assets/camera.png" style="width: 50px; height: 50px">
+          <img class="position-absolute top-100 start-0" src="assets/camera.png" style="width: 50px; height: 50px">
+        </div>
+        <div class="col-auto ">N°{{i.id}} - {{i.dateTime}}</div>
+        <div class="col-auto ">
+          <button class="rounded-2 border border-2 bg-success text-uppercase">{{ i.saleState }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

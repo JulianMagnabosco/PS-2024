@@ -21,9 +21,10 @@ public class PurchaseController {
     @Autowired
     PurchaseService service;
 
-    @GetMapping("/list")
-    public List<SaleDto> getAll() {
-        return service.getAll();
+    @GetMapping("/purchases")
+    public List<SaleDto> getPurchases(@RequestParam String firstDate,
+                                      @RequestParam String lastDate) {
+        return service.getPurchases(firstDate,lastDate);
     }
 
     @PostMapping("/regsingle")

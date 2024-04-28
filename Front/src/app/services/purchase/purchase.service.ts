@@ -13,4 +13,8 @@ export class PurchaseService {
   postSingleSale(data: any):Observable<any>{
     return this.client.post(this.baseUrl + "regsingle", data);
   }
+
+  getPurchases(firstDate:string,lastDate:string){
+    return this.client.get(this.baseUrl + "purchases?firstDate="+ firstDate +"&lastDate="+ lastDate );
+  }
 }
