@@ -17,6 +17,8 @@ import java.util.List;
 @NoArgsConstructor
 public class SaleDetailDto {
     Long pubId;
+    String name;
+    String imageUrl;
     BigDecimal total;
     int count;
 }

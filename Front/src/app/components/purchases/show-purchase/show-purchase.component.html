@@ -1,1 +1,39 @@
-<p>show-purchase works!</p>
+
+<div class="border-5 border-orange rounded-5 p-3 bg-secondary-subtle">
+  <div class="d-flex mb-2">
+    <div class="col">
+      <div class="mb-1">
+        N°{{purchase?.id}}
+      </div>
+      <div class="mb-1">
+        Fecha: <span class="text-secondary">{{purchase?.dateTime | date:"dd/MM/yyyy hh:mm:ss"}}</span>
+      </div>
+      <div class="mb-1">
+        Monto total: <span class="text-secondary">${{purchase?.total}}</span>
+      </div>
+    </div>
+    <div class="col-auto d-flex p-0" >
+      <div class="h-auto p-2">
+        Estado:&nbsp;
+        <span class="p-2 rounded-4 border bg-success text-uppercase text-white text-center">
+          {{ purchase?.saleState }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-1 border-top border-secondary border-2">
+    <div *ngFor="let d of purchase?.details" class=" rounded rounded-4 border-5 border-orange d-flex">
+      <div class="col-auto p-0">
+        <img [src]="d.imageUrl" class="rounded rounded-3 border-3 border-orange" style="width: 100px; height: 100px">
+      </div>
+      <div class="col-11 row p-2 align-items-center">
+        <div class="col-6">Obra: <span class="text-secondary">{{d.name}}</span></div>
+        <div class="col-6">Cantidad: <span class="text-secondary">{{d.count}}</span></div>
+        <div class="col-6">Total Vendido: <span class="text-secondary">${{d.total}}</span></div>
+        <div class="col-6">Valor Unitario: <span class="text-secondary">${{d.total/d.count}}</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+

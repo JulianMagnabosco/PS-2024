@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {Purchase} from "../../../models/purchase/purchase";
 
 @Component({
   selector: 'app-show-purchase',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './show-purchase.component.css'
 })
 export class ShowPurchaseComponent {
-
+  @Input() purchase?: Purchase;
 }

@@ -21,6 +21,9 @@ public class SaleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     Long merchantOrder;
+    @ManyToOne
+    @JoinColumn(name="idUser")
+    UserEntity user;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     LocalDateTime dateTime;
     @OneToMany(mappedBy="sale", cascade = CascadeType.ALL)

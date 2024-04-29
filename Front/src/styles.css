@@ -32,10 +32,10 @@ h1, .space-text{
    border: 3px solid #f6cb1e;
  }
 
-.borderless{
+.border-white-button{
   border: 3px solid #ffffff;
 }
-.borderless:hover{
+.border-white-button:hover{
    border: 3px solid #f6981e;
 }
 
@@ -48,4 +48,33 @@ h1, .space-text{
 
 .border-transparent{
   border: 3px solid rgba(255, 255, 255, 0);
+}
+
+.gap-image-1{
+  top: 0;
+  left: 0;
+}
+
+.gap-image-2{
+  bottom: 0;
+  right: 0;
+}
+
+.gap-image-3{
+  bottom: 0;
+  left: 0;
+}
+.img-stat-1{
+  position: absolute;
+  width: 65%;
+  height: 65%;
+}
+.img-stat-2{
+  position: absolute;
+  width: 50%;
+  height: 50%;
+}
+.img-stat-container{
+  max-width: 130px;
+  max-height: 130px;
 }

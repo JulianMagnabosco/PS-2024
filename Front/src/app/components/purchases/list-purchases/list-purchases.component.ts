@@ -21,6 +21,8 @@ export class ListPurchasesComponent implements OnInit,OnDestroy {
 
   list: Purchase[] = [
   ];
+  selected?:Purchase;
+
   countTotal=1;
   size=3;
   page=0;
@@ -77,8 +79,7 @@ export class ListPurchasesComponent implements OnInit,OnDestroy {
     );
   }
 
-  open(id:number){
-    // this.router.navigate(["/pub/"+id])
-
+  open(p:Purchase){
+    this.selected=p;
   }
 }

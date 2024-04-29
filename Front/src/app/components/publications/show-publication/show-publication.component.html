@@ -33,11 +33,19 @@
           </div>
 
           <!--    *ngIf="publication.canSold"-->
-          <div class="p-1 mb-3 d-flex" *ngIf="publication.canSold">
-            <button class="btn btn-primary" (click)="buy()">COMPRAR</button>
+          <div *ngIf="publication.canSold && userService.user?.id==publication.userId.toString()"
+            class="border-orange rounded-2 p-2">
+            <div> <span class="fw-bold">Precio:</span> ${{publication.price || 0}} </div>
+            <div>
+              <span class="fw-bold">Cantidad:</span>  {{publication.count || 0}} disponibles
+            </div>
+          </div>
+          <div class="p-1 mb-3 d-flex" *ngIf="publication.canSold &&
+           userService.user?.id!=publication.userId.toString()">
+            <button class="btn btn-primary" (click)="buy()" >COMPRAR</button>
             <div class="px-2">
               <div>
-              <span class="fw-bold">Precio:</span> ${{publication.price || 0}}
+                <span class="fw-bold">Precio:</span> ${{publication.price || 0}}
               </div>
               <div class="d-flex align-items-center">
                 <div class="col-auto fw-bold">

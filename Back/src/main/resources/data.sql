@@ -32,8 +32,9 @@ values (1,'STEP', 'Abrir es un panal de abejas', 1);
 
 
 
-insert into publications (id_user, name, description, type, difficulty,can_sold,deleted,creation_time)
-values (1,'Casa de pajaros ', 'pajaros', 'ARTE',1,false,false,'2023-1-01 00:00:01');
+insert into publications (id_user, name, description, type, difficulty,can_sold,count,price,deleted,creation_time)
+values (2,'Casa de pajaros', 'esto es un panal de abejas artesanal', 'ARTE',1,true,5,5
+       ,false,'2023-1-01 00:00:01');
 
 insert into sections (id_publication, type, text)
 values (2,'PHOTO', '');

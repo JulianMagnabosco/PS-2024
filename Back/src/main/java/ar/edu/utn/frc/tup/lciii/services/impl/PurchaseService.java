@@ -1,26 +1,22 @@
 package ar.edu.utn.frc.tup.lciii.services.impl;
 
-import ar.edu.utn.frc.tup.lciii.dtos.CommentDto;
-import ar.edu.utn.frc.tup.lciii.dtos.ListCommentsResponce;
+import ar.edu.utn.frc.tup.lciii.dtos.SellDto;
 import ar.edu.utn.frc.tup.lciii.dtos.purchase.NotPurchaseResponce;
 import ar.edu.utn.frc.tup.lciii.dtos.purchase.PurchaseResponce;
 import ar.edu.utn.frc.tup.lciii.dtos.purchase.SaleDetailDto;
 import ar.edu.utn.frc.tup.lciii.dtos.purchase.SaleDto;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.PurchaseRequest;
-import ar.edu.utn.frc.tup.lciii.entities.CommentEntity;
-import ar.edu.utn.frc.tup.lciii.entities.PublicationEntity;
-import ar.edu.utn.frc.tup.lciii.entities.SaleDetailEntity;
-import ar.edu.utn.frc.tup.lciii.entities.SaleEntity;
+import ar.edu.utn.frc.tup.lciii.entities.*;
 import ar.edu.utn.frc.tup.lciii.enums.SaleState;
+import ar.edu.utn.frc.tup.lciii.enums.TypeSec;
 import ar.edu.utn.frc.tup.lciii.repository.PublicationRepository;
 import ar.edu.utn.frc.tup.lciii.repository.SaleRepository;
+import ar.edu.utn.frc.tup.lciii.repository.UserRepository;
 import com.github.alexdlaird.ngrok.protocol.Tunnel;
+import com.mercadopago.client.common.IdentificationRequest;
 import com.mercadopago.client.merchantorder.MerchantOrderClient;
 import com.mercadopago.client.payment.PaymentClient;
-import com.mercadopago.client.preference.PreferenceBackUrlsRequest;
-import com.mercadopago.client.preference.PreferenceClient;
-import com.mercadopago.client.preference.PreferenceItemRequest;
-import com.mercadopago.client.preference.PreferenceRequest;
+import com.mercadopago.client.preference.*;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.merchantorder.MerchantOrder;
@@ -28,9 +24,11 @@ import com.mercadopago.resources.merchantorder.MerchantOrderItem;
 import com.mercadopago.resources.merchantorder.MerchantOrderPayment;
 import com.mercadopago.resources.payment.Payment;
 import com.mercadopago.resources.preference.Preference;
+import com.mercadopago.resources.preference.PreferencePayer;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -49,14 +47,19 @@ public class PurchaseService {
     SaleRepository saleRepository;
     @Autowired
     PublicationRepository publicationRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     Tunnel tunnel;
+    @Value("${app.url}")
+    private String url;
 
     @Transactional
     public PurchaseResponce registerSale(PurchaseRequest request) throws MPException, MPApiException {
 
         PublicationEntity publication = publicationRepository.getReferenceById(request.getIdPub());
+        UserEntity user = userRepository.getReferenceById(request.getIdUser());
         if (!publication.isCanSold() && publication.getCount() <= 0) {
             throw new EntityNotFoundException("No se puede vender");
         }
@@ -88,6 +91,7 @@ public class PurchaseService {
         items.add(itemRequest);
 
         PreferenceRequest preferenceRequest = PreferenceRequest.builder()
+                .externalReference(request.getIdUser().toString())
                 .backUrls(PreferenceBackUrlsRequest.builder()
                         .success("http://localhost:4200/pub/"+itemRequest.getId()).build())
                 .notificationUrl(tunnel.getPublicUrl() + "/api/sell/not")
@@ -132,7 +136,7 @@ public class PurchaseService {
                 Payment p = payClient.get(id);
                 m = client.get(p.getOrder().getId());
             }
-            System.out.println("+Merchandorder: "+m.getId());
+//            System.out.println("+Merchandorder: "+m.getId());
 
             Optional<SaleEntity> optionalSale = saleRepository.findByMerchantOrder(m.getId());
 
@@ -158,7 +162,10 @@ public class PurchaseService {
                 }
                 sale.setDetails(saleDetails);
                 sale.setDateTime(LocalDateTime.now());
-                sale.setSaleState(SaleState.PENDING);
+                System.out.print(notification.get("external_reference"));
+                Long uId = Long.parseLong(notification.get("external_reference").toString());
+                sale.setUser(userRepository.getReferenceById(uId));
+                sale.setSaleState(SaleState.PENDIENTE);
                 sale.setMerchantOrder(m.getId());
 
                 saleRepository.saveAndFlush(sale);
@@ -181,7 +188,7 @@ public class PurchaseService {
                 } else { // The merchant_order don't has any shipments
                     System.out.println("Totally paid. Release your item.");
 
-                    sale.setSaleState(SaleState.APPROVED);
+                    sale.setSaleState(SaleState.APROVADA);
                     saleRepository.save(sale);
                 }
             } else {
@@ -203,19 +210,65 @@ public class PurchaseService {
                 LocalDateTime.parse(lastDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
         )) {
 
+            BigDecimal total=BigDecimal.ZERO;
             List<SaleDetailDto> detailDtos = new ArrayList<>();
             for (SaleDetailEntity detail : sale.getDetails()) {
+                Long imgId=1L;
+                for(SectionEntity s : detail.getPublication().getSections()){
+                    if(s.getType()== TypeSec.PHOTO){
+                        imgId=s.getId();
+                        break;
+                    }
+                }
+
                 detailDtos.add(new SaleDetailDto(
                         detail.getPublication().getId(),
+                        detail.getPublication().getName(),
+                        url + "/api/image/pub/" + imgId,
                         detail.getTotal(),
                         detail.getCount()
                 ));
+                total = total.add(BigDecimal.ONE);
             }
 
             list.add(new SaleDto(sale.getId(),
                     sale.getDateTime().toString(),
                     detailDtos,
-                    sale.getSaleState()));
+                    sale.getSaleState(),
+                    total)
+            );
+        }
+
+        return list;
+
+    }
+
+
+    public List<SellDto> getSells(String firstDate, String lastDate) {
+        List<SellDto> list = new ArrayList<>();
+        for (SaleEntity sale : saleRepository.findAllByDateTimeBetween(
+                LocalDateTime.parse(firstDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
+                LocalDateTime.parse(lastDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
+        )) {
+            for (SaleDetailEntity detail : sale.getDetails()) {
+                Long imgId=1L;
+                for(SectionEntity s : detail.getPublication().getSections()){
+                    if(s.getType()== TypeSec.PHOTO){
+                        imgId=s.getId();
+                        break;
+                    }
+                }
+
+                list.add(new SellDto(
+                        detail.getPublication().getId(),
+                        sale.getUser().getName()+" "+sale.getUser().getLastname(),
+                        detail.getPublication().getName(),
+                        url + "/api/image/pub/" + imgId,
+                        detail.getTotal(),
+                        detail.getCount()
+                ));
+            }
+
         }
 
         return list;
