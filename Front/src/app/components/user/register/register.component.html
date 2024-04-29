@@ -14,6 +14,9 @@
       && form.controls['name'].hasError('maxlength')">
         El nombre no puede superar los 50 caracteres.
       </div>
+      <div class="text-danger " *ngIf="form.hasError('invalidName')">
+        El nombre no puede incluir &commat;.
+      </div>
     </div>
 
     <div class="col-12">

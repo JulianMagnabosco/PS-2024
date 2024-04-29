@@ -41,13 +41,13 @@ export class LoginComponent implements OnInit,OnDestroy {
     let username= this.form.controls['username'].value;
     let password= this.form.controls['password'].value;
 
-    console.log(username)
 
     this.subs.add(
       this.service.postLogin(username,password).subscribe(
         {
           next: value => {
             // alert("Inicio de secion éxitoso");
+            console.log(value)
             this.service.login(value)
 
             this.router.navigate(["/home"])

@@ -8,7 +8,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   const router = inject(Router);
   let token = sessionStorage.getItem("app.token");
-  if (token) {
+  if (token && !req.url.includes("signin")) {
     req = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`

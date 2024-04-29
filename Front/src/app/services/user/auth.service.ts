@@ -17,7 +17,6 @@ export class AuthService {
   }
 
   get user():Loginuser|undefined{
-
     try {
       return JSON.parse( sessionStorage.getItem("app.user") || "");
     }catch (e) {
@@ -40,6 +39,7 @@ export class AuthService {
         Authorization: 'Basic ' + window.btoa(username + ':' + password)
       },
     };
+    console.log(username)
     return this.client.post(this.baseUrl +"signin", null, httpOptions);
   }
 

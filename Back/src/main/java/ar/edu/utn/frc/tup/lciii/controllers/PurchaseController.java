@@ -23,8 +23,9 @@ public class PurchaseController {
 
     @GetMapping("/purchases")
     public List<SaleDto> getPurchases(@RequestParam String firstDate,
-                                      @RequestParam String lastDate) {
-        return service.getPurchases(firstDate,lastDate);
+                                      @RequestParam String lastDate,
+                                      @RequestParam Long user) {
+        return service.getPurchases(firstDate,lastDate,user);
     }
 
     @PostMapping("/regsingle")
@@ -34,7 +35,7 @@ public class PurchaseController {
 
 
     @PostMapping("/not")
-    public NotPurchaseResponce notificar(@RequestBody LinkedHashMap data) {
-        return service.notificar(data);
+    public NotPurchaseResponce notificar(@RequestBody LinkedHashMap data,@RequestParam(name = "user",defaultValue = "0") String user) {
+        return service.notificar(data,user);
     }
 }

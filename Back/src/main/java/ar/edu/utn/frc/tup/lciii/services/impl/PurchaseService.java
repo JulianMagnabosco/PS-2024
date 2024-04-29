@@ -91,14 +91,15 @@ public class PurchaseService {
         items.add(itemRequest);
 
         PreferenceRequest preferenceRequest = PreferenceRequest.builder()
-                .externalReference(request.getIdUser().toString())
                 .backUrls(PreferenceBackUrlsRequest.builder()
                         .success("http://localhost:4200/pub/"+itemRequest.getId()).build())
-                .notificationUrl(tunnel.getPublicUrl() + "/api/sell/not")
+                .notificationUrl(tunnel.getPublicUrl() + "/api/sell/not?user="+user.getId())
                 .items(items)
                 .build();
 
+
         PreferenceClient client = new PreferenceClient();
+//        System.out.println(preferenceRequest.getNotificationUrl());
 
         Preference preference = client.create(preferenceRequest);
 //        try {
@@ -111,7 +112,7 @@ public class PurchaseService {
     }
 
     @Transactional
-    public NotPurchaseResponce notificar(LinkedHashMap notification) {
+    public NotPurchaseResponce notificar(LinkedHashMap notification, String userId) {
 
         NotPurchaseResponce responce;
 //        System.out.println(notification.values());
@@ -162,8 +163,7 @@ public class PurchaseService {
                 }
                 sale.setDetails(saleDetails);
                 sale.setDateTime(LocalDateTime.now());
-                System.out.print(notification.get("external_reference"));
-                Long uId = Long.parseLong(notification.get("external_reference").toString());
+                Long uId = Long.parseLong(userId);
                 sale.setUser(userRepository.getReferenceById(uId));
                 sale.setSaleState(SaleState.PENDIENTE);
                 sale.setMerchantOrder(m.getId());
@@ -198,18 +198,20 @@ public class PurchaseService {
 
         } catch (Exception ex) {
             responce = null;
-            System.out.println("error map");
+            System.out.println("error map: "+ex.getMessage());
         }
         return responce;
     }
 
-    public List<SaleDto> getPurchases(String firstDate, String lastDate) {
+    public List<SaleDto> getPurchases(String firstDate, String lastDate, Long user) {
         List<SaleDto> list = new ArrayList<>();
         for (SaleEntity sale : saleRepository.findAllByDateTimeBetween(
                 LocalDateTime.parse(firstDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
                 LocalDateTime.parse(lastDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
         )) {
-
+            if(!user.equals(sale.getUser().getId())){
+                continue;
+            }
             BigDecimal total=BigDecimal.ZERO;
             List<SaleDetailDto> detailDtos = new ArrayList<>();
             for (SaleDetailEntity detail : sale.getDetails()) {
@@ -228,7 +230,7 @@ public class PurchaseService {
                         detail.getTotal(),
                         detail.getCount()
                 ));
-                total = total.add(BigDecimal.ONE);
+                total = total.add(detail.getTotal());
             }
 
             list.add(new SaleDto(sale.getId(),

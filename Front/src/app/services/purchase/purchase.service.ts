@@ -14,7 +14,7 @@ export class PurchaseService {
     return this.client.post(this.baseUrl + "regsingle", data);
   }
 
-  getPurchases(firstDate:string,lastDate:string){
-    return this.client.get(this.baseUrl + "purchases?firstDate="+ firstDate +"&lastDate="+ lastDate );
+  getPurchases(firstDate:string,lastDate:string,user:string){
+    return this.client.get(this.baseUrl + "purchases?firstDate="+ firstDate +"&lastDate="+ lastDate +"&user="+ user );
   }
 }

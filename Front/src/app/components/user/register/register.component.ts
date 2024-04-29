@@ -20,7 +20,7 @@ export class RegisterComponent implements OnInit,OnDestroy {
       password: ["", [Validators.required, Validators.maxLength(50)]],
       password2: ["", [Validators.required, Validators.maxLength(50)]]
     },{
-      validators: this.checkPasswords
+      validators: [this.checkPasswords, this.checkName]
     });
 
   }
@@ -70,6 +70,10 @@ export class RegisterComponent implements OnInit,OnDestroy {
     let pass = group.get('password')?.value;
     let confirmPass = group.get('password2')?.value
     return pass === confirmPass ? null : { notSame: true }
+  }
+  checkName: ValidatorFn = (group: AbstractControl):  ValidationErrors | null => {
+    let namecorrect:string = group.get('name')?.value;
+    return !namecorrect.includes("@") ? null : { invalidName: true }
   }
 }
 

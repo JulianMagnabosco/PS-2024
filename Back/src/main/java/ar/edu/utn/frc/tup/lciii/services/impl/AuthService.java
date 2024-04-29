@@ -73,6 +73,10 @@ public class AuthService implements UserDetailsService {
 //            .password(passwordEncoder.encode("pablo"))
 //            .roles("USER")
 //            .build();
+    if(username.contains("@")){
+      var user = repository.findByEmail(username);
+      return user;
+    }
     var user = repository.findByUsername(username);
     return user;
   }

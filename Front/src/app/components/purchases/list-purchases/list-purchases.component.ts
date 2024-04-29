@@ -6,6 +6,7 @@ import {PublicationsService} from "../../../services/publications/publications.s
 import {Router} from "@angular/router";
 import {PurchaseService} from "../../../services/purchase/purchase.service";
 import {Purchase} from "../../../models/purchase/purchase";
+import {AuthService} from "../../../services/user/auth.service";
 
 @Component({
   selector: 'app-list-purchases',
@@ -27,7 +28,7 @@ export class ListPurchasesComponent implements OnInit,OnDestroy {
   size=3;
   page=0;
 
-  constructor(private service: PurchaseService, private router: Router) {
+  constructor(private service: PurchaseService,private authService: AuthService, private router: Router) {
     let datenow= new Date(Date.now());
     this.lastDate= datenow.toISOString().split("T")[0]
     datenow.setDate(datenow.getDate()-1)
@@ -63,7 +64,7 @@ export class ListPurchasesComponent implements OnInit,OnDestroy {
 
 
     this.subs.add(
-      this.service.getPurchases(firstDate1,lastDate1).subscribe(
+      this.service.getPurchases(firstDate1,lastDate1, this.authService.user?.id||"0").subscribe(
         {
           next: value => {
             // this.countTotal=value["countTotal"]
