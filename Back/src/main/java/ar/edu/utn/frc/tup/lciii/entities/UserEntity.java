@@ -35,6 +35,7 @@ public class UserEntity implements UserDetails {
     //Bank
     String name;
     String lastname;
+    String phone;
     String cvu;
     String dni;
     String dniType;
@@ -58,9 +59,12 @@ public class UserEntity implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (this.role == UserRole.ADMIN) {
-            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+            return List.of(new SimpleGrantedAuthority("ADMIN"), new SimpleGrantedAuthority("USER"));
         }
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        if (this.role == UserRole.DELIVERY) {
+            return List.of(new SimpleGrantedAuthority("DELIVERY"), new SimpleGrantedAuthority("USER"));
+        }
+        return List.of(new SimpleGrantedAuthority("USER"));
     }
 
     @Override

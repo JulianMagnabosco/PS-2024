@@ -5,7 +5,6 @@ import ar.edu.utn.frc.tup.lciii.dtos.stadistics.StatSeriesDto;
 import ar.edu.utn.frc.tup.lciii.dtos.stadistics.StatsResponce;
 import ar.edu.utn.frc.tup.lciii.entities.PublicationEntity;
 import ar.edu.utn.frc.tup.lciii.entities.UserEntity;
-import ar.edu.utn.frc.tup.lciii.enums.TypePub;
 import ar.edu.utn.frc.tup.lciii.repository.PublicationRepository;
 import ar.edu.utn.frc.tup.lciii.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

@@ -1,5 +1,7 @@
 package ar.edu.utn.frc.tup.lciii.services.impl;
 
+import ar.edu.utn.frc.tup.lciii.dtos.DeliveryDetailDto;
+import ar.edu.utn.frc.tup.lciii.dtos.DeliveryDto;
 import ar.edu.utn.frc.tup.lciii.dtos.SellDto;
 import ar.edu.utn.frc.tup.lciii.dtos.purchase.NotPurchaseResponce;
 import ar.edu.utn.frc.tup.lciii.dtos.purchase.PurchaseResponce;
@@ -7,12 +9,11 @@ import ar.edu.utn.frc.tup.lciii.dtos.purchase.SaleDetailDto;
 import ar.edu.utn.frc.tup.lciii.dtos.purchase.SaleDto;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.PurchaseRequest;
 import ar.edu.utn.frc.tup.lciii.entities.*;
+import ar.edu.utn.frc.tup.lciii.enums.DeliveryState;
 import ar.edu.utn.frc.tup.lciii.enums.SaleState;
-import ar.edu.utn.frc.tup.lciii.enums.TypeSec;
-import ar.edu.utn.frc.tup.lciii.repository.PublicationRepository;
-import ar.edu.utn.frc.tup.lciii.repository.SaleDetailRepository;
-import ar.edu.utn.frc.tup.lciii.repository.SaleRepository;
-import ar.edu.utn.frc.tup.lciii.repository.UserRepository;
+import ar.edu.utn.frc.tup.lciii.enums.SecType;
+import ar.edu.utn.frc.tup.lciii.enums.UserRole;
+import ar.edu.utn.frc.tup.lciii.repository.*;
 import com.github.alexdlaird.ngrok.protocol.Tunnel;
 import com.mercadopago.client.merchantorder.MerchantOrderClient;
 import com.mercadopago.client.payment.PaymentClient;
@@ -46,6 +47,8 @@ public class PurchaseService {
     SaleRepository saleRepository;
     @Autowired
     SaleDetailRepository saleDetailRepository;
+    @Autowired
+    DeliveryRepository deliveryRepository;
     @Autowired
     PublicationRepository publicationRepository;
     @Autowired
@@ -169,7 +172,16 @@ public class PurchaseService {
                 sale.setSaleState(SaleState.PENDIENTE);
                 sale.setMerchantOrder(m.getId());
 
-                saleRepository.saveAndFlush(sale);
+                sale = saleRepository.saveAndFlush(sale);
+
+                DeliveryEntity delivery = new DeliveryEntity();
+                delivery.setId(sale.getId());
+                delivery.setSale(sale);
+                delivery.setShipmment(m.getId());
+                delivery.setDealer(getDeliveryFree());
+                delivery.setState(DeliveryState.PENDIENTE);
+                deliveryRepository.save(delivery);
+
             } else {
                 sale = optionalSale.get();
             }
@@ -204,21 +216,36 @@ public class PurchaseService {
         return responce;
     }
 
+    UserEntity getDeliveryFree(){
+        UserEntity selected = null;
+        Long countSelected = 0L;
+        for (UserEntity user: userRepository.findAllByRole(UserRole.DELIVERY)){
+            Long count = deliveryRepository.countAllByDealer(user);
+            if(count < countSelected){
+                selected=user;
+                countSelected=count;
+            }
+        }
+
+        return selected;
+    }
+
     public List<SaleDto> getPurchases(String firstDate, String lastDate, Long user) {
         List<SaleDto> list = new ArrayList<>();
-        for (SaleEntity sale : saleRepository.findAllByDateTimeBetween(
+        for (SaleEntity sale : saleRepository.findAllByDateTimeBetweenAndUser_Id(
                 LocalDateTime.parse(firstDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
-                LocalDateTime.parse(lastDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
+                LocalDateTime.parse(lastDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
+                user
         )) {
-            if (!user.equals(sale.getUser().getId())) {
-                continue;
-            }
+//            if (!user.equals(sale.getUser().getId())) {
+//                continue;
+//            }
             BigDecimal total = BigDecimal.ZERO;
             List<SaleDetailDto> detailDtos = new ArrayList<>();
             for (SaleDetailEntity detail : sale.getDetails()) {
                 Long imgId = 1L;
                 for (SectionEntity s : detail.getPublication().getSections()) {
-                    if (s.getType() == TypeSec.PHOTO) {
+                    if (s.getType() == SecType.PHOTO) {
                         imgId = s.getId();
                         break;
                     }
@@ -247,6 +274,62 @@ public class PurchaseService {
     }
 
 
+    public List<DeliveryDto> getDeliveriesPending( Long user) {
+        List<DeliveryDto> list = new ArrayList<>();
+        for (DeliveryEntity delivery : deliveryRepository.findAllByDealer_Id(
+                user
+        )) {
+//            if (!user.equals(sale.getUser().getId())) {
+//                continue;
+//            }
+            BigDecimal total = BigDecimal.ZERO;
+            List<DeliveryDetailDto> detailDtos = new ArrayList<>();
+            for (SaleDetailEntity detail : delivery.getSale().getDetails()) {
+                Long imgId = 1L;
+                for (SectionEntity s : detail.getPublication().getSections()) {
+                    if (s.getType() == SecType.PHOTO) {
+                        imgId = s.getId();
+                        break;
+                    }
+                }
+
+                detailDtos.add(new DeliveryDetailDto(
+                        detail.getPublication().getId(),
+                        detail.getPublication().getName(),
+                        url + "/api/image/pub/" + imgId,
+                        detail.getTotal(),
+                        detail.getCount(),
+                        delivery.getSale().getUser().getName()+" "+
+                                delivery.getSale().getUser().getLastname(),
+                        delivery.getSale().getUser().getPhone(),
+                        delivery.getSale().getUser().getState().getName()+", "+
+                                delivery.getSale().getUser().getDirection()
+                ));
+                total = total.add(detail.getTotal());
+            }
+
+            list.add(new DeliveryDto(delivery.getId(),
+                    delivery.getSale().getDateTime().toString(),
+                    detailDtos,
+                    total,
+                    delivery.getSale().getUser().getName()+" "+
+                        delivery.getSale().getUser().getLastname(),
+                    delivery.getSale().getUser().getPhone(),
+                    delivery.getSale().getUser().getState().getName()+", "+
+                        delivery.getSale().getUser().getDirection(),
+                    delivery.getDateTime().toString(),
+                    delivery.getState(),
+                    delivery.getDealer().getName()+" "+
+                        delivery.getDealer().getLastname(),
+                    delivery.getDealer().getId()
+                    )
+            );
+        }
+
+        return list;
+
+    }
+
     public List<SellDto> getSells(String firstDate, String lastDate, Long user) {
         List<SellDto> list = new ArrayList<>();
         for (SaleDetailEntity detail : saleDetailRepository.findAllBySale_DateTimeBetweenAndPublication_User_Id(
@@ -256,7 +339,7 @@ public class PurchaseService {
         )) {
             Long imgId = 1L;
             for (SectionEntity s : detail.getPublication().getSections()) {
-                if (s.getType() == TypeSec.PHOTO) {
+                if (s.getType() == SecType.PHOTO) {
                     imgId = s.getId();
                     break;
                 }
@@ -268,8 +351,8 @@ public class PurchaseService {
                     detail.getSale().getSaleState(),
                     detail.getPublication().getId(),
                     detail.getSale().getUser().getName() +
-                        " " +
-                        detail.getSale().getUser().getLastname(),
+                            " " +
+                            detail.getSale().getUser().getLastname(),
                     detail.getPublication().getName(),
                     url + "/api/image/pub/" + imgId,
                     detail.getTotal(),
@@ -277,8 +360,6 @@ public class PurchaseService {
             ));
 
         }
-
         return list;
-
     }
 }

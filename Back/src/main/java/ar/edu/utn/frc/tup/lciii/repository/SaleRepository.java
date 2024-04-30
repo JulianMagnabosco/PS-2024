@@ -12,6 +12,6 @@ import java.util.Optional;
 @Repository
 public interface SaleRepository extends JpaRepository<SaleEntity,Long> {
     Optional<SaleEntity> findByMerchantOrder(Long merchantOrder);
-    List<SaleEntity> findAllByDateTimeBetween(LocalDateTime first,LocalDateTime last);
+//    List<SaleEntity> findAllByDateTimeBetween(LocalDateTime first,LocalDateTime last);
     List<SaleEntity> findAllByDateTimeBetweenAndUser_Id(LocalDateTime first, LocalDateTime last, Long user);
 }

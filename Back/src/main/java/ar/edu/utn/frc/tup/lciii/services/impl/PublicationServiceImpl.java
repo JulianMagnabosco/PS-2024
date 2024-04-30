@@ -7,8 +7,8 @@ import ar.edu.utn.frc.tup.lciii.entities.PublicationEntity;
 import ar.edu.utn.frc.tup.lciii.entities.SectionEntity;
 import ar.edu.utn.frc.tup.lciii.entities.UserEntity;
 import ar.edu.utn.frc.tup.lciii.enums.Difficulty;
-import ar.edu.utn.frc.tup.lciii.enums.TypePub;
-import ar.edu.utn.frc.tup.lciii.enums.TypeSec;
+import ar.edu.utn.frc.tup.lciii.enums.PubType;
+import ar.edu.utn.frc.tup.lciii.enums.SecType;
 import ar.edu.utn.frc.tup.lciii.repository.CalificationRepository;
 import ar.edu.utn.frc.tup.lciii.repository.PublicationRepository;
 import ar.edu.utn.frc.tup.lciii.repository.SectionRepository;
@@ -28,7 +28,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -137,7 +136,7 @@ public class PublicationServiceImpl implements PublicationService {
                 continue;
             }
 
-            if(searchPubRequest.getType()!=TypePub.NONE){
+            if(searchPubRequest.getType()!= PubType.NONE){
                 if(searchPubRequest.getType()!=p.getType()){
                     continue;
                 }
@@ -172,7 +171,7 @@ public class PublicationServiceImpl implements PublicationService {
                 List<String> mats = List.of(searchPubRequest.getMaterials().toLowerCase()
                         .split("[\\s,]+"));
                 List<SectionEntity> smats = p.getSections().stream()
-                        .filter(sec -> sec.getType().equals(TypeSec.MAT))
+                        .filter(sec -> sec.getType().equals(SecType.MAT))
                         .toList();
                 boolean noadd=true;
                 for (SectionEntity m : smats) {
@@ -189,7 +188,7 @@ public class PublicationServiceImpl implements PublicationService {
             PublicationMinDto dto = modelMapper.map(p, PublicationMinDto.class);
 
             dto.setCalification(cal);
-            SectionEntity sectionImage = sectionRepository.findFirstByPublicationAndType(p,TypeSec.PHOTO);
+            SectionEntity sectionImage = sectionRepository.findFirstByPublicationAndType(p, SecType.PHOTO);
             dto.setDificulty(Difficulty.values()[p.getDifficulty()].name());
             if (sectionImage != null) {
                 dto.setImageUrl(url + "/api/image/pub/" + sectionImage.getId());
@@ -239,7 +238,7 @@ public class PublicationServiceImpl implements PublicationService {
         List<SectionDto> sections = new ArrayList<>();
         for (SectionEntity s : sectionRepository.findAllByPublication(p)) {
             SectionDto r = modelMapper.map(s, SectionDto.class);
-            if (s.getImage() != null || s.getType().equals(TypeSec.PHOTO)) {
+            if (s.getImage() != null || s.getType().equals(SecType.PHOTO)) {
                 r.setImageUrl(url + "/api/image/pub/" + r.getId());
             }
             sections.add(r);

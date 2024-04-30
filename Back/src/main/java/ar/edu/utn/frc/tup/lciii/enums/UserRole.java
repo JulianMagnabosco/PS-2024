@@ -2,6 +2,7 @@ package ar.edu.utn.frc.tup.lciii.enums;
 
 public enum UserRole {
   ADMIN("admin"),
+  DELIVERY("delivery"),
   USER("user");
 
   private String role;

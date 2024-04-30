@@ -1,17 +1,11 @@
 package ar.edu.utn.frc.tup.lciii.entities;
 
-import ar.edu.utn.frc.tup.lciii.enums.Difficulty;
-import ar.edu.utn.frc.tup.lciii.enums.TypePub;
+import ar.edu.utn.frc.tup.lciii.enums.PubType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
-import org.hibernate.annotations.SQLDelete;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -35,7 +29,7 @@ public class PublicationEntity {
     String name;
     String description;
     @Enumerated(EnumType.STRING)
-    TypePub type;
+    PubType type;
     int difficulty;
     boolean canSold;
     BigDecimal price;

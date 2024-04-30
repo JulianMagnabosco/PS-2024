@@ -1,6 +1,6 @@
 package ar.edu.utn.frc.tup.lciii.enums;
 
-public enum TypeSec {
+public enum SecType {
     COND(),
     MAT(),
     STEP(),

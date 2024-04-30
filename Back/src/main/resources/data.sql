@@ -3,6 +3,8 @@ values ('Córdoba');
 insert into users (username, name, lastname, password, email,role,id_state,creation_time)
 values ('admin','admin','admin','$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2', 'a@a', 'ADMIN',1,'2023-01-01 00:00:01');
 insert into users (username, name, lastname, password, email,role,id_state,creation_time)
+values ('delivery','del','iver','$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2', 'del@a', 'DELIVERY',1,'2023-04-01 00:00:01');
+insert into users (username, name, lastname, password, email,role,id_state,creation_time)
 values ('user','a','a', '$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2', 'a1@a', 'USER',1,'2023-02-01 00:00:01');
 insert into users (username, name, lastname, password, email,role,id_state,creation_time)
 values ('user2','a','a', '$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2', 'a2@a', 'USER',1,'2023-02-02 00:00:01');

@@ -1,6 +1,6 @@
 package ar.edu.utn.frc.tup.lciii.dtos.requests;
 
-import ar.edu.utn.frc.tup.lciii.enums.TypePub;
+import ar.edu.utn.frc.tup.lciii.enums.PubType;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 public class SearchPubRequest {
     String text;
     String materials;
-    TypePub type;
+    PubType type;
     int diffMin;
     int diffMax;
     BigDecimal points;

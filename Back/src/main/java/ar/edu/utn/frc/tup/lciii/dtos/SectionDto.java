@@ -1,7 +1,6 @@
 package ar.edu.utn.frc.tup.lciii.dtos;
 
-import ar.edu.utn.frc.tup.lciii.enums.TypeSec;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import ar.edu.utn.frc.tup.lciii.enums.SecType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class SectionDto {
     Long id;
     Long number;
-    TypeSec type;
+    SecType type;
     String text;
     String imageUrl;
 }
