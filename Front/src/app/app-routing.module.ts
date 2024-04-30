@@ -16,6 +16,7 @@ import {UserStadisticsComponent} from "./components/stadistics/user-stadistics/u
 import {PubStadisticsComponent} from "./components/stadistics/pub-stadistics/pub-stadistics.component";
 import {HomeComponent} from "./components/home/home.component";
 import {ListPurchasesComponent} from "./components/purchases/list-purchases/list-purchases.component";
+import {ListSellsComponent} from "./components/sells/list-sells/list-sells.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -34,6 +35,7 @@ const routes: Routes = [
   { path: 'users', component: ListUsersComponent, canActivate:[authGuard] },
   { path: 'edit', component: ModUserComponent, canActivate:[authGuard] },
   { path: 'purchases', component: ListPurchasesComponent, canActivate:[authGuard] },
+  { path: 'sells', component: ListSellsComponent, canActivate:[authGuard] },
   { path: 'stats/users', component: UserStadisticsComponent, canActivate:[authGuard] },
   { path: 'stats/pubs', component: PubStadisticsComponent, canActivate:[authGuard] },
   { path: '**', component: HomeComponent },

@@ -1,5 +1,6 @@
 package ar.edu.utn.frc.tup.lciii.controllers;
 
+import ar.edu.utn.frc.tup.lciii.dtos.SellDto;
 import ar.edu.utn.frc.tup.lciii.dtos.purchase.NotPurchaseResponce;
 import ar.edu.utn.frc.tup.lciii.dtos.purchase.PurchaseResponce;
 import ar.edu.utn.frc.tup.lciii.dtos.purchase.SaleDto;
@@ -26,6 +27,12 @@ public class PurchaseController {
                                       @RequestParam String lastDate,
                                       @RequestParam Long user) {
         return service.getPurchases(firstDate,lastDate,user);
+    }
+    @GetMapping("/sells")
+    public List<SellDto> getSells(@RequestParam String firstDate,
+                                  @RequestParam String lastDate,
+                                  @RequestParam Long user) {
+        return service.getSells(firstDate,lastDate,user);
     }
 
     @PostMapping("/regsingle")

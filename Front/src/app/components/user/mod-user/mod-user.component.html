@@ -16,7 +16,7 @@
                [class.border-danger]="(form.controls['username'].touched || form.controls['username'].dirty)
                 && form.controls['username'].invalid">
             <label class="fs-6 fw-bold px-2" for="usernameInput">Nombre de usuario</label>
-            <input type="text" formControlName="username" class="form-control bg-orange
+            <input type="text" readonly formControlName="username" class="form-control bg-orange
               border-transparent" id="usernameInput" placeholder="---"
                    [class.fst-italic]="form.controls['username'].value!=user.username">
 
@@ -54,10 +54,10 @@
           <div class="border-orange border-5 rounded-2 p-1">
 
             <img [src]="'assets/camera.png'" class="d-block w-100"
-            *ngIf="form.controls['icon'].value">
+            *ngIf="!form.controls['icon'].value">
 
             <img [src]="iconUrl" class="d-block w-100"
-            *ngIf="!form.controls['icon'].value">
+            *ngIf="form.controls['icon'].value">
 
             <button class="text-center border-white-button bg-white" data-bs-toggle="modal"
                     data-bs-target="#exampleModal">Agregar o Cambiar Foto de perfil

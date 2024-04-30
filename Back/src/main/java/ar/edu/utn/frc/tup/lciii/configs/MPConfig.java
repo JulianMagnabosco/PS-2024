@@ -57,7 +57,7 @@ public class MPConfig {
 //        // <Tunnel: "http://<public_sub>.ngrok.io" -> "http://localhost:8080">
 //        final Tunnel httpTunnel = ngrokClient.connect(createTunnel);
         Tunnel httpTunnel = new Tunnel();
-        httpTunnel.setPublicUrl("https://e552-186-182-57-54.ngrok-free.app");
+        httpTunnel.setPublicUrl("https://5767-186-182-57-54.ngrok-free.app");
         return httpTunnel;
     }
 

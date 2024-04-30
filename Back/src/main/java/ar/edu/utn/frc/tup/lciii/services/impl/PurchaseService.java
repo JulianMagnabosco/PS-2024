@@ -10,10 +10,10 @@ import ar.edu.utn.frc.tup.lciii.entities.*;
 import ar.edu.utn.frc.tup.lciii.enums.SaleState;
 import ar.edu.utn.frc.tup.lciii.enums.TypeSec;
 import ar.edu.utn.frc.tup.lciii.repository.PublicationRepository;
+import ar.edu.utn.frc.tup.lciii.repository.SaleDetailRepository;
 import ar.edu.utn.frc.tup.lciii.repository.SaleRepository;
 import ar.edu.utn.frc.tup.lciii.repository.UserRepository;
 import com.github.alexdlaird.ngrok.protocol.Tunnel;
-import com.mercadopago.client.common.IdentificationRequest;
 import com.mercadopago.client.merchantorder.MerchantOrderClient;
 import com.mercadopago.client.payment.PaymentClient;
 import com.mercadopago.client.preference.*;
@@ -24,7 +24,6 @@ import com.mercadopago.resources.merchantorder.MerchantOrderItem;
 import com.mercadopago.resources.merchantorder.MerchantOrderPayment;
 import com.mercadopago.resources.payment.Payment;
 import com.mercadopago.resources.preference.Preference;
-import com.mercadopago.resources.preference.PreferencePayer;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +44,8 @@ public class PurchaseService {
 
     @Autowired
     SaleRepository saleRepository;
+    @Autowired
+    SaleDetailRepository saleDetailRepository;
     @Autowired
     PublicationRepository publicationRepository;
     @Autowired
@@ -92,8 +93,8 @@ public class PurchaseService {
 
         PreferenceRequest preferenceRequest = PreferenceRequest.builder()
                 .backUrls(PreferenceBackUrlsRequest.builder()
-                        .success("http://localhost:4200/pub/"+itemRequest.getId()).build())
-                .notificationUrl(tunnel.getPublicUrl() + "/api/sell/not?user="+user.getId())
+                        .success("http://localhost:4200/pub/" + itemRequest.getId()).build())
+                .notificationUrl(tunnel.getPublicUrl() + "/api/sell/not?user=" + user.getId())
                 .items(items)
                 .build();
 
@@ -142,9 +143,9 @@ public class PurchaseService {
             Optional<SaleEntity> optionalSale = saleRepository.findByMerchantOrder(m.getId());
 
             SaleEntity sale = new SaleEntity();
-            if(optionalSale.isEmpty()){
+            if (optionalSale.isEmpty()) {
                 List<SaleDetailEntity> saleDetails = new ArrayList<>();
-                for (MerchantOrderItem item :m.getItems()){
+                for (MerchantOrderItem item : m.getItems()) {
                     PublicationEntity publication =
                             publicationRepository.getReferenceById(Long.parseLong(item.getId()));
 
@@ -169,7 +170,7 @@ public class PurchaseService {
                 sale.setMerchantOrder(m.getId());
 
                 saleRepository.saveAndFlush(sale);
-            }else {
+            } else {
                 sale = optionalSale.get();
             }
 
@@ -188,7 +189,7 @@ public class PurchaseService {
                 } else { // The merchant_order don't has any shipments
                     System.out.println("Totally paid. Release your item.");
 
-                    sale.setSaleState(SaleState.APROVADA);
+                    sale.setSaleState(SaleState.APROBADA);
                     saleRepository.save(sale);
                 }
             } else {
@@ -198,7 +199,7 @@ public class PurchaseService {
 
         } catch (Exception ex) {
             responce = null;
-            System.out.println("error map: "+ex.getMessage());
+            System.out.println("error map: " + ex.getMessage());
         }
         return responce;
     }
@@ -209,16 +210,16 @@ public class PurchaseService {
                 LocalDateTime.parse(firstDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
                 LocalDateTime.parse(lastDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
         )) {
-            if(!user.equals(sale.getUser().getId())){
+            if (!user.equals(sale.getUser().getId())) {
                 continue;
             }
-            BigDecimal total=BigDecimal.ZERO;
+            BigDecimal total = BigDecimal.ZERO;
             List<SaleDetailDto> detailDtos = new ArrayList<>();
             for (SaleDetailEntity detail : sale.getDetails()) {
-                Long imgId=1L;
-                for(SectionEntity s : detail.getPublication().getSections()){
-                    if(s.getType()== TypeSec.PHOTO){
-                        imgId=s.getId();
+                Long imgId = 1L;
+                for (SectionEntity s : detail.getPublication().getSections()) {
+                    if (s.getType() == TypeSec.PHOTO) {
+                        imgId = s.getId();
                         break;
                     }
                 }
@@ -246,30 +247,34 @@ public class PurchaseService {
     }
 
 
-    public List<SellDto> getSells(String firstDate, String lastDate) {
+    public List<SellDto> getSells(String firstDate, String lastDate, Long user) {
         List<SellDto> list = new ArrayList<>();
-        for (SaleEntity sale : saleRepository.findAllByDateTimeBetween(
+        for (SaleDetailEntity detail : saleDetailRepository.findAllBySale_DateTimeBetweenAndPublication_User_Id(
                 LocalDateTime.parse(firstDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
-                LocalDateTime.parse(lastDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
+                LocalDateTime.parse(lastDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
+                user
         )) {
-            for (SaleDetailEntity detail : sale.getDetails()) {
-                Long imgId=1L;
-                for(SectionEntity s : detail.getPublication().getSections()){
-                    if(s.getType()== TypeSec.PHOTO){
-                        imgId=s.getId();
-                        break;
-                    }
+            Long imgId = 1L;
+            for (SectionEntity s : detail.getPublication().getSections()) {
+                if (s.getType() == TypeSec.PHOTO) {
+                    imgId = s.getId();
+                    break;
                 }
-
-                list.add(new SellDto(
-                        detail.getPublication().getId(),
-                        sale.getUser().getName()+" "+sale.getUser().getLastname(),
-                        detail.getPublication().getName(),
-                        url + "/api/image/pub/" + imgId,
-                        detail.getTotal(),
-                        detail.getCount()
-                ));
             }
+
+            list.add(new SellDto(
+                    detail.getSale().getId(),
+                    detail.getSale().getDateTime().toString(),
+                    detail.getSale().getSaleState(),
+                    detail.getPublication().getId(),
+                    detail.getSale().getUser().getName() +
+                        " " +
+                        detail.getSale().getUser().getLastname(),
+                    detail.getPublication().getName(),
+                    url + "/api/image/pub/" + imgId,
+                    detail.getTotal(),
+                    detail.getCount()
+            ));
 
         }
 

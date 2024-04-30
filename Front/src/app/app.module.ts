@@ -28,6 +28,8 @@ import {DateCustomPipe} from "./pipes/date-custom.pipe";
 import {HomeComponent} from "./components/home/home.component";
 import {ListPurchasesComponent} from "./components/purchases/list-purchases/list-purchases.component";
 import {ShowPurchaseComponent} from "./components/purchases/show-purchase/show-purchase.component";
+import {ShowSellComponent} from "./components/sells/show-sell/show-sell.component";
+import {ListSellsComponent} from "./components/sells/list-sells/list-sells.component";
 
 
 @NgModule({
@@ -49,6 +51,8 @@ import {ShowPurchaseComponent} from "./components/purchases/show-purchase/show-p
     PubStadisticsComponent,
     ListPurchasesComponent,
     ShowPurchaseComponent,
+    ListSellsComponent,
+    ShowSellComponent,
     HomeComponent
   ],
     imports: [

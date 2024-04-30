@@ -1,6 +1,7 @@
 package ar.edu.utn.frc.tup.lciii.repository;
 
 import ar.edu.utn.frc.tup.lciii.entities.SaleEntity;
+import ar.edu.utn.frc.tup.lciii.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +13,5 @@ import java.util.Optional;
 public interface SaleRepository extends JpaRepository<SaleEntity,Long> {
     Optional<SaleEntity> findByMerchantOrder(Long merchantOrder);
     List<SaleEntity> findAllByDateTimeBetween(LocalDateTime first,LocalDateTime last);
+    List<SaleEntity> findAllByDateTimeBetweenAndUser_Id(LocalDateTime first, LocalDateTime last, Long user);
 }

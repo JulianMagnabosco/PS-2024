@@ -45,3 +45,8 @@ values (2,'Casa de perros ', 'pajaros', 'TECNOLOGIA',1,false,false,'2023-1-01 00
 
 insert into sections (id_publication, type, text)
 values (3,'PHOTO', '');
+
+insert into sales (merchant_order,id_user,date_time,sale_state)
+values (3,1, '2024-4-01 00:00:01','APROBADA');
+insert into sale_details (id_sale,id_publication,total,count)
+values (1,2, 5,1);

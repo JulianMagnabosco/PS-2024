@@ -1,28 +1,28 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
+import {DatePipe, NgForOf, NgIf} from "@angular/common";
+import {ReactiveFormsModule} from "@angular/forms";
 import {Subscription} from "rxjs";
-import {FormBuilder, FormGroup, FormsModule, Validators} from "@angular/forms";
-import {PublicationMin} from "../../../models/publication/publication-min";
-import {PublicationsService} from "../../../services/publications/publications.service";
-import {Router} from "@angular/router";
-import {PurchaseService} from "../../../services/purchase/purchase.service";
 import {Purchase} from "../../../models/purchase/purchase";
+import {PurchaseService} from "../../../services/purchase/purchase.service";
 import {AuthService} from "../../../services/user/auth.service";
+import {Router} from "@angular/router";
+import {Sell} from "../../../models/sell/sell";
 
 @Component({
-  selector: 'app-list-purchases',
-  templateUrl: './list-purchases.component.html',
-  styleUrl: './list-purchases.component.css'
+  selector: 'app-list-sells',
+  templateUrl: './list-sells.component.html',
+  styleUrl: './list-sells.component.css'
 })
-export class ListPurchasesComponent implements OnInit,OnDestroy {
+export class ListSellsComponent implements OnInit,OnDestroy {
 
   private subs: Subscription = new Subscription();
 
   firstDate: string ;
   lastDate: string ;
 
-  list: Purchase[] = [
+  list: Sell[] = [
   ];
-  selected?:Purchase;
+  selected?:Sell;
 
   countTotal=1;
   size=3;
@@ -64,12 +64,12 @@ export class ListPurchasesComponent implements OnInit,OnDestroy {
 
 
     this.subs.add(
-      this.service.getPurchases(firstDate1,lastDate1, this.authService.user?.id||"0").subscribe(
+      this.service.getSells(firstDate1,lastDate1, this.authService.user?.id||"0").subscribe(
         {
           next: value => {
             // this.countTotal=value["countTotal"]
             // this.list=value["list"]
-            this.list=value as Purchase[]
+            this.list=value as Sell[]
           },
           error: err => {
             console.log(err)
@@ -80,7 +80,8 @@ export class ListPurchasesComponent implements OnInit,OnDestroy {
     );
   }
 
-  open(p:Purchase){
+  open(p:Sell){
     this.selected=p;
   }
 }
+

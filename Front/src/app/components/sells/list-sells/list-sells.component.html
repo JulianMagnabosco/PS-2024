@@ -1,0 +1,65 @@
+<div class="container">
+  <h1 class="h1">Ventas</h1>
+  <div class="row gap-2 justify-content-center">
+    <div class="col-auto">
+      <label for="firstDate" class="col-form-label">De </label>
+    </div>
+    <div class="col-auto">
+      <input type="date" id="firstDate" class="form-control" aria-describedby="passwordHelpInline"
+             name="firstDate" [max]="lastDate"
+             [(ngModel)]="firstDate">
+    </div>
+    <div class="col-auto">
+      <label for="lastDate" class="col-form-label"> A </label>
+    </div>
+    <div class="col-auto">
+      <input type="date" id="lastDate" class="form-control" aria-describedby="passwordHelpInline"
+             name="lastDate" [min]="firstDate"
+             [(ngModel)]="lastDate">
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-primary" (click)="charge(0)">FILTRAR</button>
+    </div>
+  </div>
+  <div class="p-3 column-gap-2">
+    <div class="position-absolute top-50 start-50 translate-middle"
+         *ngIf="list.length<=0">
+      <h1 class="text-center "> Sin compras registradas</h1>
+    </div>
+    <div class="row border-5 button-orange rounded-5 p-2 bg-secondary-subtle" *ngFor="let i of list"
+         data-bs-toggle="modal" data-bs-target="#exampleModal"
+         (click)="open(i)">
+      <div class="h5">N°{{i.id}} - {{i.dateTime | date:"dd/MM/yyyy hh:mm:ss"}}</div>
+      <div class="col-2 ">
+        <img class="border border-4 border-secondary rounded rounded-4 w-100"
+             [src]="i.imageUrl" >
+      </div>
+      <div class="col p-3 justify-content-between align-content-center">
+        <div class="mb-2">
+          Comprador: <span class="text-secondary"> {{i.buyer}}</span>
+        </div>
+        <div class="mb-2">
+          Obra: <span class="text-secondary"> {{i.name}}</span>
+        </div>
+        <div class="mb-2">
+          Total Vendido: <span class="text-secondary">${{i.total}}</span>
+        </div>
+        <div >
+          Cantidad: <span class="text-secondary">${{i.count}}</span>
+        </div>
+      </div>
+      <div class="col-sm-auto d-flex align-items-end justify-content-end  p-0" >
+        <div class="p-3 rounded-5 border border-2 bg-success text-uppercase text-white text-center">
+          {{ i.saleState }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-transparent border-transparent">
+      <app-show-sell [sell]="selected"></app-show-sell>
+    </div>
+  </div>
+</div>
