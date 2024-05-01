@@ -30,6 +30,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.math.BigDecimal;
 import java.net.URI;
@@ -63,7 +64,7 @@ public class PurchaseService {
     public PurchaseResponce registerSale(PurchaseRequest request) throws MPException, MPApiException {
 
         PublicationEntity publication = publicationRepository.getReferenceById(request.getIdPub());
-        UserEntity user = userRepository.getReferenceById(request.getIdUser());
+        UserEntity user = getUserCompleteData(request.getIdUser());
         if (!publication.isCanSold() && publication.getCount() <= 0) {
             throw new EntityNotFoundException("No se puede vender");
         }
@@ -115,6 +116,25 @@ public class PurchaseService {
         return new PurchaseResponce(preference);
     }
 
+    UserEntity getUserCompleteData(Long id){
+        UserEntity user = userRepository.getReferenceById(id);
+
+        if(user.getName().isBlank() ||
+                user.getLastname().isBlank() ||
+                user.getPhone().isBlank() ||
+                user.getCvu().isBlank() ||
+                user.getDni().isBlank() ||
+                user.getDniType().isBlank() ||
+                user.getState()==null ||
+                user.getDirection().isBlank() ||
+                user.getNumberDir().isBlank() ||
+                user.getPostalNum().isBlank())
+        {
+            throw new IllegalArgumentException("El usuario no tiene datos completos ");
+        }
+
+        return user;
+    }
     @Transactional
     public NotPurchaseResponce notificar(LinkedHashMap notification, String userId) {
 
@@ -147,6 +167,12 @@ public class PurchaseService {
 
             SaleEntity sale = new SaleEntity();
             if (optionalSale.isEmpty()) {
+                sale.setDateTime(LocalDateTime.now());
+                Long uId = Long.parseLong(userId);
+                sale.setUser(getUserCompleteData(uId));
+                sale.setSaleState(SaleState.PENDIENTE);
+                sale.setMerchantOrder(m.getId());
+
                 List<SaleDetailEntity> saleDetails = new ArrayList<>();
                 for (MerchantOrderItem item : m.getItems()) {
                     PublicationEntity publication =
@@ -166,11 +192,6 @@ public class PurchaseService {
                     publicationRepository.saveAndFlush(publication);
                 }
                 sale.setDetails(saleDetails);
-                sale.setDateTime(LocalDateTime.now());
-                Long uId = Long.parseLong(userId);
-                sale.setUser(userRepository.getReferenceById(uId));
-                sale.setSaleState(SaleState.PENDIENTE);
-                sale.setMerchantOrder(m.getId());
 
                 sale = saleRepository.saveAndFlush(sale);
 
@@ -272,7 +293,6 @@ public class PurchaseService {
         return list;
 
     }
-
 
     public List<DeliveryDto> getDeliveriesPending( Long user) {
         List<DeliveryDto> list = new ArrayList<>();

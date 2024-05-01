@@ -20,7 +20,8 @@
               border-transparent" id="usernameInput" placeholder="---"
                    [class.fst-italic]="form.controls['username'].value!=user.username">
 
-            <div class="px-1 text-danger fs-6 fst-italic" *ngIf="(form.controls['username'].touched || form.controls['username'].dirty)
+            <div class="px-1 text-danger fs-6 fst-italic" *ngIf="(form.controls['username'].touched
+            || form.controls['username'].dirty)
               && form.controls['username'].hasError('required')">
               El nombre de usuario es requerido.
             </div>
@@ -34,7 +35,7 @@
                [class.border-danger]="(form.controls['email'].touched || form.controls['email'].dirty)
                 && form.controls['email'].invalid">
             <label class="fs-6 fw-bold px-2" for="emailInput">Email</label>
-            <input type="text" formControlName="email" class="form-control bg-orange
+            <input readonly type="text" formControlName="email" class="form-control bg-orange
               border-transparent" id="emailInput" placeholder="---"
                    [class.fst-italic]="form.controls['email'].value!=user.email">
 
@@ -86,7 +87,7 @@
         </div>
       </div>
 
-      <h5>Datos de entrega</h5>
+      <h5>Datos de compra/venta</h5>
 
       <div class="d-flex justify-content-between">
         <div class="col-6 p-2">
@@ -123,43 +124,105 @@
         </div>
       </div>
 
-      <div class="d-flex p-2">
-        <div class="bg-orange-low rounded-2 border"
-             [class.border-danger]="(form.controls['state'].touched || form.controls['state'].dirty)
-                && form.controls['state'].invalid">
-          <label class="fs-6 fw-bold px-2" for="stateInput">Provincia</label>
-          <select formControlName="state" class="form-select bg-orange
-              border-transparent" id="stateInput"
-                 [class.fst-italic]="form.controls['lastname'].value!=user.lastname">
-            <option value="0">---</option>
-            <option value="1">CÓRDOBA</option>
-          </select>
-          <div class="invalid-feedback" *ngIf="(form.controls['lastname'].touched || form.controls['lastname'].dirty)
-      && form.controls['state'].hasError('state')">
-            El apellido es muy largo.
+      <div class="d-flex justify-content-between">
+        <div class="col-6 p-2">
+          <div class="bg-orange-low rounded-2 border"
+               [class.border-danger]="(form.controls['phone'].touched || form.controls['phone'].dirty)
+                && form.controls['phone'].invalid">
+            <label class="fs-6 fw-bold px-2" for="phoneInput">Teléfono</label>
+            <input type="text" formControlName="phone" class="form-control bg-orange
+              border-transparent" id="phoneInput" placeholder="---"
+                   [class.fst-italic]="form.controls['phone'].value!=user.phone">
+
+
+            <div class="invalid-feedback" *ngIf="(form.controls['phone'].touched || form.controls['phone'].dirty)
+      && form.controls['phone'].hasError('maxlenght')">
+              El telefono es muy largo.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-start mb-3">
+        <div class="col-3 p-2">
+          <div class="bg-orange-low rounded-2 border"
+               [class.border-danger]="(form.controls['dniType'].touched || form.controls['dniType'].dirty)
+                && form.controls['dniType'].invalid">
+            <label class="fs-6 fw-bold px-2" for="dniTypeInput">Tipo de Documento</label>
+            <select formControlName="dniType" class="form-select bg-orange
+              border-transparent" id="dniTypeInput"
+                    [class.fst-italic]="form.controls['dniType'].value!=user.dniType">
+              <option value="DNI" selected>DNI</option>
+              <option value="PASAPORTE">PASAPORTE</option>
+              <option value="LIBRETA">LIBRETA</option>
+            </select>
+
+          </div>
+        </div>
+
+        <div class="col-6 p-2">
+          <div class="bg-orange-low rounded-2 border"
+               [class.border-danger]="(form.controls['dni'].touched || form.controls['dni'].dirty)
+                && form.controls['dni'].invalid">
+            <label class="fs-6 fw-bold px-2" for="dniInput">Documento</label>
+            <input type="text" formControlName="dni" class="form-control bg-orange
+              border-transparent" id="dniInput" placeholder="---"
+                   [class.fst-italic]="form.controls['dni'].value!=user.dni">
+
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-start mb-3">
+        <div class="col-6 p-2">
+          <div class="bg-orange-low rounded-2 border"
+               [class.border-danger]="(form.controls['cvu'].touched || form.controls['cvu'].dirty)
+                && form.controls['cvu'].invalid">
+            <label class="fs-6 fw-bold px-2" for="cvuInput">CVU</label>
+            <input type="text" formControlName="cvu" class="form-control bg-orange
+              border-transparent" id="cvuInput" placeholder="---"
+                   [class.fst-italic]="form.controls['cvu'].value!=user.cvu">
+
           </div>
         </div>
       </div>
 
       <div class="d-flex justify-content-between mb-2">
+        <div class="col-3 p-2">
+          <div class="bg-orange-low rounded-2 border"
+               [class.border-danger]="(form.controls['state'].touched || form.controls['state'].dirty)
+                && form.controls['state'].invalid">
+            <label class="fs-6 fw-bold px-2" for="stateInput">Provincia</label>
+            <select formControlName="state" class="form-select bg-orange
+              border-transparent" id="stateInput"
+                    [class.fst-italic]="form.controls['lastname'].value!=user.lastname">
+              <option value="0" selected disabled hidden>---</option>
+              <option value="1">CÓRDOBA</option>
+            </select>
+            <div class="invalid-feedback" *ngIf="(form.controls['lastname'].touched || form.controls['lastname'].dirty)
+      && form.controls['state'].hasError('state')">
+              El apellido es muy largo.
+            </div>
+          </div>
+        </div>
+
         <div class="col p-2">
           <div class="bg-orange-low rounded-2 border"
                [class.border-danger]="(form.controls['direction'].touched || form.controls['direction'].dirty)
                 && form.controls['direction'].invalid">
-            <label class="fs-6 fw-bold px-2" for="directionInput">Direccion o calle</label>
+            <label class="fs-6 fw-bold px-2" for="directionInput">Dirección o calle</label>
             <input type="text" formControlName="direction" class="form-control bg-orange
               border-transparent" id="directionInput" placeholder="---"
                    [class.fst-italic]="form.controls['direction'].value!=user.direction">
-
           </div>
         </div>
 
-        <div class="col-4 p-2">
+        <div class="col-3 p-2">
           <div class="bg-orange-low rounded-2 border"
                [class.border-danger]="(form.controls['numberDir'].touched || form.controls['numberDir'].dirty)
                 && form.controls['numberDir'].invalid">
             <label class="fs-6 fw-bold px-2" for="numberDirInput">Número</label>
-            <input type="text" formControlName="direction" class="form-control bg-orange
+            <input type="text" formControlName="numberDir" class="form-control bg-orange
               border-transparent" id="numberDirInput" placeholder="---"
                    [class.fst-italic]="form.controls['numberDir'].value!=user.numberDir">
           </div>
@@ -171,7 +234,7 @@
           <div class="bg-orange-low rounded-2 border"
                [class.border-danger]="(form.controls['postalNum'].touched || form.controls['postalNum'].dirty)
                 && form.controls['postalNum'].invalid">
-            <label class="fs-6 fw-bold px-2" for="postalNumInput">Codigo Postal</label>
+            <label class="fs-6 fw-bold px-2" for="postalNumInput">Código Postal</label>
             <input type="text" formControlName="postalNum" class="form-control bg-orange
               border-transparent" id="postalNumInput" placeholder="---"
                    [class.fst-italic]="form.controls['postalNum'].value!=user.postalNum">
@@ -195,7 +258,7 @@
           <div class="bg-orange-low rounded-2 border"
                [class.border-danger]="(form.controls['room'].touched || form.controls['room'].dirty)
                 && form.controls['room'].invalid">
-            <label class="fs-6 fw-bold px-2" for="roomInput">Habitacion</label>
+            <label class="fs-6 fw-bold px-2" for="roomInput">Habitación</label>
             <input type="text" formControlName="room" class="form-control bg-orange
               border-transparent" id="roomInput" placeholder="---"
                    [class.fst-italic]="form.controls['room'].value!=user.room">

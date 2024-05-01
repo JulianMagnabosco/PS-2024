@@ -15,6 +15,7 @@ public class UserDto {
 
     String name;
     String lastname;
+    String phone;
     String cvu;
     String dni;
     String dniType;

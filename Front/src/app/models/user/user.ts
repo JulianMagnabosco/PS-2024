@@ -4,9 +4,14 @@ export interface User {
   role:string;
   email:string;
   iconUrl:string;
-  token:string;
+
   name:string ;
   lastname:string ;
+  phone:string ;
+  cvu:string ;
+  dni:string ;
+  dniType:string ;
+
   idState:string ;
   state:string ;
   direction:string ;

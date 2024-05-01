@@ -28,8 +28,8 @@ export class ModUserComponent implements OnInit, OnDestroy {
     username: "",
     role: "",
     email: "",
+    cvu: "", dni: "", dniType: "", phone: "",
     iconUrl: "",
-    token: "",
     direction: "", floor: "", lastname: "", name: "", numberDir: "", postalNum: "", room: "", state: "",
     idState: ""
   };
@@ -47,6 +47,10 @@ export class ModUserComponent implements OnInit, OnDestroy {
       icon: [""],
       name: [""],
       lastname: [""],
+      phone: [""],
+      cvu: [""],
+      dni: [""],
+      dniType: [""],
       state: ["1", [Validators.required]],
       direction: ["", [Validators.maxLength(200)]],
       numberDir: [""],
@@ -81,8 +85,14 @@ export class ModUserComponent implements OnInit, OnDestroy {
               "password2": "",
               "icon": this.user.iconUrl != "",
               "email": this.user.email,
+
               "name": this.user.name||"",
               "lastname": this.user.lastname||"",
+              "phone": this.user.phone||"",
+              "cvu": this.user.cvu||"",
+              "dni": this.user.dni||"",
+              "dniType": this.user.dniType||"",
+
               "state": this.user.idState,
               "direction": this.user.direction||"",
               "numberDir": this.user.numberDir||"",
@@ -113,8 +123,14 @@ export class ModUserComponent implements OnInit, OnDestroy {
       "changePass": this.form.controls['password'].value != "",
       "password": this.form.controls['password'].value,
       "email": this.form.controls['email'].value,
+
       "name": this.form.controls['name'].value,
       "lastname": this.form.controls['lastname'].value,
+      "phone": this.form.controls['phone'].value,
+      "cvu": this.form.controls['cvu'].value,
+      "dni": this.form.controls['dni'].value,
+      "dniType": this.form.controls['dniType'].value,
+
       "idState": this.form.controls['state'].value,
       "direction": this.form.controls['direction'].value,
       "numberDir": this.form.controls['numberDir'].value,
