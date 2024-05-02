@@ -20,4 +20,7 @@ export class PurchaseService {
   getSells(firstDate:string,lastDate:string,user:string){
     return this.client.get(this.baseUrl + "sells?firstDate="+ firstDate +"&lastDate="+ lastDate +"&user="+ user );
   }
+  getDeliveries(user:string){
+    return this.client.get(this.baseUrl + "deliveries?user="+ user );
+  }
 }

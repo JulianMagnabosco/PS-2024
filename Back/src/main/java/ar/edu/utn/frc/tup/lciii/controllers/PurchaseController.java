@@ -36,7 +36,7 @@ public class PurchaseController {
         return service.getSells(firstDate,lastDate,user);
     }
     @GetMapping("/deliveries")
-    public List<DeliveryDto> getSells(@RequestParam Long user) {
+    public List<DeliveryDto> getDeliveriesPending(@RequestParam Long user) {
         return service.getDeliveriesPending(user);
     }
 
@@ -47,7 +47,8 @@ public class PurchaseController {
 
 
     @PostMapping("/not")
-    public NotPurchaseResponce notificar(@RequestBody LinkedHashMap data,@RequestParam(name = "user",defaultValue = "0") String user) {
+    public NotPurchaseResponce notificar(@RequestBody LinkedHashMap data,
+                                         @RequestParam(name = "user",defaultValue = "0") String user) {
         return service.notificar(data,user);
     }
 }

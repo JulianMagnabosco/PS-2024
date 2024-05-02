@@ -1,8 +1,6 @@
 package ar.edu.utn.frc.tup.lciii.dtos;
 
-import ar.edu.utn.frc.tup.lciii.dtos.purchase.SaleDetailDto;
 import ar.edu.utn.frc.tup.lciii.enums.DeliveryState;
-import ar.edu.utn.frc.tup.lciii.enums.SaleState;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +22,7 @@ public class DeliveryDto {
     String direction;
 
     String deliveryDateTime;
-    DeliveryState saleState;
+    DeliveryState deliveryState;
 
     String dealer;
     Long dealerId;

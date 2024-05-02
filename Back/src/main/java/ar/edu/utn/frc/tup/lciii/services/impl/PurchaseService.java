@@ -14,7 +14,6 @@ import ar.edu.utn.frc.tup.lciii.enums.SaleState;
 import ar.edu.utn.frc.tup.lciii.enums.SecType;
 import ar.edu.utn.frc.tup.lciii.enums.UserRole;
 import ar.edu.utn.frc.tup.lciii.repository.*;
-import com.github.alexdlaird.ngrok.protocol.Tunnel;
 import com.mercadopago.client.merchantorder.MerchantOrderClient;
 import com.mercadopago.client.payment.PaymentClient;
 import com.mercadopago.client.preference.*;
@@ -56,7 +55,7 @@ public class PurchaseService {
     UserRepository userRepository;
 
     @Autowired
-    Tunnel tunnel;
+    String tunnelUrl;
     @Value("${app.url}")
     private String url;
 
@@ -98,7 +97,7 @@ public class PurchaseService {
         PreferenceRequest preferenceRequest = PreferenceRequest.builder()
                 .backUrls(PreferenceBackUrlsRequest.builder()
                         .success("http://localhost:4200/pub/" + itemRequest.getId()).build())
-                .notificationUrl(tunnel.getPublicUrl() + "/api/sell/not?user=" + user.getId())
+                .notificationUrl(tunnelUrl + "/api/sell/not?user=" + user.getId())
                 .items(items)
                 .build();
 

@@ -1,8 +1,5 @@
 package ar.edu.utn.frc.tup.lciii.configs;
 
-import com.github.alexdlaird.ngrok.NgrokClient;
-import com.github.alexdlaird.ngrok.protocol.CreateTunnel;
-import com.github.alexdlaird.ngrok.protocol.Tunnel;
 import com.mercadopago.MercadoPagoConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +13,7 @@ import java.io.InputStreamReader;
 @Configuration
 public class MPConfig {
     @Bean
-    public Tunnel ngrokForMP(){
+    public String ngrokForMP(){
 
         MercadoPagoConfig.setAccessToken(
                 "APP_USR-832032608255661-031615-ea4f942ba202654d4b337658c5a8e167-1731532938");
@@ -62,15 +59,14 @@ public class MPConfig {
         // Hacer una solicitud GET y recibir la respuesta en una variable
         String responseData = restTemplate.getForObject("http://localhost:4040/api/tunnels", String.class);
 
-        Tunnel httpTunnel = new Tunnel();
+        String httpTunnel = "";
         if (responseData != null) {
-            httpTunnel.setPublicUrl(responseData.substring(
+            httpTunnel = responseData.substring(
                     responseData.indexOf(":",responseData.indexOf("public_url"))+2,
                     responseData.indexOf(",",responseData.indexOf("public_url"))-1
-                )
             );
         }
-        System.out.println(httpTunnel.getPublicUrl());
+        System.out.println(httpTunnel);
         return httpTunnel;
     }
 

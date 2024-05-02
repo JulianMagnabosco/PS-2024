@@ -30,6 +30,8 @@ import {ListPurchasesComponent} from "./components/purchases/list-purchases/list
 import {ShowPurchaseComponent} from "./components/purchases/show-purchase/show-purchase.component";
 import {ShowSellComponent} from "./components/sells/show-sell/show-sell.component";
 import {ListSellsComponent} from "./components/sells/list-sells/list-sells.component";
+import {ListDeliveriesComponent} from "./components/deliveries/list-deliveries/list-deliveries.component";
+import {ShowDeliveryComponent} from "./components/deliveries/show-delivery/show-delivery.component";
 
 
 @NgModule({
@@ -53,6 +55,8 @@ import {ListSellsComponent} from "./components/sells/list-sells/list-sells.compo
     ShowPurchaseComponent,
     ListSellsComponent,
     ShowSellComponent,
+    ListDeliveriesComponent,
+    ShowDeliveryComponent,
     HomeComponent
   ],
     imports: [
