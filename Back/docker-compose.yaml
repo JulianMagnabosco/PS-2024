@@ -1,10 +1,14 @@
 version: '3'
 
 services:
-  ngrok:
-    container_name: external-api
-    image: gabrielarriola/api-loteria
+  ngrokcont:
+    container_name: ngrokcont
+    image: ngrok/ngrok
+    environment:
+      - NGROK_AUTHTOKEN=2e3vC4sCSzrWru6zCsGTTIDznE1_7BGy49hUKFVHbq83bAhnw
+    command: http 8080
     ports:
+      - "4040:4040"
       - "8080:8080"
 
   db:
@@ -28,7 +32,7 @@ services:
       - SERVER_PORT=8081
       - APP_URL=http://localhost:8080
     depends_on:
-      - external-api
+      - ngrokcont
       - db
     ports:
       - "8081:8081"

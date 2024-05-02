@@ -6,6 +6,7 @@ import com.github.alexdlaird.ngrok.protocol.Tunnel;
 import com.mercadopago.MercadoPagoConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -56,8 +57,20 @@ public class MPConfig {
 //        // Open a HTTP tunnel on port 8080
 //        // <Tunnel: "http://<public_sub>.ngrok.io" -> "http://localhost:8080">
 //        final Tunnel httpTunnel = ngrokClient.connect(createTunnel);
+        RestTemplate restTemplate = new RestTemplate();
+
+        // Hacer una solicitud GET y recibir la respuesta en una variable
+        String responseData = restTemplate.getForObject("http://localhost:4040/api/tunnels", String.class);
+
         Tunnel httpTunnel = new Tunnel();
-        httpTunnel.setPublicUrl("https://5767-186-182-57-54.ngrok-free.app");
+        if (responseData != null) {
+            httpTunnel.setPublicUrl(responseData.substring(
+                    responseData.indexOf(":",responseData.indexOf("public_url"))+2,
+                    responseData.indexOf(",",responseData.indexOf("public_url"))-1
+                )
+            );
+        }
+        System.out.println(httpTunnel.getPublicUrl());
         return httpTunnel;
     }
 

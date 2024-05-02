@@ -1,4 +1,4 @@
-export interface Purchaseitem {
+export interface PurchaseItem {
   pubId:number;
   name:string;
   imageUrl:string;

@@ -1,4 +1,4 @@
-import {Purchaseitem} from "../purchase/purchaseitem";
+import {PurchaseItem} from "../purchase/purchase-item";
 
 export interface Sell {
   id:number;

@@ -30,3 +30,4 @@ replay_pid*
 .angular
 node_modules/
 target/
+dist/
