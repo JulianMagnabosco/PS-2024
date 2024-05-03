@@ -50,10 +50,23 @@ public class UserEntity implements UserDetails {
     String floor;
     String room;
 
-    public UserEntity(String username, String password, UserRole role, LocalDateTime creationTime) {
+    public UserEntity(String username, String email, String password, UserRole role, LocalDateTime creationTime) {
         this.username = username;
-        this.password = password;
+        this.role = role;
         this.creationTime = creationTime;
+        this.email = email;
+        this.password = password;
+//        this.name = "";
+//        this.lastname = "";
+//        this.phone = "";
+//        this.cvu = "";
+//        this.dni = "";
+//        this.dniType = "";
+//        this.direction = "";
+//        this.numberDir = "";
+//        this.postalNum = "";
+//        this.floor = "";
+//        this.room = "";
     }
 
     @Override

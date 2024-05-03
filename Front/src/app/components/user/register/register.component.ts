@@ -44,7 +44,7 @@ export class RegisterComponent implements OnInit,OnDestroy {
       "username": this.form.controls['name'].value,
       "password": this.form.controls['password'].value,
       "email": this.form.controls['email'].value,
-      "role":"USER"
+      "role": "USER"
     }
 
     console.log(user);

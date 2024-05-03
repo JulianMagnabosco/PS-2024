@@ -19,6 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -89,7 +92,9 @@ public class AuthService implements UserDetailsService {
 
     String encryptedPassword = new BCryptPasswordEncoder().encode(data.getPassword());
 
-    UserEntity newUser = new UserEntity(data.getUsername(), encryptedPassword, data.getRole(), LocalDateTime.now());
+    UserEntity newUser = new UserEntity(data.getUsername(), data.getEmail(),
+            encryptedPassword, data.getRole(), LocalDateTime.now());
+    newUser.setState(stateRepository.getReferenceById(1L));
 
     return repository.save(newUser);
 
@@ -100,26 +105,29 @@ public class AuthService implements UserDetailsService {
     ListUsersResponce responce = new ListUsersResponce();
     List<UserDto> list = new ArrayList<>();
 
-    for (UserEntity u : repository.findAll()){
-      if(u.getName().contains(text) || u.getLastname().contains(text) || u.getUsername().contains(text))
+    Pageable pageable = PageRequest.of(page, size);
+    Page<UserEntity> listRaw = repository.findAll(pageable);
+    for (UserEntity u : listRaw.stream().toList()){
+      if((!u.getName().isEmpty() && u.getName().contains(text)) ||
+              !u.getLastname().isEmpty() && u.getLastname().contains(text) ||
+              u.getUsername().contains(text))
       {
-        UserDto r = modelMapper.map(u, UserDto.class);
-        r.setIdState(u.getState().getId());
-        r.setState(u.getState().getName());
-        r.setIconUrl(url + "/api/image/user/" + u.getId());
+        UserDto r = getUserDto(u);
         list.add(r);
       }
     }
 
-    int firstIndex= page* size;
-    firstIndex=Integer.min(firstIndex,  list.size());
+//    int firstIndex= page* size;
+//    firstIndex=Integer.min(firstIndex,  list.size());
+//
+//    int lastIndex= firstIndex + size;
+//    lastIndex=Integer.min(lastIndex, list.size());
 
-    int lastIndex= firstIndex + size;
-    lastIndex=Integer.min(lastIndex, list.size());
+    responce.setList(list);
+//    responce.setList(list.subList(firstIndex,lastIndex));
 
-    responce.setList(list.subList(firstIndex,lastIndex));
-
-    responce.setCountTotal(list.size());
+    responce.setCountTotal((int) listRaw.getTotalElements());
+//    responce.setCountTotal(list.size());
 
     return responce;
   }
@@ -127,14 +135,19 @@ public class AuthService implements UserDetailsService {
     UserDto responce;
 
     UserEntity u = repository.getReferenceById(id);
-    responce = modelMapper.map(u, UserDto.class);
-    responce.setIdState(u.getState().getId());
-    responce.setState(u.getState().getName());
-    responce.setIconUrl("");
-    if(u.getIcon()!=null && u.getIcon().length>0){
-      responce.setIconUrl(url + "/api/image/user/" + u.getId());
-    }
+    responce = getUserDto(u);
 
+    return responce;
+  }
+
+  private UserDto getUserDto(UserEntity u) {
+    UserDto responce;
+    responce = modelMapper.map(u, UserDto.class);
+    if(u.getState()!=null){
+      responce.setIdState(u.getState().getId());
+      responce.setState(u.getState().getName());
+    }
+    responce.setIconUrl(url + "/api/image/user/" + u.getId());
     return responce;
   }
 

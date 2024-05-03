@@ -1,5 +1,5 @@
 insert into states (name)
-values ('Córdoba');
+values ('NULL');
 insert into states (name)
 values ('Córdoba');
 insert into users (username, name, lastname, password, email,role,id_state,creation_time)
