@@ -31,7 +31,7 @@ export class ListSellsComponent implements OnInit,OnDestroy {
   constructor(private service: PurchaseService,private authService: AuthService, private router: Router) {
     let datenow= new Date(Date.now());
     this.lastDate= datenow.toISOString().split("T")[0]
-    datenow.setDate(datenow.getDate()-30)
+    datenow.setDate(datenow.getDate()-90)
     this.firstDate= datenow.toISOString().split("T")[0]
   }
   ngOnInit(): void {
@@ -59,9 +59,6 @@ export class ListSellsComponent implements OnInit,OnDestroy {
 
     let firstDate1 = this.firstDate+"T00:00:00"
     let lastDate1 = this.lastDate+"T23:59:59"
-
-    console.log(lastDate1)
-
 
     this.subs.add(
       this.service.getSells(firstDate1,lastDate1, this.authService.user?.id||"0").subscribe(

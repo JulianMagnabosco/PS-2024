@@ -1,11 +1,13 @@
 insert into states (name)
 values ('Córdoba');
+insert into states (name)
+values ('Córdoba');
 insert into users (username, name, lastname, password, email,role,id_state,creation_time)
 values ('admin','admin','admin','$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2', 'a@a', 'ADMIN',1,'2023-01-01 00:00:01');
 insert into users (username, name, lastname, password, email,role,id_state,creation_time)
-values ('delivery','del','iver','$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2', 'del@a', 'DELIVERY',1,'2023-04-01 00:00:01');
-insert into users (username, name, lastname, password, email,role,id_state,creation_time)
 values ('user','a','a', '$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2', 'a1@a', 'USER',1,'2023-02-01 00:00:01');
+insert into users (username, name, lastname, password, email,role,id_state,creation_time)
+values ('delivery','del','iver','$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2', 'del@a', 'DELIVERY',1,'2023-04-01 00:00:01');
 insert into users (username, name, lastname, password, email,role,id_state,creation_time)
 values ('user2','a','a', '$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2', 'a2@a', 'USER',1,'2023-02-02 00:00:01');
 insert into users (username, name, lastname, password, email,role,id_state,creation_time)
@@ -52,3 +54,5 @@ insert into sales (merchant_order,id_user,date_time,sale_state)
 values (3,1, '2024-4-01 00:00:01','APROBADA');
 insert into sale_details (id_sale,id_publication,total,count)
 values (1,2, 5,1);
+insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
+values (1,3, '2024-4-01 00:00:01','ENTREGADO');

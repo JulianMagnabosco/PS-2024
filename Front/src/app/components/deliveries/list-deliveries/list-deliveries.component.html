@@ -1,26 +1,8 @@
 <div class="container">
   <h1 class="h1">Compras</h1>
-  <div class="row gap-2 justify-content-center">
-    <div class="col-auto">
-      <label for="firstDate" class="col-form-label">De </label>
-    </div>
-    <div class="col-auto">
-      <input type="date" id="firstDate" class="form-control" aria-describedby="passwordHelpInline"
-             name="firstDate" [max]="lastDate"
-             [(ngModel)]="firstDate">
-    </div>
-    <div class="col-auto">
-      <label for="lastDate" class="col-form-label"> A </label>
-    </div>
-    <div class="col-auto">
-      <input type="date" id="lastDate" class="form-control" aria-describedby="passwordHelpInline"
-             name="lastDate" [min]="firstDate"
-             [(ngModel)]="lastDate">
-    </div>
-    <div class="col-auto">
-      <button class="btn btn-primary" (click)="charge(0)">FILTRAR</button>
-    </div>
-  </div>
+<!--  <div class="row gap-2 justify-content-center">-->
+<!--    <button class="btn btn-primary" (click)="charge(0)">REGENERAR</button>-->
+<!--  </div>-->
   <div class="p-3 column-gap-2">
     <div class="position-absolute top-50 start-50 translate-middle"
          *ngIf="list.length<=0">
@@ -29,43 +11,38 @@
     <div class="row border-5 button-orange rounded-5 p-2 bg-secondary-subtle" *ngFor="let i of list"
          data-bs-toggle="modal" data-bs-target="#exampleModal"
          (click)="open(i)">
-      <div class="col-auto position-relative img-stat-container p-0">
-        <img class="border border-4 border-secondary rounded rounded-4"
-             [class]="i.details[1] ? 'gap-image-1 img-stat-1' : 'w-100'"
-             [src]="i.details[0].imageUrl" >
-        <img class="border border-4 border-secondary rounded rounded-2 gap-image-2 img-stat-1"
-             [src]="i.details[1].imageUrl"  *ngIf="i.details[1]">
-        <div class="border border-4 border-secondary rounded rounded-2 gap-image-3 img-stat-2 bg-secondary"
-             *ngIf="i.details[2]">+{{i.details.length-2}}</div>
+      <div class="col-auto  p-0">
+        <div class="mb-2 h4 px-2">
+          N°{{i.id}}
+        </div>
+        <div class="position-relative img-stat-container">
+          <img class="border border-4 border-secondary rounded rounded-4"
+               [class]="i.details[1] ? 'gap-image-1 img-stat-1' : 'w-100'"
+               [src]="i.details[0].imageUrl" >
+          <img class="border border-4 border-secondary rounded rounded-2 gap-image-2 img-stat-1"
+               [src]="i.details[1].imageUrl"  *ngIf="i.details[1]">
+          <div class="border border-4 border-secondary rounded rounded-2 gap-image-3 img-stat-2 bg-secondary"
+               *ngIf="i.details[2]">+{{i.details.length-2}}</div>
+        </div>
       </div>
       <div class="col p-3 justify-content-between align-content-center">
-        <!--          <div class="row row-gap-2" >-->
-        <!--            <div class="col-lg-4 col-12">-->
-        <!--              N°{{i.id}} - {{i.dateTime | date:"dd/MM/yyyy hh:mm:ss"}}-->
-        <!--            </div>-->
-        <!--            <div class="col-lg-4 col-12">-->
-        <!--              Obras: <span class="text-secondary" *ngFor="let d of i.details; index as index">-->
-        <!--            {{ index==0?'':',' }} ({{d.count}}){{d.name}}</span>-->
-        <!--            </div>-->
-        <!--            <div class="col-lg-4 col-12">-->
-        <!--              Monto total: <span class="text-secondary">${{i.total}}</span>-->
-        <!--            </div>-->
-
-        <!--          </div>-->
         <div class="mb-2">
-          N°{{i.id}} - {{i.dateTime | date:"dd/MM/yyyy hh:mm:ss"}}
+          Comprador: <span class="text-secondary"> {{i.name}}</span>
         </div>
         <div class="mb-2">
           Obras: <span class="text-secondary" *ngFor="let d of i.details; index as index">
             {{ index==0?'':',' }} ({{d.count}}){{d.name}}</span>
         </div>
-        <div >
-          Monto total: <span class="text-secondary">${{i.total}}</span>
+        <div class="mb-2">
+          Direccion: <span class="text-secondary" > {{ i.direction}}</span>
+        </div>
+        <div class="mb-2">
+          Telefono: <div class="text-secondary"> {{i.phone}}</div>
         </div>
       </div>
       <div class="col-sm-auto d-flex align-items-end justify-content-end  p-0" >
         <div class="p-3 rounded-5 border border-2 bg-success text-uppercase text-white text-center">
-          {{ i.saleState }}
+          {{ i.deliveryState }}
         </div>
       </div>
     </div>
@@ -74,7 +51,7 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content bg-transparent border-transparent">
-      <app-show-purchase [purchase]="selected"></app-show-purchase>
+      <app-show-delivery [delivery]="selected"></app-show-delivery>
     </div>
   </div>
 </div>

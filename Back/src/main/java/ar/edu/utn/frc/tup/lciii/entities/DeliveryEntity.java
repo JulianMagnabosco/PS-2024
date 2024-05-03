@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name = "delivery")
+@Table(name = "deliveries")
 @AllArgsConstructor
 @NoArgsConstructor
 public class DeliveryEntity {
@@ -26,7 +26,7 @@ public class DeliveryEntity {
     @JoinColumn(name="idDealer")
     UserEntity dealer;
     @Enumerated(EnumType.STRING)
-    DeliveryState state;
+    DeliveryState deliveryState;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     LocalDateTime dateTime;
 }

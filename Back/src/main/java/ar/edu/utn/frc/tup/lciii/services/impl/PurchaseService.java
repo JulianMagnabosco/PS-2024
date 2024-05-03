@@ -29,7 +29,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.math.BigDecimal;
 import java.net.URI;
@@ -199,7 +198,7 @@ public class PurchaseService {
                 delivery.setSale(sale);
                 delivery.setShipmment(m.getId());
                 delivery.setDealer(getDeliveryFree());
-                delivery.setState(DeliveryState.PENDIENTE);
+                delivery.setDeliveryState(DeliveryState.PENDIENTE);
                 deliveryRepository.save(delivery);
 
             } else {
@@ -295,15 +294,13 @@ public class PurchaseService {
 
     public List<DeliveryDto> getDeliveriesPending( Long user) {
         List<DeliveryDto> list = new ArrayList<>();
-        for (DeliveryEntity delivery : deliveryRepository.findAllByDealer_Id(
-                user
-        )) {
-//            if (!user.equals(sale.getUser().getId())) {
-//                continue;
-//            }
+        for (DeliveryEntity delivery : deliveryRepository.findAllByDealer_Id(user)) {
+            SaleEntity sale = delivery.getSale();
+            UserEntity buyer = delivery.getSale().getUser();
+
             BigDecimal total = BigDecimal.ZERO;
             List<DeliveryDetailDto> detailDtos = new ArrayList<>();
-            for (SaleDetailEntity detail : delivery.getSale().getDetails()) {
+            for (SaleDetailEntity detail : sale.getDetails()) {
                 Long imgId = 1L;
                 for (SectionEntity s : detail.getPublication().getSections()) {
                     if (s.getType() == SecType.PHOTO) {
@@ -318,28 +315,23 @@ public class PurchaseService {
                         url + "/api/image/pub/" + imgId,
                         detail.getTotal(),
                         detail.getCount(),
-                        delivery.getSale().getUser().getName()+" "+
-                                delivery.getSale().getUser().getLastname(),
-                        delivery.getSale().getUser().getPhone(),
-                        delivery.getSale().getUser().getState().getName()+", "+
-                                delivery.getSale().getUser().getDirection()
+                        buyer.getName()+" "+buyer.getLastname(),
+                        buyer.getPhone(),
+                        buyer.getState().getName()+", "+buyer.getDirection()
                 ));
                 total = total.add(detail.getTotal());
             }
 
             list.add(new DeliveryDto(delivery.getId(),
-                    delivery.getSale().getDateTime().toString(),
+                    sale.getDateTime().toString(),
                     detailDtos,
                     total,
-                    delivery.getSale().getUser().getName()+" "+
-                        delivery.getSale().getUser().getLastname(),
-                    delivery.getSale().getUser().getPhone(),
-                    delivery.getSale().getUser().getState().getName()+", "+
-                        delivery.getSale().getUser().getDirection(),
+                    buyer.getName()+" "+buyer.getLastname(),
+                   buyer.getPhone(),
+                    buyer.getState().getName()+", "+buyer.getDirection(),
                     delivery.getDateTime().toString(),
-                    delivery.getState(),
-                    delivery.getDealer().getName()+" "+
-                        delivery.getDealer().getLastname(),
+                    delivery.getDeliveryState(),
+                    delivery.getDealer().getName()+" "+delivery.getDealer().getLastname(),
                     delivery.getDealer().getId()
                     )
             );

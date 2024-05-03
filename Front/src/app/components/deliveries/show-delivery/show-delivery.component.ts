@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {Purchase} from "../../../models/purchase/purchase";
+import {Delivery} from "../../../models/delivery/delivery";
 
 @Component({
   selector: 'app-show-delivery',
@@ -6,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './show-delivery.component.css'
 })
 export class ShowDeliveryComponent {
-
+  @Input() delivery?: Delivery;
 }

@@ -31,7 +31,7 @@ export class ListPurchasesComponent implements OnInit,OnDestroy {
   constructor(private service: PurchaseService,private authService: AuthService, private router: Router) {
     let datenow= new Date(Date.now());
     this.lastDate= datenow.toISOString().split("T")[0]
-    datenow.setDate(datenow.getDate()-30)
+    datenow.setDate(datenow.getDate()-90)
     this.firstDate= datenow.toISOString().split("T")[0]
   }
   ngOnInit(): void {

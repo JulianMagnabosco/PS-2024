@@ -11,7 +11,7 @@ export interface Delivery {
   direction: string;
 
   deliveryDateTime: string;
-  saleState: string;
+  deliveryState: string;
 
   dealer: string;
   dealerId: number;
