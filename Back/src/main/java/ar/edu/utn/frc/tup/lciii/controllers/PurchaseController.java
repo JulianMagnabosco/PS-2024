@@ -6,6 +6,7 @@ import ar.edu.utn.frc.tup.lciii.dtos.purchase.NotPurchaseResponce;
 import ar.edu.utn.frc.tup.lciii.dtos.purchase.PurchaseResponce;
 import ar.edu.utn.frc.tup.lciii.dtos.purchase.SaleDto;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.PurchaseRequest;
+import ar.edu.utn.frc.tup.lciii.dtos.requests.PutDeliveryRequest;
 import ar.edu.utn.frc.tup.lciii.services.impl.PurchaseService;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
@@ -50,5 +51,10 @@ public class PurchaseController {
     public NotPurchaseResponce notificar(@RequestBody LinkedHashMap data,
                                          @RequestParam(name = "user",defaultValue = "0") String user) {
         return service.notificar(data,user);
+    }
+
+    @PutMapping("/delivery")
+    public DeliveryDto putDelivery(@RequestBody PutDeliveryRequest request){
+        return service.putDelivery(request);
     }
 }

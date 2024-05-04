@@ -24,9 +24,9 @@
   <div class="p-3 column-gap-2">
     <div class="position-absolute top-50 start-50 translate-middle"
          *ngIf="list.length<=0">
-      <h1 class="text-center "> Sin compras registradas</h1>
+      <h1 class="text-center "> Sin ventas registradas</h1>
     </div>
-    <div class="row border-5 button-orange rounded-5 p-2 bg-secondary-subtle" *ngFor="let i of list"
+    <div class="row border-5 button-orange rounded-5 p-2 bg-secondary-subtle mb-2" *ngFor="let i of list"
          data-bs-toggle="modal" data-bs-target="#exampleModal"
          (click)="open(i)">
       <div class="h5">N°{{i.id}} - {{i.dateTime | date:"dd/MM/yyyy hh:mm:ss"}}</div>

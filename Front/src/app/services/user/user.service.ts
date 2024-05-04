@@ -25,6 +25,9 @@ export class UserService {
       return this.client.get<any>(this.baseUrl + "list");
     }
   }
+  getDealers(){
+    return this.client.get<any>(this.baseUrl + "dealers" );
+  }
   put(data: any){
     return this.client.put<any>(this.baseUrl + "mod", data);
   }

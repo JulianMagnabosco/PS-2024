@@ -105,11 +105,14 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
       this.purchaseService.postSingleSale(data).subscribe(
         {
           next: value => {
-            console.log(value["preference"]["initPoint"])
+            // console.log(value["preference"]["initPoint"])
             window.location.href = value["preference"]["initPoint"]
           },
           error: err => {
             console.log(err)
+            if(err.status==400){
+              alert("El usuario no posee los datos de compra completos")
+            }
           }
         }
       )
@@ -127,7 +130,7 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
               this.service.get(id,this.userService.user?.id||"1").subscribe(
                 {
                   next: value => {
-                    console.log(value)
+                    // console.log(value)
                     this.publication=value
                   },
                   error: err => {

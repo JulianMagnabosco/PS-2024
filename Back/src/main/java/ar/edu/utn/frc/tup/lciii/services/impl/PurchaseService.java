@@ -8,6 +8,7 @@ import ar.edu.utn.frc.tup.lciii.dtos.purchase.PurchaseResponce;
 import ar.edu.utn.frc.tup.lciii.dtos.purchase.SaleDetailDto;
 import ar.edu.utn.frc.tup.lciii.dtos.purchase.SaleDto;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.PurchaseRequest;
+import ar.edu.utn.frc.tup.lciii.dtos.requests.PutDeliveryRequest;
 import ar.edu.utn.frc.tup.lciii.entities.*;
 import ar.edu.utn.frc.tup.lciii.enums.DeliveryState;
 import ar.edu.utn.frc.tup.lciii.enums.SaleState;
@@ -114,25 +115,25 @@ public class PurchaseService {
         return new PurchaseResponce(preference);
     }
 
-    UserEntity getUserCompleteData(Long id){
+    UserEntity getUserCompleteData(Long id) {
         UserEntity user = userRepository.getReferenceById(id);
 
-        if(user.getName().isBlank() ||
-                user.getLastname().isBlank() ||
-                user.getPhone().isBlank() ||
-                user.getCvu().isBlank() ||
-                user.getDni().isBlank() ||
-                user.getDniType().isBlank() ||
-                user.getState()==null ||
-                user.getDirection().isBlank() ||
-                user.getNumberDir().isBlank() ||
-                user.getPostalNum().isBlank())
-        {
+        if (user.getName() == null || user.getName().isBlank() ||
+                user.getLastname() == null || user.getLastname().isBlank() ||
+                user.getPhone() == null || user.getPhone().isBlank() ||
+                user.getCvu() == null || user.getCvu().isBlank() ||
+                user.getDni() == null || user.getDni().isBlank() ||
+                user.getDniType() == null || user.getDniType().isBlank() ||
+                user.getState() == null ||
+                user.getDirection() == null || user.getDirection().isBlank() ||
+                user.getNumberDir() == null || user.getNumberDir().isBlank() ||
+                user.getPostalNum() == null || user.getPostalNum().isBlank()) {
             throw new IllegalArgumentException("El usuario no tiene datos completos ");
         }
 
         return user;
     }
+
     @Transactional
     public NotPurchaseResponce notificar(LinkedHashMap notification, String userId) {
 
@@ -235,14 +236,14 @@ public class PurchaseService {
         return responce;
     }
 
-    UserEntity getDeliveryFree(){
+    UserEntity getDeliveryFree() {
         UserEntity selected = null;
         Long countSelected = 0L;
-        for (UserEntity user: userRepository.findAllByRole(UserRole.DELIVERY)){
+        for (UserEntity user : userRepository.findAllByRole(UserRole.DELIVERY)) {
             Long count = deliveryRepository.countAllByDealer(user);
-            if(count < countSelected){
-                selected=user;
-                countSelected=count;
+            if (count < countSelected) {
+                selected = user;
+                countSelected = count;
             }
         }
 
@@ -292,7 +293,7 @@ public class PurchaseService {
 
     }
 
-    public List<DeliveryDto> getDeliveriesPending( Long user) {
+    public List<DeliveryDto> getDeliveriesPending(Long user) {
         List<DeliveryDto> list = new ArrayList<>();
         for (DeliveryEntity delivery : deliveryRepository.findAllByDealer_Id(user)) {
             SaleEntity sale = delivery.getSale();
@@ -308,6 +309,7 @@ public class PurchaseService {
                         break;
                     }
                 }
+                UserEntity seller = detail.getPublication().getUser();
 
                 detailDtos.add(new DeliveryDetailDto(
                         detail.getPublication().getId(),
@@ -315,30 +317,87 @@ public class PurchaseService {
                         url + "/api/image/pub/" + imgId,
                         detail.getTotal(),
                         detail.getCount(),
-                        buyer.getName()+" "+buyer.getLastname(),
-                        buyer.getPhone(),
-                        buyer.getState().getName()+", "+buyer.getDirection()
+                        seller.getName() + " " + seller.getLastname(),
+                        seller.getPhone(),
+                        seller.getState().getName() + ", " + seller.getDirection()
                 ));
                 total = total.add(detail.getTotal());
             }
 
             list.add(new DeliveryDto(delivery.getId(),
-                    sale.getDateTime().toString(),
-                    detailDtos,
-                    total,
-                    buyer.getName()+" "+buyer.getLastname(),
-                   buyer.getPhone(),
-                    buyer.getState().getName()+", "+buyer.getDirection(),
-                    delivery.getDateTime().toString(),
-                    delivery.getDeliveryState(),
-                    delivery.getDealer().getName()+" "+delivery.getDealer().getLastname(),
-                    delivery.getDealer().getId()
+                            sale.getDateTime().toString(),
+                            detailDtos,
+                            total,
+                            buyer.getName() + " " + buyer.getLastname(),
+                            buyer.getPhone(),
+                            buyer.getState().getName() + ", " + buyer.getDirection(),
+                            delivery.getDateTime().toString(),
+                            delivery.getDeliveryState(),
+                            delivery.getDealer().getName() + " " + delivery.getDealer().getLastname(),
+                            delivery.getDealer().getId()
                     )
             );
         }
 
         return list;
 
+    }
+
+    DeliveryDto getDeliveryDto(DeliveryEntity delivery) {
+        SaleEntity sale = delivery.getSale();
+        UserEntity buyer = delivery.getSale().getUser();
+
+        BigDecimal total = BigDecimal.ZERO;
+        List<DeliveryDetailDto> detailDtos = new ArrayList<>();
+        for (SaleDetailEntity detail : sale.getDetails()) {
+            Long imgId = 1L;
+            for (SectionEntity s : detail.getPublication().getSections()) {
+                if (s.getType() == SecType.PHOTO) {
+                    imgId = s.getId();
+                    break;
+                }
+            }
+            UserEntity seller = detail.getPublication().getUser();
+
+            detailDtos.add(new DeliveryDetailDto(
+                    detail.getPublication().getId(),
+                    detail.getPublication().getName(),
+                    url + "/api/image/pub/" + imgId,
+                    detail.getTotal(),
+                    detail.getCount(),
+                    seller.getName() + " " + seller.getLastname(),
+                    seller.getPhone(),
+                    seller.getState().getName() + ", " + seller.getDirection()
+            ));
+            total = total.add(detail.getTotal());
+        }
+
+        return new DeliveryDto(delivery.getId(),
+                sale.getDateTime().toString(),
+                detailDtos,
+                total,
+                buyer.getName() + " " + buyer.getLastname(),
+                buyer.getPhone(),
+                buyer.getState().getName() + ", " + buyer.getDirection(),
+                delivery.getDateTime().toString(),
+                delivery.getDeliveryState(),
+                delivery.getDealer().getName() + " " + delivery.getDealer().getLastname(),
+                delivery.getDealer().getId()
+        );
+    }
+
+
+    public DeliveryDto putDelivery(PutDeliveryRequest request) {
+
+        DeliveryEntity delivery = deliveryRepository.getReferenceById(request.getId());
+        UserEntity dealer = userRepository.getReferenceById(request.getDealer());
+
+        delivery.setDeliveryState(request.getDeliveryState());
+        delivery.setDealer(dealer);
+
+        deliveryRepository.save(delivery);
+
+        return getDeliveryDto(delivery);
     }
 
     public List<SellDto> getSells(String firstDate, String lastDate, Long user) {

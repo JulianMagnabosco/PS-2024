@@ -25,6 +25,10 @@ public class UserController {
                                     @RequestParam(required = false,defaultValue = "5") int size) {
         return service.getAll(text,page,size);
     }
+    @GetMapping("/dealers")
+    public ListUsersResponce getDealers() {
+        return service.getDealers();
+    }
     @GetMapping("/{id}")
     public UserDto get(@PathVariable Long id) {
         return service.get(id);

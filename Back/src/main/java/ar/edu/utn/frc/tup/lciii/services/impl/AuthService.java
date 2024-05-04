@@ -9,6 +9,7 @@ import ar.edu.utn.frc.tup.lciii.dtos.requests.UserRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.UserDto;
 import ar.edu.utn.frc.tup.lciii.entities.StateEntity;
 import ar.edu.utn.frc.tup.lciii.entities.UserEntity;
+import ar.edu.utn.frc.tup.lciii.enums.UserRole;
 import ar.edu.utn.frc.tup.lciii.repository.StateRepository;
 import ar.edu.utn.frc.tup.lciii.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -128,6 +129,24 @@ public class AuthService implements UserDetailsService {
 
     responce.setCountTotal((int) listRaw.getTotalElements());
 //    responce.setCountTotal(list.size());
+
+    return responce;
+  }
+  public ListUsersResponce getDealers(){
+
+    ListUsersResponce responce = new ListUsersResponce();
+    List<UserDto> list = new ArrayList<>();
+
+    List<UserEntity> listRaw = repository.findAllByRole(UserRole.DELIVERY);
+    for (UserEntity u : listRaw){
+      UserDto r = getUserDto(u);
+      list.add(r);
+    }
+
+
+    responce.setList(list);
+
+    responce.setCountTotal(list.size());
 
     return responce;
   }

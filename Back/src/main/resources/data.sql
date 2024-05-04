@@ -56,3 +56,11 @@ insert into sale_details (id_sale,id_publication,total,count)
 values (1,2, 5,1);
 insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
 values (1,3, '2024-4-01 00:00:01','ENTREGADO');
+
+
+insert into sales (merchant_order,id_user,date_time,sale_state)
+values (3,1, '2024-3-01 00:00:01','APROBADA');
+insert into sale_details (id_sale,id_publication,total,count)
+values (2,2, 5,1);
+insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
+values (2,3, '2024-3-01 00:00:01','ENTREGADO');

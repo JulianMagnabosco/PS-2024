@@ -23,4 +23,8 @@ export class PurchaseService {
   getDeliveries(user:string){
     return this.client.get(this.baseUrl + "deliveries?user="+ user );
   }
+
+  putDeliveries(data:any){
+    return this.client.put(this.baseUrl + "delivery", data);
+  }
 }
