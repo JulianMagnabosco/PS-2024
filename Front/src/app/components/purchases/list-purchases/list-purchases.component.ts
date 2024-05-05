@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup, FormsModule, Validators} from "@angular/forms";
 import {PublicationMin} from "../../../models/publication/publication-min";
 import {PublicationsService} from "../../../services/publications/publications.service";
 import {Router} from "@angular/router";
-import {PurchaseService} from "../../../services/purchase/purchase.service";
+import {PurchaseService, stateClasses} from "../../../services/purchase/purchase.service";
 import {Purchase} from "../../../models/purchase/purchase";
 import {AuthService} from "../../../services/user/auth.service";
 
@@ -83,4 +83,6 @@ export class ListPurchasesComponent implements OnInit,OnDestroy {
   open(p:Purchase){
     this.selected=p;
   }
+
+  protected readonly stateClasses = stateClasses;
 }

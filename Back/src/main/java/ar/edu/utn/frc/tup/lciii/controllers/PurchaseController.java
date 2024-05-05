@@ -57,4 +57,8 @@ public class PurchaseController {
     public DeliveryDto putDelivery(@RequestBody PutDeliveryRequest request){
         return service.putDelivery(request);
     }
+    @DeleteMapping("/sell/{id}")
+    public boolean putSell(@PathVariable Long id){
+        return service.deleteSell(id);
+    }
 }

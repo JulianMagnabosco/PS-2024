@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {Purchase} from "../../../models/purchase/purchase";
-import {PurchaseService} from "../../../services/purchase/purchase.service";
+import {PurchaseService, stateClasses} from "../../../services/purchase/purchase.service";
 import {AuthService} from "../../../services/user/auth.service";
 import {Router} from "@angular/router";
 import {Delivery} from "../../../models/delivery/delivery";
@@ -68,4 +68,6 @@ export class ListDeliveriesComponent implements OnInit,OnDestroy {
   open(p:Delivery){
     this.selected=p;
   }
+
+    protected readonly stateClasses = stateClasses;
 }

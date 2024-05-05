@@ -1,20 +1,29 @@
 package ar.edu.utn.frc.tup.lciii.services.impl;
 
+import ar.edu.utn.frc.tup.lciii.dtos.purchase.SaleDetailDto;
+import ar.edu.utn.frc.tup.lciii.dtos.purchase.SaleDto;
 import ar.edu.utn.frc.tup.lciii.dtos.stadistics.StatDto;
 import ar.edu.utn.frc.tup.lciii.dtos.stadistics.StatSeriesDto;
 import ar.edu.utn.frc.tup.lciii.dtos.stadistics.StatsResponce;
-import ar.edu.utn.frc.tup.lciii.entities.PublicationEntity;
-import ar.edu.utn.frc.tup.lciii.entities.UserEntity;
+import ar.edu.utn.frc.tup.lciii.entities.*;
+import ar.edu.utn.frc.tup.lciii.enums.SecType;
 import ar.edu.utn.frc.tup.lciii.repository.PublicationRepository;
+import ar.edu.utn.frc.tup.lciii.repository.SaleRepository;
 import ar.edu.utn.frc.tup.lciii.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StadisticsService {
@@ -22,6 +31,8 @@ public class StadisticsService {
     UserRepository userRepository;
     @Autowired
     PublicationRepository publicationRepository;
+    @Autowired
+    SaleRepository saleRepository;
 
     public StatsResponce getUserStadistics(int year){
         StatSeriesDto[] stats = new StatSeriesDto[2];
@@ -108,5 +119,67 @@ public class StadisticsService {
 
         return new StatsResponce(List.of(stats), false);
     }
+    public StatsResponce getSellsStadistics(String firstDate, String lastDate){
 
+        StatSeriesDto stats = new StatSeriesDto();
+
+        LocalDateTime date1 = LocalDateTime.parse(firstDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+        LocalDateTime date2 = LocalDateTime.parse(lastDate , DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+
+        List<StatDto> vals = new ArrayList<>();
+        for (LocalDate l : getFullWeeks(date1.toLocalDate(),date2.toLocalDate())){
+            vals.add(new StatDto(l.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+        }
+
+        List<SaleEntity> entities = saleRepository.findAllByDateTimeBetween(date1,date2);
+
+        if(entities.isEmpty()){
+            return new StatsResponce(null, true);
+        }
+
+        for (SaleEntity p : entities){
+
+            DayOfWeek dayOfWeek = p.getDateTime().getDayOfWeek();
+            LocalDateTime firstDayOfWeek = p.getDateTime().minusDays(dayOfWeek.getValue() - 1);
+
+            Optional<StatDto> statFind = vals.stream()
+                    .filter(d -> d.getName()
+                            .equals(firstDayOfWeek.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
+                            .findFirst();
+
+            vals.get(vals.indexOf(statFind.get())).setValue(
+                    vals.get(vals.indexOf(statFind.get())).getValue().add(BigDecimal.ONE)
+            );
+        }
+
+        stats.setName("count");
+        stats.setSeries(vals);
+
+        return new StatsResponce(List.of(stats), false);
+    }
+    public List<LocalDate> getFullWeeks(LocalDate d1, LocalDate d2){
+        List<LocalDate> list = new ArrayList<>();
+        // Obtener el primer día de la primera semana del año
+        LocalDate firstDayOfFirstWeek = d1.with(
+                TemporalAdjusters.previousOrSame(
+                        LocalDate.of(d1.getYear(), 1, 1).getDayOfWeek()));
+
+        // Obtener el último día de la última semana del año
+        LocalDate lastDayOfLastWeek = d2.with(
+                TemporalAdjusters.nextOrSame(
+                        LocalDate.of(d2.getYear(), 12, 31).getDayOfWeek()));
+
+        // Iterar sobre todas las semanas entre las fechas de inicio y fin
+        LocalDate currentDate = firstDayOfFirstWeek;
+        while (!currentDate.isAfter(lastDayOfLastWeek.minusWeeks(1))) {
+            // Imprimir la semana actual
+            LocalDate startOfWeek = currentDate;
+//            System.out.println("Semana: " + startOfWeek + " - " + endOfWeek);
+
+            list.add(startOfWeek);
+            // Pasar a la siguiente semana
+            currentDate = currentDate.plusWeeks(1);
+        }
+        return list;
+    }
 }

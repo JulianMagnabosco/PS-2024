@@ -14,10 +14,10 @@
         Fecha de venta: <span class="text-secondary">{{delivery?.saleDateTime | date:"dd/MM/yyyy hh:mm:ss"}}</span>
       </div>
       <div class="mb-1 p-1">
-        Comprador: <span class="text-secondary">{{delivery?.name}}</span>
+        Comprador: <span class="text-secondary text-capitalize">{{delivery?.name}}</span>
       </div>
       <div class="mb-1 p-1">
-        Direccion de entrega: <span class="text-secondary">{{delivery?.direction}}</span>
+        Direccion de entrega: <span class="text-secondary text-capitalize">{{delivery?.direction}}</span>
       </div>
       <div class="mb-1 p-1">
         Telefono: <span class="text-secondary">{{delivery?.phone}}</span>
@@ -29,7 +29,7 @@
           Estado:&nbsp;
         </div>
         <div class="col">
-          <select class="p-2 w-100 rounded-2 border bg-success text-uppercase text-white text-center"
+          <select class="p-2 w-100 rounded-2 border text-uppercase text-center" [class]="stateClasses(state||'')"
                   [(ngModel)]="state">
             <option [value]="state" selected hidden="">{{ state }}</option>
             <option value="ENTREGADO" >ENTREGADO</option>
@@ -65,12 +65,12 @@
       </div>
       <div class="col-5 row p-2 align-items-center">
         <div class="p-1">Obra: <span class="text-secondary">{{d.name}}</span></div>
-        <div class="p-1">Cantidad: <span class="text-secondary">{{d.count}}</span></div>
+        <div class="p-1">Cantidad: <span class="text-secondary ">{{d.count}}</span></div>
         <div class="p-1">Total: <span class="text-secondary">${{d.total}}</span></div>
       </div>
       <div class="col-5 row p-2 align-items-center">
-        <div class="p-1">Vendedor: <span class="text-secondary">{{d.sellername}}</span></div>
-        <div class="p-1">Direccion de retiro: <span class="text-secondary">{{d.direction}}</span></div>
+        <div class="p-1">Vendedor: <span class="text-secondary text-capitalize">{{d.sellername}}</span></div>
+        <div class="p-1">Direccion de retiro: <span class="text-secondary text-capitalize">{{d.direction}}</span></div>
         <div class="p-1">Telefono: <span class="text-secondary">${{d.phone}}</span></div>
       </div>
     </div>

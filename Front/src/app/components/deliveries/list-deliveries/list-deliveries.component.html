@@ -27,7 +27,7 @@
       </div>
       <div class="col p-3 justify-content-between align-content-center">
         <div class="mb-2">
-          Comprador: <span class="text-secondary"> {{i.name}}</span>
+          Comprador: <span class="text-secondary text-capitalize"> {{i.name}}</span>
         </div>
         <div class="mb-2">
           Obras: <span class="text-secondary" *ngFor="let d of i.details; index as index">
@@ -37,11 +37,12 @@
           Direccion: <span class="text-secondary" > {{ i.direction}}</span>
         </div>
         <div class="mb-2">
-          Telefono: <div class="text-secondary"> {{i.phone}}</div>
+          Telefono: <span class="text-secondary"> {{i.phone}}</span>
         </div>
       </div>
       <div class="col-sm-auto d-flex align-items-end justify-content-end  p-0" >
-        <div class="p-3 rounded-5 border border-2 bg-success text-uppercase text-white text-center">
+        <div class="p-3 rounded-5 border border-2 text-uppercase  text-center"
+             [class]="stateClasses(i.deliveryState)">
           {{ i.deliveryState }}
         </div>
       </div>

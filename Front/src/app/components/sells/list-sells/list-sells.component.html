@@ -36,7 +36,7 @@
       </div>
       <div class="col p-3 justify-content-between align-content-center">
         <div class="mb-2">
-          Comprador: <span class="text-secondary"> {{i.buyer}}</span>
+          Comprador: <span class="text-secondary text-capitalize"> {{i.buyer}}</span>
         </div>
         <div class="mb-2">
           Obra: <span class="text-secondary"> {{i.name}}</span>
@@ -49,7 +49,7 @@
         </div>
       </div>
       <div class="col-sm-auto d-flex align-items-end justify-content-end  p-0" >
-        <div class="p-3 rounded-5 border border-2 bg-success text-uppercase text-white text-center">
+        <div class="p-3 rounded-5 border border-2 text-uppercase text-center" [class]="stateClasses(i.saleState)">
           {{ i.saleState }}
         </div>
       </div>
@@ -59,7 +59,7 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content bg-transparent border-transparent">
-      <app-show-sell [sell]="selected"></app-show-sell>
+      <app-show-sell [sell]="selected" (eventClose)="charge(0)"></app-show-sell>
     </div>
   </div>
 </div>

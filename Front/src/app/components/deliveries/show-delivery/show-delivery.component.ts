@@ -12,7 +12,7 @@ import {
 import {Purchase} from "../../../models/purchase/purchase";
 import {Delivery} from "../../../models/delivery/delivery";
 import {UserService} from "../../../services/user/user.service";
-import {PurchaseService} from "../../../services/purchase/purchase.service";
+import {PurchaseService, stateClasses} from "../../../services/purchase/purchase.service";
 import {Subscription} from "rxjs";
 import {User} from "../../../models/user/user";
 
@@ -81,4 +81,6 @@ export class ShowDeliveryComponent implements OnInit, OnDestroy,OnChanges {
       }))
 
   }
+
+    protected readonly stateClasses = stateClasses;
 }

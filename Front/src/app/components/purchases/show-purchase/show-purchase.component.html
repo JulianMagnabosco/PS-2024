@@ -15,7 +15,8 @@
     <div class="col-auto d-flex p-0" >
       <div class="h-auto p-2">
         Estado:&nbsp;
-        <span class="p-2 rounded-4 border bg-success text-uppercase text-white text-center">
+        <span class="p-2 rounded-4 border text-uppercase  text-center"
+              [class]="stateClasses(purchase?.saleState||'')">
           {{ purchase?.saleState }}
         </span>
       </div>

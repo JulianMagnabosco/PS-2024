@@ -1,13 +1,25 @@
 
 <div class="row border-5 button-orange rounded-5 p-2 bg-secondary-subtle">
-  <div class="h5">N°{{sell?.id}} - {{sell?.dateTime | date:"dd/MM/yyyy hh:mm:ss"}}</div>
+  <div class="d-flex justify-content-between">
+    <div class="h5">
+      N°{{sell?.id}} - {{sell?.dateTime | date:"dd/MM/yyyy hh:mm:ss"}}</div>
+    <div>
+      <a class="btn btn-secondary btn"  role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-three-dots"></i>
+      </a>
+
+      <ul class="dropdown-menu bg-secondary">
+        <li ><button class=" btn btn-secondary" [disabled]="sell?.saleState=='CANCELADA'" (click)="delete()">Eliminar comentario</button></li>
+      </ul>
+    </div>
+  </div>
   <div class="col-3 ">
     <img class="border border-4 border-secondary rounded rounded-4 w-100"
          [src]="sell?.imageUrl" >
   </div>
   <div class="col py-3 justify-content-between align-content-center">
     <div class="mb-2">
-      Comprador: <span class="text-secondary"> {{sell?.buyer}}</span>
+      Comprador: <span class="text-secondary text-capitalize"> {{sell?.buyer}}</span>
     </div>
     <div class="mb-2">
       Obra: <span class="text-secondary"> {{sell?.name}}</span>
@@ -20,9 +32,13 @@
     </div>
   </div>
   <div class="col-sm-auto d-flex align-items-end justify-content-end  p-0" >
-    <div class="p-3 rounded-5 border border-2 bg-success text-uppercase text-white text-center">
+    <div class="p-3 rounded-5 border border-2 bg-success text-uppercase text-white text-center"
+         [class]="stateClasses(sell?.saleState||'')">
       {{ sell?.saleState }}
     </div>
   </div>
 </div>
+<button hidden data-bs-dismiss="modal" aria-label="Close" #close>
+  CANCELAR
+</button>
 

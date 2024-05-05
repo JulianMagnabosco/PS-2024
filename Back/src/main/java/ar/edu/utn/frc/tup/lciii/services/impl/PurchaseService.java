@@ -386,7 +386,6 @@ public class PurchaseService {
         );
     }
 
-
     public DeliveryDto putDelivery(PutDeliveryRequest request) {
 
         DeliveryEntity delivery = deliveryRepository.getReferenceById(request.getId());
@@ -431,5 +430,15 @@ public class PurchaseService {
 
         }
         return list;
+    }
+    public boolean deleteSell(Long id) {
+
+        SaleEntity sell = saleRepository.getReferenceById(id);
+
+        sell.setSaleState(SaleState.CANCELADA);
+
+        saleRepository.save(sell);
+
+        return true;
     }
 }

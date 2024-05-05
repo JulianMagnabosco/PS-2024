@@ -24,4 +24,8 @@ public class StadisticsController {
     public StatsResponce getAll(@PathVariable int year,@PathVariable int month) {
         return service.getPublicationStadistics(year,month);
     }
+    @GetMapping("/sells")
+    public StatsResponce getAll(@RequestParam String date1,@RequestParam String date2) {
+        return service.getSellsStadistics(date1,date2);
+    }
 }

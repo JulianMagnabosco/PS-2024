@@ -64,7 +64,8 @@
           </div>
         </div>
         <div class="col-sm-auto d-flex align-items-end justify-content-end  p-0" >
-          <div class="p-3 rounded-5 border border-2 bg-success text-uppercase text-white text-center">
+          <div class="p-3 rounded-5 border border-2 text-uppercase text-center"
+          [class]="stateClasses(i.saleState)">
             {{ i.saleState }}
           </div>
         </div>

@@ -3,7 +3,7 @@ import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {ReactiveFormsModule} from "@angular/forms";
 import {Subscription} from "rxjs";
 import {Purchase} from "../../../models/purchase/purchase";
-import {PurchaseService} from "../../../services/purchase/purchase.service";
+import {PurchaseService, stateClasses} from "../../../services/purchase/purchase.service";
 import {AuthService} from "../../../services/user/auth.service";
 import {Router} from "@angular/router";
 import {Sell} from "../../../models/sell/sell";
@@ -80,5 +80,7 @@ export class ListSellsComponent implements OnInit,OnDestroy {
   open(p:Sell){
     this.selected=p;
   }
+
+  protected readonly stateClasses = stateClasses;
 }
 

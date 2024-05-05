@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {Purchase} from "../../../models/purchase/purchase";
+import {stateClasses} from "../../../services/purchase/purchase.service";
 
 @Component({
   selector: 'app-show-purchase',
@@ -8,4 +9,5 @@ import {Purchase} from "../../../models/purchase/purchase";
 })
 export class ShowPurchaseComponent {
   @Input() purchase?: Purchase;
+    protected readonly stateClasses = stateClasses;
 }
