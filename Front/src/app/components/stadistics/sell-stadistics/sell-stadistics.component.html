@@ -1,0 +1,40 @@
+
+<div class="container">
+  <div class="h1 w-100 text-center">Estadisticas de Ventas</div>
+
+  <div class="row w-100 justify-content-sm-center mb-2 row-gap-1">
+    <div class="col-auto">
+      <label for="firstDate" class="col-form-label">De </label>
+    </div>
+    <div class="col-auto">
+      <input type="date" id="firstDate" class="form-control" aria-describedby="passwordHelpInline"
+             name="firstDate" [max]="lastDate"
+             [(ngModel)]="firstDate">
+    </div>
+    <div class="col-auto">
+      <label for="lastDate" class="col-form-label"> A </label>
+    </div>
+    <div class="col-auto">
+      <input type="date" id="lastDate" class="form-control" aria-describedby="passwordHelpInline"
+             name="lastDate" [min]="firstDate"
+             [(ngModel)]="lastDate">
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-primary" (click)="charge(selected)">GENERAR</button>
+    </div>
+  </div>
+
+  <div class="card bg-body-tertiary">
+    <div class="h5 text-center border border-bottom p-4">
+      Ventas de la semana {{ this.firstDate }} a {{ this.lastDate }}
+    </div>
+    <div echarts [options]="options"
+         [theme]="service.coolTheme"
+         class="demo-chart"
+         *ngIf="nodata=='n'"></div>
+    <div class="h2 fst-italic w-100 text-center"
+         *ngIf="nodata=='y'"> Sin Datos</div>
+    <div class="h2 fst-italic w-100 text-center"
+         *ngIf="nodata=='c'"> Cargando...</div>
+  </div>
+</div>

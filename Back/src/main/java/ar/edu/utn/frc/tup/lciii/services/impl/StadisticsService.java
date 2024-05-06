@@ -126,6 +126,7 @@ public class StadisticsService {
         LocalDateTime date1 = LocalDateTime.parse(firstDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
         LocalDateTime date2 = LocalDateTime.parse(lastDate , DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
 
+
         List<StatDto> vals = new ArrayList<>();
         for (LocalDate l : getFullWeeks(date1.toLocalDate(),date2.toLocalDate())){
             vals.add(new StatDto(l.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));

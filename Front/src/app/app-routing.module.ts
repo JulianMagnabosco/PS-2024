@@ -18,6 +18,7 @@ import {HomeComponent} from "./components/home/home.component";
 import {ListPurchasesComponent} from "./components/purchases/list-purchases/list-purchases.component";
 import {ListSellsComponent} from "./components/sells/list-sells/list-sells.component";
 import {ListDeliveriesComponent} from "./components/deliveries/list-deliveries/list-deliveries.component";
+import {SellStadisticsComponent} from "./components/stadistics/sell-stadistics/sell-stadistics.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -40,6 +41,7 @@ const routes: Routes = [
   { path: 'deliveries', component: ListDeliveriesComponent, canActivate:[authGuard] },
   { path: 'stats/users', component: UserStadisticsComponent, canActivate:[authGuard] },
   { path: 'stats/pubs', component: PubStadisticsComponent, canActivate:[authGuard] },
+  { path: 'stats/sells', component: SellStadisticsComponent, canActivate:[authGuard] },
   { path: '**', component: HomeComponent },
 ]
 

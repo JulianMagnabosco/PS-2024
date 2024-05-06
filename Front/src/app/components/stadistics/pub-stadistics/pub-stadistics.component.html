@@ -13,6 +13,9 @@
   </div>
 
   <div class="card bg-body-tertiary">
+    <div class="h5 text-center border border-bottom p-4">
+      Publicaciones del mes {{selected.month | dateCustom}} {{selected.year}}
+    </div>
     <div echarts [options]="options"
          [theme]="service.coolTheme"
          class="demo-chart"

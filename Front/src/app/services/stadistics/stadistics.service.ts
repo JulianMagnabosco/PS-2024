@@ -10,8 +10,8 @@ export class StadisticsService {
   private baseUrl = "api/stats/";
   coolTheme = {
     color: [
-      '#ff0000',
       '#fc7300',
+      '#ff0000',
       '#ff9100',
       '#ffbf70',
       '#fae563',
@@ -143,5 +143,8 @@ export class StadisticsService {
   }
   getPubsStadistics(year: any, month:any):Observable<any>{
     return this.client.get(this.baseUrl + "pubs/"+year+"/"+month);
+  }
+  getSellsStadistics(date1: string,date2: string):Observable<any>{
+    return this.client.get(this.baseUrl + "sells?date1="+date1+"&date2="+date2);
   }
 }

@@ -1,6 +1,6 @@
 <div class="container">
     <h1 class="h1">Compras</h1>
-  <div class="row gap-2 justify-content-center">
+  <div class="row w-100 justify-content-sm-center mb-2 row-gap-1">
     <div class="col-auto">
       <label for="firstDate" class="col-form-label">De </label>
     </div>
@@ -15,10 +15,10 @@
     <div class="col-auto">
       <input type="date" id="lastDate" class="form-control" aria-describedby="passwordHelpInline"
              name="lastDate" [min]="firstDate"
-            [(ngModel)]="lastDate">
+             [(ngModel)]="lastDate">
     </div>
     <div class="col-auto">
-      <button class="btn btn-primary" (click)="charge(0)">FILTRAR</button>
+      <button class="btn btn-primary" (click)="charge(0)">GENERAR</button>
     </div>
   </div>
   <div class="p-3 column-gap-2">
