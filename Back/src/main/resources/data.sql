@@ -57,6 +57,8 @@ values (1,'MAT', 'madera');
 insert into sections (id_publication, type, text)
 values (1,'COND', 'tenga cuidaddo con el panal');
 insert into sections (id_publication, type, text, number)
+values (1,'STEP', 'Cerrar es un panal de abejas', 2);
+insert into sections (id_publication, type, text, number)
 values (1,'STEP', 'Abrir es un panal de abejas', 1);
 
 

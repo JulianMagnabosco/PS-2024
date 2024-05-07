@@ -17,6 +17,7 @@ import ar.edu.utn.frc.tup.lciii.enums.UserRole;
 import ar.edu.utn.frc.tup.lciii.repository.*;
 import com.mercadopago.client.merchantorder.MerchantOrderClient;
 import com.mercadopago.client.payment.PaymentClient;
+import com.mercadopago.client.payment.PaymentCreateRequest;
 import com.mercadopago.client.preference.*;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
@@ -27,6 +28,7 @@ import com.mercadopago.resources.payment.Payment;
 import com.mercadopago.resources.preference.Preference;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.eclipse.aether.spi.connector.Transfer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -135,51 +137,60 @@ public class PurchaseService {
     }
 
     @Transactional
-    public NotPurchaseResponce notificar(LinkedHashMap notification, String userId) {
-
-        NotPurchaseResponce responce;
+    public NotPurchaseResponce notificar(LinkedHashMap notification, String userId)
+            throws MPException, MPApiException {
 //        System.out.println(notification.values());
 //        System.out.println(notification.keySet());
+
+        NotPurchaseResponce responce;
+        if(!notification.containsKey("resource") || !notification.containsKey("topic")){
+            return new NotPurchaseResponce("","nodata");
+        }
+
+        responce = new NotPurchaseResponce(notification.get("resource").toString(),
+                notification.get("topic").toString());
+
+        MerchantOrderClient client = new MerchantOrderClient();
+        PaymentClient payClient = new PaymentClient();
+
+        String path;
         try {
-            responce = new NotPurchaseResponce(notification.get("resource").toString(), notification.get("topic").toString());
-//            System.out.println(objectMapper.writeValueAsString(notification));
-
-            MerchantOrderClient client = new MerchantOrderClient();
-            PaymentClient payClient = new PaymentClient();
-
             URI uri = new URI(responce.getResource());
-            String path = uri.getPath();
-            String idStr = path.substring(path.lastIndexOf('/') + 1);
-            Long id = Long.parseLong(idStr);
+            path = uri.getPath();
+        }catch (Exception e){
+            path = "";
+        }
+        String idStr = path.substring(path.lastIndexOf('/') + 1);
+        Long id = Long.parseLong(idStr);
 
-            MerchantOrder m = null;
-            if (responce.getTopic().equals("merchant_order")) {
+        MerchantOrder m = null;
+        if (responce.getTopic().equals("merchant_order")) {
 
-                m = client.get(id);
-            } else {
-                Payment p = payClient.get(id);
-                m = client.get(p.getOrder().getId());
-            }
+            m = client.get(id);
+        } else {
+            Payment p = payClient.get(id);
+            m = client.get(p.getOrder().getId());
+        }
 //            System.out.println("+Merchandorder: "+m.getId());
 
-            Optional<SaleEntity> optionalSale = saleRepository.findByMerchantOrder(m.getId());
+        Optional<SaleEntity> optionalSale = saleRepository.findByMerchantOrder(m.getId());
 
-            SaleEntity sale = new SaleEntity();
-            if (optionalSale.isEmpty()) {
-                sale.setDateTime(LocalDateTime.now());
-                Long uId = Long.parseLong(userId);
-                sale.setUser(getUserCompleteData(uId));
-                sale.setSaleState(SaleState.PENDIENTE);
-                sale.setMerchantOrder(m.getId());
+        SaleEntity sale = new SaleEntity();
+        if (optionalSale.isEmpty()) {
+            sale.setDateTime(LocalDateTime.now());
+            Long uId = Long.parseLong(userId);
+            sale.setUser(getUserCompleteData(uId));
+            sale.setSaleState(SaleState.PENDIENTE);
+            sale.setMerchantOrder(m.getId());
 
-                List<SaleDetailEntity> saleDetails = new ArrayList<>();
-                for (MerchantOrderItem item : m.getItems()) {
-                    PublicationEntity publication =
-                            publicationRepository.getReferenceById(Long.parseLong(item.getId()));
+            List<SaleDetailEntity> saleDetails = new ArrayList<>();
+            for (MerchantOrderItem item : m.getItems()) {
+                PublicationEntity publication =
+                        publicationRepository.getReferenceById(Long.parseLong(item.getId()));
 
-                    SaleDetailEntity detail = new SaleDetailEntity(null,
-                            sale, publication, item.getUnitPrice(), item.getQuantity());
-                    saleDetails.add(detail);
+                SaleDetailEntity detail = new SaleDetailEntity(null,
+                        sale, publication, item.getUnitPrice(), item.getQuantity());
+                saleDetails.add(detail);
 
 //                    if (!publication.isCanSold() && publication.getCount() <= 0) {
 //                        throw new EntityNotFoundException("No se puede vender");
@@ -187,52 +198,50 @@ public class PurchaseService {
 //                    if (publication.getCount() < item.getQuantity()) {
 //                        throw new EntityNotFoundException("Cantidad excede el stock actual");
 //                    }
-                    publication.setCount(publication.getCount() - item.getQuantity());
-                    publicationRepository.saveAndFlush(publication);
-                }
-                sale.setDetails(saleDetails);
-
-                sale = saleRepository.saveAndFlush(sale);
-
-                DeliveryEntity delivery = new DeliveryEntity();
-                delivery.setId(sale.getId());
-                delivery.setSale(sale);
-                delivery.setShipmment(m.getId());
-                delivery.setDealer(getDeliveryFree());
-                delivery.setDeliveryState(DeliveryState.PENDIENTE);
-                deliveryRepository.save(delivery);
-
-            } else {
-                sale = optionalSale.get();
+                publication.setCount(publication.getCount() - item.getQuantity());
+                publicationRepository.saveAndFlush(publication);
             }
+            sale.setDetails(saleDetails);
 
-            BigDecimal total = BigDecimal.ZERO;
-            for (MerchantOrderPayment mpay : m.getPayments()) {
-                if (mpay.getStatus().equals("approved")) {
-                    total = total.add(mpay.getTotalPaidAmount());
-                }
-            }
+            sale = saleRepository.saveAndFlush(sale);
 
-            if (total.compareTo(m.getTotalAmount()) >= 0) {
-                if (!m.getShipments().isEmpty()) { // The merchant_order has shipments
-                    if (m.getShipments().get(0).getStatus().equals("ready_to_ship")) {
-                        System.out.println("Totally paid. Print the label and release your item.");
-                    }
-                } else { // The merchant_order don't has any shipments
-                    System.out.println("Totally paid. Release your item.");
+            DeliveryEntity delivery = new DeliveryEntity();
+            delivery.setId(sale.getId());
+            delivery.setSale(sale);
+            delivery.setShipmment(m.getId());
+            delivery.setDealer(getDeliveryFree());
+            delivery.setDeliveryState(DeliveryState.PENDIENTE);
+            deliveryRepository.save(delivery);
 
-                    sale.setSaleState(SaleState.APROBADA);
-                    saleRepository.save(sale);
-                }
-            } else {
-                System.out.println("Not paid yet. Do not release your item." + total
-                        + "/" + m.getTotalAmount());
-            }
-
-        } catch (Exception ex) {
-            responce = null;
-            System.out.println("error map: " + ex.getMessage());
+        } else {
+            sale = optionalSale.get();
         }
+
+        BigDecimal total = BigDecimal.ZERO;
+        for (MerchantOrderPayment mpay : m.getPayments()) {
+            if (mpay.getStatus().equals("approved")) {
+                total = total.add(mpay.getTotalPaidAmount());
+            }
+        }
+
+        if (total.compareTo(m.getTotalAmount()) >= 0) {
+            if (m.getShipments().isEmpty()) { // The merchant_order don't has any shipments
+                System.out.println("Totally paid. Release your item.");
+
+                sale.setSaleState(SaleState.APROBADA);
+                saleRepository.save(sale);
+            }
+//            else { // The merchant_order has shipments
+//                if (m.getShipments().get(0).getStatus().equals("ready_to_ship")) {
+//                    System.out.println("Totally paid. Print the label and release your item.");
+//                }
+//            }
+        }
+//        else {
+//            System.out.println("Not paid yet. Do not release your item." + total
+//                    + "/" + m.getTotalAmount());
+//        }
+
         return responce;
     }
 

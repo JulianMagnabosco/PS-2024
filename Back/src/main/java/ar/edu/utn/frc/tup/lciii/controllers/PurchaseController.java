@@ -49,7 +49,8 @@ public class PurchaseController {
 
     @PostMapping("/not")
     public NotPurchaseResponce notificar(@RequestBody LinkedHashMap data,
-                                         @RequestParam(name = "user",defaultValue = "0") String user) {
+                                         @RequestParam(name = "user",defaultValue = "0") String user)
+                                        throws MPException, MPApiException {
         return service.notificar(data,user);
     }
 
