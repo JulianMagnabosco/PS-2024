@@ -1,5 +1,6 @@
 package ar.edu.utn.frc.tup.lciii.dtos;
 
+import ar.edu.utn.frc.tup.lciii.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ public class UserDto {
     Long id;
     String username;
     String email;
+    UserRole role;
     String iconUrl;
 
     String name;
@@ -27,7 +29,4 @@ public class UserDto {
     String postalNum;
     String floor;
     String room;
-
-    Long publications;
-    Long sales;
 }

@@ -57,8 +57,8 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody UserRequest data){
-        service.signUp(data);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        UserDto dto = service.signUp(data);
+        return ResponseEntity.ok(dto);
 
     }
     @GetMapping("/whatuser")

@@ -1,8 +1,6 @@
 package ar.edu.utn.frc.tup.lciii.services.impl;
 
 import ar.edu.utn.frc.tup.lciii.dtos.ListUsersResponce;
-import ar.edu.utn.frc.tup.lciii.dtos.SearchPubResponce;
-import ar.edu.utn.frc.tup.lciii.dtos.requests.LoginRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.LoginResponce;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.PutUserRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.UserRequest;
@@ -13,7 +11,6 @@ import ar.edu.utn.frc.tup.lciii.enums.UserRole;
 import ar.edu.utn.frc.tup.lciii.repository.StateRepository;
 import ar.edu.utn.frc.tup.lciii.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.EntityNotFoundException;
 import org.apache.commons.compress.utils.IOUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +20,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,7 +31,6 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -54,41 +49,30 @@ public class AuthService implements UserDetailsService {
   private String url;
 
   public LoginResponce login(String username) {
-    LoginResponce responce = new LoginResponce();
+    LoginResponce responce;
 
     UserEntity u = repository.getByUsername(username);
-    responce.setId(u.getId());
-    responce.setUsername(u.getUsername());
-    responce.setEmail(u.getEmail());
-    responce.setRole(u.getRole().toString());
-    responce.setIconUrl(url + "/api/image/user/" + u.getId());
+    responce = mapUserDto(u);
 
     return responce;
   }
 
   @Override
   public UserDetails loadUserByUsername(String username) {
-    //        UserEntity u1 = new UserEntity();
-//        u1.setUsername("pablo");
-//        u1.setPassword(passwordEncoder.encode("pablo"));
-//    System.out.println("passp");
-//    return User.builder()
-//            .username("pablo")
-//            .password(passwordEncoder.encode("pablo"))
-//            .roles("USER")
-//            .build();
     if(username.contains("@")){
-      var user = repository.findByEmail(username);
-      return user;
+      return repository.findByEmail(username);
     }
-    var user = repository.findByUsername(username);
-    return user;
+    return repository.findByUsername(username);
   }
 
-  public UserDetails signUp(UserRequest data) {
+  public UserDto signUp(UserRequest data) {
+    UserDto responce;
 
     if (repository.findByUsername(data.getUsername()) != null) {
       throw new RuntimeException("Username alredy exists");
+    }
+    if (repository.findByEmail(data.getUsername()) != null) {
+      throw new RuntimeException("Email alredy exists");
     }
 
     String encryptedPassword = new BCryptPasswordEncoder().encode(data.getPassword());
@@ -97,8 +81,8 @@ public class AuthService implements UserDetailsService {
             encryptedPassword, data.getRole(), LocalDateTime.now());
     newUser.setState(stateRepository.getReferenceById(1L));
 
-    return repository.save(newUser);
-
+    responce=mapUserDto(newUser);
+    return responce;
   }
 
   public ListUsersResponce getAll(String text, int page, int size){
@@ -113,55 +97,42 @@ public class AuthService implements UserDetailsService {
               !u.getLastname().isEmpty() && u.getLastname().contains(text) ||
               u.getUsername().contains(text))
       {
-        UserDto r = getUserDto(u);
+        UserDto r = mapUserDto(u);
         list.add(r);
       }
     }
 
-//    int firstIndex= page* size;
-//    firstIndex=Integer.min(firstIndex,  list.size());
-//
-//    int lastIndex= firstIndex + size;
-//    lastIndex=Integer.min(lastIndex, list.size());
-
     responce.setList(list);
-//    responce.setList(list.subList(firstIndex,lastIndex));
-
     responce.setCountTotal((int) listRaw.getTotalElements());
-//    responce.setCountTotal(list.size());
-
     return responce;
   }
-  public ListUsersResponce getDealers(){
 
+  public ListUsersResponce getDealers(){
     ListUsersResponce responce = new ListUsersResponce();
     List<UserDto> list = new ArrayList<>();
 
     List<UserEntity> listRaw = repository.findAllByRole(UserRole.DELIVERY);
     for (UserEntity u : listRaw){
-      UserDto r = getUserDto(u);
+      UserDto r = mapUserDto(u);
       list.add(r);
     }
 
-
     responce.setList(list);
-
     responce.setCountTotal(list.size());
-
     return responce;
   }
+
   public UserDto get(Long id){
     UserDto responce;
 
     UserEntity u = repository.getReferenceById(id);
-    responce = getUserDto(u);
+    responce = mapUserDto(u);
 
     return responce;
   }
 
-  private UserDto getUserDto(UserEntity u) {
-    UserDto responce;
-    responce = modelMapper.map(u, UserDto.class);
+  private UserDto mapUserDto(UserEntity u) {
+    UserDto responce = modelMapper.map(u, UserDto.class);
     if(u.getState()!=null){
       responce.setIdState(u.getState().getId());
       responce.setState(u.getState().getName());

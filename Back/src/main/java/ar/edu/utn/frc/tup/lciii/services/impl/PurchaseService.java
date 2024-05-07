@@ -7,6 +7,7 @@ import ar.edu.utn.frc.tup.lciii.dtos.purchase.NotPurchaseResponce;
 import ar.edu.utn.frc.tup.lciii.dtos.purchase.PurchaseResponce;
 import ar.edu.utn.frc.tup.lciii.dtos.purchase.SaleDetailDto;
 import ar.edu.utn.frc.tup.lciii.dtos.purchase.SaleDto;
+import ar.edu.utn.frc.tup.lciii.dtos.requests.PurchaseItemRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.PurchaseRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.PutDeliveryRequest;
 import ar.edu.utn.frc.tup.lciii.entities.*;
@@ -19,6 +20,7 @@ import com.mercadopago.client.merchantorder.MerchantOrderClient;
 import com.mercadopago.client.payment.PaymentClient;
 import com.mercadopago.client.payment.PaymentCreateRequest;
 import com.mercadopago.client.preference.*;
+import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.merchantorder.MerchantOrder;
@@ -28,7 +30,6 @@ import com.mercadopago.resources.payment.Payment;
 import com.mercadopago.resources.preference.Preference;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.eclipse.aether.spi.connector.Transfer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -64,41 +65,36 @@ public class PurchaseService {
     @Transactional
     public PurchaseResponce registerSale(PurchaseRequest request) throws MPException, MPApiException {
 
-        PublicationEntity publication = publicationRepository.getReferenceById(request.getIdPub());
         UserEntity user = getUserCompleteData(request.getIdUser());
-        if (!publication.isCanSold() && publication.getCount() <= 0) {
-            throw new EntityNotFoundException("No se puede vender");
-        }
-//        Long countTotal= publicationRepository.count();
-//        for (SaleDetailEntity detail : publication.getSaleDetails()){
-//            if(detail.getSale().getSaleState().equals(SaleState.APPROVED)){
-//                countTotal-=detail.getCount();
-//            };
-//        }
-//        if(countTotal<request.getCount()){
-//            throw new EntityNotFoundException("Cantidad excede el stock actual");
-//        }
-        if (publication.getCount() < request.getCount()) {
-            throw new EntityNotFoundException("Cantidad excede el stock actual");
-        }
 
-        PreferenceItemRequest itemRequest =
-                PreferenceItemRequest.builder()
-                        .id(publication.getId().toString())
-                        .title(publication.getName())
-                        .description("")
-                        .pictureUrl("")
-                        .categoryId("Publicacion")
-                        .quantity(request.getCount())
-                        .currencyId("ARS")
-                        .unitPrice(publication.getPrice())
-                        .build();
         List<PreferenceItemRequest> items = new ArrayList<>();
-        items.add(itemRequest);
+        for (PurchaseItemRequest itemRequest: request.getItems()) {
+            PublicationEntity publication = publicationRepository.getReferenceById(itemRequest.getIdPub());
+            if (!publication.isCanSold() && publication.getCount() <= 0) {
+                throw new EntityNotFoundException("No se puede vender");
+            }
+
+            if (publication.getCount() < itemRequest.getCount()) {
+                throw new EntityNotFoundException("Cantidad excede el stock actual");
+            }
+
+            PreferenceItemRequest item =
+                    PreferenceItemRequest.builder()
+                            .id(publication.getId().toString())
+                            .title(publication.getName())
+                            .description(publication.getName())
+                            .pictureUrl("")
+                            .categoryId("Publicacion")
+                            .quantity(itemRequest.getCount())
+                            .currencyId("ARS")
+                            .unitPrice(publication.getPrice())
+                            .build();
+            items.add(item);
+        }
 
         PreferenceRequest preferenceRequest = PreferenceRequest.builder()
                 .backUrls(PreferenceBackUrlsRequest.builder()
-                        .success("http://localhost:4200/pub/" + itemRequest.getId()).build())
+                        .success("http://localhost:4200/purchases").build())
                 .notificationUrl(tunnelUrl + "/api/sell/not?user=" + user.getId())
                 .items(items)
                 .build();
@@ -123,7 +119,7 @@ public class PurchaseService {
         if (user.getName() == null || user.getName().isBlank() ||
                 user.getLastname() == null || user.getLastname().isBlank() ||
                 user.getPhone() == null || user.getPhone().isBlank() ||
-                user.getCvu() == null || user.getCvu().isBlank() ||
+                user.getMpToken() == null || user.getMpToken().isBlank() ||
                 user.getDni() == null || user.getDni().isBlank() ||
                 user.getDniType() == null || user.getDniType().isBlank() ||
                 user.getState() == null ||
@@ -189,15 +185,12 @@ public class PurchaseService {
                         publicationRepository.getReferenceById(Long.parseLong(item.getId()));
 
                 SaleDetailEntity detail = new SaleDetailEntity(null,
-                        sale, publication, item.getUnitPrice(), item.getQuantity());
+                        sale,
+                        publication,
+                        item.getUnitPrice().multiply(BigDecimal.valueOf(item.getQuantity())),
+                        item.getQuantity());
                 saleDetails.add(detail);
 
-//                    if (!publication.isCanSold() && publication.getCount() <= 0) {
-//                        throw new EntityNotFoundException("No se puede vender");
-//                    }
-//                    if (publication.getCount() < item.getQuantity()) {
-//                        throw new EntityNotFoundException("Cantidad excede el stock actual");
-//                    }
                 publication.setCount(publication.getCount() - item.getQuantity());
                 publicationRepository.saveAndFlush(publication);
             }
@@ -228,20 +221,22 @@ public class PurchaseService {
             if (m.getShipments().isEmpty()) { // The merchant_order don't has any shipments
                 System.out.println("Totally paid. Release your item.");
 
+
+                for (SaleDetailEntity detail : sale.getDetails()) {
+                    MPRequestOptions options = MPRequestOptions.builder()
+                            .accessToken(detail.getPublication().getUser().getMpToken())
+                            .build();
+                    PaymentCreateRequest newPayment = PaymentCreateRequest.builder()
+                            .transactionAmount(detail.getTotal())
+                            .description("Pay by "+ detail.getPublication().getName())
+                            .build();
+                    payClient.create(newPayment,options);
+                }
+
                 sale.setSaleState(SaleState.APROBADA);
                 saleRepository.save(sale);
             }
-//            else { // The merchant_order has shipments
-//                if (m.getShipments().get(0).getStatus().equals("ready_to_ship")) {
-//                    System.out.println("Totally paid. Print the label and release your item.");
-//                }
-//            }
         }
-//        else {
-//            System.out.println("Not paid yet. Do not release your item." + total
-//                    + "/" + m.getTotalAmount());
-//        }
-
         return responce;
     }
 

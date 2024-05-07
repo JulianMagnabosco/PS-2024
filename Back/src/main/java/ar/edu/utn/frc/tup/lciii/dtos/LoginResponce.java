@@ -6,16 +6,6 @@ import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class LoginResponce {
-    Long id;
-    String username;
-    String role;
-    String email;
-    String iconUrl;
+public class LoginResponce extends UserDto {
     String token;
-
-    public LoginResponce(String token){
-        this.token = token;
-    }
 }

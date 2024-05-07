@@ -13,7 +13,7 @@ public class PutUserRequest {
     String name;
     String lastname;
     String phone;
-    String cvu;
+    String mpToken;
     String dni;
     String dniType;
 

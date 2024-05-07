@@ -36,7 +36,7 @@ public class UserEntity implements UserDetails {
     String name;
     String lastname;
     String phone;
-    String cvu;
+    String mpToken;
     String dni;
     String dniType;
 //    String bankCountType;
