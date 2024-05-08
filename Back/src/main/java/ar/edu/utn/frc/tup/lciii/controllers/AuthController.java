@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -62,7 +63,7 @@ public class AuthController {
 
     }
     @GetMapping("/whatuser")
-    public LoginResponce get(Authentication authentication) {
-        return service.login(authentication.getName());
+    public String get(@AuthenticationPrincipal UserEntity userEntity) {
+        return userEntity.getUsername();
     }
 }

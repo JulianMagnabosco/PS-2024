@@ -2,7 +2,7 @@ package ar.edu.utn.frc.tup.lciii.controllers;
 
 import ar.edu.utn.frc.tup.lciii.dtos.DeliveryDto;
 import ar.edu.utn.frc.tup.lciii.dtos.SellDto;
-import ar.edu.utn.frc.tup.lciii.dtos.purchase.NotPurchaseResponce;
+import ar.edu.utn.frc.tup.lciii.dtos.purchase.NotificationResponce;
 import ar.edu.utn.frc.tup.lciii.dtos.purchase.PurchaseResponce;
 import ar.edu.utn.frc.tup.lciii.dtos.purchase.SaleDto;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.PurchaseRequest;
@@ -48,8 +48,8 @@ public class PurchaseController {
 
 
     @PostMapping("/not")
-    public NotPurchaseResponce notificar(@RequestBody LinkedHashMap data,
-                                         @RequestParam(name = "user",defaultValue = "0") String user)
+    public NotificationResponce notificar(@RequestBody LinkedHashMap data,
+                                          @RequestParam(name = "user",defaultValue = "0") String user)
                                         throws MPException, MPApiException {
         return service.notificar(data,user);
     }

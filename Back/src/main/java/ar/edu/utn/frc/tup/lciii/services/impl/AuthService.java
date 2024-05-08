@@ -2,6 +2,7 @@ package ar.edu.utn.frc.tup.lciii.services.impl;
 
 import ar.edu.utn.frc.tup.lciii.dtos.ListUsersResponce;
 import ar.edu.utn.frc.tup.lciii.dtos.LoginResponce;
+import ar.edu.utn.frc.tup.lciii.dtos.UserMinDto;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.PutUserRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.UserRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.UserDto;
@@ -52,7 +53,7 @@ public class AuthService implements UserDetailsService {
     LoginResponce responce;
 
     UserEntity u = repository.getByUsername(username);
-    responce = mapUserDto(u);
+    responce = modelMapper.map(mapUserDto(u),LoginResponce.class);
 
     return responce;
   }
@@ -88,7 +89,7 @@ public class AuthService implements UserDetailsService {
   public ListUsersResponce getAll(String text, int page, int size){
 
     ListUsersResponce responce = new ListUsersResponce();
-    List<UserDto> list = new ArrayList<>();
+    List<UserMinDto> list = new ArrayList<>();
 
     Pageable pageable = PageRequest.of(page, size);
     Page<UserEntity> listRaw = repository.findAll(pageable);
@@ -97,7 +98,7 @@ public class AuthService implements UserDetailsService {
               !u.getLastname().isEmpty() && u.getLastname().contains(text) ||
               u.getUsername().contains(text))
       {
-        UserDto r = mapUserDto(u);
+        UserMinDto r = mapUserMinDto(u);
         list.add(r);
       }
     }
@@ -109,11 +110,11 @@ public class AuthService implements UserDetailsService {
 
   public ListUsersResponce getDealers(){
     ListUsersResponce responce = new ListUsersResponce();
-    List<UserDto> list = new ArrayList<>();
+    List<UserMinDto> list = new ArrayList<>();
 
     List<UserEntity> listRaw = repository.findAllByRole(UserRole.DELIVERY);
     for (UserEntity u : listRaw){
-      UserDto r = mapUserDto(u);
+      UserMinDto r = mapUserMinDto(u);
       list.add(r);
     }
 
@@ -131,12 +132,44 @@ public class AuthService implements UserDetailsService {
     return responce;
   }
 
+  static boolean userCanBuy(UserEntity user) {
+
+    if (user.getName() == null || user.getName().isBlank() ||
+            user.getLastname() == null || user.getLastname().isBlank() ||
+            user.getPhone() == null || user.getPhone().isBlank() ||
+            user.getDni() == null || user.getDni().isBlank() ||
+            user.getDniType() == null || user.getDniType().isBlank() ||
+            user.getState() == null || user.getState().getId() == 1L ||
+            user.getDirection() == null || user.getDirection().isBlank() ||
+            user.getNumberDir() == null || user.getNumberDir().isBlank() ||
+            user.getPostalNum() == null || user.getPostalNum().isBlank()) {
+      return false;
+    }
+
+    return true;
+  }
+  static boolean userCanSell(UserEntity user) {
+
+    if (user.getMpClient() == null || user.getMpClient().isBlank() ||
+            user.getMpSecret() == null || user.getMpSecret().isBlank()) {
+      return false;
+    }
+
+    return true;
+  }
   private UserDto mapUserDto(UserEntity u) {
     UserDto responce = modelMapper.map(u, UserDto.class);
     if(u.getState()!=null){
       responce.setIdState(u.getState().getId());
       responce.setState(u.getState().getName());
     }
+    responce.setIconUrl(url + "/api/image/user/" + u.getId());
+    return responce;
+  }
+  private UserMinDto mapUserMinDto(UserEntity u) {
+    UserMinDto responce = modelMapper.map(u, UserMinDto.class);
+    responce.setCanBuy(userCanBuy(u));
+    responce.setCanSell(userCanSell(u));
     responce.setIconUrl(url + "/api/image/user/" + u.getId());
     return responce;
   }

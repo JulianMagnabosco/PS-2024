@@ -27,26 +27,31 @@ values ('NULL'),
 ('Tucumán');
 
 -- Users (admin, user1/seller, delivery, user.../buyer):
-insert into users (username, password,creation_time,role, email, name, lastname,phone,mp_token,dni,dni_type,
-                   id_state,direction,number_dir,postal_num,floor,room)
-values ('admin','$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2','2023-01-01 00:00:01','ADMIN'
-       ,'a@a','admin','admin', '351647', 'APP_USR-832032608255661-031615-ea4f942ba202654d4b337658c5a8e167-1731532938'
-       , '449922', 'DNI', 2, 'Tercero Arriba', '333', '5001','1','2'),
+insert into users (username, password,creation_time,role,
+                   email, name, lastname,phone,dni,dni_type,
+                   id_state,direction,number_dir,postal_num,floor,room,
+                   mp_plient,mp_secret)
+values ('admin','$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2','2023-01-01 00:00:01','ADMIN',
+        'test_user_1394390004@testuser.com','admin','admin', '351647', '449922', 'DNI',
+        2, 'Tercero Arriba', '333', '5001','1','2',
+        '832032608255661','Nkp0j8RQZ4FPnsCJC53OIRToiBpFbVzw'),
     ('user1','$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2','2023-02-01 00:00:01','USER'
-    ,'a1@a','pablo','perez', '371647', 'APP_USR-3344683791727658-050714-8d1c343d6e7b50e9deb15c640f5cec2b-1731532986'
-    , '439922', 'DNI', 3, 'Tercero Abajo', '222', '5002','3','4');
+        ,'test_user_482362958@testuser.com','pablo','perez', '371647', '439922', 'DNI',
+        3, 'Tercero Abajo', '222', '5002','3','4',
+        '3267837162397314','Qd01CZtSX6NZjspm7nDqtkdrwYT0hT24');
 insert into users (username, name, lastname, password, email,role,id_state,creation_time)
-values ('delivery','del','iver','$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2', 'del@a', 'DELIVERY',1,'2023-04-01 00:00:01');
-insert into users (username, name, lastname, password, email,role,id_state,creation_time)
-values ('user2','a','a', '$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2', 'a2@a', 'USER',1,'2023-02-02 00:00:01');
-insert into users (username, name, lastname, password, email,role,id_state,creation_time)
-values ('user3','a','a', '$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2', 'a3@a', 'USER',1,'2023-06-01 00:00:01');
-insert into users (username, name, lastname, password, email,role,id_state,creation_time)
-values ('user4','a','a', '$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2', 'a4@a', 'USER',1,'2023-09-02 00:00:01');
-insert into users (username, name, lastname, password, email,role,id_state,creation_time)
-values ('user5','a','a', '$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2', 'a5@a', 'USER',1,'2023-09-04 00:00:01');
-insert into users (username, name, lastname, password, email,role,id_state,creation_time)
-values ('user@a','a','a', '$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2', 'a6@a', 'USER',1,'2023-11-01 00:00:01');
+values ('delivery','del','iver','$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2',
+        'del@a', 'DELIVERY',1,'2023-04-01 00:00:01'),
+        ('user2','a','a', '$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2',
+        'a2@a', 'USER',1,'2023-02-02 00:00:01'),
+        ('user3','a','a', '$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2',
+        'a3@a', 'USER',1,'2023-06-01 00:00:01'),
+        ('user4','a','a', '$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2',
+        'a4@a', 'USER',1,'2023-09-02 00:00:01'),
+        ('user5','a','a', '$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2',
+        'a5@a', 'USER',1,'2023-09-04 00:00:01'),
+        ('user@a','a','a','$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2',
+        'a6@a', 'USER',1,'2023-11-01 00:00:01');
 
 -- Publications:
 insert into publications (id_user, name, description, type, difficulty,can_sold,count,price,deleted,creation_time)

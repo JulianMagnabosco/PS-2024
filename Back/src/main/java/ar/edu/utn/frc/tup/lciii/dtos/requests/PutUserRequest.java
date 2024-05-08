@@ -13,7 +13,6 @@ public class PutUserRequest {
     String name;
     String lastname;
     String phone;
-    String mpToken;
     String dni;
     String dniType;
 
@@ -23,4 +22,7 @@ public class PutUserRequest {
     String postalNum;
     String floor;
     String room;
+
+    String mpClient;
+    String mpSecret;
 }

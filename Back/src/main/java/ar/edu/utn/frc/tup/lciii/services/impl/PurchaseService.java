@@ -1,9 +1,10 @@
 package ar.edu.utn.frc.tup.lciii.services.impl;
 
+import ar.edu.utn.frc.tup.lciii.clients.CustomMPClient;
 import ar.edu.utn.frc.tup.lciii.dtos.DeliveryDetailDto;
 import ar.edu.utn.frc.tup.lciii.dtos.DeliveryDto;
 import ar.edu.utn.frc.tup.lciii.dtos.SellDto;
-import ar.edu.utn.frc.tup.lciii.dtos.purchase.NotPurchaseResponce;
+import ar.edu.utn.frc.tup.lciii.dtos.purchase.NotificationResponce;
 import ar.edu.utn.frc.tup.lciii.dtos.purchase.PurchaseResponce;
 import ar.edu.utn.frc.tup.lciii.dtos.purchase.SaleDetailDto;
 import ar.edu.utn.frc.tup.lciii.dtos.purchase.SaleDto;
@@ -17,8 +18,11 @@ import ar.edu.utn.frc.tup.lciii.enums.SecType;
 import ar.edu.utn.frc.tup.lciii.enums.UserRole;
 import ar.edu.utn.frc.tup.lciii.repository.*;
 import com.mercadopago.client.merchantorder.MerchantOrderClient;
+import com.mercadopago.client.oauth.CreateOauthCredentialRequest;
+import com.mercadopago.client.oauth.OauthClient;
 import com.mercadopago.client.payment.PaymentClient;
 import com.mercadopago.client.payment.PaymentCreateRequest;
+import com.mercadopago.client.payment.PaymentPayerRequest;
 import com.mercadopago.client.preference.*;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
@@ -43,6 +47,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 
+import static ar.edu.utn.frc.tup.lciii.services.impl.AuthService.userCanBuy;
+
 @Service
 public class PurchaseService {
 
@@ -57,15 +63,32 @@ public class PurchaseService {
     @Autowired
     UserRepository userRepository;
 
+
+    @Autowired
+    PreferenceClient preferenceClient;
+    @Autowired
+    CustomMPClient customMPClient;
+    @Autowired
+    MerchantOrderClient merchantOrderClient;
+    @Autowired
+    PaymentClient paymentClient;
+
     @Autowired
     String tunnelUrl;
+    @Value("${mp.access-token}")
+    String accessToken;
+    @Value("${mp.email-app}")
+    String emailApp;
     @Value("${app.url}")
     private String url;
 
     @Transactional
     public PurchaseResponce registerSale(PurchaseRequest request) throws MPException, MPApiException {
 
-        UserEntity user = getUserCompleteData(request.getIdUser());
+        UserEntity user = userRepository.getReferenceById(request.getIdUser());
+        if(userCanBuy(user)){
+            throw new EntityNotFoundException("El usuario no puede comprar");
+        }
 
         List<PreferenceItemRequest> items = new ArrayList<>();
         for (PurchaseItemRequest itemRequest: request.getItems()) {
@@ -91,7 +114,9 @@ public class PurchaseService {
                             .build();
             items.add(item);
         }
-
+        MPRequestOptions options = MPRequestOptions.builder()
+                .accessToken(accessToken)
+                .build();
         PreferenceRequest preferenceRequest = PreferenceRequest.builder()
                 .backUrls(PreferenceBackUrlsRequest.builder()
                         .success("http://localhost:4200/purchases").build())
@@ -100,112 +125,44 @@ public class PurchaseService {
                 .build();
 
 
-        PreferenceClient client = new PreferenceClient();
-//        System.out.println(preferenceRequest.getNotificationUrl());
-
-        Preference preference = client.create(preferenceRequest);
-//        try {
-//            System.out.println(objectMapper.writeValueAsString(preference));
-//        }catch (Exception ex){
-//            System.out.println("error map");
-//        }
+        Preference preference = preferenceClient.create(preferenceRequest,options);
 
         return new PurchaseResponce(preference);
     }
 
-    UserEntity getUserCompleteData(Long id) {
-        UserEntity user = userRepository.getReferenceById(id);
 
-        if (user.getName() == null || user.getName().isBlank() ||
-                user.getLastname() == null || user.getLastname().isBlank() ||
-                user.getPhone() == null || user.getPhone().isBlank() ||
-                user.getMpToken() == null || user.getMpToken().isBlank() ||
-                user.getDni() == null || user.getDni().isBlank() ||
-                user.getDniType() == null || user.getDniType().isBlank() ||
-                user.getState() == null ||
-                user.getDirection() == null || user.getDirection().isBlank() ||
-                user.getNumberDir() == null || user.getNumberDir().isBlank() ||
-                user.getPostalNum() == null || user.getPostalNum().isBlank()) {
-            throw new IllegalArgumentException("El usuario no tiene datos completos ");
-        }
-
-        return user;
-    }
 
     @Transactional
-    public NotPurchaseResponce notificar(LinkedHashMap notification, String userId)
-            throws MPException, MPApiException {
-//        System.out.println(notification.values());
-//        System.out.println(notification.keySet());
+    public NotificationResponce notificar(LinkedHashMap data, String userId) throws MPException, MPApiException {
+        NotificationResponce responce;
+//        System.out.println(data.values());
+//        System.out.println(data.keySet());
 
-        NotPurchaseResponce responce;
-        if(!notification.containsKey("resource") || !notification.containsKey("topic")){
-            return new NotPurchaseResponce("","nodata");
+        if(!data.containsKey("resource") || !data.containsKey("topic")){
+            return new NotificationResponce("","nodata");
         }
 
-        responce = new NotPurchaseResponce(notification.get("resource").toString(),
-                notification.get("topic").toString());
+        responce = new NotificationResponce(data.get("resource").toString(),
+                data.get("topic").toString());
 
-        MerchantOrderClient client = new MerchantOrderClient();
-        PaymentClient payClient = new PaymentClient();
-
-        String path;
-        try {
-            URI uri = new URI(responce.getResource());
-            path = uri.getPath();
-        }catch (Exception e){
-            path = "";
-        }
+        String path =  URI.create(responce.getResource()).getPath();
         String idStr = path.substring(path.lastIndexOf('/') + 1);
         Long id = Long.parseLong(idStr);
 
-        MerchantOrder m = null;
+        MerchantOrder m;
         if (responce.getTopic().equals("merchant_order")) {
-
-            m = client.get(id);
+            m = merchantOrderClient.get(id);
         } else {
-            Payment p = payClient.get(id);
-            m = client.get(p.getOrder().getId());
+            Payment p = paymentClient.get(id);
+            m = merchantOrderClient.get(p.getOrder().getId());
         }
 //            System.out.println("+Merchandorder: "+m.getId());
 
         Optional<SaleEntity> optionalSale = saleRepository.findByMerchantOrder(m.getId());
 
-        SaleEntity sale = new SaleEntity();
+        SaleEntity sale;
         if (optionalSale.isEmpty()) {
-            sale.setDateTime(LocalDateTime.now());
-            Long uId = Long.parseLong(userId);
-            sale.setUser(getUserCompleteData(uId));
-            sale.setSaleState(SaleState.PENDIENTE);
-            sale.setMerchantOrder(m.getId());
-
-            List<SaleDetailEntity> saleDetails = new ArrayList<>();
-            for (MerchantOrderItem item : m.getItems()) {
-                PublicationEntity publication =
-                        publicationRepository.getReferenceById(Long.parseLong(item.getId()));
-
-                SaleDetailEntity detail = new SaleDetailEntity(null,
-                        sale,
-                        publication,
-                        item.getUnitPrice().multiply(BigDecimal.valueOf(item.getQuantity())),
-                        item.getQuantity());
-                saleDetails.add(detail);
-
-                publication.setCount(publication.getCount() - item.getQuantity());
-                publicationRepository.saveAndFlush(publication);
-            }
-            sale.setDetails(saleDetails);
-
-            sale = saleRepository.saveAndFlush(sale);
-
-            DeliveryEntity delivery = new DeliveryEntity();
-            delivery.setId(sale.getId());
-            delivery.setSale(sale);
-            delivery.setShipmment(m.getId());
-            delivery.setDealer(getDeliveryFree());
-            delivery.setDeliveryState(DeliveryState.PENDIENTE);
-            deliveryRepository.save(delivery);
-
+            sale = registerSaleDelivery(userId, m);
         } else {
             sale = optionalSale.get();
         }
@@ -221,16 +178,24 @@ public class PurchaseService {
             if (m.getShipments().isEmpty()) { // The merchant_order don't has any shipments
                 System.out.println("Totally paid. Release your item.");
 
+                PaymentPayerRequest payerRequest = PaymentPayerRequest.builder()
+                        .email(emailApp)
+                        .build();
 
                 for (SaleDetailEntity detail : sale.getDetails()) {
+
+                    String token = customMPClient.getToken(detail.getPublication().getUser().getMpClient(),
+                            detail.getPublication().getUser().getMpSecret());
+
                     MPRequestOptions options = MPRequestOptions.builder()
-                            .accessToken(detail.getPublication().getUser().getMpToken())
+                            .accessToken(token)
                             .build();
                     PaymentCreateRequest newPayment = PaymentCreateRequest.builder()
+                            .payer(payerRequest)
                             .transactionAmount(detail.getTotal())
                             .description("Pay by "+ detail.getPublication().getName())
                             .build();
-                    payClient.create(newPayment,options);
+                    paymentClient.create(newPayment,options);
                 }
 
                 sale.setSaleState(SaleState.APROBADA);
@@ -238,6 +203,49 @@ public class PurchaseService {
             }
         }
         return responce;
+    }
+
+    private SaleEntity registerSaleDelivery(String userId, MerchantOrder m) {
+        SaleEntity sale;
+        sale = new SaleEntity();
+        sale.setDateTime(LocalDateTime.now());
+        Long uId = Long.parseLong(userId);
+
+        UserEntity user = userRepository.getReferenceById(uId);
+        if(userCanBuy(user)){
+            throw new EntityNotFoundException("El usuario no puede comprar");
+        }
+        sale.setUser(user);
+        sale.setSaleState(SaleState.PENDIENTE);
+        sale.setMerchantOrder(m.getId());
+
+        List<SaleDetailEntity> saleDetails = new ArrayList<>();
+        for (MerchantOrderItem item : m.getItems()) {
+            PublicationEntity publication =
+                    publicationRepository.getReferenceById(Long.parseLong(item.getId()));
+
+            SaleDetailEntity detail = new SaleDetailEntity(null,
+                    sale,
+                    publication,
+                    item.getUnitPrice().multiply(BigDecimal.valueOf(item.getQuantity())),
+                    item.getQuantity());
+            saleDetails.add(detail);
+
+            publication.setCount(publication.getCount() - item.getQuantity());
+            publicationRepository.saveAndFlush(publication);
+        }
+        sale.setDetails(saleDetails);
+
+        sale = saleRepository.saveAndFlush(sale);
+
+        DeliveryEntity delivery = new DeliveryEntity();
+        delivery.setId(sale.getId());
+        delivery.setSale(sale);
+        delivery.setShipmment(m.getId());
+        delivery.setDealer(getDeliveryFree());
+        delivery.setDeliveryState(DeliveryState.PENDIENTE);
+        deliveryRepository.save(delivery);
+        return sale;
     }
 
     UserEntity getDeliveryFree() {

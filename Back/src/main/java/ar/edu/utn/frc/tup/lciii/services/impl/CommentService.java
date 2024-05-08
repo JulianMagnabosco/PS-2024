@@ -7,7 +7,6 @@ import ar.edu.utn.frc.tup.lciii.entities.CommentEntity;
 import ar.edu.utn.frc.tup.lciii.repository.CommentRepository;
 import ar.edu.utn.frc.tup.lciii.repository.PublicationRepository;
 import ar.edu.utn.frc.tup.lciii.repository.UserRepository;
-import ar.edu.utn.frc.tup.lciii.services.PublicationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

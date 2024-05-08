@@ -32,14 +32,14 @@ public class UserEntity implements UserDetails {
     String password;
     @Lob
     byte[] icon;
-    //Bank
+
+    //UserData
     String name;
     String lastname;
     String phone;
-    String mpToken;
     String dni;
     String dniType;
-//    String bankCountType;
+
     //Direction
     @ManyToOne
     @JoinColumn(name="idState")
@@ -50,23 +50,16 @@ public class UserEntity implements UserDetails {
     String floor;
     String room;
 
+    //MercadoPAgo
+    String mpClient;
+    String mpSecret;
+
     public UserEntity(String username, String email, String password, UserRole role, LocalDateTime creationTime) {
         this.username = username;
         this.role = role;
         this.creationTime = creationTime;
         this.email = email;
         this.password = password;
-//        this.name = "";
-//        this.lastname = "";
-//        this.phone = "";
-//        this.cvu = "";
-//        this.dni = "";
-//        this.dniType = "";
-//        this.direction = "";
-//        this.numberDir = "";
-//        this.postalNum = "";
-//        this.floor = "";
-//        this.room = "";
     }
 
     @Override

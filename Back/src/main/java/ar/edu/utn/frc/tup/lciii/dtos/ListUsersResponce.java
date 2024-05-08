@@ -13,5 +13,5 @@ import java.util.List;
 @Data
 public class ListUsersResponce {
     int countTotal;
-    List<UserDto> list;
+    List<UserMinDto> list;
 }

@@ -5,10 +5,14 @@ import ar.edu.utn.frc.tup.lciii.dtos.requests.CalificationRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.PublicationRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.PutPublicationRequest;
 import ar.edu.utn.frc.tup.lciii.dtos.requests.SearchPubRequest;
-import ar.edu.utn.frc.tup.lciii.services.PublicationService;
+import ar.edu.utn.frc.tup.lciii.entities.UserEntity;
+import ar.edu.utn.frc.tup.lciii.services.impl.PublicationService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,14 +39,19 @@ public class PublicationController {
     public boolean calificate(@RequestBody CalificationRequest request) {
         return publicationService.calificate(request);
     }
-    //Busqueda
-    @GetMapping("/list")
-    public List<PublicationMinDto> getAll() {
-        return publicationService.getAll();
+    @PostMapping("/cart")
+    public boolean addCart(@RequestBody CalificationRequest request) {
+        return publicationService.addCart(request);
     }
+    //Busqueda
     @PostMapping("/search")
     public SearchPubResponce getAll(@RequestBody SearchPubRequest searchPubRequest) {
-        return publicationService.getAllFilthered(searchPubRequest);
+        return publicationService.getAll(searchPubRequest);
+    }
+    @GetMapping("/cart")
+    public List<CartDto> getCart(@AuthenticationPrincipal UserEntity userDetails) {
+        System.out.println(userDetails.getId());
+        return publicationService.getCart(1L);
     }
 
     @GetMapping("/{id}/{userId}")
