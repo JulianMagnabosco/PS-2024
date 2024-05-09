@@ -109,21 +109,23 @@ public class PublicationService {
         UserEntity u = userRepository.getReferenceById(request.getUserId());
         Optional<CartEntity> cartAsk = cartRepository.getByUserAndPublication(u, p);
 
-        CartEntity calification;
+        int value = request.getValue().intValue();
+        CartEntity cart;
         if (cartAsk.isEmpty()) {
-            if (request.getValue().intValue() <= 0) return false;
-            calification = new CartEntity();
-            calification.setPublication(p);
-            calification.setUser(u);
+            if (value <= 0) return false;
+            cart = new CartEntity();
+            cart.setPublication(p);
+            cart.setUser(u);
         } else {
-            if (request.getValue().intValue() <= 0) {
+            if (value <= 0) {
                 cartRepository.deleteById(cartAsk.get().getId());
+                return true;
             }
-            calification = cartAsk.get();
+            cart = cartAsk.get();
+            cart.setCount(request.getValue().intValue());
         }
+        cartRepository.save(cart);
 
-        calification.setCount(request.getValue().intValue());
-        cartRepository.save(calification);
 
         return true;
     }

@@ -56,4 +56,30 @@ export class CartComponent implements OnInit,OnDestroy {
     );
   }
 
+  update(count:number, cart:Cart){
+    let data = {
+      userId: this.authService.user?.id,
+      pubId: cart.id,
+      value: count
+    }
+    this.subs.add(
+      this.service.postCart(data).subscribe({
+        next: value => {
+          alert("Añadido al carrito");
+          this.charge()
+        },
+        error:err => {
+          alert("Hubo un error al añadir al carrito");
+        }
+      })
+    )
+
+  }
+
+  notupdate(i:number,cart:Cart){
+    this.listCounts[i] = cart.selectedCount
+  }
+  remove(cart:Cart){
+    this.update(0,cart)
+  }
 }
