@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit,OnDestroy {
             if(err["status"]==401){
               alert("No existe usuario con esas credenciales")
             }else {
-              alert("Error inesperado")
+              alert("Error inesperado en el servidor")
             }
           }
         }

@@ -1,5 +1,11 @@
 package ps.jmagna.services;
 
+import jakarta.persistence.criteria.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import ps.jmagna.dtos.publication.*;
 import ps.jmagna.entities.*;
 import ps.jmagna.enums.Difficulty;
@@ -23,10 +29,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -130,33 +133,31 @@ public class PublicationService {
         return true;
     }
 
-    public SearchPubResponce getAll(SearchPubRequest searchPubRequest) {
+    public SearchPubResponce getAll(SearchPubRequest request) {
 
         SearchPubResponce responce = new SearchPubResponce();
 
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
 
-        List<PublicationEntity> all = publicationRepository.findAll();
+        Page<PublicationEntity> all = publicationRepository.findAll(createFilter(request), pageable);
 
+        int count = (int) all.getTotalElements();
         List<PublicationMinDto> list = new ArrayList<>();
         for (PublicationEntity p : all) {
-            if (p.isDeleted()) {
+
+            /*if (p.isDeleted()) {
                 continue;
             }
-
-            if (searchPubRequest.getType() != PubType.NONE) {
-                if (searchPubRequest.getType() != p.getType()) {
+            if (request.getType() != PubType.NONE) {
+                if (request.getType() != p.getType()) {
                     continue;
                 }
             }
-            if (p.getDifficulty() < searchPubRequest.getDiffMin() || p.getDifficulty() > searchPubRequest.getDiffMax()) {
+            if (p.getDifficulty() < request.getDiffMin() || p.getDifficulty() > request.getDiffMax()) {
                 continue;
             }
-            BigDecimal cal = calificationAverage(p);
-            if (cal.compareTo(searchPubRequest.getPoints()) < 0) {
-                continue;
-            }
-            if (!searchPubRequest.getText().isBlank()) {
-                List<String> textes = List.of(searchPubRequest.getText().toLowerCase()
+            if (!request.getText().isBlank()) {
+                List<String> textes = List.of(request.getText().toLowerCase()
                         .split("\\s"));
                 boolean noadd = true;
                 for (String t : textes) {
@@ -174,8 +175,15 @@ public class PublicationService {
                     continue;
                 }
             }
-            if (!searchPubRequest.getMaterials().isBlank()) {
-                List<String> mats = List.of(searchPubRequest.getMaterials().toLowerCase()
+            */
+
+            BigDecimal cal = calificationAverage(p);
+            if (cal.compareTo(request.getPoints()) < 0) {
+                count--;
+                continue;
+            }
+            if (!request.getMaterials().isBlank()) {
+                List<String> mats = List.of(request.getMaterials().toLowerCase()
                         .split("[\\s,]+"));
                 List<SectionEntity> smats = p.getSections().stream()
                         .filter(sec -> sec.getType().equals(SecType.MAT))
@@ -188,6 +196,7 @@ public class PublicationService {
                     }
                 }
                 if (noadd) {
+                    count--;
                     continue;
                 }
             }
@@ -202,18 +211,53 @@ public class PublicationService {
             }
             list.add(dto);
         }
+        list.sort(Comparator.comparing(PublicationMinDto::getCalification));
 
-        int firstIndex = searchPubRequest.getPage() * searchPubRequest.getSize();
-        firstIndex = Integer.min(firstIndex, list.size());
+        responce.setList(list);
 
-        int lastIndex = firstIndex + searchPubRequest.getSize();
-        lastIndex = Integer.min(lastIndex, list.size());
-
-        responce.setList(list.subList(firstIndex, lastIndex));
-
-        responce.setCountTotal(list.size());
+        responce.setCountTotal(count);
 
         return responce;
+    }
+
+    public static Specification<PublicationEntity> createFilter(SearchPubRequest request) {
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            predicates.add(criteriaBuilder.isFalse(root.get("deleted")));
+
+            Predicate difficulty = criteriaBuilder.between(
+                    root.get("difficulty"),
+                    request.getDiffMin(),
+                    request.getDiffMax());
+            predicates.add(difficulty);
+
+            if (request.getType() != PubType.NONE) {
+                predicates.add(criteriaBuilder.equal(root.get("type"), request.getType().toString()));
+            }
+            ;
+
+            if (!request.getText().isBlank()) {
+                List<String> textes = List.of(request.getText().toLowerCase()
+                        .split("\\s"));
+                for (String t : textes) {
+                    if (t.isBlank()) continue;
+                    if (t.charAt(0) == '#') {
+                        predicates.add(criteriaBuilder.like(root.get("description"), "%" + t + "%"));
+                    }
+                    else if(t.charAt(0) == '@'){
+                        Join<PublicationEntity, UserEntity> join = root.join("user");
+                        predicates.add(criteriaBuilder.equal(join.get("username"), t.substring(1)));
+                    }
+                    else {
+                        predicates.add(criteriaBuilder.like(root.get("name"), "%" + t + "%"));
+                    }
+                }
+            }
+
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+        }; //columnEqual() function ends
     }
 
     //Listar
