@@ -8,11 +8,11 @@
         <version>3.1.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>ar.edu.utn.frc.tup.lciii</groupId>
-    <artifactId>final-loteria</artifactId>
+    <groupId>ps.jmagna</groupId>
+    <artifactId>ps-jmagna</artifactId>
     <version>1</version>
-    <name>final-loteria</name>
-    <description>LCII Initial Scaffolding</description>
+    <name>ps-jmagna</name>
+    <description>ps-jmagna-2024</description>
     <properties>
         <java.version>17</java.version>
     </properties>

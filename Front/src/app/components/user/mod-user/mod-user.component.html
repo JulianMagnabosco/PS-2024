@@ -176,12 +176,25 @@
       <div class="d-flex justify-content-start mb-3">
         <div class="col-6 p-2">
           <div class="bg-orange-low rounded-2 border"
-               [class.border-danger]="(form.controls['cvu'].touched || form.controls['cvu'].dirty)
-                && form.controls['cvu'].invalid">
-            <label class="fs-6 fw-bold px-2" for="cvuInput">CVU</label>
-            <input type="text" formControlName="cvu" class="form-control bg-orange
-              border-transparent" id="cvuInput" placeholder="---"
-                   [class.fst-italic]="form.controls['cvu'].value!=user.cvu">
+               [class.border-danger]="(form.controls['mpClient'].touched || form.controls['mpClient'].dirty)
+                && form.controls['mpClient'].invalid">
+            <label class="fs-6 fw-bold px-2" for="mpClientInput">CVU</label>
+            <input type="text" formControlName="mpClient" class="form-control bg-orange
+              border-transparent" id="mpClientInput" placeholder="---"
+                   [class.fst-italic]="form.controls['mpClient'].value!=user.mpClient">
+
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-start mb-3">
+        <div class="col-6 p-2">
+          <div class="bg-orange-low rounded-2 border"
+               [class.border-danger]="(form.controls['mpSecret'].touched || form.controls['mpSecret'].dirty)
+                && form.controls['mpSecret'].invalid">
+            <label class="fs-6 fw-bold px-2" for="mpSecretInput">CVU</label>
+            <input type="text" formControlName="mpSecret" class="form-control bg-orange
+              border-transparent" id="mpSecretInput" placeholder="---"
+                   [class.fst-italic]="form.controls['mpSecret'].value!=user.mpSecret">
 
           </div>
         </div>

@@ -23,8 +23,14 @@ export class PublicationsService {
   postCalification(data: any):Observable<any>{
     return this.client.post(this.baseUrl + "cal", data,{});
   }
+  postCart(data: any):Observable<any>{
+    return this.client.post(this.baseUrl + "cart", data,{});
+  }
   search(search: any):Observable<any>{
     return this.client.post(this.baseUrl + "search",search)
+  }
+  getCart():Observable<any>{
+    return this.client.get(this.baseUrl + "cart");
   }
 
   get(id: string,user:string):Observable<any>{
@@ -38,6 +44,7 @@ export class PublicationsService {
   putPublication(user: any):Observable<any>{
     return this.client.put(this.baseUrl + "mod", user);
   }
+
 
   delete(id: string):Observable<any>{
     return this.client.delete(this.baseUrl + id);

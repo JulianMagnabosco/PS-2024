@@ -98,11 +98,15 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
   buy(){
     let data = {
       idUser: this.userService.user?.id,
-      idPub: this.publication.id,
-      count: this.countBuy
+      items: [
+        {
+          idPub: this.publication.id,
+          count: this.countBuy
+        }
+      ]
     }
     this.subs.add(
-      this.purchaseService.postSingleSale(data).subscribe(
+      this.purchaseService.postSale(data).subscribe(
         {
           next: value => {
             // console.log(value["preference"]["initPoint"])
@@ -158,4 +162,22 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
     )
   }
 
+  addCart(){
+    let data = {
+      userId: this.userService.user?.id,
+      pubId: this.publication.id,
+      value: this.countBuy
+    }
+    this.subs.add(
+      this.service.postCart(data).subscribe({
+        next: value => {
+          alert("Añadido al carrito");
+        },
+        error:err => {
+          alert("Hubo un error al añadir al carrito");
+        }
+      })
+    )
+
+  }
 }

@@ -19,6 +19,7 @@ import {ListPurchasesComponent} from "./components/purchases/list-purchases/list
 import {ListSellsComponent} from "./components/sells/list-sells/list-sells.component";
 import {ListDeliveriesComponent} from "./components/deliveries/list-deliveries/list-deliveries.component";
 import {SellStadisticsComponent} from "./components/stadistics/sell-stadistics/sell-stadistics.component";
+import {CartComponent} from "./components/cart/cart.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -36,12 +37,14 @@ const routes: Routes = [
   { path: 'user/:id', component: ShowUserComponent, canActivate:[authGuard] },
   { path: 'users', component: ListUsersComponent, canActivate:[authGuard] },
   { path: 'edit', component: ModUserComponent, canActivate:[authGuard] },
+  { path: 'cart', component: CartComponent, canActivate:[authGuard] },
   { path: 'purchases', component: ListPurchasesComponent, canActivate:[authGuard] },
   { path: 'sells', component: ListSellsComponent, canActivate:[authGuard] },
   { path: 'deliveries', component: ListDeliveriesComponent, canActivate:[authGuard] },
   { path: 'stats/users', component: UserStadisticsComponent, canActivate:[authGuard] },
   { path: 'stats/pubs', component: PubStadisticsComponent, canActivate:[authGuard] },
   { path: 'stats/sells', component: SellStadisticsComponent, canActivate:[authGuard] },
+  //redirect
   { path: '**', component: HomeComponent },
 ]
 

@@ -20,14 +20,25 @@ export class ShowUserComponent  implements OnInit, OnDestroy{
   private subs: Subscription = new Subscription();
 
   user:User={
-    id: "",
-    username: "",
-    role: "",
+    direction: "",
+    dni: "",
+    dniType: "",
     email: "",
-    cvu: "", dni: "", dniType: "", phone: "",
+    floor: "",
     iconUrl: "",
-    direction: "", floor: "", lastname: "", name: "", numberDir: "", postalNum: "", room: "", state: "",
-    idState: ""
+    id: "",
+    idState: "",
+    lastname: "",
+    mpClient: "",
+    mpSecret: "",
+    name: "",
+    numberDir: "",
+    phone: "",
+    postalNum: "",
+    role: "",
+    room: "",
+    state: "",
+    username: ""
   };
   constructor(private service: UserService,
               private activeRoute:ActivatedRoute, private router: Router) {

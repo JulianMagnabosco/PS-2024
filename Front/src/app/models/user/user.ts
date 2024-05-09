@@ -8,7 +8,6 @@ export interface User {
   name:string ;
   lastname:string ;
   phone:string ;
-  cvu:string ;
   dni:string ;
   dniType:string ;
 
@@ -19,4 +18,7 @@ export interface User {
   postalNum:string ;
   floor:string ;
   room:string ;
+
+  mpClient:string;
+  mpSecret:string;
 }

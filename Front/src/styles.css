@@ -75,6 +75,8 @@ h1, .space-text{
   height: 50%;
 }
 .img-stat-container{
+  min-width: 60px;
+  min-height: 60px;
   max-width: 130px;
   max-height: 130px;
 }

@@ -6,4 +6,7 @@ export interface PublicationMin {
   difficulty: string;
   calification: number;
   imageUrl: string;
+  canSold: boolean;
+  price: number;
+  count: number;
 }

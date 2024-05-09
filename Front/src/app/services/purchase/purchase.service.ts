@@ -12,8 +12,8 @@ export class PurchaseService {
   constructor(private client: HttpClient) {
   }
 
-  postSingleSale(data: any): Observable<any> {
-    return this.client.post(this.baseUrl + "regsingle", data);
+  postSale(data: any): Observable<any> {
+    return this.client.post(this.baseUrl + "reg", data);
   }
 
   getPurchases(firstDate: string, lastDate: string, user: string) {

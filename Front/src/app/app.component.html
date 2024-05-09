@@ -45,6 +45,9 @@
       <button class="btn btn-warning text-nowrap me-1" routerLink="login" *ngIf="!service.user">
         <i class="bi bi-person-circle"> Iniciar Secion</i>
       </button>
+      <button class="btn btn-warning text-nowrap me-1" routerLink="cart" *ngIf="service.user?.canBuy">
+        <i class="bi bi-cart"></i>
+      </button>
       <div class="dropdown" *ngIf="service.user">
         <button class="btn btn-warning text-nowrap me-1 dropdown-toggle" type="button" data-bs-toggle="dropdown">
           <i class="bi bi-person-circle"></i>

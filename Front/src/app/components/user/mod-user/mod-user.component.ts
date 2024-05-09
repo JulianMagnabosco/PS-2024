@@ -24,14 +24,25 @@ export class ModUserComponent implements OnInit, OnDestroy {
 
   private subs: Subscription = new Subscription();
   user: User = {
-    id: "",
-    username: "",
-    role: "",
+    direction: "",
+    dni: "",
+    dniType: "",
     email: "",
-    cvu: "", dni: "", dniType: "", phone: "",
+    floor: "",
     iconUrl: "",
-    direction: "", floor: "", lastname: "", name: "", numberDir: "", postalNum: "", room: "", state: "",
-    idState: ""
+    id: "",
+    idState: "",
+    lastname: "",
+    mpClient: "",
+    mpSecret: "",
+    name: "",
+    numberDir: "",
+    phone: "",
+    postalNum: "",
+    role: "",
+    room: "",
+    state: "",
+    username: ""
   };
   form: FormGroup = this.fb.group({});
   iconUrl: any;
@@ -89,7 +100,6 @@ export class ModUserComponent implements OnInit, OnDestroy {
               "name": this.user.name||"",
               "lastname": this.user.lastname||"",
               "phone": this.user.phone||"",
-              "cvu": this.user.cvu||"",
               "dni": this.user.dni||"",
               "dniType": this.user.dniType||"",
 
@@ -98,7 +108,10 @@ export class ModUserComponent implements OnInit, OnDestroy {
               "numberDir": this.user.numberDir||"",
               "postalNum": this.user.postalNum||"",
               "floor": this.user.floor||"",
-              "room": this.user.room||""
+              "room": this.user.room||"",
+
+              "mpClient": this.user.mpClient||"",
+              "mpSecret": this.user.mpSecret||""
             }
             this.form.setValue(userdata)
           },
