@@ -1,5 +1,7 @@
 package ps.jmagna.controllers;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import ps.jmagna.dtos.purchase.DeliveryDto;
 import ps.jmagna.dtos.purchase.SellDto;
 import ps.jmagna.dtos.purchase.NotificationResponce;
@@ -27,18 +29,20 @@ public class PurchaseController {
     @GetMapping("/purchases")
     public List<SaleDto> getPurchases(@RequestParam String firstDate,
                                       @RequestParam String lastDate,
-                                      @RequestParam Long user) {
-        return service.getPurchases(firstDate,lastDate,user);
+                                      @RequestParam String name,
+                                      @AuthenticationPrincipal Jwt authentication) {
+        return service.getPurchases(firstDate,lastDate, name,authentication.getSubject());
     }
     @GetMapping("/sells")
     public List<SellDto> getSells(@RequestParam String firstDate,
                                   @RequestParam String lastDate,
-                                  @RequestParam Long user) {
-        return service.getSells(firstDate,lastDate,user);
+                                  @RequestParam String name,
+                                  @AuthenticationPrincipal Jwt authentication) {
+        return service.getSells(firstDate,lastDate, name ,authentication.getSubject());
     }
     @GetMapping("/deliveries")
-    public List<DeliveryDto> getDeliveriesPending(@RequestParam Long user) {
-        return service.getDeliveriesPending(user);
+    public List<DeliveryDto> getDeliveriesPending(@AuthenticationPrincipal Jwt authentication) {
+        return service.getDeliveriesPending(authentication.getSubject());
     }
 
     @PostMapping("/reg")

@@ -260,19 +260,29 @@ public class PurchaseService {
         return selected;
     }
 
-    public List<SaleDto> getPurchases(String firstDate, String lastDate, Long user) {
+    public List<SaleDto> getPurchases(String firstDate, String lastDate, String pubName, String username) {
+        UserEntity u;
+        if (username.contains("@")) {
+            u = userRepository.getByEmail(username);
+        } else {
+            u = userRepository.getByUsername(username);
+        }
         List<SaleDto> list = new ArrayList<>();
-        for (SaleEntity sale : saleRepository.findAllByDateTimeBetweenAndUser_Id(
+        for (SaleEntity sale : saleRepository.findAllByDateTimeBetweenAndUser(
                 LocalDateTime.parse(firstDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
                 LocalDateTime.parse(lastDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
-                user
+                u
         )) {
 //            if (!user.equals(sale.getUser().getId())) {
 //                continue;
 //            }
             BigDecimal total = BigDecimal.ZERO;
             List<SaleDetailDto> detailDtos = new ArrayList<>();
+            boolean addDto = false;
             for (SaleDetailEntity detail : sale.getDetails()) {
+                if(!pubName.isBlank() && detail.getPublication().getName().toLowerCase()
+                        .contains(pubName.toLowerCase())) addDto = true;
+
                 Long imgId = 1L;
                 for (SectionEntity s : detail.getPublication().getSections()) {
                     if (s.getType() == SecType.PHOTO) {
@@ -291,21 +301,29 @@ public class PurchaseService {
                 total = total.add(detail.getTotal());
             }
 
-            list.add(new SaleDto(sale.getId(),
-                    sale.getDateTime().toString(),
-                    detailDtos,
-                    sale.getSaleState(),
-                    total)
-            );
+            if(addDto){
+                list.add(new SaleDto(sale.getId(),
+                        sale.getDateTime().toString(),
+                        detailDtos,
+                        sale.getSaleState(),
+                        total)
+                );
+            }
         }
 
         return list;
 
     }
 
-    public List<DeliveryDto> getDeliveriesPending(Long user) {
+    public List<DeliveryDto> getDeliveriesPending(String username) {
+        UserEntity u;
+        if (username.contains("@")) {
+            u = userRepository.getByEmail(username);
+        } else {
+            u = userRepository.getByUsername(username);
+        }
         List<DeliveryDto> list = new ArrayList<>();
-        for (DeliveryEntity delivery : deliveryRepository.findAllByDealer_Id(user)) {
+        for (DeliveryEntity delivery : deliveryRepository.findAllByDealer(u)) {
             SaleEntity sale = delivery.getSale();
             UserEntity buyer = delivery.getSale().getUser();
 
@@ -409,13 +427,29 @@ public class PurchaseService {
         return getDeliveryDto(delivery);
     }
 
-    public List<SellDto> getSells(String firstDate, String lastDate, Long user) {
+    public List<SellDto> getSells(String firstDate, String lastDate, String buyerName, String username) {
+        UserEntity u;
+        if (username.contains("@")) {
+            u = userRepository.getByEmail(username);
+        } else {
+            u = userRepository.getByUsername(username);
+        }
         List<SellDto> list = new ArrayList<>();
-        for (SaleDetailEntity detail : saleDetailRepository.findAllBySale_DateTimeBetweenAndPublication_User_Id(
+        for (SaleDetailEntity detail : saleDetailRepository.findAllBySale_DateTimeBetweenAndPublication_User(
                 LocalDateTime.parse(firstDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
                 LocalDateTime.parse(lastDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
-                user
+                u
         )) {
+            SaleEntity sale = detail.getSale();
+            UserEntity buyer = sale.getUser();
+            if (!buyerName.isBlank() &&
+                    !buyer.getName().toLowerCase().contains(buyerName.toLowerCase()) &&
+                    !buyer.getLastname().toLowerCase().contains(buyerName.toLowerCase()) &&
+                    !buyer.getUsername().toLowerCase().contains(buyerName.toLowerCase()))
+            {
+                continue;
+            }
+
             Long imgId = 1L;
             for (SectionEntity s : detail.getPublication().getSections()) {
                 if (s.getType() == SecType.PHOTO) {
@@ -425,13 +459,13 @@ public class PurchaseService {
             }
 
             list.add(new SellDto(
-                    detail.getSale().getId(),
-                    detail.getSale().getDateTime().toString(),
-                    detail.getSale().getSaleState(),
+                    sale.getId(),
+                    sale.getDateTime().toString(),
+                    sale.getSaleState(),
                     detail.getPublication().getId(),
-                    detail.getSale().getUser().getName() +
+                    buyer.getName() +
                             " " +
-                            detail.getSale().getUser().getLastname(),
+                            buyer.getLastname(),
                     detail.getPublication().getName(),
                     url + "/api/image/pub/" + imgId,
                     detail.getTotal(),

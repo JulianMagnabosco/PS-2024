@@ -10,4 +10,5 @@ public interface DeliveryRepository extends JpaRepository<DeliveryEntity, Long> 
     Long countAllByDealer(UserEntity dealer);
 
     List<DeliveryEntity> findAllByDealer_Id(Long dealer);
+    List<DeliveryEntity> findAllByDealer(UserEntity dealer);
 }
