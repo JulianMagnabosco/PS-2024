@@ -42,8 +42,9 @@ public class PublicationController {
     }
     //Busqueda
     @PostMapping("/search")
-    public SearchPubResponce getAll(@RequestBody SearchPubRequest searchPubRequest) {
-        return publicationService.getAll(searchPubRequest);
+    public SearchPubResponce getAll(@RequestBody SearchPubRequest searchPubRequest,
+                                    @AuthenticationPrincipal Jwt authentication) {
+        return publicationService.getAll(searchPubRequest, authentication.getSubject());
     }
     @GetMapping("/cart")
     public List<CartDto> getCart(@AuthenticationPrincipal Jwt authentication) {

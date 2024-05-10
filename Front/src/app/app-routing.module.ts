@@ -20,6 +20,9 @@ import {ListSellsComponent} from "./components/sells/list-sells/list-sells.compo
 import {ListDeliveriesComponent} from "./components/deliveries/list-deliveries/list-deliveries.component";
 import {SellStadisticsComponent} from "./components/stadistics/sell-stadistics/sell-stadistics.component";
 import {CartComponent} from "./components/cart/cart.component";
+import {
+  ListPublicationsMineComponent
+} from "./components/publications/list-publications-mine/list-publications-mine.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -32,6 +35,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'publicate', component: AddPublicationComponent, canActivate:[authGuard] },
   { path: 'explore', component: ListPublicationsComponent, canActivate:[authGuard] },
+  { path: 'mypubs', component: ListPublicationsMineComponent, canActivate:[authGuard] },
   { path: 'pub/:id', component: ShowPublicationComponent, canActivate:[authGuard] },
   { path: 'editpub/:id', component: ModPublicationComponent, canActivate:[authGuard] },
   { path: 'user/:id', component: ShowUserComponent, canActivate:[authGuard] },

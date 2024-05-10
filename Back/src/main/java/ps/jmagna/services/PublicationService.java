@@ -133,13 +133,20 @@ public class PublicationService {
         return true;
     }
 
-    public SearchPubResponce getAll(SearchPubRequest request) {
+    public SearchPubResponce getAll(SearchPubRequest request, String username) {
 
         SearchPubResponce responce = new SearchPubResponce();
 
+        UserEntity u;
+        if (username.contains("@")) {
+            u = userRepository.getByEmail(username);
+        } else {
+            u = userRepository.getByUsername(username);
+        }
+
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
 
-        Page<PublicationEntity> all = publicationRepository.findAll(createFilter(request), pageable);
+        Page<PublicationEntity> all = publicationRepository.findAll(createFilter(request, u), pageable);
 
         int count = (int) all.getTotalElements();
         List<PublicationMinDto> list = new ArrayList<>();
@@ -182,6 +189,7 @@ public class PublicationService {
                 count--;
                 continue;
             }
+
             if (!request.getMaterials().isBlank()) {
                 List<String> mats = List.of(request.getMaterials().toLowerCase()
                         .split("[\\s,]+"));
@@ -220,7 +228,7 @@ public class PublicationService {
         return responce;
     }
 
-    public static Specification<PublicationEntity> createFilter(SearchPubRequest request) {
+    public static Specification<PublicationEntity> createFilter(SearchPubRequest request, UserEntity user) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -235,7 +243,10 @@ public class PublicationService {
             if (request.getType() != PubType.NONE) {
                 predicates.add(criteriaBuilder.equal(root.get("type"), request.getType().toString()));
             }
-            ;
+
+            if (request.isMine()){
+                predicates.add(criteriaBuilder.equal(root.get("user"), user));
+            }
 
             if (!request.getText().isBlank()) {
                 List<String> textes = List.of(request.getText().toLowerCase()
