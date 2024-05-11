@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {PublicationsService} from "../../../services/publications/publications.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {PublicationMin} from "../../../models/publication/publication-min";
 
 @Component({
@@ -23,7 +23,8 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
   size=3;
   page=0;
 
-  constructor(private fb: FormBuilder, private service: PublicationsService, private router: Router) {
+  constructor(private fb: FormBuilder, private service: PublicationsService,
+              private router: Router, private activatedRoute: ActivatedRoute) {
     this.form = this.fb.group({
       text: ["", [Validators.maxLength(200 )]],
       materials: ["", [Validators.maxLength(500 )]],
@@ -35,6 +36,13 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
     });
   }
   ngOnInit(): void {
+    this.subs.add(
+      this.activatedRoute.queryParams.subscribe({
+        next: value => {
+          this.form.patchValue(value)
+        }
+      })
+    )
     this.charge(0)
   }
   ngOnDestroy(): void {
@@ -83,8 +91,23 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
       "size": this.size
     }
 
-    console.log(this.data)
+    var newParams: {[k: string]: any} = {};
+    if( this.data.text != "") newParams["text"] = this.data.text
+    if( this.data.materials != "") newParams["materials"] = this.data.materials
+    if( this.data.type != "NONE") newParams["type"] = this.data.type
+    if( this.data.diffMin != "1") newParams["diffMin"] = this.data.diffMin
+    if( this.data.diffMax != "4") newParams["diffMax"] = this.data.diffMax
+    if( this.data.points != "0") newParams["points"] = this.data.points
+    if( this.data.mine) newParams["mine"] = true
+    if( this.data.page != "") newParams["page"] = this.page
 
+    console.log(newParams)
+
+    this.router.navigate([],{
+      relativeTo: this.activatedRoute,
+      queryParams: newParams as Params,
+      replaceUrl: true
+    })
 
     this.subs.add(
       this.service.search(this.data).subscribe(

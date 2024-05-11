@@ -4,7 +4,7 @@ import {NgForOf, NgIf} from "@angular/common";
 import {Subscription} from "rxjs";
 import {PublicationMin} from "../../../models/publication/publication-min";
 import {PublicationsService} from "../../../services/publications/publications.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 
 @Component({
   selector: 'app-list-publications-mine',
@@ -24,7 +24,8 @@ export class ListPublicationsMineComponent  implements OnInit,OnDestroy {
   size=3;
   page=0;
 
-  constructor(private fb: FormBuilder, private service: PublicationsService, private router: Router) {
+  constructor(private fb: FormBuilder, private service: PublicationsService,
+              private router: Router, private activatedRoute:ActivatedRoute) {
     this.form = this.fb.group({
       text: ["", [Validators.maxLength(200 )]],
       materials: ["", [Validators.maxLength(500 )]],
@@ -84,7 +85,23 @@ export class ListPublicationsMineComponent  implements OnInit,OnDestroy {
       "size": this.size
     }
 
-    console.log(this.data)
+
+    var newParams: {[k: string]: any} = {};
+    if( this.data.text != "") newParams["text"] = this.data.text
+    if( this.data.materials != "") newParams["materials"] = this.data.materials
+    if( this.data.type != "NONE") newParams["type"] = this.data.type
+    if( this.data.diffMin != "1") newParams["diffMin"] = this.data.diffMin
+    if( this.data.diffMax != "4") newParams["diffMax"] = this.data.diffMax
+    if( this.data.points != "0") newParams["points"] = this.data.points
+    if( this.data.page != "") newParams["page"] = this.page
+
+    console.log(newParams)
+
+    this.router.navigate([],{
+      relativeTo: this.activatedRoute,
+      queryParams: newParams as Params,
+      replaceUrl: true
+    })
 
 
     this.subs.add(

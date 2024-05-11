@@ -49,7 +49,7 @@ export class ListDeliveriesComponent implements OnInit,OnDestroy {
     }
 
     this.subs.add(
-      this.service.getDeliveries(this.authService.user?.id||"0").subscribe(
+      this.service.getDeliveries().subscribe(
         {
           next: value => {
             // this.countTotal=value["countTotal"]

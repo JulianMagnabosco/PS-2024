@@ -17,6 +17,7 @@ export class ListSellsComponent implements OnInit,OnDestroy {
 
   private subs: Subscription = new Subscription();
 
+  text: string ="";
   firstDate: string ;
   lastDate: string ;
 
@@ -61,7 +62,7 @@ export class ListSellsComponent implements OnInit,OnDestroy {
     let lastDate1 = this.lastDate+"T23:59:59"
 
     this.subs.add(
-      this.service.getSells(firstDate1,lastDate1, this.authService.user?.id||"0").subscribe(
+      this.service.getSells(firstDate1,lastDate1, this.text).subscribe(
         {
           next: value => {
             // this.countTotal=value["countTotal"]

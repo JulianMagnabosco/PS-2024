@@ -1,24 +1,42 @@
 <div class="container">
   <h1 class="h1">Ventas</h1>
-  <div class="row gap-2 justify-content-center">
-    <div class="col-auto">
-      <label for="firstDate" class="col-form-label">De </label>
-    </div>
-    <div class="col-auto">
-      <input type="date" id="firstDate" class="form-control" aria-describedby="passwordHelpInline"
-             name="firstDate" [max]="lastDate"
-             [(ngModel)]="firstDate">
-    </div>
-    <div class="col-auto">
-      <label for="lastDate" class="col-form-label"> A </label>
-    </div>
-    <div class="col-auto">
-      <input type="date" id="lastDate" class="form-control" aria-describedby="passwordHelpInline"
-             name="lastDate" [min]="firstDate"
-             [(ngModel)]="lastDate">
-    </div>
-    <div class="col-auto">
-      <button class="btn btn-primary" (click)="charge(0)">FILTRAR</button>
+
+  <div class="card border-orange p-2 mb-3">
+    <div class="row justify-content-center ">
+
+      <div class="col">
+        <div class="d-flex mb-1 gap-2">
+          <div class="col-auto">
+            <label for="firstDate" class="col-form-label">De </label>
+          </div>
+          <div class="col-auto">
+            <input type="date" id="firstDate" class="form-control" aria-describedby="passwordHelpInline"
+                   name="firstDate" [max]="lastDate"
+                   [(ngModel)]="firstDate">
+          </div>
+          <div class="col-auto">
+            <label for="lastDate" class="col-form-label"> A </label>
+          </div>
+          <div class="col-auto">
+            <input type="date" id="lastDate" class="form-control" aria-describedby="passwordHelpInline"
+                   name="lastDate" [min]="firstDate"
+                   [(ngModel)]="lastDate">
+          </div>
+        </div>
+        <div class="input-group">
+          <input type="text" [(ngModel)]="text" class="form-control form-orange " id="nameInput" name="text"
+                 placeholder="Nombre del comprador">
+          <button class="btn button-orange form-orange bi bi-x-lg" (click)="text=''"
+                  *ngIf="text != ''">
+          </button>
+          <button class="btn btn-primary bi bi-search" (click)="charge(0)">
+            BUSCAR
+          </button>
+        </div>
+      </div>
+      <div class="col-auto">
+        <button class="btn btn-primary h-100" (click)="charge(0)">GENERAR</button>
+      </div>
     </div>
   </div>
   <div class="p-3 column-gap-2">
