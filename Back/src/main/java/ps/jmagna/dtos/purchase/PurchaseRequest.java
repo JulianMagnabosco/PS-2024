@@ -6,6 +6,5 @@ import java.util.List;
 
 @Data
 public class PurchaseRequest {
-    Long idUser;
     List<PurchaseItemRequest> items;
 }

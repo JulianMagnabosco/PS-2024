@@ -111,7 +111,7 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
           next: value => {
             id = value["id"]
             this.subs.add(
-              this.service.get(id,this.userService.user?.id||"1").subscribe(
+              this.service.get(id).subscribe(
                 {
                   next: value => {
                     this.publication=value
@@ -304,7 +304,6 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
 
     let data = {
       "id": this.publication.id,
-      "user": this.userService.user?.id,
       "name": this.form.controls['name'].value,
       "description": this.form.controls['description'].value,
       "type": this.form.controls['type'].value,

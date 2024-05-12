@@ -4,7 +4,6 @@ import jakarta.persistence.criteria.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import ps.jmagna.dtos.publication.*;
 import ps.jmagna.entities.*;
@@ -53,10 +52,10 @@ public class PublicationService {
     private String url;
 
     @Transactional
-    public PublicationDto register(PublicationRequest request) {
+    public PublicationDto register(PublicationRequest request, String username) {
 
         PublicationEntity publication = modelMapper.map(request, PublicationEntity.class);
-        publication.setUser(userRepository.getReferenceById(request.getUser()));
+        publication.setUser(getUserEntity(username));
         publication.setCreationTime(LocalDateTime.now());
         publicationRepository.save(publication);
 
@@ -70,16 +69,20 @@ public class PublicationService {
         publication.setSections(sectionEntities);
 
 
-        return get(publication.getId(), publication.getUser().getId());
+        return get(publication.getId(), username);
     }
 
     @Transactional
-    public boolean registerImg(MultipartFile[] images, String indexes) throws IOException {
+    public boolean registerImg(MultipartFile[] images, String indexes, String username) throws IOException {
 
+        UserEntity u = getUserEntity(username);
         int i = 0;
         for (String c : indexes.split("_")) {
             Long id = Long.parseLong(c);
             SectionEntity s = sectionRepository.getReferenceById(id);
+            if(u.getId() != s.getPublication().getUser().getId()) {
+                throw new IllegalArgumentException("Usuario incorrecto");
+            }
             s.setImage(compressBytes(images[i].getBytes()));
             sectionRepository.save(s);
             i++;
@@ -88,9 +91,9 @@ public class PublicationService {
         return true;
     }
 
-    public boolean calificate(CalificationRequest request) {
+    public boolean calificate(CalificationRequest request, String username) {
+        UserEntity u = getUserEntity(username);
         PublicationEntity p = publicationRepository.getReferenceById(request.getPubId());
-        UserEntity u = userRepository.getReferenceById(request.getUserId());
         Optional<CalificationEntity> calificationAsk = calificationRepository.getByUserAndPublication(u, p);
         CalificationEntity calification;
         if (calificationAsk.isEmpty()) {
@@ -107,9 +110,9 @@ public class PublicationService {
         return true;
     }
 
-    public boolean addCart(CalificationRequest request) {
+    public boolean addCart(CalificationRequest request, String username) {
+        UserEntity u = getUserEntity(username);
         PublicationEntity p = publicationRepository.getReferenceById(request.getPubId());
-        UserEntity u = userRepository.getReferenceById(request.getUserId());
         Optional<CartEntity> cartAsk = cartRepository.getByUserAndPublication(u, p);
 
         int value = request.getValue().intValue();
@@ -132,17 +135,34 @@ public class PublicationService {
 
         return true;
     }
+    public PublicationDto addDraft(PublicationRequest request, String username) {
+
+        PublicationEntity publication = modelMapper.map(request, PublicationEntity.class);
+        publication.setUser(getUserEntity(username));
+        publication.setDraft(true);
+        publication.setCreationTime(LocalDateTime.now());
+        publicationRepository.save(publication);
+
+        List<SectionEntity> sectionEntities = new ArrayList<>();
+        for (SectionRequest sectionDto : request.getSections()) {
+            SectionEntity s = modelMapper.map(sectionDto, SectionEntity.class);
+            s.setPublication(publication);
+
+            sectionEntities.add(sectionRepository.save(s));
+        }
+        publication.setSections(sectionEntities);
+
+
+        return get(publication.getId(), username);
+    }
+
+    //Listar
 
     public SearchPubResponce getAll(SearchPubRequest request, String username) {
 
         SearchPubResponce responce = new SearchPubResponce();
 
-        UserEntity u;
-        if (username.contains("@")) {
-            u = userRepository.getByEmail(username);
-        } else {
-            u = userRepository.getByUsername(username);
-        }
+        UserEntity u = getUserEntity(username);
 
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
 
@@ -227,12 +247,22 @@ public class PublicationService {
 
         return responce;
     }
+    private UserEntity getUserEntity(String username) {
+        UserEntity u;
+        if (username.contains("@")) {
+            u = userRepository.getByEmail(username);
+        } else {
+            u = userRepository.getByUsername(username);
+        }
+        return u;
+    }
 
     public static Specification<PublicationEntity> createFilter(SearchPubRequest request, UserEntity user) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
             predicates.add(criteriaBuilder.isFalse(root.get("deleted")));
+            predicates.add(criteriaBuilder.isFalse(root.get("draft")));
 
             Predicate difficulty = criteriaBuilder.between(
                     root.get("difficulty"),
@@ -270,16 +300,9 @@ public class PublicationService {
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
         }; //columnEqual() function ends
     }
-
-    //Listar
     public List<CartDto> getCart(String username) {
 
-        UserEntity u;
-        if (username.contains("@")) {
-            u = userRepository.getByEmail(username);
-        } else {
-            u = userRepository.getByUsername(username);
-        }
+        UserEntity u = getUserEntity(username);
         List<CartEntity> list = cartRepository.findAllByUser(u);
 
         List<CartDto> responce = new ArrayList<>();
@@ -298,25 +321,35 @@ public class PublicationService {
 
         return responce;
     }
+    public List<PublicationMinDto> getDrafts(String username) {
 
-    BigDecimal calificationAverage(PublicationEntity p) {
-        List<CalificationEntity> list = calificationRepository.findAllByPublication(p);
-        if (!list.isEmpty()) {
-            BigDecimal value = BigDecimal.ZERO;
-            int count = 0;
-            for (CalificationEntity c : list) {
-                value = value.add(c.getPoints());
-                count++;
+        List<PublicationMinDto> responce = new ArrayList<>();
+
+        UserEntity u = getUserEntity(username);
+
+        for (PublicationEntity p : publicationRepository.findAllByUserAndDraftIsTrueAndDeletedIsFalse(u)) {
+
+            BigDecimal cal = calificationAverage(p);
+
+            PublicationMinDto dto = modelMapper.map(p, PublicationMinDto.class);
+
+            dto.setCalification(cal);
+            dto.setDificulty(Difficulty.values()[p.getDifficulty()].name());
+            SectionEntity sectionImage = sectionRepository.findFirstByPublicationAndType(p, SecType.PHOTO);
+            if (sectionImage != null) {
+                dto.setImageUrl(url + "/api/image/pub/" + sectionImage.getId());
             }
-            return value.divide(BigDecimal.valueOf(count), 1, RoundingMode.FLOOR);
+            responce.add(dto);
         }
-        return BigDecimal.ZERO;
+
+        return responce;
     }
 
-    public PublicationDto get(Long id, Long userId) throws EntityNotFoundException {
+    public PublicationDto get(Long id, String username) throws EntityNotFoundException {
+        UserEntity u = getUserEntity(username);
         PublicationDto responce;
         PublicationEntity p = publicationRepository.getReferenceById(id);
-        if (p.isDeleted() && !Objects.equals(p.getUser().getId(), userId)) {
+        if ((p.isDeleted() || p.isDraft()) && !Objects.equals(p.getUser().getId(), u.getId())) {
             throw new EntityNotFoundException();
         }
 
@@ -337,7 +370,7 @@ public class PublicationService {
         responce.setDifficulty(Difficulty.values()[p.getDifficulty()].name());
         responce.setDifficultyValue(p.getDifficulty());
         Optional<CalificationEntity> calificationEntity =
-                calificationRepository.getByUserAndPublication(userRepository.getReferenceById(userId), p);
+                calificationRepository.getByUserAndPublication(u, p);
         if (calificationEntity.isPresent()) {
             responce.setMyCalification(calificationEntity.get().getPoints().toString());
         } else {
@@ -347,6 +380,20 @@ public class PublicationService {
         responce.setSections(sections);
 
         return responce;
+    }
+
+    BigDecimal calificationAverage(PublicationEntity p) {
+        List<CalificationEntity> list = calificationRepository.findAllByPublication(p);
+        if (!list.isEmpty()) {
+            BigDecimal value = BigDecimal.ZERO;
+            int count = 0;
+            for (CalificationEntity c : list) {
+                value = value.add(c.getPoints());
+                count++;
+            }
+            return value.divide(BigDecimal.valueOf(count), 1, RoundingMode.FLOOR);
+        }
+        return BigDecimal.ZERO;
     }
 
     public byte[] getImage(Long id) {
@@ -406,16 +453,18 @@ public class PublicationService {
 
     //Put y delete
     @Transactional
-    public PublicationDto put(PutPublicationRequest request) {
-        PublicationEntity publication = modelMapper.map(request, PublicationEntity.class);
+    public PublicationDto put(PutPublicationRequest request, String username) {
+        UserEntity u = getUserEntity(username);
+        PublicationEntity publicationOld = publicationRepository.getReferenceById(request.getId());
         LocalDateTime date;
-        if (!publicationRepository.existsById(publication.getId())
-                && !publicationRepository.getReferenceById(publication.getId()).isDeleted()) {
+        if (publicationOld.isDeleted()) {
             throw new EntityNotFoundException();
         } else {
-            date = publicationRepository.getReferenceById(publication.getId()).getCreationTime();
+            date = publicationOld.getCreationTime();
         }
-        publication.setUser(userRepository.getReferenceById(request.getUser()));
+
+        PublicationEntity publication = modelMapper.map(request, PublicationEntity.class);
+        publication.setUser(u);
         publication.setCreationTime(date);
         publicationRepository.save(publication);
 
@@ -430,11 +479,16 @@ public class PublicationService {
         publication.setSections(sectionEntities);
 
 
-        return get(publication.getId(), publication.getUser().getId());
+        return get(publication.getId(), username);
     }
 
-    public boolean delete(Long id) {
+    public boolean delete(Long id, String username) {
+        UserEntity u = getUserEntity(username);
         PublicationEntity p = publicationRepository.getReferenceById(id);
+        if(!p.getUser().getId().equals(u.getId())){
+            throw new IllegalArgumentException("Usuario incorrecto");
+        }
+        sectionRepository.deleteAllByPublication_Id(id);
         p.setDeleted(true);
         publicationRepository.save(p);
         return true;

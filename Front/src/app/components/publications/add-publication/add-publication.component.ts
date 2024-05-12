@@ -153,8 +153,8 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
 
 
   //guardar
-  onSubmit(){
-    if(this.form.invalid){
+  onSubmit(draft:boolean){
+    if(this.form.invalid && !draft){
       alert("El formulario es invalido");
       this.form.markAllAsTouched();
       return;
@@ -191,7 +191,6 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     }
 
     let data = {
-      "user": this.userService.user?.id,
       "name": this.form.controls['name'].value,
       "description": this.form.controls['description'].value,
       "type": this.form.controls['type'].value,
@@ -203,11 +202,23 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
       "count": this.form.controls['count'].value
     }
 
+    if(draft){
+      this.subs.add(
+        this.service.postDraft(data).subscribe(
+          {
+            next: value => {
+              this.uploadImages(value["sections"])
+            },
+            error: err => { alert("Hubo un error al guardar"); }
+          }
+        )
+      );
+      return;
+    }
     this.subs.add(
       this.service.postPublication(data).subscribe(
         {
           next: value => {
-            alert("La publicacion fue guardada con éxito");
             this.uploadImages(value["sections"])
           },
           error: err => { alert("Hubo un error al guardar"); }
@@ -249,7 +260,6 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
       .replace("https://www.youtube.com/shorts/","")
     this.video=value.split("&")[0];
   }
-
   uploadImages(sections: Section[]){
     let data = new FormData()
     let indexes = ""
@@ -258,8 +268,6 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     let sectionsStep = sections.filter((s) => s.type=="STEP")
       .sort((a,b) => a.number-b.number);
 
-    console.log(sectionsPhoto)
-    console.log(sectionsStep)
 
     for (let i in sectionsPhoto){
       data.append("images",this.pubImages[i].file);
@@ -274,13 +282,12 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     }
 
     data.append("indexes",indexes);
-    console.log(indexes)
 
     this.subs.add(
       this.service.postImages(data).subscribe(
         {
           next: value => {
-            alert("Imagenes guardada con éxito");
+            alert("La publicacion fue guardada con éxito");
             this.router.navigate(["/explore"])
           },
           error: err => { alert("Hubo un error al guardar"); }

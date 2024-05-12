@@ -42,12 +42,15 @@ public class PurchaseController {
     }
     @GetMapping("/deliveries")
     public List<DeliveryDto> getDeliveriesPending(@AuthenticationPrincipal Jwt authentication) {
+
+        System.out.println(authentication.toString());
         return service.getDeliveriesPending(authentication.getSubject());
     }
 
     @PostMapping("/reg")
-    public PurchaseResponce reg(@RequestBody PurchaseRequest request) throws MPException, MPApiException {
-        return service.registerSale(request);
+    public PurchaseResponce reg(@RequestBody PurchaseRequest request,
+                                @AuthenticationPrincipal Jwt authentication) throws MPException, MPApiException {
+        return service.registerSale(request,authentication.getSubject());
     }
 
 

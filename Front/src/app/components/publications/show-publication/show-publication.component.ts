@@ -77,7 +77,6 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
   calificate(points :number){
     this.subs.add(
       this.service.postCalification({
-        userId:this.userService.user?.id,
         pubId:this.publication.id,
         value:points
       }).subscribe(
@@ -97,7 +96,6 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
 
   buy(){
     let data = {
-      idUser: this.userService.user?.id,
       items: [
         {
           idPub: this.publication.id,
@@ -131,7 +129,7 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
           next: value => {
             id = value["id"]
             this.subs.add(
-              this.service.get(id,this.userService.user?.id||"1").subscribe(
+              this.service.get(id).subscribe(
                 {
                   next: value => {
                     // console.log(value)
@@ -164,7 +162,6 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
 
   addCart(){
     let data = {
-      userId: this.userService.user?.id,
       pubId: this.publication.id,
       value: this.countBuy
     }

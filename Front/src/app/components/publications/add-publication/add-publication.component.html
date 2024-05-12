@@ -3,7 +3,13 @@
   <div class="col-12 d-flex justify-content-between gap-1">
 
     <h1> NUEVA OBRA </h1>
-    <button type="submit" class="btn btn-primary fs-4 px-5 text-black space-text" (click)="onSubmit()">PUBLICAR</button>
+    <button type="submit" class="btn btn-primary fs-4 px-5 text-black space-text" [disabled]="form.invalid"
+            (click)="onSubmit(false)">PUBLICAR</button>
+  </div>
+  <div class="col-12 d-flex justify-content-end gap-1">
+
+    <button type="submit" class="btn btn-primary fs-4 px-5 text-black space-text"
+            (click)="onSubmit(true)">GUARDAR BORRADOR</button>
   </div>
 
   <div class="container mt-4 p-2 bg-light rounded-5 border border-warning-subtle border-5">

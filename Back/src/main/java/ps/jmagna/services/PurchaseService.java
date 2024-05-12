@@ -81,9 +81,13 @@ public class PurchaseService {
     private String url;
 
     @Transactional
-    public PurchaseResponce registerSale(PurchaseRequest request) throws MPException, MPApiException {
-
-        UserEntity user = userRepository.getReferenceById(request.getIdUser());
+    public PurchaseResponce registerSale(PurchaseRequest request, String username) throws MPException, MPApiException {
+        UserEntity user;
+        if (username.contains("@")) {
+            user = userRepository.getByEmail(username);
+        } else {
+            user = userRepository.getByUsername(username);
+        }
         if(userCanBuy(user)){
             throw new EntityNotFoundException("El usuario no puede comprar");
         }

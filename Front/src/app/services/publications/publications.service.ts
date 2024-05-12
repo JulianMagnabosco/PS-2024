@@ -14,8 +14,11 @@ export class PublicationsService {
   private baseUrl = "api/pub/";
   constructor(private client: HttpClient) { }
 
-  postPublication(user: any):Observable<any>{
-    return this.client.post(this.baseUrl + "new", user);
+  postPublication(data: any):Observable<any>{
+    return this.client.post(this.baseUrl + "new", data);
+  }
+  postDraft(data: any):Observable<any>{
+    return this.client.post(this.baseUrl + "draft", data);
   }
   postImages(data: any):Observable<any>{
     return this.client.post(this.baseUrl + "image", data,{});
@@ -33,16 +36,16 @@ export class PublicationsService {
     return this.client.get(this.baseUrl + "cart");
   }
 
-  get(id: string,user:string):Observable<any>{
-    return this.client.get(this.baseUrl + id+"/"+user);
+  get(id: string):Observable<any>{
+    return this.client.get(this.baseUrl + id);
   }
 
   getImages(id:string):Observable<any>{
     return this.client.get("api/image/pub/"+id, {responseType: "blob"});
   }
 
-  putPublication(user: any):Observable<any>{
-    return this.client.put(this.baseUrl + "mod", user);
+  putPublication(data: any):Observable<any>{
+    return this.client.put(this.baseUrl + "mod", data);
   }
 
 

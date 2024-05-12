@@ -21,6 +21,7 @@ public class PublicationEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     boolean deleted = Boolean.FALSE;
+    boolean draft = Boolean.FALSE;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     LocalDateTime creationTime;
     @ManyToOne

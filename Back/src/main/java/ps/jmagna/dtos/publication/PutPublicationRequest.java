@@ -8,7 +8,6 @@ import java.util.List;
 @Data
 public class PutPublicationRequest {
     Long id;
-    Long user;
     String name;
     String description;
     String type;

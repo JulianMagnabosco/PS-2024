@@ -58,7 +58,6 @@ export class CartComponent implements OnInit,OnDestroy {
 
   update(count:number, cart:Cart){
     let data = {
-      userId: this.authService.user?.id,
       pubId: cart.id,
       value: count
     }
