@@ -7,6 +7,10 @@
   background-color: #f6751e;
   border-color: #f6751e;
 }
+.btn-primary:disabled {
+  background-color: #cc7c4a;
+  border-color: #cc7c4a;
+}
 
 
 h1, .space-text{

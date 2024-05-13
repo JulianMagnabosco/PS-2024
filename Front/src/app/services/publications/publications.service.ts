@@ -17,9 +17,6 @@ export class PublicationsService {
   postPublication(data: any):Observable<any>{
     return this.client.post(this.baseUrl + "new", data);
   }
-  postDraft(data: any):Observable<any>{
-    return this.client.post(this.baseUrl + "draft", data);
-  }
   postImages(data: any):Observable<any>{
     return this.client.post(this.baseUrl + "image", data,{});
   }
@@ -34,6 +31,9 @@ export class PublicationsService {
   }
   getCart():Observable<any>{
     return this.client.get(this.baseUrl + "cart");
+  }
+  getDrafts():Observable<any>{
+    return this.client.get(this.baseUrl + "drafts");
   }
 
   get(id: string):Observable<any>{

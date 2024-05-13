@@ -101,7 +101,6 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
     if( this.data.mine) newParams["mine"] = true
     if( this.data.page != "") newParams["page"] = this.page
 
-    console.log(newParams)
 
     this.router.navigate([],{
       relativeTo: this.activatedRoute,
@@ -115,6 +114,7 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
           next: value => {
             this.countTotal=value["countTotal"]
             this.list=value["list"]
+            console.log(this.list)
           },
           error: err => {
             console.log(err)

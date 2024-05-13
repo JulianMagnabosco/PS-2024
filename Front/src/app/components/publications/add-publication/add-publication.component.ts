@@ -10,6 +10,7 @@ import {AuthService} from "../../../services/user/auth.service";
 import {Router} from "@angular/router";
 import {PublicationsService} from "../../../services/publications/publications.service";
 import {Section} from "../../../models/publication/section";
+import {Publication} from "../../../models/publication/publication";
 
 @Component({
   selector: 'app-add-publication',
@@ -21,6 +22,9 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
   showMaterials=true
   showSteps=true
   showPurchasedata=true
+
+  selectDraft=true;
+  dirtyForDraft=false;
 
   private subs: Subscription = new Subscription();
   form: FormGroup = this.fb.group({});
@@ -52,6 +56,13 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
 
   }
   ngOnInit(): void {
+    this.subs.add(this.form.valueChanges.subscribe(
+      {
+        next: value => {
+          this.dirtyForDraft=true;
+        }
+      }
+    ))
     this.subs.add(this.form.get("canSold")?.valueChanges.subscribe(
       {
         next: value => {
@@ -88,16 +99,97 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     this.subs.unsubscribe();
   }
 
+  charge(id:number){
+    this.selectDraft=false;
+    if(id==0) return;
+    this.subs.add(
+      this.service.get(id.toString()).subscribe(
+        {
+          next: value => {
+            this.setForm(value as Publication)
+          },
+          error: err => {
+            alert("Hubo un error al cargar");
+          }
+        }
+      )
+    );
+  }
+
+  setForm(data:Publication){
+    this.form.setValue({
+      name: data.name,
+      description: data.description,
+      type: data.type,
+      difficulty: data.difficultyValue,
+      image: true,
+      video: data.video,
+      conditions: [],
+      materials: [],
+      steps: [],
+      canSold: data.canSold,
+      price: data.price,
+      count: data.count
+    })
+
+    let sectionsPhoto = data.sections.filter((s) => s.type=="PHOTO");
+    let sectionsCond = data.sections.filter((s) => s.type=="COND")
+      .sort((a,b) => a.number-b.number);
+    let sectionsMat = data.sections.filter((s) => s.type=="MAT")
+      .sort((a,b) => a.number-b.number);
+    let sectionsStep = data.sections.filter((s) => s.type=="STEP")
+      .sort((a,b) => a.number-b.number);
+
+
+    for (let s of sectionsPhoto){
+      this.subs.add(
+        this.service.getImages(s.imageUrl.replace("http://localhost:8080/api/image/pub/","")).subscribe(
+          {
+            next: value => {
+              let v = value as Blob;
+              this.pubImages.push(
+                {url: s.imageUrl, file: new File([v],'image', {type: v.type})}
+              )
+            }
+          }
+        )
+      )
+    }
+    this.video=data.video||""
+
+    for (let s of sectionsCond){
+      this.addDetailCondition(s.text);
+    }
+    for (let s of sectionsMat){
+      this.addDetailMaterials(s.text);
+    }
+    for (let s of sectionsStep){
+      if(!s.imageUrl) continue;
+      this.subs.add(
+        this.service.getImages(s.imageUrl.replace("http://localhost:8080/api/image/pub/","")).subscribe(
+          {
+            next: value => {
+              let v = value as Blob;
+              this.addDetailsSteps(s.text, s.imageUrl);
+              this.stepImages.push(
+                {url: s.imageUrl, file: new File([v],'image', {type: v.type})}
+              )
+            }
+          }
+        )
+      )
+    }
+  }
   get detailsConditions(){
     return this.form.get("conditions") as FormArray
   }
-  addDetailCondition(){
+  addDetailCondition(text:string = ""){
     let v = this.fb.group({
       text: ["",[Validators.required,Validators.maxLength(500)]]
     })
+    v.setValue({text: text})
     this.detailsConditions.push(v)
     this.detailsConditions.markAsTouched()
-
   }
   removeDetailCondition(id:number){
     this.detailsConditions.removeAt(id)
@@ -106,10 +198,11 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
   get detailsMaterials(){
     return this.form.get("materials") as FormArray
   }
-  addDetailMaterials(){
+  addDetailMaterials(text:string = ""){
     let v = this.fb.group({
       text: ["",[Validators.required,Validators.maxLength(500)]]
     })
+    v.setValue({text: text})
     this.detailsMaterials.push(v)
     this.detailsMaterials.markAsTouched()
   }
@@ -120,15 +213,16 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
   get detailsSteps(){
     return this.form.get("steps") as FormArray
   }
-  addDetailsSteps(){
+  addDetailsSteps(text:string = "" ,url:string = ""){
     let v = this.fb.group({
       text: ["",[Validators.required,Validators.maxLength(500)]],
       image: [""]
     })
+    v.setValue({text: text, image: ""})
     this.detailsSteps.push(v)
     this.detailsSteps.markAsTouched()
 
-    this.stepImages.push({url:"assets/camera.png", file:new File([],"") })
+    this.stepImages.push({url:url, file:new File([],"") })
   }
   moveDetailsSteps(id:number,dir:number){
     let val = this.detailsSteps.at(id).value;
@@ -145,7 +239,6 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     this.stepImages[id+1] = this.stepImages[id+1+dir];
     this.stepImages[id+1+dir] = img;
   }
-
   removeDetailsSteps(id:number){
     this.detailsSteps.removeAt(id)
     this.stepImages.slice(id)
@@ -158,6 +251,9 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
       alert("El formulario es invalido");
       this.form.markAllAsTouched();
       return;
+    }
+    if(draft){
+      this.dirtyForDraft=false;
     }
 
     let sections:any[] = [];
@@ -195,6 +291,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
       "description": this.form.controls['description'].value,
       "type": this.form.controls['type'].value,
       "difficulty": this.form.controls['difficulty'].value,
+      "draft": draft,
       "video": this.form.controls['video'].value,
       "sections": sections,
       "canSold": this.form.controls['canSold'].value,
@@ -202,24 +299,11 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
       "count": this.form.controls['count'].value
     }
 
-    if(draft){
-      this.subs.add(
-        this.service.postDraft(data).subscribe(
-          {
-            next: value => {
-              this.uploadImages(value["sections"])
-            },
-            error: err => { alert("Hubo un error al guardar"); }
-          }
-        )
-      );
-      return;
-    }
     this.subs.add(
       this.service.postPublication(data).subscribe(
         {
           next: value => {
-            this.uploadImages(value["sections"])
+            this.uploadImages(value["sections"], draft)
           },
           error: err => { alert("Hubo un error al guardar"); }
         }
@@ -260,7 +344,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
       .replace("https://www.youtube.com/shorts/","")
     this.video=value.split("&")[0];
   }
-  uploadImages(sections: Section[]){
+  uploadImages(sections: Section[], draft:boolean){
     let data = new FormData()
     let indexes = ""
 
@@ -283,12 +367,20 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
 
     data.append("indexes",indexes);
 
+    if(indexes==""&&draft){
+      alert("El borrador fue guardado con éxito");
+      return;
+    }
     this.subs.add(
       this.service.postImages(data).subscribe(
         {
           next: value => {
-            alert("La publicacion fue guardada con éxito");
-            this.router.navigate(["/explore"])
+            if(draft){
+              alert("El borrador fue guardado con éxito");
+            }else {
+              alert("La publicacion fue guardada con éxito");
+              this.router.navigate(["/mypubs"])
+            }
           },
           error: err => { alert("Hubo un error al guardar"); }
         }

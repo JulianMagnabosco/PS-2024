@@ -45,11 +45,6 @@ public class PublicationController {
         return publicationService.addCart(request,authentication.getSubject());
     }
 
-    @PostMapping("/draft")
-    public PublicationDto addDraft(@RequestBody PublicationRequest request,
-                            @AuthenticationPrincipal Jwt authentication) {
-        return publicationService.addDraft(request,authentication.getSubject());
-    }
     //Busqueda
     @PostMapping("/search")
     public SearchPubResponce getAll(@RequestBody SearchPubRequest searchPubRequest,

@@ -37,6 +37,7 @@ import {CartComponent} from "./components/cart/cart.component";
 import {
   ListPublicationsMineComponent
 } from "./components/publications/list-publications-mine/list-publications-mine.component";
+import {DraftsComponent} from "./components/publications/drafts/drafts.component";
 
 
 @NgModule({
@@ -65,6 +66,7 @@ import {
     SellStadisticsComponent,
     CartComponent,
     ListPublicationsMineComponent,
+    DraftsComponent,
     HomeComponent
   ],
     imports: [

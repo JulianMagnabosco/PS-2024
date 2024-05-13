@@ -10,6 +10,7 @@ public class PublicationRequest {
     String name;
     String description;
     String type;
+    boolean draft;
     int difficulty;
     String video;
     List<SectionRequest> sections;

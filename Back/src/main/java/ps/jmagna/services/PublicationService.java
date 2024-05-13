@@ -69,6 +69,8 @@ public class PublicationService {
         publication.setSections(sectionEntities);
 
 
+        publicationRepository.saveAndFlush(publication);
+
         return get(publication.getId(), username);
     }
 
@@ -134,26 +136,6 @@ public class PublicationService {
 
 
         return true;
-    }
-    public PublicationDto addDraft(PublicationRequest request, String username) {
-
-        PublicationEntity publication = modelMapper.map(request, PublicationEntity.class);
-        publication.setUser(getUserEntity(username));
-        publication.setDraft(true);
-        publication.setCreationTime(LocalDateTime.now());
-        publicationRepository.save(publication);
-
-        List<SectionEntity> sectionEntities = new ArrayList<>();
-        for (SectionRequest sectionDto : request.getSections()) {
-            SectionEntity s = modelMapper.map(sectionDto, SectionEntity.class);
-            s.setPublication(publication);
-
-            sectionEntities.add(sectionRepository.save(s));
-        }
-        publication.setSections(sectionEntities);
-
-
-        return get(publication.getId(), username);
     }
 
     //Listar
@@ -482,6 +464,7 @@ public class PublicationService {
         return get(publication.getId(), username);
     }
 
+    @Transactional
     public boolean delete(Long id, String username) {
         UserEntity u = getUserEntity(username);
         PublicationEntity p = publicationRepository.getReferenceById(id);

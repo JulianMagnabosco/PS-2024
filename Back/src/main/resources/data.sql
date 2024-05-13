@@ -60,7 +60,7 @@ values ('delivery','del','iver','$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe
 
 -- Publications:
 insert into publications (id_user, name, description, type, difficulty,can_sold,count,price,deleted, draft,creation_time)
-values (1,'Panal artesanal', 'esto es un panal de abejas artesanal #bees', 'ARTE',1,true,false,5,5
+values (1,'Panal artesanal', 'esto es un panal de abejas artesanal #bees', 'ARTE',1,true,5,5,false
        ,false,'2023-1-01 00:00:01');
 insert into sections (id_publication, type, text)
 values (1,'PHOTO', ''),
@@ -69,7 +69,6 @@ values (1,'PHOTO', ''),
 insert into sections (id_publication, type, text, number)
 values  (1,'STEP', 'Cerrar es un panal de abejas', 2),
         (1,'STEP', 'Abrir es un panal de abejas', 1);
-
 
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,count,price,deleted, draft,creation_time)
@@ -82,6 +81,12 @@ insert into publications (id_user, name, description, type, difficulty,can_sold,
 values (2,'Casa de perros ', 'pajaros', 'TECNOLOGIA',1,false,false,false,'2023-1-01 00:00:01');
 insert into sections (id_publication, type, text)
 values (3,'PHOTO', '');
+
+
+insert into publications (id_user, name, description, type, difficulty,can_sold,deleted ,draft,creation_time)
+values (1,'Casa de peldos ', 'pajaros', 'TECNOLOGIA',1,false,false,true,'2023-1-01 00:00:01');
+insert into sections (id_publication, type, text)
+values (4,'PHOTO', '');
 
 -- Sales:
 insert into sales (merchant_order,id_user,date_time,sale_state)

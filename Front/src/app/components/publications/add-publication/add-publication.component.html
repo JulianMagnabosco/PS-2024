@@ -1,15 +1,14 @@
+<app-drafts (selectEvent)="charge($event)" *ngIf="selectDraft"></app-drafts>
 
-<div class="container mt-4">
-  <div class="col-12 d-flex justify-content-between gap-1">
+<div class="container mt-4" *ngIf="!selectDraft">
+  <div class="col-12 d-flex justify-content-between gap-1 sticky-top p-1 border-orange bg-white rounded-3">
 
     <h1> NUEVA OBRA </h1>
+
+    <button type="submit" class="btn btn-warning px-5 text-black space-text m-2" [disabled]="!dirtyForDraft"
+            (click)="onSubmit(true)">GUARDAR BORRADOR</button>
     <button type="submit" class="btn btn-primary fs-4 px-5 text-black space-text" [disabled]="form.invalid"
             (click)="onSubmit(false)">PUBLICAR</button>
-  </div>
-  <div class="col-12 d-flex justify-content-end gap-1">
-
-    <button type="submit" class="btn btn-primary fs-4 px-5 text-black space-text"
-            (click)="onSubmit(true)">GUARDAR BORRADOR</button>
   </div>
 
   <div class="container mt-4 p-2 bg-light rounded-5 border border-warning-subtle border-5">

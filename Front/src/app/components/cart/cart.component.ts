@@ -23,7 +23,7 @@ export class CartComponent implements OnInit,OnDestroy {
   ];
   total:number=0;
 
-  constructor(private service: PublicationsService,private authService: AuthService, private router: Router) {
+  constructor(private service: PublicationsService,private purchaseService: PurchaseService) {
   }
   ngOnInit(): void {
     this.charge()
@@ -73,6 +73,35 @@ export class CartComponent implements OnInit,OnDestroy {
       })
     )
 
+  }
+  buy(){
+    let items=[];
+    for(let item of this.list){
+      items.push({
+
+        idPub: item.id,
+        count: item.selectedCount
+      })
+    }
+    let data = {
+      items: items
+    }
+    this.subs.add(
+      this.purchaseService.postSale(data).subscribe(
+        {
+          next: value => {
+            // console.log(value["preference"]["initPoint"])
+            window.location.href = value["preference"]["initPoint"]
+          },
+          error: err => {
+            console.log(err)
+            if(err.status==400){
+              alert("El usuario no posee los datos de compra completos")
+            }
+          }
+        }
+      )
+    );
   }
 
   notupdate(i:number,cart:Cart){
