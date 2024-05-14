@@ -63,6 +63,9 @@ public class PurchaseService {
 
 
     @Autowired
+    EmailService emailService;
+
+    @Autowired
     PreferenceClient preferenceClient;
     @Autowired
     CustomMPClient customMPClient;
@@ -88,7 +91,7 @@ public class PurchaseService {
         } else {
             user = userRepository.getByUsername(username);
         }
-        if(userCanBuy(user)){
+        if(!userCanBuy(user)){
             throw new EntityNotFoundException("El usuario no puede comprar");
         }
 
@@ -147,7 +150,14 @@ public class PurchaseService {
         responce = new NotificationResponce(data.get("resource").toString(),
                 data.get("topic").toString());
 
-        String path =  URI.create(responce.getResource()).getPath();
+        String path;
+        try {
+            URI uri = new URI(responce.getResource());
+            path = uri.getPath();
+        }catch (Exception e){
+            path = "";
+        }
+//        String path =  URI.create(responce.getResource()).getPath();
         String idStr = path.substring(path.lastIndexOf('/') + 1);
         Long id = Long.parseLong(idStr);
 
@@ -161,13 +171,7 @@ public class PurchaseService {
 //            System.out.println("+Merchandorder: "+m.getId());
 
         Optional<SaleEntity> optionalSale = saleRepository.findByMerchantOrder(m.getId());
-
-        SaleEntity sale;
-        if (optionalSale.isEmpty()) {
-            sale = registerSaleDelivery(userId, m);
-        } else {
-            sale = optionalSale.get();
-        }
+        SaleEntity sale = optionalSale.orElseGet(() -> registerSaleDelivery(userId, m));
 
         BigDecimal total = BigDecimal.ZERO;
         for (MerchantOrderPayment mpay : m.getPayments()) {
@@ -180,30 +184,33 @@ public class PurchaseService {
             if (m.getShipments().isEmpty()) { // The merchant_order don't has any shipments
                 System.out.println("Totally paid. Release your item.");
 
-                PaymentPayerRequest payerRequest = PaymentPayerRequest.builder()
-                        .email(emailApp)
-                        .build();
-
-                for (SaleDetailEntity detail : sale.getDetails()) {
-
-                    String token = customMPClient.getToken(detail.getPublication().getUser().getMpClient(),
-                            detail.getPublication().getUser().getMpSecret());
-
-                    MPRequestOptions options = MPRequestOptions.builder()
-                            .accessToken(token)
-                            .build();
-                    PaymentCreateRequest newPayment = PaymentCreateRequest.builder()
-                            .payer(payerRequest)
-                            .transactionAmount(detail.getTotal())
-                            .description("Pay by "+ detail.getPublication().getName())
-                            .build();
-                    paymentClient.create(newPayment,options);
-                }
+//                PaymentPayerRequest payerRequest = PaymentPayerRequest.builder()
+//                        .email(emailApp)
+//                        .build();
+//
+//                for (SaleDetailEntity detail : sale.getDetails()) {
+//
+//                    String token = customMPClient.getToken(detail.getPublication().getUser().getMpClient(),
+//                            detail.getPublication().getUser().getMpSecret());
+//                    System.out.println("Token Seller:"+token);
+//
+//                    MPRequestOptions options = MPRequestOptions.builder()
+//                            .accessToken(token)
+//                            .build();
+//                    PaymentCreateRequest newPayment = PaymentCreateRequest.builder()
+//                            .payer(payerRequest)
+//                            .transactionAmount(detail.getTotal())
+//                            .description("Pay by "+ detail.getPublication().getName())
+//                            .build();
+//                    paymentClient.create(newPayment,options);
+//                }
 
                 sale.setSaleState(SaleState.APROBADA);
                 saleRepository.save(sale);
             }
         }
+        emailService.sendEmail("Compra","La compra "+ sale.getId()+" esta en estado: "+
+                sale.getSaleState().toString(), sale.getUser().getEmail());
         return responce;
     }
 
@@ -214,7 +221,7 @@ public class PurchaseService {
         Long uId = Long.parseLong(userId);
 
         UserEntity user = userRepository.getReferenceById(uId);
-        if(userCanBuy(user)){
+        if(!userCanBuy(user)){
             throw new EntityNotFoundException("El usuario no puede comprar");
         }
         sale.setUser(user);

@@ -22,9 +22,9 @@
               <div class="col-auto fw-bold">
                 Unidades:&nbsp;
               </div>
-              <div class="col-sm d-flex">
+              <div class="col-auto d-flex">
                 <input class="form-control form-control-sm" type="number"
-                       style="min-width: 50px"
+                       style="min-width: 50px; max-width: 80px"
                        [(ngModel)]="listCounts[i]" min="1">
                 <div *ngIf="listCounts[i]!=c.selectedCount">
                   <button class="btn btn-secondary bi bi-check" (click)="update(listCounts[i],c)"></button>
@@ -36,6 +36,10 @@
               </div>
             </div>
 
+          </div>
+
+          <div class="col-sm-auto ">
+            <button class="btn btn-primary w-100 h-100" (click)="buyAlone(c)">Comprar</button>
           </div>
           <div class="col-sm-auto ">
             <button class="btn btn-danger w-100 h-100" (click)="remove(c)">X</button>

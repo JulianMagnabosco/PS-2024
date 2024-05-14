@@ -1,6 +1,7 @@
 package ps.jmagna.clients;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -8,7 +9,8 @@ import org.springframework.web.client.RestTemplate;
 public class CustomMPClient {
     @Autowired
     private RestTemplate restTemplate;
-    private String baseResourceUrl = "";
+    @Value("${mp.api-auth}")
+    private String baseResourceUrl;
 
     public String getToken(String client, String secret) {
         String get = restTemplate.postForObject(

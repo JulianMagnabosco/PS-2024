@@ -103,6 +103,32 @@ export class CartComponent implements OnInit,OnDestroy {
       )
     );
   }
+  buyAlone(cart:Cart){
+    let item={
+
+      idPub: cart.id,
+      count: cart.selectedCount
+    }
+    let data = {
+      items: [item]
+    }
+    this.subs.add(
+      this.purchaseService.postSale(data).subscribe(
+        {
+          next: value => {
+            // console.log(value["preference"]["initPoint"])
+            window.location.href = value["preference"]["initPoint"]
+          },
+          error: err => {
+            console.log(err)
+            if(err.status==400){
+              alert("El usuario no posee los datos de compra completos")
+            }
+          }
+        }
+      )
+    );
+  }
 
   notupdate(i:number,cart:Cart){
     this.listCounts[i] = cart.selectedCount
