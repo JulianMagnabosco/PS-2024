@@ -1,6 +1,6 @@
-<div class="container mt-4 p-2 bg-light rounded-5 border border-warning-subtle border-5">
-  <h1 class="text-center"> REGISTRO </h1>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="row g-3">
+<div class="container mt-4 p-2 bg-light rounded-5 border border-warning-subtle border-5" style="max-width: 50rem">
+<h1 class="text-center mb-2">REGISTRO</h1>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="d-flex flex-column row-gap-3 p-2">
     <div class="col-12">
       <label for="nameInput" class="form-label">Nombre</label>
       <input type="text" formControlName="name" class="form-control" id="nameInput"
@@ -14,8 +14,13 @@
       && form.controls['name'].hasError('maxlength')">
         El nombre no puede superar los 50 caracteres.
       </div>
-      <div class="text-danger " *ngIf="form.hasError('invalidName')">
-        El nombre no puede incluir &commat;.
+      <div class="invalid-feedback" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)
+      && form.controls['name'].hasError('invalidName')">
+        El nombre no puede incluir caracteres especiales (excepto por _).
+      </div>
+      <div class="text-danger" style="font-size: .875em" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)
+      && !tips.okName">
+        Nombre usado
       </div>
     </div>
 
@@ -30,7 +35,11 @@
       </div>
       <div class="invalid-feedback" *ngIf="(form.controls['email'].touched || form.controls['email'].dirty)
       && form.controls['email'].hasError('email')">
-        El email debe ser valido.
+        El email es invalido.
+      </div>
+      <div class="text-danger" style="font-size: .875em" *ngIf="(form.controls['email'].touched || form.controls['email'].dirty)
+      &&!tips.okEmail">
+        Email usado
       </div>
     </div>
 
@@ -39,13 +48,21 @@
       <input type="password" formControlName="password" class="form-control" id="passwordInput"
              [class.is-invalid]="(form.controls['password'].touched || form.controls['password'].dirty)
       && form.controls['password'].invalid">
+      <div class="card p-1" style="font-size: .875em" *ngIf="(form.controls['password'].touched
+      || form.controls['password'].dirty) && !form.controls['password'].hasError('required')"
+           [ngSwitch]="tips.points">
+        <ng-container *ngSwitchCase="3" class="text-success">Contraseña Fuerte</ng-container>
+        <ng-container *ngSwitchCase="2">Contraseña Normal</ng-container>
+        <ng-container *ngSwitchCase="1">Contraseña Debil</ng-container>
+        <ng-container *ngSwitchDefault>Verificando...</ng-container>
+      </div>
       <div class="invalid-feedback" *ngIf="(form.controls['password'].touched || form.controls['password'].dirty)
-      && form.controls['password'].hasError('required')">a
-        El código es requerido.
+      && form.controls['password'].hasError('required')">
+        La contraseña es requerida.
       </div>
       <div class="invalid-feedback" *ngIf="(form.controls['password'].touched || form.controls['password'].dirty)
       && form.controls['password'].hasError('maxlength')">
-        El código no puede superar los 50 caracteres.
+        La contraseña no puede superar los 50 caracteres.
       </div>
     </div>
 
@@ -55,16 +72,18 @@
              [class.is-invalid]="(form.controls['password2'].touched || form.controls['password2'].dirty)
       && form.controls['password2'].invalid">
       <div class="invalid-feedback" *ngIf="(form.controls['password2'].touched || form.controls['password2'].dirty)
-      && form.controls['password2'].hasError('required')">a
-        La contraseña es requerido.
+      && form.controls['password2'].hasError('required')">
+        La contraseña repetida es requerida.
       </div>
       <div class="invalid-feedback" *ngIf="(form.controls['password2'].touched || form.controls['password2'].dirty)
       && form.controls['password2'].hasError('maxlength')">
         La contraseña no puede superar los 50 caracteres.
       </div>
-    </div>
-    <div class="text-danger " *ngIf="form.hasError('notSame')">
-      La contraseña debe coincidir.
+      <div class="text-danger" style="font-size: .875em" *ngIf="(form.controls['password2'].touched
+    || form.controls['password2'].dirty) && form.hasError('notSame') &&
+    !form.controls['password2'].hasError('required')">
+        La contraseña debe coincidir.
+      </div>
     </div>
 
     <div class="col-12">
@@ -73,7 +92,7 @@
 
     <div class="col-12 d-flex justify-content-center gap-1">
       <span class="align-self-center">Ya tenes cuenta?</span>
-      <button type="button" class="btn btn-primary" (click)="exit()">INICIAR SECION</button>
+      <button type="button" class="btn btn-warning" (click)="exit()">INICIAR SECION</button>
     </div>
   </form>
 </div>

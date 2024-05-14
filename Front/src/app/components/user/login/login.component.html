@@ -1,7 +1,7 @@
-<div class="container mt-4 p-2 bg-light rounded-5 border border-warning-subtle border-5">
-  <h1 class="text-center"> ENTRAR </h1>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="row g-3">
-    <div class="col-12">
+<div class="container mt-4 p-2 bg-light rounded-5 border border-warning-subtle border-5" style="max-width: 50rem">
+  <h1 class="text-center mb-2"> INICIAR SESION </h1>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="d-flex flex-column row-gap-3 p-2">
+    <div >
       <label for="usernameInput" class="form-label">Nombre o Email</label>
       <input type="text" formControlName="username" class="form-control" id="usernameInput"
              [class.is-invalid]="(form.controls['username'].touched || form.controls['username'].dirty)
@@ -16,29 +16,29 @@
       </div>
     </div>
 
-    <div class="col-12">
+    <div >
       <label for="passwordInput" class="form-label">Contraseña</label>
       <input type="password" formControlName="password" class="form-control" id="passwordInput"
              [class.is-invalid]="(form.controls['password'].touched || form.controls['password'].dirty)
       && form.controls['password'].invalid">
       <div class="invalid-feedback" *ngIf="(form.controls['password'].touched || form.controls['password'].dirty)
       && form.controls['password'].hasError('required')">
-        El código es requerido.
+        La contraseña es requerido.
       </div>
       <div class="invalid-feedback" *ngIf="(form.controls['password'].touched || form.controls['password'].dirty)
       && form.controls['password'].hasError('maxlength')">
-        El código no puede superar los 50 caracteres.
+        La contraseña no puede superar los 50 caracteres.
       </div>
     </div>
 
 
-    <div class="col-12">
-      <button type="submit" class="btn btn-primary w-100">INICIAR SECION</button>
+    <div class="d-flex justify-content-center">
+      <button type="submit" class="btn btn-primary">INICIAR SESION</button>
     </div>
 
-    <div class="col-12 d-flex justify-content-center gap-1">
+    <div class="d-flex justify-content-center gap-1">
       <span class="align-self-center">No tenes cuenta?</span>
-      <button type="button" class="btn btn-primary" (click)="exit()">REGISTRARSE</button>
+      <button type="button" class="btn btn-warning" (click)="exit()">REGISTRARSE</button>
     </div>
   </form>
 </div>

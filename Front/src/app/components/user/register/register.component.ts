@@ -1,6 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from "rxjs";
-import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
+import {map, Observable, Subscription} from "rxjs";
+import {
+  AbstractControl,
+  AsyncValidatorFn,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from "@angular/forms";
 import {AuthService} from "../../../services/user/auth.service";
 import {Router} from "@angular/router";
 
@@ -13,20 +21,28 @@ export class RegisterComponent implements OnInit,OnDestroy {
   private subs: Subscription = new Subscription();
   form: FormGroup = this.fb.group({});
 
+  tips: { okName:boolean, okEmail:boolean, points:number}={ okName:true,okEmail:true,points:0 }
+
   constructor(private fb: FormBuilder, private service: AuthService, private router: Router) {
     this.form = this.fb.group({
-      name: ["", [Validators.required, Validators.maxLength(50 )]],
+      name: ["", [Validators.required, Validators.maxLength(50 ), this.checkName]],
       email: ["", [Validators.required, Validators.email]],
       password: ["", [Validators.required, Validators.maxLength(50)]],
       password2: ["", [Validators.required, Validators.maxLength(50)]]
     },{
-      validators: [this.checkPasswords, this.checkName]
+      validators: [this.checkPasswords]
     });
 
   }
 
   ngOnInit(): void {
-
+    this.subs.add(
+      this.form.valueChanges.subscribe({
+        next: value =>  {
+          this.test();
+        }
+      })
+    )
   }
 
   ngOnDestroy(): void {
@@ -61,6 +77,24 @@ export class RegisterComponent implements OnInit,OnDestroy {
       )
     );
   }
+  test(){
+
+    let user = {
+      "username": this.form.controls['name'].value,
+      "password": this.form.controls['password'].value,
+      "email": this.form.controls['email'].value,
+      "role": "USER"
+    }
+    this.subs.add(
+      this.service.postTestUset(user).subscribe(
+        {
+          next: value => {
+            this.tips=value;
+          }
+        }
+      )
+    );
+  }
 
   exit(){
     this.router.navigate(["/login"]);
@@ -72,8 +106,8 @@ export class RegisterComponent implements OnInit,OnDestroy {
     return pass === confirmPass ? null : { notSame: true }
   }
   checkName: ValidatorFn = (group: AbstractControl):  ValidationErrors | null => {
-    let namecorrect:string = group.get('name')?.value;
-    return !namecorrect.includes("@") ? null : { invalidName: true }
+    const conditionRegex = /([^a-zA-Z0-9_\.\/\(\)\-\s])/g;
+    return !conditionRegex.test(group.value) ? null : { invalidName: true }
   }
 }
 

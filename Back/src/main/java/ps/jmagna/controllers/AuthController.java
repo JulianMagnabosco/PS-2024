@@ -3,6 +3,7 @@ package ps.jmagna.controllers;
 import ps.jmagna.dtos.user.LoginResponce;
 import ps.jmagna.dtos.user.UserRequest;
 import ps.jmagna.dtos.user.UserDto;
+import ps.jmagna.dtos.user.UserTestResponce;
 import ps.jmagna.entities.UserEntity;
 import ps.jmagna.services.AuthService;
 import org.modelmapper.ModelMapper;
@@ -28,8 +29,6 @@ public class AuthController {
     private JwtEncoder encoder;
     @Autowired
     private AuthService service;
-    @Autowired
-    private ModelMapper modelMapper;
 
     @PostMapping("/signin")
     public LoginResponce auth(Authentication authentication) {
@@ -56,8 +55,8 @@ public class AuthController {
         return ResponseEntity.ok(dto);
 
     }
-    @GetMapping("/whatuser")
-    public String get(@AuthenticationPrincipal UserEntity userEntity) {
-        return userEntity.getUsername();
+    @PostMapping("/test/signup")
+    public UserTestResponce get(@RequestBody UserRequest data) {
+        return service.tesSingUp(data);
     }
 }

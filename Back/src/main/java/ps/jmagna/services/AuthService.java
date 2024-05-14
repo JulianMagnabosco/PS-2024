@@ -1,11 +1,6 @@
 package ps.jmagna.services;
 
-import ps.jmagna.dtos.user.ListUsersResponce;
-import ps.jmagna.dtos.user.LoginResponce;
-import ps.jmagna.dtos.user.UserMinDto;
-import ps.jmagna.dtos.user.PutUserRequest;
-import ps.jmagna.dtos.user.UserRequest;
-import ps.jmagna.dtos.user.UserDto;
+import ps.jmagna.dtos.user.*;
 import ps.jmagna.entities.StateEntity;
 import ps.jmagna.entities.UserEntity;
 import ps.jmagna.enums.UserRole;
@@ -94,6 +89,36 @@ public class AuthService implements UserDetailsService {
     responce=mapUserDto(newUser);
     return responce;
   }
+  public UserTestResponce tesSingUp(UserRequest data){
+    UserTestResponce userTestResponce = new UserTestResponce();
+    userTestResponce.setOkName(true);
+    userTestResponce.setOkEmail(true);
+    if (repository.findByUsername(data.getUsername()) != null) {
+      userTestResponce.setOkName(false);
+    }
+    if (repository.findByEmail(data.getEmail()) != null) {
+      userTestResponce.setOkEmail(false);
+    }
+
+    int numberFlag=0;
+    int capitalFlag=0;
+    int lowerCaseFlag=0;
+    for(Character ch : data.getPassword().toCharArray()) {
+      if(numberFlag==0 && Character.isDigit(ch)) {
+        numberFlag=1;
+      }
+      else {
+        if (capitalFlag==0 && Character.isUpperCase(ch)) {
+          capitalFlag=1;
+        }
+        else if (lowerCaseFlag==0 && Character.isLowerCase(ch)) {
+          lowerCaseFlag=1;
+        }
+      }
+    }
+    userTestResponce.setPoints(numberFlag+capitalFlag+lowerCaseFlag);
+    return userTestResponce;
+  }
 
   public ListUsersResponce getAll(String text, int page, int size){
 
@@ -157,6 +182,7 @@ public class AuthService implements UserDetailsService {
 
     return true;
   }
+
   static boolean userCanSell(UserEntity user) {
 
     if (user.getMpClient() == null || user.getMpClient().isBlank() ||
@@ -166,6 +192,7 @@ public class AuthService implements UserDetailsService {
 
     return true;
   }
+
   private UserDto mapUserDto(UserEntity u) {
     UserDto responce = modelMapper.map(u, UserDto.class);
     if(u.getState()!=null){
@@ -175,6 +202,7 @@ public class AuthService implements UserDetailsService {
     responce.setIconUrl(url + "/api/image/user/" + u.getId());
     return responce;
   }
+
   private UserMinDto mapUserMinDto(UserEntity u) {
     UserMinDto responce = modelMapper.map(u, UserMinDto.class);
     responce.setIconUrl(url + "/api/image/user/" + u.getId());

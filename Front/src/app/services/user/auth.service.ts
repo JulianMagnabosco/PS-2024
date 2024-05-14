@@ -46,4 +46,8 @@ export class AuthService {
   postUser(user: any):Observable<any>{
       return this.client.post(this.baseUrl + "signup", user);
   }
+
+  postTestUset(user: any):Observable<any>{
+    return this.client.post(this.baseUrl + "test/signup", user);
+  }
 }

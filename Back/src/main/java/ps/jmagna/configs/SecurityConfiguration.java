@@ -46,13 +46,13 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/api/auth/signup").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/sell/not").permitAll()
                         .requestMatchers("/api/image/**").permitAll()
                         .anyRequest().authenticated())
-                .csrf((csrf) -> csrf.ignoringRequestMatchers("/api/auth/signin")
-                        .ignoringRequestMatchers("/api/auth/signup")
-                        .ignoringRequestMatchers("/api/sell/not"))
+                .csrf((csrf) -> csrf.ignoringRequestMatchers("/api/auth/**")
+                        .ignoringRequestMatchers("/api/sell/not")
+                        .ignoringRequestMatchers("/api/image/**"))
                 .httpBasic(Customizer.withDefaults())
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
