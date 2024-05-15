@@ -43,7 +43,7 @@ export class SellStadisticsComponent implements OnInit, OnDestroy{
     this.subs.add(
       this.service.getSellsStadistics(firstDate,lastDate).subscribe({
         next: value => {
-          console.log(value)
+
           if(value["nodata"]){
             this.nodata="y"
             return

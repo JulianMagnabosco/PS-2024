@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit,OnDestroy {
         {
           next: value => {
             // alert("Inicio de secion éxitoso");
-            console.log(value)
+
             this.service.login(value)
 
             this.router.navigate(["/home"])

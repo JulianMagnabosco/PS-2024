@@ -61,9 +61,6 @@ export class ListPurchasesComponent implements OnInit,OnDestroy {
     let firstDate1 = this.firstDate+"T00:00:00"
     let lastDate1 = this.lastDate+"T23:59:59"
 
-    console.log(lastDate1)
-
-
     this.subs.add(
       this.service.getPurchases(firstDate1,lastDate1, this.text).subscribe(
         {

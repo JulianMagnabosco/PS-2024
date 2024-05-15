@@ -370,8 +370,6 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
     let sectionsStep = sections.filter((s) => s.type=="STEP")
       .sort((a,b) => a.number-b.number);
 
-    console.log(sectionsPhoto)
-    console.log(sectionsStep)
 
     for (let i in sectionsPhoto){
       data.append("images",this.pubImages[i].file);
@@ -386,7 +384,6 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
     }
 
     data.append("indexes",indexes);
-    console.log(indexes)
 
     this.subs.add(
       this.service.postImages(data).subscribe(

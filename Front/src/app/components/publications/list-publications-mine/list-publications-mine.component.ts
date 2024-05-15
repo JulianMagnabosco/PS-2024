@@ -95,8 +95,6 @@ export class ListPublicationsMineComponent  implements OnInit,OnDestroy {
     if( this.data.points != "0") newParams["points"] = this.data.points
     if( this.data.page != "") newParams["page"] = this.page
 
-    console.log(newParams)
-
     this.router.navigate([],{
       relativeTo: this.activatedRoute,
       queryParams: newParams as Params,

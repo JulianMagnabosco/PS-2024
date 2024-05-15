@@ -114,7 +114,6 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
           next: value => {
             this.countTotal=value["countTotal"]
             this.list=value["list"]
-            console.log(this.list)
           },
           error: err => {
             console.log(err)

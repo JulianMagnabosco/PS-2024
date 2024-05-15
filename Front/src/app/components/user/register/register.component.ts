@@ -62,8 +62,6 @@ export class RegisterComponent implements OnInit,OnDestroy {
       "email": this.form.controls['email'].value,
     }
 
-    console.log(user);
-
     this.subs.add(
       this.service.postUser(user).subscribe(
         {

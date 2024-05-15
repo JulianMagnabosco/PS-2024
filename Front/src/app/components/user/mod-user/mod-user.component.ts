@@ -88,7 +88,7 @@ export class ModUserComponent implements OnInit, OnDestroy {
       this.userService.get(id).subscribe(
         {
           next: value => {
-            console.log(value)
+
             this.user = value
             let userdata = {
               "username": this.user.username,
@@ -151,7 +151,6 @@ export class ModUserComponent implements OnInit, OnDestroy {
       "floor": this.form.controls['floor'].value,
       "room": this.form.controls['room'].value
     }
-    console.log(JSON.stringify(userdata))
     let data = new FormData();
     data.append("data", JSON.stringify(userdata))
     data.append("icon", this.icon)
@@ -160,7 +159,7 @@ export class ModUserComponent implements OnInit, OnDestroy {
       this.userService.put(data).subscribe(
         {
           next: value => {
-            console.log(value)
+
             this.authService.logout()
             this.router.navigate(["/user/" + this.user.id]);
           },

@@ -132,7 +132,7 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
               this.service.get(id).subscribe(
                 {
                   next: value => {
-                    // console.log(value)
+                    //
                     this.publication=value
                   },
                   error: err => {

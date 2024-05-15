@@ -55,7 +55,6 @@ export class ShowDeliveryComponent implements OnInit, OnDestroy,OnChanges {
           this.dealers = value["list"] as User[]
         },
         error: err => {
-          console.log(err)
           alert("Hubo un error al buscar");
         }
       }))
@@ -66,7 +65,6 @@ export class ShowDeliveryComponent implements OnInit, OnDestroy,OnChanges {
       "dealer":this.dealer,
       "deliveryState":this.state
     }
-    console.log(data)
     this.subs.add(this.purchaseService.putDeliveries(data).subscribe(
       {
         next: value => {
@@ -75,7 +73,6 @@ export class ShowDeliveryComponent implements OnInit, OnDestroy,OnChanges {
           this.closeModal?.nativeElement.click() //<-- here
         },
         error: err => {
-          console.log(err)
           alert("Hubo un error al guardar");
         }
       }))

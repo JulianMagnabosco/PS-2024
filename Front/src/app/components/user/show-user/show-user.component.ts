@@ -66,7 +66,7 @@ export class ShowUserComponent  implements OnInit, OnDestroy{
               this.service.get(id).subscribe(
                 {
                   next: value => {
-                    console.log(value)
+
                     this.user=value
                   },
                   error: err => {

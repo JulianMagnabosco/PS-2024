@@ -23,7 +23,6 @@ export class PubStadisticsComponent implements OnInit, OnDestroy{
   }
   ngOnInit(): void {
     let yeardiff = new Date().getFullYear()-this.months[0].year;
-    console.log(yeardiff);
     let i=0;
     for (let y of [].constructor(yeardiff+1)){
       let j=0;
@@ -49,7 +48,6 @@ export class PubStadisticsComponent implements OnInit, OnDestroy{
     const xAxisData:string[] = [];
     const data1:any[]  = [];
 
-    console.log(this.selected)
     this.subs.add(
       this.service.getPubsStadistics(this.selected.year.toString(),this.selected.month.toString())
         .subscribe({
