@@ -1,27 +1,27 @@
 <div class="container mt-4 p-2 bg-light rounded-5 border border-warning-subtle border-5" style="max-width: 50rem">
-<h1 class="text-center mb-2">REGISTRO</h1>
+  <h1 class="text-center mb-2">REGISTRO</h1>
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="d-flex flex-column row-gap-3 p-2">
-    <div class="col-12">
+    <div class="">
       <label for="nameInput" class="form-label">Nombre</label>
       <input type="text" formControlName="name" class="form-control" id="nameInput"
              [class.is-invalid]="(form.controls['name'].touched || form.controls['name'].dirty)
       && form.controls['name'].invalid">
-      <div class="invalid-feedback" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)
-      && form.controls['name'].hasError('required')">
-        El nombre es requerido.
-      </div>
-      <div class="invalid-feedback" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)
-      && form.controls['name'].hasError('maxlength')">
-        El nombre no puede superar los 50 caracteres.
-      </div>
-      <div class="invalid-feedback" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)
-      && form.controls['name'].hasError('invalidName')">
-        El nombre no puede incluir caracteres especiales (excepto por _).
-      </div>
-      <div class="text-danger" style="font-size: .875em" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)
-      && !tips.okName">
-        Nombre usado
-      </div>
+
+      <ng-container *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)">
+        <div class="invalid-feedback" *ngIf="form.controls['name'].hasError('required')">
+          El nombre es requerido.
+        </div>
+        <div class="invalid-feedback" *ngIf="form.controls['name'].hasError('maxlength')">
+          El nombre no puede superar los 50 caracteres.
+        </div>
+        <div class="invalid-feedback" *ngIf="form.controls['name'].hasError('invalidName')">
+          El nombre no puede incluir caracteres especiales (excepto por _).
+        </div>
+        <div class="text-danger" style="font-size: .875em" *ngIf="!tips.okName">
+          Nombre usado
+        </div>
+      </ng-container>
+
     </div>
 
     <div class="col-12">
@@ -29,68 +29,66 @@
       <input type="text" formControlName="email" class="form-control" id="emailInput"
              [class.is-invalid]="(form.controls['email'].touched || form.controls['email'].dirty)
       && form.controls['email'].invalid">
-      <div class="invalid-feedback" *ngIf="(form.controls['email'].touched || form.controls['email'].dirty)
-      && form.controls['email'].hasError('required')">
-        El email es requerido.
-      </div>
-      <div class="invalid-feedback" *ngIf="(form.controls['email'].touched || form.controls['email'].dirty)
-      && form.controls['email'].hasError('email')">
-        El email es invalido.
-      </div>
-      <div class="text-danger" style="font-size: .875em" *ngIf="(form.controls['email'].touched || form.controls['email'].dirty)
-      &&!tips.okEmail">
-        Email usado
-      </div>
+
+      <ng-container *ngIf="(form.controls['email'].touched || form.controls['email'].dirty)">
+        <div class="invalid-feedback" *ngIf="form.controls['email'].hasError('required')">
+          El email es requerido.
+        </div>
+        <div class="invalid-feedback" *ngIf="form.controls['email'].hasError('email')">
+          El email es invalido.
+        </div>
+        <div class="text-danger" style="font-size: .875em" *ngIf="!tips.okEmail">
+          Email usado
+        </div>
+      </ng-container>
     </div>
 
-    <div class="col-12">
+    <div class="">
       <label for="passwordInput" class="form-label">Contraseña</label>
       <input type="password" formControlName="password" class="form-control" id="passwordInput"
              [class.is-invalid]="(form.controls['password'].touched || form.controls['password'].dirty)
       && form.controls['password'].invalid">
-      <div class="card p-1" style="font-size: .875em" *ngIf="(form.controls['password'].touched
-      || form.controls['password'].dirty) && !form.controls['password'].hasError('required')"
-           [ngSwitch]="tips.points">
-        <ng-container *ngSwitchCase="3" class="text-success">Contraseña Fuerte</ng-container>
-        <ng-container *ngSwitchCase="2">Contraseña Normal</ng-container>
-        <ng-container *ngSwitchCase="1">Contraseña Debil</ng-container>
-        <ng-container *ngSwitchDefault>Verificando...</ng-container>
-      </div>
-      <div class="invalid-feedback" *ngIf="(form.controls['password'].touched || form.controls['password'].dirty)
-      && form.controls['password'].hasError('required')">
-        La contraseña es requerida.
-      </div>
-      <div class="invalid-feedback" *ngIf="(form.controls['password'].touched || form.controls['password'].dirty)
-      && form.controls['password'].hasError('maxlength')">
-        La contraseña no puede superar los 50 caracteres.
-      </div>
+
+      <ng-container *ngIf="(form.controls['password'].touched || form.controls['password'].dirty)">
+        <div style="font-size: .875em" *ngIf="form.controls['password'].valid" class="mt-1 fst-italic"
+             [ngSwitch]="tips.points">
+          <span *ngSwitchCase="3" class="text-success">Contraseña Fuerte</span>
+          <span *ngSwitchCase="2" class="text-warning-emphasis">Contraseña Normal</span>
+          <span *ngSwitchCase="1" class="text-danger">Contraseña Debil</span>
+          <span *ngSwitchDefault>Verificando...</span>
+        </div>
+        <div class="invalid-feedback" *ngIf=" form.controls['password'].hasError('required')">
+          La contraseña es requerida.
+        </div>
+        <div class="invalid-feedback" *ngIf="form.controls['password'].hasError('maxlength')">
+          La contraseña no puede superar los 50 caracteres.
+        </div>
+      </ng-container>
     </div>
 
-    <div class="col-12">
+    <div class="">
       <label for="passwordInput2" class="form-label">Repetir Contraseña</label>
       <input type="password" formControlName="password2" class="form-control" id="passwordInput2"
              [class.is-invalid]="(form.controls['password2'].touched || form.controls['password2'].dirty)
       && form.controls['password2'].invalid">
-      <div class="invalid-feedback" *ngIf="(form.controls['password2'].touched || form.controls['password2'].dirty)
-      && form.controls['password2'].hasError('required')">
-        La contraseña repetida es requerida.
-      </div>
-      <div class="invalid-feedback" *ngIf="(form.controls['password2'].touched || form.controls['password2'].dirty)
-      && form.controls['password2'].hasError('maxlength')">
-        La contraseña no puede superar los 50 caracteres.
-      </div>
-      <div class="text-danger" style="font-size: .875em" *ngIf="(form.controls['password2'].touched
-    || form.controls['password2'].dirty) && form.hasError('notSame') &&
-    !form.controls['password2'].hasError('required')">
-        La contraseña debe coincidir.
-      </div>
+      <ng-container *ngIf="(form.controls['password2'].touched || form.controls['password2'].dirty)">
+        <div class="invalid-feedback" *ngIf=" form.controls['password2'].hasError('required')">
+          Debe repetir la contraseña
+        </div>
+        <div class="text-danger" style="font-size: .875em" *ngIf="form.hasError('notSame') &&
+          !form.controls['password2'].hasError('required')">
+          La contraseña debe coincidir.
+        </div>
+      </ng-container>
     </div>
 
-    <div class="col-12">
-      <button type="submit" class="btn btn-primary w-100">REGISTRARSE</button>
+    <div class="d-flex justify-content-center">
+      <button type="submit" class="btn btn-primary" [disabled]="form.invalid || !tips.okEmail || !tips.okName">
+        REGISTRARSE
+      </button>
     </div>
 
-    <div class="col-12 d-flex justify-content-center gap-1">
+    <div class="d-flex justify-content-center gap-1">
       <span class="align-self-center">Ya tenes cuenta?</span>
       <button type="button" class="btn btn-warning" (click)="exit()">INICIAR SECION</button>
     </div>

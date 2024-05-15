@@ -83,7 +83,7 @@ public class AuthService implements UserDetailsService {
     String encryptedPassword = new BCryptPasswordEncoder().encode(data.getPassword());
 
     UserEntity newUser = new UserEntity(data.getUsername(), data.getEmail(),
-            encryptedPassword, data.getRole(), LocalDateTime.now());
+            encryptedPassword, UserRole.USER, LocalDateTime.now());
     newUser.setState(stateRepository.getReferenceById(1L));
 
     responce=mapUserDto(newUser);

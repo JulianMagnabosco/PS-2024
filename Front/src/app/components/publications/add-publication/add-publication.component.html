@@ -5,10 +5,12 @@
 
     <h1> NUEVA OBRA </h1>
 
-    <button type="submit" class="btn btn-warning px-5 text-black space-text m-2" [disabled]="!dirtyForDraft"
-            (click)="onSubmit(true)">GUARDAR BORRADOR</button>
-    <button type="submit" class="btn btn-primary fs-4 px-5 text-black space-text" [disabled]="form.invalid"
+    <span>
+      <button class="btn btn-warning text-black m-2" [disabled]="!dirtyForDraft"
+              (click)="onSubmit(true)">GUARDAR BORRADOR</button>
+      <button class="btn btn-primary text-black h-100 fs-5" [disabled]="form.invalid"
             (click)="onSubmit(false)">PUBLICAR</button>
+    </span>
   </div>
 
   <div class="container mt-4 p-2 bg-light rounded-5 border border-warning-subtle border-5">

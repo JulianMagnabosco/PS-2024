@@ -60,7 +60,6 @@ export class RegisterComponent implements OnInit,OnDestroy {
       "username": this.form.controls['name'].value,
       "password": this.form.controls['password'].value,
       "email": this.form.controls['email'].value,
-      "role": "USER"
     }
 
     console.log(user);
@@ -78,15 +77,13 @@ export class RegisterComponent implements OnInit,OnDestroy {
     );
   }
   test(){
-
     let user = {
       "username": this.form.controls['name'].value,
       "password": this.form.controls['password'].value,
-      "email": this.form.controls['email'].value,
-      "role": "USER"
+      "email": this.form.controls['email'].value
     }
     this.subs.add(
-      this.service.postTestUset(user).subscribe(
+      this.service.postTestUser(user).subscribe(
         {
           next: value => {
             this.tips=value;
@@ -109,5 +106,18 @@ export class RegisterComponent implements OnInit,OnDestroy {
     const conditionRegex = /([^a-zA-Z0-9_\.\/\(\)\-\s])/g;
     return !conditionRegex.test(group.value) ? null : { invalidName: true }
   }
+  //
+  // createValidator(): AsyncValidatorFn {
+  //   return (control: AbstractControl): Observable<ValidationErrors|null> => {
+  //     let user = {
+  //       "username": this.form.controls['name'].value,
+  //       "password": this.form.controls['password'].value,
+  //       "email": this.form.controls['email'].value,
+  //     }
+  //     return this.service.postTestUser(user).pipe(
+  //       map((value: any) => value ? null : {invalidAsync: true})
+  //     );
+  //   };
+  // }
 }
 

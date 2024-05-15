@@ -8,5 +8,4 @@ public class UserRequest {
     String username;
     String password;
     String email;
-    UserRole role;
 }
