@@ -1,6 +1,17 @@
 <nav class="navbar navbar-expand-lg bg-danger fixed-top" data-bs-theme="dark">
   <div class="container-fluid">
+    <a class="btn btn-outline-light me-1" data-bs-toggle="offcanvas"
+       href="#sideBar" role="button"
+       aria-controls="sideBar">
+      <span class="bi bi bi-list"></span>
+    </a>
     <a class="navbar-brand" style="width: 250px" href="#">COMOloHAGO</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
     <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
       <form class="d-flex me-1 input-group" role="search">
         <input class="form-control" type="search" placeholder="Buscar obra" aria-label="Search">
@@ -24,23 +35,19 @@
         </ul>
       </div>
     </div>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-            aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-            data-bs-target="#sideBar" aria-controls="sideBar"
-            aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
   </div>
 </nav>
 
 
-<div class="bar-side bg-danger text-white p-3 z-3 collapse show" id="sideBar">
-
-  <div class="list-group list-group-flush gap-2">
+<div class="offcanvas offcanvas-start bg-danger text-white p-2 px-3" id="sideBar">
+  <div class="d-flex justify-content-start gap-1 align-content-center">
+    <button class="btn btn-outline-light" data-bs-dismiss="offcanvas" aria-label="Close">
+      <span class="bi bi bi-list"></span>
+<!--      <span class="navbar-toggler-icon"></span>-->
+    </button>
+    <a class="fs-5 my-auto nav-link"  href="#">COMOloHAGO</a>
+  </div>
+  <div class="offcanvas-body gap-2">
     <a class="nav-link" aria-current="page" routerLink="explore"    >Explorar</a>
     <a class="nav-link" aria-current="page" routerLink="publicate"  >Nuevo</a>
     <a class="nav-link" aria-current="page" routerLink="mypubs"     >Mis obras</a>

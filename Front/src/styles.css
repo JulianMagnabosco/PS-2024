@@ -86,27 +86,9 @@ h1, .space-text{
 }
 
 
-.bar-side{
-  width: 100%;
-  position: sticky;
-  top: 56px;
-}
 .main-side{
   margin-top: 56px;
   margin-left: 0;
 }
-@media (min-width: 992px) {
-  .bar-side{
-    display: block;
-    width: 250px;
-    position: fixed;
-    top: 56px;
-    left: 0;
-    bottom: 0
-  }
-  .main-side{
-    margin-top: 56px;
-    margin-left: 250px;
-  }
-}
+
 
