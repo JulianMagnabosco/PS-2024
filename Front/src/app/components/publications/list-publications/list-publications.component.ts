@@ -40,6 +40,25 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
       this.activatedRoute.queryParams.subscribe({
         next: value => {
           this.form.patchValue(value)
+          this.charge(0)
+        }
+      })
+    )
+    this.subs.add(
+      this.form.get("diffMin")?.valueChanges.subscribe({
+        next: value => {
+          if(value>this.form.get("diffMax")?.value){
+            this.form.get("diffMax")?.setValue(this.form.get("diffMin")?.value)
+          }
+        }
+      })
+    )
+    this.subs.add(
+      this.form.get("diffMax")?.valueChanges.subscribe({
+        next: value => {
+          if(value<this.form.get("diffMin")?.value){
+            this.form.get("diffMin")?.setValue(this.form.get("diffMax")?.value)
+          }
         }
       })
     )
@@ -108,6 +127,7 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
       replaceUrl: true
     })
 
+    console.log(this.data)
     this.subs.add(
       this.service.search(this.data).subscribe(
         {

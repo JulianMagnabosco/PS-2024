@@ -12,6 +12,19 @@
   border-color: #cc7c4a;
 }
 
+.btn-check:hover+.btn{
+  background-color: #f6751e;
+  border-color: #f6751e;
+}
+.btn-check:checked+.btn{
+  background-color: #f6751e;
+  border-color: #f6751e;
+}
+.btn-check:active+.btn{
+  background-color: #f6751e;
+  border-color: #f6751e;
+}
+
 
 h1, .space-text{
   letter-spacing: 0.5em
@@ -88,7 +101,4 @@ h1, .space-text{
 
 .main-side{
   margin-top: 56px;
-  margin-left: 0;
 }
-
-

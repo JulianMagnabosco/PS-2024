@@ -1,40 +1,57 @@
-<nav class="navbar navbar-expand-lg bg-danger fixed-top" data-bs-theme="dark">
+<nav class="navbar navbar-expand-sm bg-danger fixed-top" >
   <div class="container-fluid">
-    <a class="btn btn-outline-light me-1" data-bs-toggle="offcanvas"
-       href="#sideBar" role="button"
+    <button class="btn btn-outline-light me-1" data-bs-toggle="offcanvas"
+       href="#sideBar"
        aria-controls="sideBar">
-      <span class="bi bi bi-list"></span>
-    </a>
-    <a class="navbar-brand" style="width: 250px" href="#">COMOloHAGO</a>
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-            aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+      <span class="bi bi-list"></span>
     </button>
-    <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
-      <form class="d-flex me-1 input-group" role="search">
-        <input class="form-control" type="search" placeholder="Buscar obra" aria-label="Search">
-        <button class="btn btn-primary bi bi-search border border-warning" type="submit"></button>
-      </form>
+
+    <a class="navbar-brand text-white" href="#" >COMOloHAGO</a>
+
+    <span class="navbar-toggler p-0">
+      <button class="btn btn-outline-light" data-bs-toggle="collapse"
+              data-bs-target="#navbarSearchContent" aria-controls="navbarSearchContent "
+              aria-expanded="false" aria-label="Toggle navigation">
+      <span class="bi bi-search"></span>
+    </button>
+<!--    <button class="btn btn-outline-light" data-bs-toggle="collapse"-->
+<!--            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"-->
+<!--            aria-expanded="false" aria-label="Toggle navigation">-->
+<!--      <span class="bi bi-person"></span>-->
+<!--    </button>-->
+    </span>
+
+    <div class="justify-content-end order-sm-last" id="navbarSupportedContent">
       <button class="btn btn-warning text-nowrap me-1" routerLink="login" *ngIf="!service.user">
         <i class="bi bi-person-circle"> Iniciar Secion</i>
       </button>
-      <button class="btn btn-warning text-nowrap me-1" routerLink="cart" *ngIf="service.user?.canBuy">
-        <i class="bi bi-cart"></i>
-      </button>
-      <div class="dropdown" *ngIf="service.user">
-        <button class="btn btn-warning text-nowrap me-1 dropdown-toggle" type="button" data-bs-toggle="dropdown">
-          <i class="bi bi-person-circle"></i>
-          <span class="px-1">{{ service.user.username }}</span>
+
+      <div class="d-flex gap-1 justify-content-end">
+        <button class="btn btn-warning text-nowrap me-1" routerLink="cart" *ngIf="service.user?.canBuy">
+          <i class="bi bi-cart"></i>
         </button>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <li><a class="dropdown-item" href="#" routerLink="login">Cambiar cuenta</a></li>
-          <li><a class="dropdown-item" href="#" routerLink="edit">Editar cuenta</a></li>
-          <li><a class="dropdown-item" href="#" routerLink="login" (click)="salir()">Salir</a></li>
-        </ul>
+        <div class="dropdown" *ngIf="service.user">
+          <button class="btn btn-warning text-nowrap me-1 dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            <i class="bi bi-person-circle"></i>
+            <span class="px-1 d-none d-sm-inline-block">{{ service.user.username }}</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#" routerLink="login">Cambiar cuenta</a></li>
+            <li><a class="dropdown-item" href="#" routerLink="edit">Editar cuenta</a></li>
+            <li><a class="dropdown-item" href="#" routerLink="login" (click)="salir()">Salir</a></li>
+          </ul>
+        </div>
       </div>
     </div>
+
+    <div class="collapse navbar-collapse mt-1 mt-sm-0 " id="navbarSearchContent">
+      <form class="d-flex me-1 input-group">
+        <input class="form-control form-orange " type="search" placeholder="Buscar obra" id="searchBar" #searchBar>
+        <button class="btn btn-primary bi bi-search " type="submit" form="searchForm"
+                (click)="search(searchBar.value)"></button>
+      </form>
+    </div>
+
   </div>
 </nav>
 
@@ -47,7 +64,7 @@
     </button>
     <a class="fs-5 my-auto nav-link"  href="#">COMOloHAGO</a>
   </div>
-  <div class="offcanvas-body gap-2">
+  <div class="offcanvas-body row-gap-2 d-flex flex-column "data-bs-dismiss="offcanvas" >
     <a class="nav-link" aria-current="page" routerLink="explore"    >Explorar</a>
     <a class="nav-link" aria-current="page" routerLink="publicate"  >Nuevo</a>
     <a class="nav-link" aria-current="page" routerLink="mypubs"     >Mis obras</a>
@@ -56,12 +73,13 @@
     <a class="nav-link" aria-current="page" routerLink="deliveries" >Entregas</a>
 
     <hr>
-    <a class="nav-link" aria-current="page" routerLink="users">Listar Usuarios</a>
+    <a class="nav-link" aria-current="page" routerLink="users"      >Listar Usuarios</a>
     <a class="nav-link" aria-current="page" routerLink="stats/users">Estadisticas de usuarios</a>
-    <a class="nav-link" aria-current="page" routerLink="stats/pubs"> Estadisticas de publicaciones</a>
+    <a class="nav-link" aria-current="page" routerLink="stats/pubs" >Estadisticas de publicaciones</a>
     <a class="nav-link" aria-current="page" routerLink="stats/sells">Estadisticas de ventas</a>
   </div>
 </div>
+
 <div class="main-side" >
   <router-outlet></router-outlet>
 </div>

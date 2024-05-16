@@ -253,7 +253,7 @@ public class PublicationService {
             predicates.add(difficulty);
 
             if (request.getType() != PubType.NONE) {
-                predicates.add(criteriaBuilder.equal(root.get("type"), request.getType().toString()));
+                predicates.add(criteriaBuilder.equal(root.get("type"), request.getType()));
             }
 
             if (request.isMine()){

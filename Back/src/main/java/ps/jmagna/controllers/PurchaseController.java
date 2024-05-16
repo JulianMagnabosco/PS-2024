@@ -42,8 +42,6 @@ public class PurchaseController {
     }
     @GetMapping("/deliveries")
     public List<DeliveryDto> getDeliveriesPending(@AuthenticationPrincipal Jwt authentication) {
-
-        System.out.println(authentication.toString());
         return service.getDeliveriesPending(authentication.getSubject());
     }
 

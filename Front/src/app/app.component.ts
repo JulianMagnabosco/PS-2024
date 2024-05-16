@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {AuthService} from "./services/user/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -7,13 +8,22 @@ import {AuthService} from "./services/user/auth.service";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'PS-Front';
+  title = 'COMOloHAGO';
 
-  constructor(public service:AuthService) {
+  constructor(public service:AuthService, private router:Router) {
 
   }
 
   salir(){
     this.service.logout()
+  }
+
+  search(value:string){
+    this.router.navigate(["explore"], {
+      queryParams: {
+        "text": value
+      },
+      replaceUrl: true
+    })
   }
 }
