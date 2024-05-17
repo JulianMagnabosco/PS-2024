@@ -5,6 +5,7 @@ import {AuthService} from "../../../services/user/auth.service";
 import {Router} from "@angular/router";
 import {UserService} from "../../../services/user/user.service";
 import Swal from 'sweetalert2'
+import {cAlert} from "../../../services/custom-alert/custom-alert.service";
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -54,18 +55,11 @@ export class LoginComponent implements OnInit,OnDestroy {
           },
           error: err => {
             if(err["status"]==401){
-              Swal.fire({
-                title: "Error",
-                text: "No existe usuario con esas credenciales",
-                icon: "error"
-              });
+              cAlert("error","No existe usuario con esas credenciales"
+              );
               // alert("No existe usuario con esas credenciales")
             }else {
-              Swal.fire({
-                title: "Error",
-                text: "Error inesperado en el servidor, revise su conexion a internet",
-                icon: "error"
-              });
+              cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
             }
           }
         }

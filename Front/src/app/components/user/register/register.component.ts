@@ -11,7 +11,7 @@ import {
 } from "@angular/forms";
 import {AuthService} from "../../../services/user/auth.service";
 import {Router} from "@angular/router";
-import Swal from "sweetalert2";
+import {cAlert} from "../../../services/custom-alert/custom-alert.service"
 
 @Component({
   selector: 'app-register',
@@ -67,22 +67,14 @@ export class RegisterComponent implements OnInit,OnDestroy {
       this.service.postUser(user).subscribe(
         {
           next: value => {
-            Swal.fire({
-              title: "Exito",
-              text: "La usuario fue registrado con éxito",
-              icon: "success"
-            }).then((value)=>{
+            cAlert("success","La usuario fue registrado con éxito").then((value)=>{
               this.exit();
             });
             // alert("La usuario fue guardado con éxito");
           },
           error: err => {
 
-              Swal.fire({
-                title: "Error",
-                text: "Error inesperado en el servidor, revise su conexion a internet",
-                icon: "error"
-              });
+              cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
           }
         }
       )

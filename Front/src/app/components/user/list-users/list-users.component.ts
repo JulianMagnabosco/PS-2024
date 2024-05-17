@@ -5,7 +5,7 @@ import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
 import {UserService} from "../../../services/user/user.service";
 import {User} from "../../../models/user/user";
-import Swal from "sweetalert2";
+import {cAlert} from "../../../services/custom-alert/custom-alert.service"
 
 @Component({
   selector: 'app-list-users',
@@ -65,11 +65,7 @@ export class ListUsersComponent implements OnInit,OnDestroy {
             console.log(err)
 
 
-              Swal.fire({
-                title: "Error",
-                text: "Error inesperado en el servidor, revise su conexion a internet",
-                icon: "error"
-              }); }
+              cAlert("error","Error inesperado en el servidor, revise su conexion a internet"); }
         }
       )
     );

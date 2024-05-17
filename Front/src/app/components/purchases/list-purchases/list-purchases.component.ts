@@ -7,7 +7,7 @@ import {Router} from "@angular/router";
 import {PurchaseService, stateClasses} from "../../../services/purchase/purchase.service";
 import {Purchase} from "../../../models/purchase/purchase";
 import {AuthService} from "../../../services/user/auth.service";
-import Swal from "sweetalert2";
+import {cAlert} from "../../../services/custom-alert/custom-alert.service"
 
 @Component({
   selector: 'app-list-purchases',
@@ -74,11 +74,7 @@ export class ListPurchasesComponent implements OnInit,OnDestroy {
             console.log(err)
 
 
-              Swal.fire({
-                title: "Error",
-                text: "Error inesperado en el servidor, revise su conexion a internet",
-                icon: "error"
-              });
+              cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
           }
         }
       )

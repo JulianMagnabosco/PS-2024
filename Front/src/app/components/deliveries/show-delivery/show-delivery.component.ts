@@ -15,7 +15,7 @@ import {UserService} from "../../../services/user/user.service";
 import {PurchaseService, stateClasses} from "../../../services/purchase/purchase.service";
 import {Subscription} from "rxjs";
 import {User} from "../../../models/user/user";
-import Swal from "sweetalert2";
+import {cAlert} from "../../../services/custom-alert/custom-alert.service"
 
 @Component({
   selector: 'app-show-delivery',
@@ -60,11 +60,7 @@ export class ShowDeliveryComponent implements OnInit, OnDestroy, OnChanges {
           this.dealers = value["list"] as User[]
         },
         error: err => {
-          Swal.fire({
-            title: "Error",
-            text: "Error inesperado en el servidor, revise su conexion a internet",
-            icon: "error"
-          });
+          cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
         }
       }))
   }
@@ -78,21 +74,13 @@ export class ShowDeliveryComponent implements OnInit, OnDestroy, OnChanges {
     this.subs.add(this.purchaseService.putDeliveries(data).subscribe(
       {
         next: value => {
-          Swal.fire({
-            title: "Exito",
-            text: "Delivery guardado",
-            icon: "success"
-          }).then(() => {
+          cAlert("success","Delivery guardado").then(() => {
             this.eventClose.emit();
             this.closeModal?.nativeElement.click() //<-- here
           });
         },
         error: err => {
-          Swal.fire({
-            title: "Error",
-            text: "Error inesperado en el servidor, revise su conexion a internet",
-            icon: "error"
-          });
+          cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
         }
       }))
 

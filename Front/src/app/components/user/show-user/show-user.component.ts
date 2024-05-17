@@ -9,7 +9,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 import {Loginuser} from "../../../models/user/loginuser";
 import {UserService} from "../../../services/user/user.service";
 import {User} from "../../../models/user/user";
-import Swal from "sweetalert2";
+import {cAlert} from "../../../services/custom-alert/custom-alert.service"
 
 @Component({
   selector: 'app-show-user',
@@ -72,11 +72,7 @@ export class ShowUserComponent  implements OnInit, OnDestroy{
                   },
                   error: err => {
 
-              Swal.fire({
-                title: "Error",
-                text: "Error inesperado en el servidor, revise su conexion a internet",
-                icon: "error"
-              });
+                    cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
                   }
                 }
               )

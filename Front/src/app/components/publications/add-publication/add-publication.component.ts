@@ -11,7 +11,7 @@ import {Router} from "@angular/router";
 import {PublicationsService} from "../../../services/publications/publications.service";
 import {Section} from "../../../models/publication/section";
 import {Publication} from "../../../models/publication/publication";
-import Swal from "sweetalert2";
+import {cAlert} from "../../../services/custom-alert/custom-alert.service"
 
 @Component({
   selector: 'app-add-publication',
@@ -111,11 +111,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
           },
           error: err => {
 
-              Swal.fire({
-                title: "Error",
-                text: "Error inesperado en el servidor, revise su conexion a internet",
-                icon: "error"
-              });
+              cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
           }
         }
       )
@@ -312,11 +308,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
             this.uploadImages(value["sections"], draft)
           },
           error: err => {
-              Swal.fire({
-                title: "Error",
-                text: "Error inesperado en el servidor, revise su conexion a internet",
-                icon: "error"
-              }); }
+              cAlert("error","Error inesperado en el servidor, revise su conexion a internet"); }
         }
       )
     );
@@ -379,11 +371,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     data.append("indexes",indexes);
 
     if(indexes==""&&draft){
-      Swal.fire({
-        title: "Exito",
-        text: "Borrador guardada",
-        icon: "error"
-      });
+      cAlert("error","Borrador guardada");
       return;
     }
     this.subs.add(
@@ -391,28 +379,16 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
         {
           next: value => {
             if(draft){
-              Swal.fire({
-                title: "Exito",
-                text: "Borrador guardada",
-                icon: "success"
-              });
+              cAlert("success","Borrador guardada");
               // alert("El borrador fue guardado con éxito");
             }else {
-              Swal.fire({
-                title: "Exito",
-                text: "Publicacion guardada",
-                icon: "success"
-              });
+              cAlert("success","Publicacion guardada");
               // alert("La publicacion fue guardada con éxito");
               this.router.navigate(["/mypubs"])
             }
           },
           error: err => {
-              Swal.fire({
-                title: "Error",
-                text: "Error inesperado en el servidor, revise su conexion a internet",
-                icon: "error"
-              }); }
+              cAlert("error","Error inesperado en el servidor, revise su conexion a internet"); }
         }
       )
     );

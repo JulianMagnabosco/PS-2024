@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {PublicationsService} from "../../../services/publications/publications.service";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {PublicationMin} from "../../../models/publication/publication-min";
-import Swal from "sweetalert2";
+import {cAlert} from "../../../services/custom-alert/custom-alert.service"
 
 @Component({
   selector: 'app-list-publications',
@@ -134,11 +134,7 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
             console.log(err)
 
 
-              Swal.fire({
-                title: "Error",
-                text: "Error inesperado en el servidor, revise su conexion a internet",
-                icon: "error"
-              });
+              cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
           }
         }
       )

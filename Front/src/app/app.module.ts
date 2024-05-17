@@ -76,7 +76,7 @@ import {DraftsComponent} from "./components/publications/drafts/drafts.component
         ReactiveFormsModule,
         NgxEchartsDirective,
         NgOptimizedImage,
-        SweetAlert2Module.forRoot(),
+        // SweetAlert2Module.forRoot(),
         YouTubePlayer,
         DateCustomPipe,
         FormsModule

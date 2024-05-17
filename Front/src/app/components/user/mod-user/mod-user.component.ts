@@ -14,7 +14,7 @@ import {
   ValidatorFn,
   Validators
 } from "@angular/forms";
-import Swal from "sweetalert2";
+import {cAlert} from "../../../services/custom-alert/custom-alert.service"
 
 @Component({
   selector: 'app-mod-user',
@@ -118,11 +118,7 @@ export class ModUserComponent implements OnInit, OnDestroy {
           },
           error: err => {
 
-              Swal.fire({
-                title: "Error",
-                text: "Error inesperado en el servidor, revise su conexion a internet",
-                icon: "error"
-              });
+              cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
           }
         }
       )
@@ -131,11 +127,7 @@ export class ModUserComponent implements OnInit, OnDestroy {
 
   submit() {
     if (this.form.invalid) {
-      Swal.fire({
-        title: "Error",
-        text: "El formulario es invalido:"+this.form.errors,
-        icon: "error"
-      });
+      cAlert("error","El formulario es invalido:"+this.form.errors);
       this.form.markAllAsTouched();
       return;
     }
@@ -175,11 +167,7 @@ export class ModUserComponent implements OnInit, OnDestroy {
           },
           error: err => {
 
-              Swal.fire({
-                title: "Error",
-                text: "Error inesperado en el servidor, revise su conexion a internet",
-                icon: "error"
-              });
+              cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
           }
         }
       )

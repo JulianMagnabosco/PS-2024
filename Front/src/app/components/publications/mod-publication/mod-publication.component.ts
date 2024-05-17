@@ -6,7 +6,7 @@ import {AuthService} from "../../../services/user/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Section} from "../../../models/publication/section";
 import {Publication} from "../../../models/publication/publication";
-import Swal from "sweetalert2";
+import {cAlert} from "../../../services/custom-alert/custom-alert.service"
 
 @Component({
   selector: 'app-mod-publication',
@@ -120,11 +120,7 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
                   },
                   error: err => {
 
-              Swal.fire({
-                title: "Error",
-                text: "Error inesperado en el servidor, revise su conexion a internet",
-                icon: "error"
-              });
+              cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
                     this.notfound=true;
                   }
                 }
@@ -329,11 +325,7 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
             this.uploadImages(value["sections"])
           },
           error: err => {
-              Swal.fire({
-                title: "Error",
-                text: "Error inesperado en el servidor, revise su conexion a internet",
-                icon: "error"
-              }); }
+              cAlert("error","Error inesperado en el servidor, revise su conexion a internet"); }
         }
       )
     );
@@ -400,21 +392,13 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
       this.service.postImages(data).subscribe(
         {
           next: value => {
-            Swal.fire({
-              title: "Exito",
-              text: "Imagenes guardada con éxito",
-              icon: "success"
-            }).then(()=>{
+            cAlert("success","Imagenes guardada con éxito").then(()=>{
               this.router.navigate(["/pub/"+this.publication.id]);
             });
 
           },
           error: err => {
-              Swal.fire({
-                title: "Error",
-                text: "Error inesperado en el servidor, revise su conexion a internet",
-                icon: "error"
-              }); }
+              cAlert("error","Error inesperado en el servidor, revise su conexion a internet"); }
         }
       )
     );
