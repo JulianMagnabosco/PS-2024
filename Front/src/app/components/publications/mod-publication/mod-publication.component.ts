@@ -6,6 +6,7 @@ import {AuthService} from "../../../services/user/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Section} from "../../../models/publication/section";
 import {Publication} from "../../../models/publication/publication";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-mod-publication',
@@ -118,7 +119,12 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
                     this.setForm()
                   },
                   error: err => {
-                    alert("Hubo un error al cargar");
+
+              Swal.fire({
+                title: "Error",
+                text: "Error inesperado en el servidor, revise su conexion a internet",
+                icon: "error"
+              });
                     this.notfound=true;
                   }
                 }
@@ -319,10 +325,15 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
       this.service.putPublication(data).subscribe(
         {
           next: value => {
-            alert("La publicacion fue guardada con éxito");
+            // alert("La publicacion fue guardada con éxito");
             this.uploadImages(value["sections"])
           },
-          error: err => { alert("Hubo un error al guardar"); }
+          error: err => {
+              Swal.fire({
+                title: "Error",
+                text: "Error inesperado en el servidor, revise su conexion a internet",
+                icon: "error"
+              }); }
         }
       )
     );
@@ -389,10 +400,21 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
       this.service.postImages(data).subscribe(
         {
           next: value => {
-            alert("Imagenes guardada con éxito");
-            this.router.navigate(["/pub/"+this.publication.id])
+            Swal.fire({
+              title: "Exito",
+              text: "Imagenes guardada con éxito",
+              icon: "success"
+            }).then(()=>{
+              this.router.navigate(["/pub/"+this.publication.id]);
+            });
+
           },
-          error: err => { alert("Hubo un error al guardar"); }
+          error: err => {
+              Swal.fire({
+                title: "Error",
+                text: "Error inesperado en el servidor, revise su conexion a internet",
+                icon: "error"
+              }); }
         }
       )
     );

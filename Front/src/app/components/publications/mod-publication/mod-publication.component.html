@@ -2,7 +2,8 @@
   <div class="col-12 d-flex justify-content-between gap-1">
 
     <h1>MODIFICAR OBRA</h1>
-    <button type="submit" class="btn btn-primary fs-4 px-5 text-black space-text" (click)="onSubmit()">GUARDAR</button>
+    <button type="submit" class="btn btn-primary fs-4 px-5 text-black space-text"
+            (click)="onSubmit()" [disabled]="form.invalid">GUARDAR</button>
   </div>
 
   <div class="container mt-4 p-2 bg-light rounded-5 border border-warning-subtle border-5">

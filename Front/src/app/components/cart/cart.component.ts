@@ -6,6 +6,7 @@ import {AuthService} from "../../services/user/auth.service";
 import {Router} from "@angular/router";
 import {PublicationsService} from "../../services/publications/publications.service";
 import {Cart} from "../../models/cart/cart";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-cart',
@@ -49,7 +50,11 @@ export class CartComponent implements OnInit,OnDestroy {
           },
           error: err => {
             console.log(err)
-            alert("Hubo un error al buscar");
+            Swal.fire({
+              title: "Error",
+              text: "Error inesperado en el servidor, revise su conexion a internet",
+              icon: "error"
+            });
           }
         }
       )
@@ -64,11 +69,20 @@ export class CartComponent implements OnInit,OnDestroy {
     this.subs.add(
       this.service.postCart(data).subscribe({
         next: value => {
-          alert("Añadido al carrito");
-          this.charge()
+          Swal.fire({
+            title: "Exito",
+            text: "Añadido al carrito",
+            icon: "success"
+          }).then((value)=>{
+            this.charge()
+          });
         },
         error:err => {
-          alert("Hubo un error al añadir al carrito");
+          Swal.fire({
+            title: "Error",
+            text: "Error inesperado en el servidor, revise su conexion a internet",
+            icon: "error"
+          });
         }
       })
     )
@@ -78,7 +92,6 @@ export class CartComponent implements OnInit,OnDestroy {
     let items=[];
     for(let item of this.list){
       items.push({
-
         idPub: item.id,
         count: item.selectedCount
       })
@@ -96,7 +109,17 @@ export class CartComponent implements OnInit,OnDestroy {
           error: err => {
             console.log(err)
             if(err.status==400){
-              alert("El usuario no posee los datos de compra completos")
+              Swal.fire({
+                title: "Error",
+                text: "El usuario no posee los datos de compra completos",
+                icon: "error"
+              });
+            }else {
+              Swal.fire({
+                title: "Error",
+                text: "Error inesperado en el servidor, revise su conexion a internet",
+                icon: "error"
+              });
             }
           }
         }
@@ -122,7 +145,17 @@ export class CartComponent implements OnInit,OnDestroy {
           error: err => {
             console.log(err)
             if(err.status==400){
-              alert("El usuario no posee los datos de compra completos")
+              Swal.fire({
+                title: "Error",
+                text: "El usuario no posee los datos de compra completos",
+                icon: "error"
+              });
+            }else {
+              Swal.fire({
+                title: "Error",
+                text: "Error inesperado en el servidor, revise su conexion a internet",
+                icon: "error"
+              });
             }
           }
         }

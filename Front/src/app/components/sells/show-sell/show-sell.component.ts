@@ -7,6 +7,7 @@ import {Comment} from "../../../models/comment/comment";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CommentService} from "../../../services/comment/comment.service";
 import {Delivery} from "../../../models/delivery/delivery";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-show-sell',
@@ -33,13 +34,22 @@ export class ShowSellComponent implements OnDestroy{
     this.subs.add(this.service.deleteSell(this.sell?.id.toString()||"0").subscribe(
       {
         next: value => {
-          alert("Delivery guardado")
-          this.eventClose.emit();
-          this.closeModal?.nativeElement.click() //<-- here
+          Swal.fire({
+            title: "Exito",
+            text: "Delivery guardado",
+            icon: "success"
+          }).then(()=>{
+            this.eventClose.emit();
+            this.closeModal?.nativeElement.click()
+          });
         },
         error: err => {
           console.log(err)
-          alert("Hubo un error al guardar");
+              Swal.fire({
+                title: "Error",
+                text: "Error inesperado en el servidor, revise su conexion a internet",
+                icon: "error"
+              });
         }
       }))
   }

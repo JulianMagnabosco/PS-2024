@@ -6,6 +6,7 @@ import {PublicationsService} from "../../../services/publications/publications.s
 import {DomSanitizer} from "@angular/platform-browser";
 import {AuthService} from "../../../services/user/auth.service";
 import {PurchaseService} from "../../../services/purchase/purchase.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-show-publication',
@@ -82,7 +83,12 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
       }).subscribe(
         {
           next: value => {
-            alert("Calificado")
+            // Swal.fire({
+            //   title: "Exito",
+            //   text: "Error inesperado en el servidor, revise su conexion a internet",
+            //   icon: "error"
+            // });
+            // alert("Calificado")
             this.charge()
           }
         }
@@ -113,7 +119,17 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
           error: err => {
             console.log(err)
             if(err.status==400){
-              alert("El usuario no posee los datos de compra completos")
+              Swal.fire({
+                title: "Error",
+                text: "El usuario no posee los datos de compra completos",
+                icon: "error"
+              });
+            }else {
+              Swal.fire({
+                title: "Error",
+                text: "Error inesperado en el servidor, revise su conexion a internet",
+                icon: "error"
+              });
             }
           }
         }
@@ -154,7 +170,12 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
           this.router.navigate(["/explore"])
         },
         error:err => {
-          alert("Hubo un error al eliminar");
+          Swal.fire({
+            title: "Error",
+            text: "Error inesperado en el servidor, revise su conexion a internet",
+            icon: "error"
+          });
+          // alert("Hubo un error al eliminar");
         }
       })
     )
@@ -168,10 +189,19 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
     this.subs.add(
       this.service.postCart(data).subscribe({
         next: value => {
-          alert("Añadido al carrito");
+          Swal.fire({
+            title: "Añadido",
+            icon: "success"
+          });
+          // alert("Añadido al carrito");
         },
         error:err => {
-          alert("Hubo un error al añadir al carrito");
+          // alert("Hubo un error al añadir al carrito");
+          Swal.fire({
+            title: "Error",
+            text: "Error inesperado en el servidor, revise su conexion a internet",
+            icon: "error"
+          });
         }
       })
     )

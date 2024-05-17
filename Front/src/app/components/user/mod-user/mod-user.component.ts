@@ -14,6 +14,7 @@ import {
   ValidatorFn,
   Validators
 } from "@angular/forms";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-mod-user',
@@ -116,7 +117,12 @@ export class ModUserComponent implements OnInit, OnDestroy {
             this.form.setValue(userdata)
           },
           error: err => {
-            alert("Hubo un error al cargar");
+
+              Swal.fire({
+                title: "Error",
+                text: "Error inesperado en el servidor, revise su conexion a internet",
+                icon: "error"
+              });
           }
         }
       )
@@ -125,7 +131,11 @@ export class ModUserComponent implements OnInit, OnDestroy {
 
   submit() {
     if (this.form.invalid) {
-      alert("El formulario es invalido");
+      Swal.fire({
+        title: "Error",
+        text: "El formulario es invalido:"+this.form.errors,
+        icon: "error"
+      });
       this.form.markAllAsTouched();
       return;
     }
@@ -164,7 +174,12 @@ export class ModUserComponent implements OnInit, OnDestroy {
             this.router.navigate(["/user/" + this.user.id]);
           },
           error: err => {
-            alert("Hubo un error al cargar");
+
+              Swal.fire({
+                title: "Error",
+                text: "Error inesperado en el servidor, revise su conexion a internet",
+                icon: "error"
+              });
           }
         }
       )

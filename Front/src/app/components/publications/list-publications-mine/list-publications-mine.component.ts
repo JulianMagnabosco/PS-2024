@@ -5,6 +5,7 @@ import {Subscription} from "rxjs";
 import {PublicationMin} from "../../../models/publication/publication-min";
 import {PublicationsService} from "../../../services/publications/publications.service";
 import {ActivatedRoute, Params, Router} from "@angular/router";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-list-publications-mine',
@@ -67,12 +68,6 @@ export class ListPublicationsMineComponent  implements OnInit,OnDestroy {
       this.page=0;
     }
 
-    if(this.form.invalid){
-      alert("El formulario es invalido");
-      this.form.markAllAsTouched();
-      return;
-    }
-
     this.data = {
       "text": this.form.controls['text'].value,
       "materials": this.form.controls['materials'].value,
@@ -111,7 +106,13 @@ export class ListPublicationsMineComponent  implements OnInit,OnDestroy {
           },
           error: err => {
             console.log(err)
-            alert("Hubo un error al buscar");
+
+
+              Swal.fire({
+                title: "Error",
+                text: "Error inesperado en el servidor, revise su conexion a internet",
+                icon: "error"
+              });
           }
         }
       )

@@ -5,6 +5,7 @@ import {PurchaseService, stateClasses} from "../../../services/purchase/purchase
 import {AuthService} from "../../../services/user/auth.service";
 import {Router} from "@angular/router";
 import {Delivery} from "../../../models/delivery/delivery";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-list-deliveries',
@@ -58,7 +59,13 @@ export class ListDeliveriesComponent implements OnInit,OnDestroy {
           },
           error: err => {
             console.log(err)
-            alert("Hubo un error al buscar");
+
+
+              Swal.fire({
+                title: "Error",
+                text: "Error inesperado en el servidor, revise su conexion a internet",
+                icon: "error"
+              });
           }
         }
       )

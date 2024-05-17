@@ -5,6 +5,7 @@ import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
 import {UserService} from "../../../services/user/user.service";
 import {User} from "../../../models/user/user";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-list-users',
@@ -50,12 +51,6 @@ export class ListUsersComponent implements OnInit,OnDestroy {
       this.page=Math.ceil(this.countTotal/this.size)-1;
     }
 
-    if(this.form.invalid){
-      alert("El formulario es invalido");
-      this.form.markAllAsTouched();
-      return;
-    }
-
     this.data = this.form.controls['text'].value
 
 
@@ -68,7 +63,13 @@ export class ListUsersComponent implements OnInit,OnDestroy {
           },
           error: err => {
             console.log(err)
-            alert("Hubo un error al buscar"); }
+
+
+              Swal.fire({
+                title: "Error",
+                text: "Error inesperado en el servidor, revise su conexion a internet",
+                icon: "error"
+              }); }
         }
       )
     );
