@@ -10,8 +10,18 @@ const cSwal = Swal.mixin({
 })
 export function cAlert(type:'error'|'success',text:string){
   return cSwal.fire({
-    title: type.toUpperCase(),
+    title: type=='error'? 'Error':'Éxito',
     text: text,
     icon: type
+  });
+}
+export function cConfirm(text:string){
+  return cSwal.fire({
+    title: "Aviso!",
+    text: text,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Si",
+    cancelButtonText: "No"
   });
 }

@@ -8,6 +8,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 import {Comment} from "../../models/comment/comment";
 import {CommentService} from "../../services/comment/comment.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {cConfirm} from "../../services/custom-alert/custom-alert.service";
 
 @Component({
   selector: 'app-comments',
@@ -104,17 +105,19 @@ export class CommentsComponent implements OnInit, OnDestroy{
   }
 
   delete(id:number){
-    if(confirm("¿Seguro que quiere eliminar el comentario?")){
-      this.subs.add(
-        this.service.delete(id).subscribe(
-          {
-            next: value => {
-              this.charge();
+    cConfirm("¿Seguro que quiere eliminar el comentario?").then((value)=>{
+      if(value.isConfirmed){
+        this.subs.add(
+          this.service.delete(id).subscribe(
+            {
+              next: value => {
+                this.charge();
+              }
             }
-          }
+          )
         )
-      )
-    }
+      }
+    })
   }
 
 }

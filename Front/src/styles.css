@@ -101,5 +101,21 @@ h1, .space-text{
 
 
 .main-side{
-  margin-top: 56px;
+  /*margin-top: 56px;*/
+  position: relative;
+  height: 100vh;
+  padding-top: 56px;
 }
+
+
+input:focus + .label-f,
+.label-f-v{
+  transform: translateY(-200%) scale(0.75);
+}
+
+.label-f{
+  position: absolute;
+  transition: transform 250ms;
+  top: -10px;
+}
+

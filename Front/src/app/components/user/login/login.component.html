@@ -1,4 +1,5 @@
-<div class="container p-2 bg-light rounded-5 border border-warning-subtle border-5" style="max-width: 50rem">
+<div class="container position-absolute top-50 start-50 translate-middle p-2
+bg-light rounded-5 border border-warning-subtle border-5" style="max-width: 30rem">
   <h1 class="text-center mb-2"> INICIAR SESION </h1>
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="d-flex flex-column row-gap-3 p-2">
     <div >
@@ -38,7 +39,9 @@
 
     <div class="d-flex justify-content-center gap-1">
       <span class="align-self-center">No tenes cuenta?</span>
-      <button type="button" class="btn btn-warning" (click)="exit()">REGISTRARSE</button>
+      <button type="button" class="btn btn-warning" (click)="exit()">REGISTRATE</button>
     </div>
   </form>
+
+
 </div>

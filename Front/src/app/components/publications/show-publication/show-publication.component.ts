@@ -6,7 +6,7 @@ import {PublicationsService} from "../../../services/publications/publications.s
 import {DomSanitizer} from "@angular/platform-browser";
 import {AuthService} from "../../../services/user/auth.service";
 import {PurchaseService} from "../../../services/purchase/purchase.service";
-import {cAlert} from "../../../services/custom-alert/custom-alert.service"
+import {cAlert, cConfirm} from "../../../services/custom-alert/custom-alert.service"
 
 @Component({
   selector: 'app-show-publication',
@@ -156,17 +156,21 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
   }
 
   delete(){
-    this.subs.add(
-      this.service.delete(this.publication.id.toString()).subscribe({
-        next: value => {
-          this.router.navigate(["/explore"])
-        },
-        error:err => {
-          cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
-          // alert("Hubo un error al eliminar");
-        }
-      })
-    )
+    cConfirm("¿Quieres eliminar el borrador?").then((value)=>{
+      if(value.isConfirmed){
+        this.subs.add(
+          this.service.delete(this.publication.id.toString()).subscribe({
+            next: value => {
+              this.router.navigate(["/explore"])
+            },
+            error:err => {
+              cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
+              // alert("Hubo un error al eliminar");
+            }
+          })
+        )
+      }
+    })
   }
 
   addCart(){
