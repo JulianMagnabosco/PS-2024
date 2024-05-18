@@ -8,7 +8,7 @@
   </div>
 
   <div class="gap-1 row justify-content-center p-3">
-    <div class="col-1 card btn button-orange bg-orange" href="#" style="width: 15rem;"
+    <div class="col-1 card btn button-border-orange bg-orange" href="#" style="width: 15rem;"
          (click)="selectDraft(0)">
       <div class="d-flex justify-content-center">
         <h3 class="card-title text-white">Sin plantilla</h3>
@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="col-1" *ngFor="let p of list" style="width: 15rem;" >
-      <div class="card btn button-orange bg-body-tertiary mb-1" style="width: 15rem;"
+      <div class="card btn button-border-orange bg-body-tertiary mb-1" style="width: 15rem;"
            (click)="selectDraft(p.id)">
         <div class="d-flex justify-content-between">
           <h3 class="card-title">{{ p.name }}</h3>

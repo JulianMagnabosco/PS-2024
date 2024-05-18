@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-sm bg-danger fixed-top" >
+<nav class="navbar navbar-expand-sm bg-red-orange fixed-top" >
   <div class="container-fluid">
     <button class="btn btn-outline-light me-1" data-bs-toggle="offcanvas"
        href="#sideBar"
@@ -56,7 +56,7 @@
 </nav>
 
 
-<div class="offcanvas offcanvas-start bg-danger text-white p-2 px-3" id="sideBar">
+<div class="offcanvas offcanvas-start bg-red-orange text-white p-2 px-3" id="sideBar">
   <div class="d-flex justify-content-start gap-1 align-content-center">
     <button class="btn btn-outline-light" data-bs-dismiss="offcanvas" aria-label="Close">
       <span class="bi bi bi-list"></span>
@@ -80,6 +80,32 @@
   </div>
 </div>
 
-<div class="main-side position-relative" >
+<div class="main-side" >
   <router-outlet></router-outlet>
 </div>
+
+<footer class="p-5 bg-black text-white d-flex justify-content-center">
+  <div class="col-md-4 col-sm-3">
+    Julian Magnabosco 2024.
+  </div>
+  <div class="col-md-4 col-sm-3">
+    Más:
+    <div>
+      <a routerLink="termcond" class="text-danger ">Términos y condiciones</a>
+    </div>
+    <div>
+      <a routerLink="pregfrec" class="text-danger ">Preguntas Frecuentes</a>
+    </div>
+  </div>
+  <div class="col-md-4 col-sm-3">
+    Contactos:
+    <div>
+      julian.magnabosco&commat;gmail.com
+    </div>
+    <div class="fs-3 ">
+      <a class="text-danger bi bi-twitter-x" href="https://x.com/home"></a>
+      /
+      <a class="text-danger bi bi-github" href="https://github.com/114211-Magnabosco-Julian"></a>
+    </div>
+  </div>
+</footer>

@@ -8,7 +8,7 @@
          *ngIf="list.length<=0">
       <h1 class="text-center "> Sin entregas por completar</h1>
     </div>
-    <div class="row border-5 button-orange rounded-5 p-2 bg-secondary-subtle mb-2" *ngFor="let i of list"
+    <div class="row border-5 button-border-orange rounded-5 p-2 bg-secondary-subtle mb-2" *ngFor="let i of list"
          data-bs-toggle="modal" data-bs-target="#exampleModal"
          (click)="open(i)">
       <div class="col-auto  p-0">

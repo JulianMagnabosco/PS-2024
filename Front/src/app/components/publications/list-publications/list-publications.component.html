@@ -83,7 +83,7 @@
   </button></div>
 
   <div class="gap-1 row justify-content-center p-3 pt-3">
-    <div class="col-1 card btn button-orange bg-body-tertiary" href="#" style="width: 15rem;" *ngFor="let p of list"
+    <div class="col-1 card btn button-border-orange bg-body-tertiary" href="#" style="width: 15rem;" *ngFor="let p of list"
          (click)="go(p.id)">
       <div class="d-flex justify-content-between">
         <h3 class="card-title">{{ p.name }}</h3>
@@ -107,7 +107,7 @@
   <div *ngIf="list.length>0 && list.length<countTotal" class="fixed-bottom">
     <ul class="pagination justify-content-center ">
       <li class="page-item ">
-        <button class="page-link button-orange text-black" (click)="charge(page-1)">Previous</button>
+        <button class="page-link button-border-orange text-black" (click)="charge(page-1)">Previous</button>
       </li>
       <li class="page-item " *ngFor="let p of pages; ">
         <button class="page-link " (click)="charge(p)"
@@ -116,7 +116,7 @@
         </button>
       </li>
       <li class="page-item ">
-        <button class="page-link button-orange text-black" (click)="charge(page+1)">Next</button>
+        <button class="page-link button-border-orange text-black" (click)="charge(page+1)">Next</button>
       </li>
     </ul>
   </div>

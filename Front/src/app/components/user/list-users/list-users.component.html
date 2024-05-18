@@ -47,13 +47,13 @@
   <div >
     <ul class="pagination justify-content-center ">
       <li class="page-item ">
-        <button class="page-link button-orange text-black" (click)="charge(page-1)">Previous</button></li>
+        <button class="page-link button-border-orange text-black" (click)="charge(page-1)">Previous</button></li>
       <li class="page-item " *ngFor="let p of pages; ">
         <button class="page-link " (click)="charge(p)"
                 [ngClass]="p == page ? 'bg-orange-low button-orange text-white':'button-orange text-black'"
         >{{ p+1 }}</button></li>
       <li class="page-item ">
-        <button class="page-link button-orange text-black" (click)="charge(page+1)">Next</button></li>
+        <button class="page-link button-border-orange text-black" (click)="charge(page+1)">Next</button></li>
     </ul>
   </div>
 </div>
