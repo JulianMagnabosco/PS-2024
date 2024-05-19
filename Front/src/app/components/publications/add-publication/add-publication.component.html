@@ -1,16 +1,15 @@
 <app-drafts (selectEvent)="charge($event)" *ngIf="selectDraft"></app-drafts>
 
-<div class="container mt-4" *ngIf="!selectDraft">
-  <div class="col-12 d-flex justify-content-between gap-1 sticky-top p-1 border-orange bg-white rounded-3">
+<div class="container mb-4" *ngIf="!selectDraft">
+  <div class="d-flex justify-content-between gap-1 p-1
+      border-orange border-top-0 rounded-top-0 bg-white rounded-3 sticky-controls ">
 
-    <h1> NUEVA OBRA </h1>
+    <h1 class="text-center me-auto"> NUEVA OBRA </h1>
 
-    <span>
-      <button class="btn btn-warning text-black m-2" [disabled]="!dirtyForDraft"
-              (click)="onSubmit(true)">GUARDAR BORRADOR</button>
-      <button class="btn btn-primary text-black h-100 fs-5" [disabled]="form.invalid"
-            (click)="onSubmit(false)">PUBLICAR</button>
-    </span>
+    <button class="btn btn-warning m-2 bi bi-pencil" [disabled]="!dirtyForDraft"
+            (click)="onSubmit(true)"> GUARDAR BORRADOR</button>
+    <button class="btn btn-primary fs-5 bi bi-check-lg" [disabled]="form.invalid"
+            (click)="onSubmit(false)"> PUBLICAR</button>
   </div>
 
   <div class="container mt-4 p-2 bg-light rounded-5 border border-warning-subtle border-5">
@@ -90,7 +89,7 @@
     </div>
 
     <div class="col-lg-4 col-sm-8 col-12">
-      <div class="border border-warning-subtle border-5 card" #img1>
+      <div class="border border-warning-subtle border-5" #img1>
 <!--        <img [src]="pubImages[0].url " class=" w-100 p-1"-->
 <!--             [alt]="pubImages[0].url" *ngIf="pubImages.length>0">-->
         <div id="carouselExample" class="carousel slide border border-5 border-warning-subtle rounded-2 p-1"
@@ -126,7 +125,10 @@
 <!--        </video>-->
 
 
-        <button class="text-center border-white-button bg-white" data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar o Cambiar Foto/Video</button>
+        <button class="text-center w-100 btn border-white-button bg-white"
+                data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar o Cambiar Foto/Video</button>
+
+
       </div>
     </div>
 

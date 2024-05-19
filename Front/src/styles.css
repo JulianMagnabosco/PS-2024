@@ -2,10 +2,10 @@
 :root{
   --text: #000000;
   --background: #f2eded;
-  --primary: #fa4b00;
-  --secondary: #ff9d00;
-  --warn: #ffc400;
-  --accent: #f2ff3d;
+  --primary: #d7410d;
+  --secondary: #d78914;
+  --warn: #dcad10;
+  --accent: #eafd24;
 }
 
 .space-text{
@@ -13,6 +13,10 @@
   letter-spacing: 0.2em
 }
 
+.form-control:focus {
+  border-color: #501605;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6);
+}
 .bg-red-orange{
   background-color: var(--primary);
 }
@@ -23,11 +27,14 @@
   background-color: #ffd1b7;
 }
 
-.btn-primary {
+.btn-primary,
+:not(.btn-check)+.btn:active,
+.btn-check:hover+.btn{
   background-color: var(--primary);
   border-color: var(--primary);
 }
-.btn-primary:hover {
+.btn-primary:hover,
+.btn-check:checked+.btn{
   background-color: #f6751e;
   border-color: #f6751e;
 }
@@ -36,14 +43,7 @@
   border-color: #cc7c4a;
 }
 
-.btn-check:hover+.btn{
-  background-color: var(--primary);
-  border-color: var(--primary);
-}
-.btn-check:checked+.btn{
-  background-color: #f6751e;
-  border-color: #f6751e;
-}
+
 .btn-check:active+.btn{
   background-color: #f6751e;
   border-color: #f6751e;
@@ -115,7 +115,7 @@
 .main-side{
   /*margin-top: 56px;*/
   position: relative;
-  height: 100vh;
+  min-height: 100vh;
   padding-top: 56px;
 }
 
@@ -163,3 +163,7 @@
   transform: translate(-50%, -75%);
 }
 
+.sticky-controls{
+  position: sticky;
+  top: 56px;
+}

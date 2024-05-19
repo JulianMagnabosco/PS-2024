@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {AuthService} from "./services/user/auth.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-root',
@@ -10,8 +11,17 @@ import {Router} from "@angular/router";
 export class AppComponent {
   title = 'COMOloHAGO';
 
-  constructor(public service:AuthService, private router:Router) {
-
+  subs:Subscription=new Subscription();
+  searchBarVal:string="";
+  constructor(public service:AuthService, private router:Router, private activeRoute:ActivatedRoute) {
+    this.subs.add(
+      this.activeRoute.queryParams.subscribe({
+        next: value => {
+          this.searchBarVal=value["text"]||""
+        }
+        }
+      )
+    )
   }
 
   salir(){
