@@ -4,14 +4,11 @@ import ps.jmagna.dtos.user.LoginResponce;
 import ps.jmagna.dtos.user.UserRequest;
 import ps.jmagna.dtos.user.UserDto;
 import ps.jmagna.dtos.user.UserTestResponce;
-import ps.jmagna.entities.UserEntity;
 import ps.jmagna.services.AuthService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -51,12 +48,12 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody UserRequest data){
-        UserDto dto = service.signUp(data);
+        UserDto dto = service.register(data);
         return ResponseEntity.ok(dto);
 
     }
     @PostMapping("/test/signup")
     public UserTestResponce get(@RequestBody UserRequest data) {
-        return service.tesSingUp(data);
+        return service.testSingUp(data);
     }
 }

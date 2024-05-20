@@ -86,7 +86,6 @@ export class CommentsComponent implements OnInit, OnDestroy{
 
     let data = {
       "pub":this.idPub,
-      "user":this.idUser,
       "father":id,
       "grandfather":grandid,
       "text":textInput.value

@@ -19,6 +19,5 @@ export interface User {
   floor:string ;
   room:string ;
 
-  mpClient:string;
-  mpSecret:string;
+  cvu:string;
 }

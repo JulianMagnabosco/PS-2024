@@ -4,6 +4,7 @@ import ps.jmagna.dtos.publication.CommentDto;
 import ps.jmagna.dtos.publication.ListCommentsResponce;
 import ps.jmagna.dtos.publication.CommentRequest;
 import ps.jmagna.entities.CommentEntity;
+import ps.jmagna.entities.UserEntity;
 import ps.jmagna.repository.CommentRepository;
 import ps.jmagna.repository.PublicationRepository;
 import ps.jmagna.repository.UserRepository;
@@ -29,10 +30,10 @@ public class CommentService {
     @Value("${app.url}")
     private String url;
 
-    public CommentDto register(CommentRequest request){
+    public CommentDto register(CommentRequest request, UserEntity user){
         CommentEntity comment = new CommentEntity();
         comment.setPublication(publicationRepository.getReferenceById(request.getPub()));
-        comment.setUser(userRepository.getReferenceById(request.getUser()));
+        comment.setUser(user);
         if(request.getFather()!=0){
             comment.setFather(commentRepository.getReferenceById(request.getFather()));
         }
@@ -96,8 +97,11 @@ public class CommentService {
         return responce;
     }
 
-    public boolean delete(Long id){
+    public boolean delete(Long id, UserEntity user){
         CommentEntity comment = commentRepository.getReferenceById(id);
+        if(!comment.getUser().getId().equals(user.getId())){
+            throw new IllegalArgumentException("Usuario incorrecto");
+        }
         comment.setDeleted(true);
         comment.setText("<Comentario eliminado>");
         commentRepository.save(comment);

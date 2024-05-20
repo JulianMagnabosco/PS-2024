@@ -34,8 +34,7 @@ export class ModUserComponent implements OnInit, OnDestroy {
     id: "",
     idState: "",
     lastname: "",
-    mpClient: "",
-    mpSecret: "",
+    cvu: "",
     name: "",
     numberDir: "",
     phone: "",
@@ -91,11 +90,12 @@ export class ModUserComponent implements OnInit, OnDestroy {
           next: value => {
 
             this.user = value
+            this.iconUrl=this.user.iconUrl
             let userdata = {
               "username": this.user.username,
               "password": "",
               "password2": "",
-              "icon": this.user.iconUrl != "",
+              "icon": false,
               "email": this.user.email,
 
               "name": this.user.name||"",
@@ -111,8 +111,7 @@ export class ModUserComponent implements OnInit, OnDestroy {
               "floor": this.user.floor||"",
               "room": this.user.room||"",
 
-              "mpClient": this.user.mpClient||"",
-              "mpSecret": this.user.mpSecret||""
+              "cvu": this.user.cvu||""
             }
             this.form.setValue(userdata)
           },
@@ -142,7 +141,6 @@ export class ModUserComponent implements OnInit, OnDestroy {
       "name": this.form.controls['name'].value,
       "lastname": this.form.controls['lastname'].value,
       "phone": this.form.controls['phone'].value,
-      "cvu": this.form.controls['cvu'].value,
       "dni": this.form.controls['dni'].value,
       "dniType": this.form.controls['dniType'].value,
 
@@ -151,7 +149,9 @@ export class ModUserComponent implements OnInit, OnDestroy {
       "numberDir": this.form.controls['numberDir'].value,
       "postalNum": this.form.controls['postalNum'].value,
       "floor": this.form.controls['floor'].value,
-      "room": this.form.controls['room'].value
+      "room": this.form.controls['room'].value,
+
+      "cvu": this.form.controls['cvu'].value
     }
     let data = new FormData();
     data.append("data", JSON.stringify(userdata))
@@ -185,6 +185,8 @@ export class ModUserComponent implements OnInit, OnDestroy {
         this.iconUrl = event.target?.result;
       }
     }
+    this.icon=""
+    this.iconUrl=""
   }
 
   checkPasswords: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {

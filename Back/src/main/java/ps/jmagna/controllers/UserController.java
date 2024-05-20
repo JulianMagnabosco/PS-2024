@@ -1,5 +1,7 @@
 package ps.jmagna.controllers;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import ps.jmagna.dtos.user.ListUsersResponce;
 import ps.jmagna.dtos.user.UserDto;
 import ps.jmagna.services.AuthService;
@@ -36,7 +38,8 @@ public class UserController {
 //    }
     @PutMapping(value = "/mod", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public UserDto put(@RequestParam(value = "icon",required = false) MultipartFile icon,
-                             @RequestParam("data") String data) throws IOException {
-        return service.put(data,icon);
+                       @RequestParam("data") String data,
+                       @AuthenticationPrincipal Jwt authentication) throws IOException {
+        return service.put(data,icon,service.findUser(authentication));
     }
 }

@@ -2,9 +2,11 @@
 :root{
   --text: #000000;
   --background: #f2eded;
+  --primary-dark: #8f2a07;
   --primary: #d7410d;
+  --shiny: #f6751e;
   --secondary: #d78914;
-  --warn: #dcad10;
+  --warn: #e3bf0c;
   --accent: #eafd24;
 }
 
@@ -33,6 +35,11 @@
   background-color: var(--primary);
   border-color: var(--primary);
 }
+.btn.btn-primary:active,
+.btn.btn-primary.show{
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
 .btn-primary:hover,
 .btn-check:checked+.btn{
   background-color: #f6751e;
@@ -44,6 +51,7 @@
 }
 
 
+
 .btn-check:active+.btn{
   background-color: #f6751e;
   border-color: #f6751e;
@@ -51,7 +59,7 @@
 
 
 .form-orange{
-  border: 3px solid var(--primary);;
+  border: 2px solid var(--primary);
   background-color: #f1e8e8;
 }
 .form-label-grey{
@@ -59,21 +67,21 @@
 }
 
 .border-orange{
-  border: 3px solid var(--primary);;
+  border: 3px solid var(--primary);
 }
 
-.button-border-orange{
-  border: 3px solid var(--primary);;
+.btn-border-orange{
+  border: 3px solid var(--shiny);
 }
-.button-border-orange:hover{
-   border: 3px solid #f6cb1e;
+.btn-border-orange:hover{
+   border: 3px solid var(--warn);
  }
 
-.border-white-button{
+.btn-border-white{
   border: 3px solid #ffffff;
 }
-.border-white-button:hover{
-   border: 3px solid #f6981e;
+.btn-border-white:hover{
+  border: 3px solid var(--warn);
 }
 
 .border-transparent{
@@ -125,7 +133,7 @@
   border: 2px solid #ffe9e6 ;
   border-radius: 10px;
   background-color: white;
-  input{
+  input, select{
     padding-top: 1.50rem;
     outline: none;
     display: block;
@@ -139,6 +147,8 @@
     transform: translateY(50%);
   }
   label:has(+input:focus),
+  label:has(+select:focus),
+  label:not(:placeholder-shown),
   label.label-float{
     transform-origin: left center;
     transition: transform 250ms;
@@ -151,7 +161,7 @@
   border: double 4px transparent;
   border-radius: 2rem;
   background-image: linear-gradient(var(--background), var(--background)),
-  linear-gradient(var(--primary), var(--warn));
+  linear-gradient(var(--shiny), var(--warn));
   background-origin: border-box;
   background-clip: padding-box, border-box;
 }

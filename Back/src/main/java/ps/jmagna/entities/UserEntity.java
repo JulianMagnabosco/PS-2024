@@ -50,9 +50,8 @@ public class UserEntity implements UserDetails {
     String floor;
     String room;
 
-    //MercadoPAgo
-    String mpClient;
-    String mpSecret;
+    //ComercialData
+    String cvu;
 
     public UserEntity(String username, String email, String password, UserRole role, LocalDateTime creationTime) {
         this.username = username;

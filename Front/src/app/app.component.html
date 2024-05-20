@@ -46,7 +46,7 @@
 
     <div class="collapse navbar-collapse mt-1 mt-sm-0 " id="navbarSearchContent">
       <form class="d-flex me-1 input-group border border-1 border-white rounded-2">
-        <input class="form-control " type="search" placeholder="Buscar obra"
+        <input class="form-control form-orange" type="search" placeholder="Buscar obra"
                [value]="searchBarVal" id="searchBar" #searchBar>
         <button class="btn btn-primary bi bi-search" type="submit" form="searchForm"
                 (click)="search(searchBar.value)"></button>
@@ -69,7 +69,7 @@
     <a class="btn btn-primary text-start bi bi-globe"
        data-bs-dismiss="offcanvas" routerLink="explore"    > Explorar</a>
     <a class="btn btn-primary text-start bi bi-plus-square"
-       data-bs-dismiss="offcanvas" routerLink="publicate"  > Nuevo</a>
+       data-bs-dismiss="offcanvas" routerLink="publicate"  > Nueva obra</a>
     <a class="btn btn-primary text-start bi bi-palette"
        data-bs-dismiss="offcanvas" routerLink="mypubs"     > Mis obras</a>
     <a class="btn btn-primary text-start bi bi-cart-check"
@@ -102,10 +102,10 @@
   <div class="col-md-4 col-sm-3">
     Más:
     <div>
-      <a routerLink="termcond" class="text-danger ">Términos y condiciones</a>
+      <a routerLink="termcond" class="text-warning ">Términos y condiciones</a>
     </div>
     <div>
-      <a routerLink="pregfrec" class="text-danger ">Preguntas Frecuentes</a>
+      <a routerLink="pregfrec" class="text-warning ">Preguntas Frecuentes</a>
     </div>
   </div>
   <div class="col-md-4 col-sm-3">
@@ -114,9 +114,9 @@
       julian.magnabosco&commat;gmail.com
     </div>
     <div class="fs-3 ">
-      <a class="text-danger bi bi-twitter-x" href="https://x.com/home"></a>
+      <a class="text-warning bi bi-twitter-x" href="https://x.com/home"></a>
       /
-      <a class="text-danger bi bi-github" href="https://github.com/114211-Magnabosco-Julian"></a>
+      <a class="text-warning bi bi-github" href="https://github.com/114211-Magnabosco-Julian"></a>
     </div>
   </div>
 </footer>

@@ -9,6 +9,7 @@ import ps.jmagna.dtos.purchase.PurchaseResponce;
 import ps.jmagna.dtos.purchase.SaleDto;
 import ps.jmagna.dtos.purchase.PurchaseRequest;
 import ps.jmagna.dtos.purchase.PutDeliveryRequest;
+import ps.jmagna.services.AuthService;
 import ps.jmagna.services.PurchaseService;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
@@ -25,38 +26,41 @@ public class PurchaseController {
 
     @Autowired
     PurchaseService service;
+    @Autowired
+    AuthService authService;
 
-    @GetMapping("/purchases")
-    public List<SaleDto> getPurchases(@RequestParam String firstDate,
-                                      @RequestParam String lastDate,
-                                      @RequestParam String name,
-                                      @AuthenticationPrincipal Jwt authentication) {
-        return service.getPurchases(firstDate,lastDate, name,authentication.getSubject());
-    }
-    @GetMapping("/sells")
-    public List<SellDto> getSells(@RequestParam String firstDate,
-                                  @RequestParam String lastDate,
-                                  @RequestParam String name,
-                                  @AuthenticationPrincipal Jwt authentication) {
-        return service.getSells(firstDate,lastDate, name ,authentication.getSubject());
-    }
-    @GetMapping("/deliveries")
-    public List<DeliveryDto> getDeliveriesPending(@AuthenticationPrincipal Jwt authentication) {
-        return service.getDeliveriesPending(authentication.getSubject());
-    }
 
     @PostMapping("/reg")
     public PurchaseResponce reg(@RequestBody PurchaseRequest request,
                                 @AuthenticationPrincipal Jwt authentication) throws MPException, MPApiException {
-        return service.registerSale(request,authentication.getSubject());
+        return service.registerSale(request,authService.findUser(authentication));
     }
 
 
     @PostMapping("/not")
     public NotificationResponce notificar(@RequestBody LinkedHashMap data,
                                           @RequestParam(name = "user",defaultValue = "0") String user)
-                                        throws MPException, MPApiException {
+            throws MPException, MPApiException {
         return service.notificar(data,user);
+    }
+
+    @GetMapping("/purchases")
+    public List<SaleDto> getPurchases(@RequestParam String firstDate,
+                                      @RequestParam String lastDate,
+                                      @RequestParam String name,
+                                      @AuthenticationPrincipal Jwt authentication) {
+        return service.getPurchases(firstDate,lastDate, name,authService.findUser(authentication));
+    }
+    @GetMapping("/sells")
+    public List<SellDto> getSells(@RequestParam String firstDate,
+                                  @RequestParam String lastDate,
+                                  @RequestParam String name,
+                                  @AuthenticationPrincipal Jwt authentication) {
+        return service.getSells(firstDate,lastDate, name ,authService.findUser(authentication));
+    }
+    @GetMapping("/deliveries")
+    public List<DeliveryDto> getDeliveriesPending(@AuthenticationPrincipal Jwt authentication) {
+        return service.getDeliveriesPending(authService.findUser(authentication));
     }
 
     @PutMapping("/delivery")
@@ -65,7 +69,8 @@ public class PurchaseController {
     }
 
     @DeleteMapping("/sell/{id}")
-    public boolean putSell(@PathVariable Long id){
-        return service.deleteSell(id);
+    public boolean deleteSell(@PathVariable Long id,
+                              @AuthenticationPrincipal Jwt authentication){
+        return service.deleteSell(id,authService.findUser(authentication));
     }
 }

@@ -6,7 +6,6 @@ import ps.jmagna.enums.UserRole;
 
 @Data
 public class LoginResponce {
-
     Long id;
     String username;
     String email;

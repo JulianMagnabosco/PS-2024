@@ -60,8 +60,7 @@ public class PurchaseService {
     PublicationRepository publicationRepository;
     @Autowired
     UserRepository userRepository;
-
-
+    
     @Autowired
     EmailService emailService;
 
@@ -83,14 +82,9 @@ public class PurchaseService {
     @Value("${app.url}")
     private String url;
 
+    //Register and Not
     @Transactional
-    public PurchaseResponce registerSale(PurchaseRequest request, String username) throws MPException, MPApiException {
-        UserEntity user;
-        if (username.contains("@")) {
-            user = userRepository.getByEmail(username);
-        } else {
-            user = userRepository.getByUsername(username);
-        }
+    public PurchaseResponce registerSale(PurchaseRequest request, UserEntity user) throws MPException, MPApiException {
         if(!userCanBuy(user)){
             throw new EntityNotFoundException("El usuario no puede comprar");
         }
@@ -134,9 +128,7 @@ public class PurchaseService {
 
         return new PurchaseResponce(preference);
     }
-
-
-
+    
     @Transactional
     public NotificationResponce notificar(LinkedHashMap data, String userId) throws MPException, MPApiException {
         NotificationResponce responce;
@@ -190,7 +182,7 @@ public class PurchaseService {
 //
 //                for (SaleDetailEntity detail : sale.getDetails()) {
 //
-//                    String token = customMPClient.getToken(detail.getPublication().getUser().getMpClient(),
+//                    String token = customMPClient.getToken(detail.getPublication().getUser().getCvu(),
 //                            detail.getPublication().getUser().getMpSecret());
 //                    System.out.println("Token Seller:"+token);
 //
@@ -256,7 +248,8 @@ public class PurchaseService {
         deliveryRepository.save(delivery);
         return sale;
     }
-
+    
+    //Get
     UserEntity getDeliveryFree() {
         UserEntity selected = null;
         Long countSelected = 0L;
@@ -270,19 +263,12 @@ public class PurchaseService {
 
         return selected;
     }
-
-    public List<SaleDto> getPurchases(String firstDate, String lastDate, String pubName, String username) {
-        UserEntity u;
-        if (username.contains("@")) {
-            u = userRepository.getByEmail(username);
-        } else {
-            u = userRepository.getByUsername(username);
-        }
+    public List<SaleDto> getPurchases(String firstDate, String lastDate, String pubName, UserEntity user) {
         List<SaleDto> list = new ArrayList<>();
         for (SaleEntity sale : saleRepository.findAllByDateTimeBetweenAndUser(
                 LocalDateTime.parse(firstDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
                 LocalDateTime.parse(lastDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
-                u
+                user
         )) {
 //            if (!user.equals(sale.getUser().getId())) {
 //                continue;
@@ -325,16 +311,9 @@ public class PurchaseService {
         return list;
 
     }
-
-    public List<DeliveryDto> getDeliveriesPending(String username) {
-        UserEntity u;
-        if (username.contains("@")) {
-            u = userRepository.getByEmail(username);
-        } else {
-            u = userRepository.getByUsername(username);
-        }
+    public List<DeliveryDto> getDeliveriesPending(UserEntity user) {
         List<DeliveryDto> list = new ArrayList<>();
-        for (DeliveryEntity delivery : deliveryRepository.findAllByDealer(u)) {
+        for (DeliveryEntity delivery : deliveryRepository.findAllByDealer(user)) {
             SaleEntity sale = delivery.getSale();
             UserEntity buyer = delivery.getSale().getUser();
 
@@ -381,7 +360,6 @@ public class PurchaseService {
         return list;
 
     }
-
     DeliveryDto getDeliveryDto(DeliveryEntity delivery) {
         SaleEntity sale = delivery.getSale();
         UserEntity buyer = delivery.getSale().getUser();
@@ -424,32 +402,12 @@ public class PurchaseService {
                 delivery.getDealer().getId()
         );
     }
-
-    public DeliveryDto putDelivery(PutDeliveryRequest request) {
-
-        DeliveryEntity delivery = deliveryRepository.getReferenceById(request.getId());
-        UserEntity dealer = userRepository.getReferenceById(request.getDealer());
-
-        delivery.setDeliveryState(request.getDeliveryState());
-        delivery.setDealer(dealer);
-
-        deliveryRepository.save(delivery);
-
-        return getDeliveryDto(delivery);
-    }
-
-    public List<SellDto> getSells(String firstDate, String lastDate, String buyerName, String username) {
-        UserEntity u;
-        if (username.contains("@")) {
-            u = userRepository.getByEmail(username);
-        } else {
-            u = userRepository.getByUsername(username);
-        }
+    public List<SellDto> getSells(String firstDate, String lastDate, String buyerName, UserEntity user) {
         List<SellDto> list = new ArrayList<>();
         for (SaleDetailEntity detail : saleDetailRepository.findAllBySale_DateTimeBetweenAndPublication_User(
                 LocalDateTime.parse(firstDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
                 LocalDateTime.parse(lastDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
-                u
+                user
         )) {
             SaleEntity sale = detail.getSale();
             UserEntity buyer = sale.getUser();
@@ -486,9 +444,24 @@ public class PurchaseService {
         }
         return list;
     }
-    public boolean deleteSell(Long id) {
+
+    //Put Delete
+    public DeliveryDto putDelivery(PutDeliveryRequest request) {
+
+        DeliveryEntity delivery = deliveryRepository.getReferenceById(request.getId());
+        UserEntity dealer = userRepository.getReferenceById(request.getDealer());
+
+        delivery.setDeliveryState(request.getDeliveryState());
+        delivery.setDealer(dealer);
+
+        deliveryRepository.save(delivery);
+
+        return getDeliveryDto(delivery);
+    }
+    public boolean deleteSell(Long id, UserEntity user) {
 
         SaleEntity sell = saleRepository.getReferenceById(id);
+        if(user.getId().equals(sell.getUser().getId()))
 
         sell.setSaleState(SaleState.CANCELADA);
 

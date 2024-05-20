@@ -30,20 +30,20 @@ values ('NULL'),
 insert into users (username, password,creation_time,role,
                    email, name, lastname,phone,dni,dni_type,
                    id_state,direction,number_dir,postal_num,floor,room,
-                   mp_client,mp_secret)
+                   cvu)
 values ('admin','$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2','2023-01-01 00:00:01','ADMIN',
         'test_user_1394390004@testuser.com','admin','admin', '351647', '449922', 'DNI',
         2, 'Tercero Arriba', '333', '5001','1','2',
-        '832032608255661','Nkp0j8RQZ4FPnsCJC53OIRToiBpFbVzw')
+        '832032608255661')
        ,
     ('seller','$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2','2023-02-01 00:00:01','USER'
     ,'test_user_482362958@testuser.com','pablo','perez', '371647', '439922', 'DNI',
     3, 'Tercero Abajo', '222', '5002','3','4',
-    '3267837162397314','Qd01CZtSX6NZjspm7nDqtkdrwYT0hT24')
+    '3267837162397314')
        ,
     ('user1','$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2','2023-02-01 00:00:01','USER'
     ,'test_user_1617525073@testuser.com','servo','marces', '361647', '429922', 'DNI',
-    3, 'Tercero Atreas', '111', '5003','','','','');
+    3, 'Tercero Atreas', '111', '5003','','','');
 insert into users (username, name, lastname, password, email,role,id_state,creation_time)
 values ('delivery','del','iver','$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2',
         'del@a', 'DELIVERY',1,'2023-04-01 00:00:01'),

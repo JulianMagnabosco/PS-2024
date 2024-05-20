@@ -25,6 +25,5 @@ public class UserDto {
     String floor;
     String room;
 
-    String mpClient;
-    String mpSecret;
+    String cvu;
 }

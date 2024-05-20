@@ -1,5 +1,6 @@
 package ps.jmagna.services;
 
+import org.springframework.security.oauth2.jwt.Jwt;
 import ps.jmagna.dtos.user.*;
 import ps.jmagna.entities.StateEntity;
 import ps.jmagna.entities.UserEntity;
@@ -44,6 +45,7 @@ public class AuthService implements UserDetailsService {
   @Value("${app.url}")
   private String url;
 
+  //  Login
   public LoginResponce login(String username) {
     LoginResponce responce;
 
@@ -61,7 +63,6 @@ public class AuthService implements UserDetailsService {
 
     return responce;
   }
-
   @Override
   public UserDetails loadUserByUsername(String username) {
     if(username.contains("@")){
@@ -69,8 +70,14 @@ public class AuthService implements UserDetailsService {
     }
     return repository.findByUsername(username);
   }
-
-  public UserDto signUp(UserRequest data) {
+  public UserEntity findUser(Jwt authentication) {
+    String username=authentication.getSubject();
+    if(username.contains("@")){
+      return repository.getByEmail(username);
+    }
+    return repository.getByUsername(username);
+  }
+  public UserDto register(UserRequest data) {
     UserDto responce;
 
     if (repository.findByUsername(data.getUsername()) != null) {
@@ -89,7 +96,7 @@ public class AuthService implements UserDetailsService {
     responce=mapUserDto(newUser);
     return responce;
   }
-  public UserTestResponce tesSingUp(UserRequest data){
+  public UserTestResponce testSingUp(UserRequest data){
     UserTestResponce userTestResponce = new UserTestResponce();
     userTestResponce.setOkName(true);
     userTestResponce.setOkEmail(true);
@@ -120,6 +127,7 @@ public class AuthService implements UserDetailsService {
     return userTestResponce;
   }
 
+  //  Get
   public ListUsersResponce getAll(String text, int page, int size){
 
     ListUsersResponce responce = new ListUsersResponce();
@@ -141,7 +149,6 @@ public class AuthService implements UserDetailsService {
     responce.setCountTotal((int) listRaw.getTotalElements());
     return responce;
   }
-
   public ListUsersResponce getDealers(){
     ListUsersResponce responce = new ListUsersResponce();
     List<UserMinDto> list = new ArrayList<>();
@@ -156,7 +163,6 @@ public class AuthService implements UserDetailsService {
     responce.setCountTotal(list.size());
     return responce;
   }
-
   public UserDto get(Long id){
     UserDto responce;
 
@@ -165,7 +171,6 @@ public class AuthService implements UserDetailsService {
 
     return responce;
   }
-
   static boolean userCanBuy(UserEntity user) {
 
     if (user.getName() == null || user.getName().isBlank() ||
@@ -182,17 +187,14 @@ public class AuthService implements UserDetailsService {
 
     return true;
   }
-
   static boolean userCanSell(UserEntity user) {
 
-    if (user.getMpClient() == null || user.getMpClient().isBlank() ||
-            user.getMpSecret() == null || user.getMpSecret().isBlank()) {
+    if (user.getCvu() == null || user.getCvu().isBlank()) {
       return false;
     }
 
     return true;
   }
-
   private UserDto mapUserDto(UserEntity u) {
     UserDto responce = modelMapper.map(u, UserDto.class);
     if(u.getState()!=null){
@@ -202,13 +204,13 @@ public class AuthService implements UserDetailsService {
     responce.setIconUrl(url + "/api/image/user/" + u.getId());
     return responce;
   }
-
   private UserMinDto mapUserMinDto(UserEntity u) {
     UserMinDto responce = modelMapper.map(u, UserMinDto.class);
     responce.setIconUrl(url + "/api/image/user/" + u.getId());
     return responce;
   }
 
+  //  Image
   public byte[] getImage(Long id){
     byte[] responce;
 
@@ -229,10 +231,13 @@ public class AuthService implements UserDetailsService {
     }
   }
 
-  public UserDto put(String requestRaw, MultipartFile icon) throws IOException {
+  //  Put
+  public UserDto put(String requestRaw, MultipartFile icon, UserEntity user) throws IOException {
 
     PutUserRequest request = objectMapper.readValue(requestRaw, PutUserRequest.class);
-    UserEntity user = repository.getReferenceById(request.getId());
+    if(!user.getId().equals(request.getId())) {
+      throw new IllegalArgumentException("Usuario incorrecto");
+    }
     UserEntity newUser = modelMapper.map(request, UserEntity.class);
 
     if(request.isChangePass()){

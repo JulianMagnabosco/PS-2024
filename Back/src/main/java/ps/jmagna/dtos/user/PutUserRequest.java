@@ -23,6 +23,5 @@ public class PutUserRequest {
     String floor;
     String room;
 
-    String mpClient;
-    String mpSecret;
+    String cvu;
 }
