@@ -38,6 +38,8 @@ public class AuthService implements UserDetailsService {
   @Autowired
   StateRepository stateRepository;
   @Autowired
+  EmailService emailService;
+  @Autowired
   ModelMapper modelMapper;
   @Autowired
   ObjectMapper objectMapper;
@@ -78,7 +80,6 @@ public class AuthService implements UserDetailsService {
     return repository.getByUsername(username);
   }
   public UserDto register(UserRequest data) {
-    UserDto responce;
 
     if (repository.findByUsername(data.getUsername()) != null) {
       throw new RuntimeException("Username alredy exists");
@@ -93,8 +94,10 @@ public class AuthService implements UserDetailsService {
             encryptedPassword, UserRole.USER, LocalDateTime.now());
     newUser.setState(stateRepository.getReferenceById(1L));
 
-    responce=mapUserDto(newUser);
-    return responce;
+    emailService.sendEmail("Nueva cuenta de Como lo hago", "Se a creado una nueva cuenta con este email: "+
+            newUser.getUsername(), newUser.getEmail());
+
+    return mapUserDto(repository.save(newUser));
   }
   public UserTestResponce testSingUp(UserRequest data){
     UserTestResponce userTestResponce = new UserTestResponce();
@@ -255,8 +258,8 @@ public class AuthService implements UserDetailsService {
       newUser.setIcon(icon.getBytes());
     }
 
-    repository.save(newUser);
-    return get(newUser.getId());
+
+    return mapUserDto(repository.save(newUser));
   }
 
 }
