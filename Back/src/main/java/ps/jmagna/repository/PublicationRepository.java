@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface PublicationRepository extends JpaRepository<PublicationEntity,Long>,
         JpaSpecificationExecutor<PublicationEntity> {
-    List<PublicationEntity> findAllByCreationTimeBetween(LocalDateTime date1, LocalDateTime date2);
+    List<PublicationEntity> findAllByDateTimeBetween(LocalDateTime date1, LocalDateTime date2);
     List<PublicationEntity> findAllByUserAndDraftIsTrueAndDeletedIsFalse(UserEntity user);
 
 }

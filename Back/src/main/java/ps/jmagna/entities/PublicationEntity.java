@@ -23,7 +23,7 @@ public class PublicationEntity {
     boolean deleted = Boolean.FALSE;
     boolean draft = Boolean.FALSE;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    LocalDateTime creationTime;
+    LocalDateTime dateTime;
     @ManyToOne
     @JoinColumn(name="idUser")
     UserEntity user;

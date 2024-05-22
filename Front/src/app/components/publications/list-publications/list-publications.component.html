@@ -1,19 +1,19 @@
 <div class="container">
-  <div class="collapse"  id="extraOptions" >
-    <form [formGroup]="form" class="card border-orange p-3 " (ngSubmit)="charge(0)" id="searchForm">
+  <div class="collapse" id="extraOptions">
+    <form [formGroup]="form" class="card border-gradient-sharp p-3 " (ngSubmit)="charge(0)" id="searchForm">
       <div class="d-flex mb-1">
       </div>
-      <div class="row  ">
+      <div class="row">
         <div class="col">
           <div class="mb-1 input-group">
             <input type="search" formControlName="materials" class="form-control form-orange" id="materialsInput"
                    placeholder="Materiales (Debes escribirlos separados por comas)">
-<!--            <button class="btn button-orange form-orange bi bi-x-lg" (click)="form.get('materials')?.setValue('')"-->
-<!--                    *ngIf="form.get('materials')?.value != ''">-->
-<!--            </button>-->
+            <!--            <button class="btn button-orange form-orange bi bi-x-lg" (click)="form.get('materials')?.setValue('')"-->
+            <!--                    *ngIf="form.get('materials')?.value != ''">-->
+            <!--            </button>-->
           </div>
-          <div class="row g-1 mb-1">
-            <div class="col-4 form-floating">
+          <div class="row justify-content-evenly g-1 mb-1">
+            <div class="col-auto form-floating">
               <select class="form-select form-orange" formControlName="diffMin" id="diffMin">
                 <option value="1" selected>FÁCIL</option>
                 <option value="2">NORMAL</option>
@@ -22,7 +22,7 @@
               </select>
               <label class="form-label-grey" for="type">Dificultad minima</label>
             </div>
-            <div class="col-4 form-floating">
+            <div class="col-auto form-floating">
               <select class="form-select form-orange" formControlName="diffMax" id="diffMax">
                 <option value="1" selected>FÁCIL</option>
                 <option value="2">NORMAL</option>
@@ -32,7 +32,7 @@
               </select>
               <label class="form-label-grey" for="diffMax">Dificultad maxima</label>
             </div>
-            <div class="col-4 form-floating">
+            <div class="col-auto form-floating">
               <select class="form-select form-orange" formControlName="type" id="type">
                 <option selected value="NONE">--CUALQUIER TIPO--</option>
                 <option value="ARTE">ARTE</option>
@@ -42,30 +42,36 @@
               <label class="form-label-grey" for="type">Tipo de obra</label>
 
             </div>
-          </div>
-
-          <div class="row g-1 align-items-center ">
-            <div class="col-auto ">
-              <div class="rounded-2 form-orange h-100 d-flex align-items-center">
-                <label class="p-2">Calificacion minima</label>
-                <span *ngFor="let i of [0,1,2,3,4]">
-                  <input type="radio" class="btn-check" formControlName="points" [value]="i" [id]="'option'+i" checked>
-                  <label class="btn bi bi-star-fill text-secondary" [for]="'option'+i"
-                         [class.text-warning]="form.get('points')?.value>i-1">
-                  </label>
+            <div class="col-auto">
+              <div class="form-orange align-content-end h-100 position-relative p-1 pt-3">
+                <label class="position-absolute top-0 start-0 " style="transform: scale(.85)">Calificacion
+                  minima</label>
+                <!--                <ng-container *ngFor="let i of [0,1,2,3,4]">-->
+                <!--                  <input type="radio" class="btn-check" formControlName="points" [value]="i" [id]="'option'+i" checked>-->
+                <!--                  <label class="btn bi bi-star-fill text-secondary" [for]="'option'+i"-->
+                <!--                         [class.text-warning]="form.get('points')?.value>i-1">-->
+                <!--                  </label>-->
+                <!--                </ng-container>-->
+                <input type="range" formControlName="points" id="points" #points min="0" max="5" step="0.1"
+                       style="max-width: 8rem">
+                <span
+                  style="width: 5rem">
+                  {{ points.value|number:'1.1' }}
                 </span>
               </div>
             </div>
-            <div class="col form-check p-0">
-              <input type="checkbox" class="btn-check" id="btn-check" formControlName="mine">
-              <label class="btn btn-primary" for="btn-check">
-                <i class="bi " [class.bi-x-lg]="!form.get('mine')?.value"></i>
-                <i class="bi " [class.bi-check-lg]="form.get('mine')?.value"></i>
-                Mis Publicaciones
-              </label>
+            <div class="col-auto align-items-center d-flex">
+              <div class="col-auto px-1">
+                <input type="checkbox" class="btn-check" id="btn-check" formControlName="mine">
+                <label class="btn btn-primary" for="btn-check">
+                  <i class="bi " [class.bi-x-lg]="!form.get('mine')?.value"></i>
+                  <i class="bi " [class.bi-check-lg]="form.get('mine')?.value"></i>
+                </label>
+              </div>
+              <div class="col-auto"> Ocultar mis publicaciones</div>
             </div>
 
-            <div class="col-auto">
+            <div class="col-auto ms-auto align-content-end">
               <button class="btn btn-warning text-break bi bi-arrow-clockwise" (click)="clear()">
                 LIMPIAR
                 FILTROS
@@ -76,11 +82,27 @@
       </div>
     </form>
   </div>
-  <div class="d-flex justify-content-center">
-    <button class="col-auto btn btn-secondary bi bi-gear-fill me-1 rounded-top-0" data-bs-toggle="collapse"
-                data-bs-target="#extraOptions">
-    Filtros
-  </button></div>
+
+
+  <div class="d-flex justify-content-evenly">
+    <button class="col-auto btn btn-secondary bi bi-gear-fill me-1 rounded-top-0"
+            data-bs-toggle="collapse" data-bs-target="#extraOptions"> Filtros
+    </button>
+    <div class="col-auto dropdown mt-1">
+      <button class="btn btn-light dropdown-toggle" type="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+        Ordenar Por: {{ form.get('sort')?.value == 'CALF' ? 'Mejor Calificado' : 'Más Reciente' }}
+      </button>
+      <ul class="dropdown-menu">
+        <li>
+          <button class="dropdown-item" (click)="changeSort('DATE')">Más Reciente</button>
+        </li>
+        <li>
+          <button class="dropdown-item" (click)="changeSort('CALF')">Mejor Calificado</button>
+        </li>
+      </ul>
+    </div>
+  </div>
 
   <div class="gap-1 row justify-content-center p-3 pt-3">
     <div class="col-1 card btn btn-border-orange bg-body-tertiary" href="#" style="width: 15rem;" *ngFor="let p of list"

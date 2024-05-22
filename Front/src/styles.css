@@ -60,6 +60,7 @@
 
 .form-orange{
   border: 2px solid var(--primary);
+  border-radius: 0.5rem;
   background-color: #f1e8e8;
 }
 .form-label-grey{
@@ -148,7 +149,8 @@
   }
   label:has(+input:focus),
   label:has(+select:focus),
-  label:not(:placeholder-shown),
+  label:has(+input:not(:placeholder-shown)),
+  label:has(+select:not(:placeholder-shown)),
   label.label-float{
     transform-origin: left center;
     transition: transform 250ms;
@@ -157,7 +159,8 @@
   }
 }
 
-.border-gradient{
+.border-gradient,
+.btn-border-gradient{
   border: double 4px transparent;
   border-radius: 2rem;
   background-image: linear-gradient(var(--background), var(--background)),
@@ -165,12 +168,67 @@
   background-origin: border-box;
   background-clip: padding-box, border-box;
 }
+.border-gradient-sharp{
+  border: double 3px transparent;
+  border-radius: 0.5rem;
+  background-image: linear-gradient(var(--background), var(--background)),
+  linear-gradient(var(--shiny), var(--warn));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+.btn-border-gradient:hover{
+  transition: background-color 250ms;
+  border: double 6px transparent;
+  border-radius: 2rem;
+  background-image: linear-gradient(var(--background), var(--background)),
+  linear-gradient(var(--warn), var(--shiny));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
 
-.middle-body{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -75%);
+.dropdown-item:hover{
+  background-color: var(--secondary);
+}
+
+input[type="range"] {
+  /* removing default appearance */
+  -webkit-appearance: none;
+  appearance: none;
+  /* creating a custom design */
+  width: 100%;
+  cursor: pointer;
+  outline: none;
+  border-radius: 15px;
+  /*  overflow: hidden;  remove this line*/
+  /* New additions */
+  height: 6px;
+  background: #ccc;
+}
+
+/* Thumb: webkit */
+input[type="range"]::-webkit-slider-thumb {
+  /* removing default appearance */
+  -webkit-appearance: none;
+  appearance: none;
+  /* creating a custom design */
+  height: 15px;
+  width: 15px;
+  background-color: var(--shiny);
+  border-radius: 50%;
+  border: none;
+  /* box-shadow: -407px 0 0 400px #f50; emove this line */
+  transition: .2s ease-in-out;
+}
+
+/* Thumb: Firefox */
+input[type="range"]::-moz-range-thumb {
+  height: 15px;
+  width: 15px;
+  background-color: var(--shiny);
+  border-radius: 50%;
+  border: none;
+  /* box-shadow: -407px 0 0 400px #f50; emove this line */
+  transition: .2s ease-in-out;
 }
 
 .sticky-controls{

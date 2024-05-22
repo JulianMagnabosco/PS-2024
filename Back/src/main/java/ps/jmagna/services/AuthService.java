@@ -110,23 +110,23 @@ public class AuthService implements UserDetailsService {
       userTestResponce.setOkEmail(false);
     }
 
-    int numberFlag=0;
-    int capitalFlag=0;
-    int lowerCaseFlag=0;
-    for(Character ch : data.getPassword().toCharArray()) {
-      if(numberFlag==0 && Character.isDigit(ch)) {
-        numberFlag=1;
+    int points=0;
+    if(!data.getPassword().matches("\\s")){
+      if(data.getPassword().matches("[a-z]")){
+        points++;
       }
-      else {
-        if (capitalFlag==0 && Character.isUpperCase(ch)) {
-          capitalFlag=1;
-        }
-        else if (lowerCaseFlag==0 && Character.isLowerCase(ch)) {
-          lowerCaseFlag=1;
-        }
+      if(data.getPassword().matches("[A-Z]")){
+        points++;
+      }
+      if(data.getPassword().matches("[0-9]")){
+        points++;
+      }
+      if(data.getPassword().matches("[^a-zA-Z0-9]")){
+        points++;
       }
     }
-    userTestResponce.setPoints(numberFlag+capitalFlag+lowerCaseFlag);
+
+    userTestResponce.setPoints(points);
     return userTestResponce;
   }
 

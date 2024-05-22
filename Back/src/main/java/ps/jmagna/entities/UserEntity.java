@@ -27,7 +27,7 @@ public class UserEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole role;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    LocalDateTime creationTime;
+    LocalDateTime dateTime;
     String email;
     String password;
     @Lob
@@ -53,10 +53,10 @@ public class UserEntity implements UserDetails {
     //ComercialData
     String cvu;
 
-    public UserEntity(String username, String email, String password, UserRole role, LocalDateTime creationTime) {
+    public UserEntity(String username, String email, String password, UserRole role, LocalDateTime dateTime) {
         this.username = username;
         this.role = role;
-        this.creationTime = creationTime;
+        this.dateTime = dateTime;
         this.email = email;
         this.password = password;
     }

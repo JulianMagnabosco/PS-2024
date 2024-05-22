@@ -10,6 +10,7 @@ import ps.jmagna.entities.*;
 import ps.jmagna.enums.Difficulty;
 import ps.jmagna.enums.PubType;
 import ps.jmagna.enums.SecType;
+import ps.jmagna.enums.SortType;
 import ps.jmagna.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -56,7 +57,7 @@ public class PublicationService {
 
         PublicationEntity publication = modelMapper.map(request, PublicationEntity.class);
         publication.setUser(user);
-        publication.setCreationTime(LocalDateTime.now());
+        publication.setDateTime(LocalDateTime.now());
         publicationRepository.save(publication);
 
         List<SectionEntity> sectionEntities = new ArrayList<>();
@@ -143,8 +144,6 @@ public class PublicationService {
 
         SearchPubResponce responce = new SearchPubResponce();
 
-        
-
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
 
         Page<PublicationEntity> all = publicationRepository.findAll(createFilter(request, user), pageable);
@@ -220,7 +219,12 @@ public class PublicationService {
             }
             list.add(dto);
         }
-        list.sort(Comparator.comparing(PublicationMinDto::getCalification));
+        if(request.getSort().equals(SortType.CALF)){
+            list.sort(Comparator.comparing(PublicationMinDto::getCalification).reversed());
+        }
+        else {
+            list.sort(Comparator.comparing(PublicationMinDto::getDateTime));
+        }
 
         responce.setList(list);
 
@@ -432,12 +436,12 @@ public class PublicationService {
         if (publicationOld.isDeleted()) {
             throw new EntityNotFoundException();
         } else {
-            date = publicationOld.getCreationTime();
+            date = publicationOld.getDateTime();
         }
 
         PublicationEntity publication = modelMapper.map(request, PublicationEntity.class);
         publication.setUser(user);
-        publication.setCreationTime(date);
+        publication.setDateTime(date);
         publicationRepository.save(publication);
 
         sectionRepository.deleteAllByPublication_Id(request.getId());

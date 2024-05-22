@@ -2,6 +2,7 @@ package ps.jmagna.dtos.publication;
 
 import ps.jmagna.enums.PubType;
 import lombok.Data;
+import ps.jmagna.enums.SortType;
 
 import java.math.BigDecimal;
 
@@ -14,6 +15,7 @@ public class SearchPubRequest {
     int diffMax;
     BigDecimal points;
     boolean mine;
+    SortType sort;
     int page;
     int size;
 }

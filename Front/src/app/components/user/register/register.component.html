@@ -2,9 +2,8 @@
   <h2 class="text-center mb-2 text-uppercase space-text">Regístrate</h2>
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="d-flex flex-column row-gap-3 p-2">
     <div class="input-float">
-      <label for="nameInput"
-             [class.label-float]="!form.controls['name'].hasError('required')">Nombre de usuario</label>
-      <input type="text" formControlName="name" id="nameInput"
+      <label for="nameInput">Nombre de usuario</label>
+      <input type="text" formControlName="name" id="nameInput" placeholder=""
              [class.is-invalid]="(form.controls['name'].touched || form.controls['name'].dirty)
               && form.controls['name'].invalid">
 
@@ -26,9 +25,8 @@
     </div>
 
     <div class="input-float">
-      <label for="emailInput" class="form-label"
-             [class.label-float]="!form.controls['email'].hasError('required')">Email</label>
-      <input type="text" formControlName="email" id="emailInput"
+      <label for="emailInput" class="form-label">Email</label>
+      <input type="text" formControlName="email" id="emailInput" placeholder=""
              [class.is-invalid]="(form.controls['email'].touched || form.controls['email'].dirty)
             && form.controls['email'].invalid">
 
@@ -46,9 +44,8 @@
     </div>
 
     <div class="input-float">
-      <label for="passwordInput"
-             [class.label-float]="!form.controls['password'].hasError('required')">Contraseña</label>
-      <input type="password" formControlName="password" id="passwordInput"
+      <label for="passwordInput">Contraseña</label>
+      <input type="password" formControlName="password" id="passwordInput" placeholder=""
              [class.is-invalid]="(form.controls['password'].touched || form.controls['password'].dirty)
       && form.controls['password'].invalid">
 
@@ -67,9 +64,8 @@
     </div>
 
     <div class="input-float">
-      <label for="passwordInput2"
-             [class.label-float]="!form.controls['password2'].hasError('required')">Repetir Contraseña</label>
-      <input type="password" formControlName="password2" id="passwordInput2"
+      <label for="passwordInput2">Repetir Contraseña</label>
+      <input type="password" formControlName="password2" id="passwordInput2" placeholder=""
              [class.is-invalid]="(form.controls['password2'].touched || form.controls['password2'].dirty)
       && form.controls['password2'].invalid">
       <ng-container *ngIf="(form.controls['password2'].touched || form.controls['password2'].dirty)">

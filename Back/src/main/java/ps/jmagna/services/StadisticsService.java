@@ -62,7 +62,7 @@ public class StadisticsService {
 
         YearMonth last = YearMonth.from(LocalDateTime.of(year,12,1,0,0));
         int lastday = last.atEndOfMonth().getDayOfMonth();
-        List<UserEntity> entities =userRepository.findAllByCreationTimeBetween(
+        List<UserEntity> entities =userRepository.findAllByDateTimeBetween(
                 LocalDateTime.of(year,1,1,0,0),
                 LocalDateTime.of(year,12,lastday,23,59));
 
@@ -71,10 +71,10 @@ public class StadisticsService {
         }
 
         for (UserEntity e : entities) {
-            BigDecimal v = vals[e.getCreationTime().getMonthValue()-1].getValue();
+            BigDecimal v = vals[e.getDateTime().getMonthValue()-1].getValue();
             v = v.add(BigDecimal.ONE);
-            vals[e.getCreationTime().getMonthValue()-1].setValue(v);
-            vals2[e.getCreationTime().getMonthValue()-1].setValue(v);
+            vals[e.getDateTime().getMonthValue()-1].setValue(v);
+            vals2[e.getDateTime().getMonthValue()-1].setValue(v);
         }
         stats[0] = new StatSeriesDto("diary", Arrays.stream(vals).toList());
 
@@ -97,7 +97,7 @@ public class StadisticsService {
         YearMonth last = YearMonth.from(LocalDateTime.of(year,month,1,0,0));
         int lastday = last.atEndOfMonth().getDayOfMonth();
         List<PublicationEntity> entities =
-                publicationRepository.findAllByCreationTimeBetween(
+                publicationRepository.findAllByDateTimeBetween(
                         LocalDateTime.of(year,month,1,0,0),
                         LocalDateTime.of(year,month,lastday,23,59));
 

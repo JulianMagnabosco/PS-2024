@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByEmailOrName(String email, String name);
-    List<UserEntity> findAllByCreationTimeBetween(LocalDateTime date1,LocalDateTime date2);
+    List<UserEntity> findAllByDateTimeBetween(LocalDateTime date1, LocalDateTime date2);
     List<UserEntity> findAllByRole(UserRole role);
     UserEntity getByUsername(String username);
     UserEntity getByEmail(String email);

@@ -27,11 +27,12 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
   constructor(private fb: FormBuilder, private service: PublicationsService,
               private router: Router, private activatedRoute: ActivatedRoute) {
     this.form = this.fb.group({
-      text: ["", [Validators.maxLength(200 )]],
-      materials: ["", [Validators.maxLength(500 )]],
+      text: [""],
+      materials: [""],
       type: ["NONE"],
       diffMin: ["1"],
       diffMax: ["4"],
+      sort: ["CALF"],
       points: ["0"],
       mine: [false]
     });
@@ -73,7 +74,7 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
     return Array(Math.ceil(this.countTotal/this.size)).fill(0).map((x,i)=>i);
   }
   clear(){
-    this.form.setValue({
+    this.form.patchValue({
       text: "",
       materials: "",
       type: "NONE",
@@ -82,6 +83,10 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
       points: "0",
       mine: false
     })
+  }
+  changeSort(sortType:string){
+    this.form.controls['sort'].setValue(sortType);
+    this.charge(0)
   }
   charge(page: number){
     this.page=page;
@@ -101,6 +106,7 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
       "diffMax": this.form.controls['diffMax'].value,
       "points": this.form.controls['points'].value,
       "mine": this.form.controls['mine'].value,
+      "sort": this.form.controls['sort'].value,
       "page": this.page,
       "size": this.size
     }
@@ -113,6 +119,7 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
     if( this.data.diffMax != "4") newParams["diffMax"] = this.data.diffMax
     if( this.data.points != "0") newParams["points"] = this.data.points
     if( this.data.mine) newParams["mine"] = true
+    if( this.data.sort != "CALF") newParams["sort"] = this.data.sort
     if( this.data.page != "") newParams["page"] = this.page
 
 
@@ -132,9 +139,7 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
           },
           error: err => {
             console.log(err)
-
-
-              cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
+            cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
           }
         }
       )
@@ -143,10 +148,6 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
 
   go(id:number){
     this.router.navigate(["/pub/"+id])
-
-  }
-  gonew(){
-    this.router.navigate(["/publicate"])
 
   }
 }
