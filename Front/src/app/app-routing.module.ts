@@ -6,7 +6,7 @@ import {LoginComponent} from "./components/user/login/login.component";
 import {AddPublicationComponent} from "./components/publications/add-publication/add-publication.component";
 import {ListPublicationsComponent} from "./components/publications/list-publications/list-publications.component";
 import {ShowPublicationComponent} from "./components/publications/show-publication/show-publication.component";
-import {authGuard, authGuardLogin} from "./guards/auth.guard";
+import {authGuard, authGuardLogin, authGuardSubmit} from "./guards/auth.guard";
 import {TestComponent} from "./components/test/test.component";
 import {ShowUserComponent} from "./components/user/show-user/show-user.component";
 import {ListUsersComponent} from "./components/user/list-users/list-users.component";
@@ -23,6 +23,7 @@ import {CartComponent} from "./components/cart/cart.component";
 import {
   ListPublicationsMineComponent
 } from "./components/publications/list-publications-mine/list-publications-mine.component";
+import {ResetPasswordComponent} from "./components/user/reset-password/reset-password.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -33,14 +34,15 @@ const routes: Routes = [
   //components
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'publicate', component: AddPublicationComponent, canActivate:[authGuard] },
+  { path: 'pass', component: ResetPasswordComponent },
+  { path: 'publicate', component: AddPublicationComponent, canActivate:[authGuard], canDeactivate:[authGuardSubmit] },
   { path: 'explore', component: ListPublicationsComponent, canActivate:[authGuard] },
   { path: 'mypubs', component: ListPublicationsMineComponent, canActivate:[authGuard] },
   { path: 'pub/:id', component: ShowPublicationComponent, canActivate:[authGuard] },
   { path: 'editpub/:id', component: ModPublicationComponent, canActivate:[authGuard] },
   { path: 'user/:id', component: ShowUserComponent, canActivate:[authGuard] },
   { path: 'users', component: ListUsersComponent, canActivate:[authGuard] },
-  { path: 'edit', component: ModUserComponent, canActivate:[authGuard] },
+  { path: 'edit', component: ModUserComponent, canActivate:[authGuard], canDeactivate:[authGuardSubmit] },
   { path: 'cart', component: CartComponent, canActivate:[authGuard] },
   { path: 'purchases', component: ListPurchasesComponent, canActivate:[authGuard] },
   { path: 'sells', component: ListSellsComponent, canActivate:[authGuard] },

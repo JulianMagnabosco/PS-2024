@@ -371,7 +371,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     data.append("indexes",indexes);
 
     if(indexes==""&&draft){
-      cAlert("error","Borrador guardada");
+      cAlert("success","Borrador guardada");
       return;
     }
     this.subs.add(

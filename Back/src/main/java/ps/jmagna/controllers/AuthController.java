@@ -1,9 +1,6 @@
 package ps.jmagna.controllers;
 
-import ps.jmagna.dtos.user.LoginResponce;
-import ps.jmagna.dtos.user.UserRequest;
-import ps.jmagna.dtos.user.UserDto;
-import ps.jmagna.dtos.user.UserTestResponce;
+import ps.jmagna.dtos.user.*;
 import ps.jmagna.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -53,7 +50,17 @@ public class AuthController {
 
     }
     @PostMapping("/test/signup")
-    public UserTestResponce get(@RequestBody UserRequest data) {
+    public UserTestResponce testSingUp(@RequestBody UserRequest data) {
         return service.testSingUp(data);
+    }
+
+    @PostMapping("/reset/req")
+    public boolean requestPasswordToken(@RequestParam String email) {
+        return service.requestPasswordToken(email);
+    }
+
+    @PostMapping("/reset")
+    public boolean changePassword(@RequestBody PasswordRequest data) {
+        return service.changePassword(data);
     }
 }

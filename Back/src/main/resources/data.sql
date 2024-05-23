@@ -32,7 +32,7 @@ insert into users (username, password,date_time,role,
                    id_state,direction,number_dir,postal_num,floor,room,
                    cvu)
 values ('admin','$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2','2023-01-01 00:00:01','ADMIN',
-        'test_user_1394390004@testuser.com','admin','admin', '351647', '449922', 'DNI',
+        'marcozlanuz@gmail.com','admin','admin', '351647', '449922', 'DNI',
         2, 'Tercero Arriba', '333', '5001','1','2',
         '832032608255661')
        ,

@@ -231,6 +231,17 @@ input[type="range"]::-moz-range-thumb {
   transition: .2s ease-in-out;
 }
 
+.invalid-feedback-c{
+  font-size: .875em;
+  font-style: italic;
+  color: var(--bs-danger)
+}
+
+.swal2-shown {
+  overflow: unset !important;
+  padding-right: 0px !important;
+}
+
 .sticky-controls{
   position: sticky;
   top: 56px;

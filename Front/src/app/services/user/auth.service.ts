@@ -49,4 +49,11 @@ export class AuthService {
   postTestUser(user: any):Observable<any>{
     return this.client.post(this.baseUrl + "test/signup", user);
   }
+
+  postRequestPassword(email: any):Observable<any>{
+    return this.client.post(this.baseUrl + "reset/req?email="+ email, null);
+  }
+  postChangePassword(user: any):Observable<any>{
+    return this.client.post(this.baseUrl + "reset", user);
+  }
 }

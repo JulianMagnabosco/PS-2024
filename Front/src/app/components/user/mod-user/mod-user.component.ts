@@ -188,7 +188,6 @@ export class ModUserComponent implements OnInit, OnDestroy {
     this.icon=""
     this.iconUrl=""
   }
-
   checkPasswords: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
     let pass = group.get('password')?.value;
     let confirmPass = group.get('password2')?.value

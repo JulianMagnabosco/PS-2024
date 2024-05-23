@@ -3,8 +3,9 @@ import Swal from "sweetalert2";
 
 const cSwal = Swal.mixin({
   customClass: {
-    confirmButton: "btn btn-primary",
-    cancelButton: "btn btn-danger"
+    actions: "d-flex w-100 justify-content-evenly",
+    confirmButton: "btn btn-primary px-4",
+    cancelButton: "btn btn-danger px-4"
   },
   buttonsStyling: false
 })

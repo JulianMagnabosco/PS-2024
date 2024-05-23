@@ -1,5 +1,7 @@
 package ps.jmagna.services;
 
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.oauth2.jwt.Jwt;
 import ps.jmagna.dtos.user.*;
 import ps.jmagna.entities.StateEntity;
@@ -28,6 +30,7 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -111,23 +114,49 @@ public class AuthService implements UserDetailsService {
     }
 
     int points=0;
-    if(!data.getPassword().matches("\\s")){
-      if(data.getPassword().matches("[a-z]")){
+    if(!data.getPassword().matches(".*\\s.*")){
+      if(data.getPassword().matches(".*[a-z].*")){
         points++;
       }
-      if(data.getPassword().matches("[A-Z]")){
+      if(data.getPassword().matches(".*[A-Z].*")){
         points++;
       }
-      if(data.getPassword().matches("[0-9]")){
+      if(data.getPassword().matches(".*[0-9].*")){
         points++;
       }
-      if(data.getPassword().matches("[^a-zA-Z0-9]")){
+      if(data.getPassword().matches(".*[^a-zA-Z0-9].*")){
         points++;
       }
     }
 
     userTestResponce.setPoints(points);
     return userTestResponce;
+  }
+
+  public boolean requestPasswordToken(String email) {
+
+    UUID uuid = UUID.randomUUID();
+
+    if(repository.findByEmail(email)==null){
+      throw new EntityNotFoundException();
+    }
+
+    emailService.sendEmail("Cambio de contraseña", "Aqui esta su token para cambio de contraseña " +
+            "(introduzcalo en el campo token): "+
+            uuid, email);
+
+    return true;
+  }
+
+  public boolean changePassword(PasswordRequest data) {
+
+    UserEntity user= repository.getByEmail(data.getEmail());
+    String encryptedPassword = new BCryptPasswordEncoder().encode(data.getPassword());
+
+    user.setPassword(encryptedPassword);
+    repository.save(user);
+
+    return true;
   }
 
   //  Get

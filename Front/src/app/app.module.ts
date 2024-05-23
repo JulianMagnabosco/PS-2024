@@ -38,6 +38,7 @@ import {
   ListPublicationsMineComponent
 } from "./components/publications/list-publications-mine/list-publications-mine.component";
 import {DraftsComponent} from "./components/publications/drafts/drafts.component";
+import {ResetPasswordComponent} from "./components/user/reset-password/reset-password.component";
 
 
 @NgModule({
@@ -67,6 +68,7 @@ import {DraftsComponent} from "./components/publications/drafts/drafts.component
     CartComponent,
     ListPublicationsMineComponent,
     DraftsComponent,
+    ResetPasswordComponent,
     HomeComponent
   ],
     imports: [
