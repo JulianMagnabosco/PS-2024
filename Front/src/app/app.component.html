@@ -1,24 +1,19 @@
-<nav class="navbar navbar-expand-sm bg-red-orange fixed-top" >
+<nav class="navbar navbar-expand-sm bg-red-orange fixed-top">
   <div class="container-fluid">
     <button class="btn btn-outline-light me-1" data-bs-toggle="offcanvas"
-       href="#sideBar"
-       aria-controls="sideBar">
+            href="#sideBar"
+            aria-controls="sideBar" *ngIf="service.user">
       <span class="bi bi-list"></span>
     </button>
 
-    <a class="navbar-brand text-white mx-2" href="#" >COMOloHAGO</a>
+    <a class="navbar-brand text-white mx-2" href="#">COMOloHAGO</a>
 
-    <span class="navbar-toggler p-0">
+    <span class="navbar-toggler p-0" *ngIf="service.user">
       <button class="btn btn-outline-light" data-bs-toggle="collapse"
               data-bs-target="#navbarSearchContent" aria-controls="navbarSearchContent "
               aria-expanded="false" aria-label="Toggle navigation">
-      <span class="bi bi-search"></span>
-    </button>
-<!--    <button class="btn btn-outline-light" data-bs-toggle="collapse"-->
-<!--            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"-->
-<!--            aria-expanded="false" aria-label="Toggle navigation">-->
-<!--      <span class="bi bi-person"></span>-->
-<!--    </button>-->
+        <span class="bi bi-search"></span>
+      </button>
     </span>
 
     <div class="justify-content-end order-sm-last" id="navbarSupportedContent">
@@ -44,7 +39,7 @@
       </div>
     </div>
 
-    <div class="collapse navbar-collapse mt-1 mt-sm-0 " id="navbarSearchContent">
+    <div class="collapse navbar-collapse mt-1 mt-sm-0 " id="navbarSearchContent" *ngIf="service.user">
       <form class="d-flex me-1 input-group border border-1 border-white rounded-2">
         <input class="form-control form-orange" type="search" placeholder="Buscar obra"
                [value]="searchBarVal" id="searchBar" #searchBar>
@@ -61,37 +56,37 @@
   <div class="d-flex justify-content-start align-content-center">
     <button class="btn btn-outline-light" data-bs-dismiss="offcanvas" aria-label="Close">
       <span class="bi bi bi-list"></span>
-<!--      <span class="navbar-toggler-icon"></span>-->
+      <!--      <span class="navbar-toggler-icon"></span>-->
     </button>
-    <a class="fs-5 my-auto btn btn-primary text-start mx-2"  href="#">COMOloHAGO</a>
+    <a class="fs-5 my-auto btn btn-primary text-start mx-2" href="#">COMOloHAGO</a>
   </div>
-  <div class="offcanvas-body row-gap-1 d-flex flex-column" >
+  <div class="offcanvas-body row-gap-1 d-flex flex-column">
     <a class="btn btn-primary text-start bi bi-globe"
-       data-bs-dismiss="offcanvas" routerLink="explore"    > Explorar</a>
+       data-bs-dismiss="offcanvas" routerLink="explore"> Explorar</a>
     <a class="btn btn-primary text-start bi bi-plus-square"
-       data-bs-dismiss="offcanvas" routerLink="publicate"  > Nueva obra</a>
+       data-bs-dismiss="offcanvas" routerLink="publicate"> Nueva obra</a>
     <a class="btn btn-primary text-start bi bi-palette"
-       data-bs-dismiss="offcanvas" routerLink="mypubs"     > Mis obras</a>
+       data-bs-dismiss="offcanvas" routerLink="mypubs"> Mis obras</a>
     <a class="btn btn-primary text-start bi bi-cart-check"
-       data-bs-dismiss="offcanvas" routerLink="purchases"  > Compras</a>
+       data-bs-dismiss="offcanvas" routerLink="purchases"> Compras</a>
     <a class="btn btn-primary text-start bi bi-coin"
-       data-bs-dismiss="offcanvas" routerLink="sells"      > Ventas</a>
+       data-bs-dismiss="offcanvas" routerLink="sells"> Ventas</a>
     <a class="btn btn-primary text-start bi bi-truck"
-       data-bs-dismiss="offcanvas" routerLink="deliveries" > Entregas</a>
+       data-bs-dismiss="offcanvas" routerLink="deliveries"> Entregas</a>
 
     <hr>
     <a class="btn btn-primary text-start bi bi-person-lines-fill"
-       data-bs-dismiss="offcanvas" routerLink="users"      > Listar Usuarios</a>
+       data-bs-dismiss="offcanvas" routerLink="users"> Listar Usuarios</a>
     <a class="btn btn-primary text-start bi bi-bar-chart"
        data-bs-dismiss="offcanvas" routerLink="stats/users"> Estadisticas de usuarios</a>
     <a class="btn btn-primary text-start bi bi-bar-chart"
-       data-bs-dismiss="offcanvas" routerLink="stats/pubs" > Estadisticas de publicaciones</a>
+       data-bs-dismiss="offcanvas" routerLink="stats/pubs"> Estadisticas de publicaciones</a>
     <a class="btn btn-primary text-start bi bi-bar-chart"
        data-bs-dismiss="offcanvas" routerLink="stats/sells"> Estadisticas de ventas</a>
   </div>
 </div>
 
-<div class="main-side" >
+<div class="main-side">
   <router-outlet></router-outlet>
 </div>
 

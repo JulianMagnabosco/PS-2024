@@ -47,14 +47,14 @@ public class PurchaseController {
     @GetMapping("/purchases")
     public List<SaleDto> getPurchases(@RequestParam String firstDate,
                                       @RequestParam String lastDate,
-                                      @RequestParam String name,
+                                      @RequestParam(defaultValue = "") String name,
                                       @AuthenticationPrincipal Jwt authentication) {
         return service.getPurchases(firstDate,lastDate, name,authService.findUser(authentication));
     }
     @GetMapping("/sells")
     public List<SellDto> getSells(@RequestParam String firstDate,
                                   @RequestParam String lastDate,
-                                  @RequestParam String name,
+                                  @RequestParam(defaultValue = "") String name,
                                   @AuthenticationPrincipal Jwt authentication) {
         return service.getSells(firstDate,lastDate, name ,authService.findUser(authentication));
     }

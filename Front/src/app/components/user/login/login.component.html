@@ -36,6 +36,10 @@
       <button type="submit" class="btn btn-primary" [disabled]="form.invalid">INICIAR SESION</button>
     </div>
 
+    <div class="d-flex justify-content-center gap-1" style="font-size: smaller">
+      <span class="align-self-center">¿Olvidaste tu contraseña?</span>
+      <a style="color: var(--primary)" routerLink="/pass">Recuperar</a>
+    </div>
     <div class="d-flex justify-content-center gap-1">
       <span class="align-self-center">¿No tenes cuenta?</span>
       <button type="button" class="btn btn-warning" (click)="exit()">REGÍSTRATE</button>

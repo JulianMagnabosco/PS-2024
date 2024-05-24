@@ -97,7 +97,8 @@ public class AuthService implements UserDetailsService {
             encryptedPassword, UserRole.USER, LocalDateTime.now());
     newUser.setState(stateRepository.getReferenceById(1L));
 
-    emailService.sendEmail("Nueva cuenta de Como lo hago", "Se a creado una nueva cuenta con este email: "+
+    emailService.sendEmail("Nueva cuenta de Como lo hago",
+            "Se a creado una nueva cuenta con este email, de nombre: "+
             newUser.getUsername(), newUser.getEmail());
 
     return mapUserDto(repository.save(newUser));

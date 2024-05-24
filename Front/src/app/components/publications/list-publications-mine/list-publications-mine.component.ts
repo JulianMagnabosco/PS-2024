@@ -26,18 +26,45 @@ export class ListPublicationsMineComponent  implements OnInit,OnDestroy {
   page=0;
 
   constructor(private fb: FormBuilder, private service: PublicationsService,
-              private router: Router, private activatedRoute:ActivatedRoute) {
+              private router: Router, private activatedRoute: ActivatedRoute) {
     this.form = this.fb.group({
-      text: ["", [Validators.maxLength(200 )]],
-      materials: ["", [Validators.maxLength(500 )]],
+      text: [""],
+      materials: [""],
       type: ["NONE"],
       diffMin: ["1"],
       diffMax: ["4"],
+      sort: ["CALF"],
       points: ["0"],
       mine: [false]
     });
   }
   ngOnInit(): void {
+    this.subs.add(
+      this.activatedRoute.queryParams.subscribe({
+        next: value => {
+          this.form.patchValue(value)
+          this.charge(0)
+        }
+      })
+    )
+    this.subs.add(
+      this.form.get("diffMin")?.valueChanges.subscribe({
+        next: value => {
+          if(value>this.form.get("diffMax")?.value){
+            this.form.get("diffMax")?.setValue(this.form.get("diffMin")?.value)
+          }
+        }
+      })
+    )
+    this.subs.add(
+      this.form.get("diffMax")?.valueChanges.subscribe({
+        next: value => {
+          if(value<this.form.get("diffMin")?.value){
+            this.form.get("diffMin")?.setValue(this.form.get("diffMax")?.value)
+          }
+        }
+      })
+    )
     this.charge(0)
   }
   ngOnDestroy(): void {
@@ -48,7 +75,7 @@ export class ListPublicationsMineComponent  implements OnInit,OnDestroy {
     return Array(Math.ceil(this.countTotal/this.size)).fill(0).map((x,i)=>i);
   }
   clear(){
-    this.form.setValue({
+    this.form.patchValue({
       text: "",
       materials: "",
       type: "NONE",
@@ -57,6 +84,10 @@ export class ListPublicationsMineComponent  implements OnInit,OnDestroy {
       points: "0",
       mine: false
     })
+  }
+  changeSort(sortType:string){
+    this.form.controls['sort'].setValue(sortType);
+    this.charge(0)
   }
   charge(page: number){
     this.page=page;
@@ -75,11 +106,11 @@ export class ListPublicationsMineComponent  implements OnInit,OnDestroy {
       "diffMin": this.form.controls['diffMin'].value,
       "diffMax": this.form.controls['diffMax'].value,
       "points": this.form.controls['points'].value,
-      "mine": true,
+      "mine": this.form.controls['mine'].value,
+      "sort": this.form.controls['sort'].value,
       "page": this.page,
       "size": this.size
     }
-
 
     var newParams: {[k: string]: any} = {};
     if( this.data.text != "") newParams["text"] = this.data.text
@@ -88,7 +119,10 @@ export class ListPublicationsMineComponent  implements OnInit,OnDestroy {
     if( this.data.diffMin != "1") newParams["diffMin"] = this.data.diffMin
     if( this.data.diffMax != "4") newParams["diffMax"] = this.data.diffMax
     if( this.data.points != "0") newParams["points"] = this.data.points
+    if( this.data.mine) newParams["mine"] = true
+    if( this.data.sort != "CALF") newParams["sort"] = this.data.sort
     if( this.data.page != "") newParams["page"] = this.page
+
 
     this.router.navigate([],{
       relativeTo: this.activatedRoute,
@@ -96,7 +130,7 @@ export class ListPublicationsMineComponent  implements OnInit,OnDestroy {
       replaceUrl: true
     })
 
-
+    console.log(this.data)
     this.subs.add(
       this.service.search(this.data).subscribe(
         {
@@ -106,9 +140,7 @@ export class ListPublicationsMineComponent  implements OnInit,OnDestroy {
           },
           error: err => {
             console.log(err)
-
-
-              cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
+            cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
           }
         }
       )

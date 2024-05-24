@@ -47,15 +47,16 @@
     <div class="row border-5 btn-border-orange rounded-5 p-2 bg-secondary-subtle mb-2" *ngFor="let i of list"
          data-bs-toggle="modal" data-bs-target="#exampleModal"
          (click)="open(i)">
-      <div class="col-auto position-relative img-stat-container p-0">
-        <img class="border border-4 border-secondary rounded rounded-4"
-             [class]="i.details[1] ? 'gap-image-1 img-stat-1' : 'w-100'"
-             [src]="i.details[0].imageUrl">
-        <img class="border border-4 border-secondary rounded rounded-2 gap-image-2 img-stat-1"
+      <div class="col-auto position-relative img-stat-container p-1">
+        <img class="border border-4 border-secondary rounded rounded-4 w-100 h-100"
+             [src]="i.details[0].imageUrl" *ngIf="!i.details[1]">
+
+        <img class="border border-4 border-secondary rounded rounded-2 image-pos-1 img-stat-1"
+             [src]="i.details[0].imageUrl" *ngIf="i.details[1]">
+        <img class="border border-4 border-secondary rounded rounded-2 image-pos-2 img-stat-1"
              [src]="i.details[1].imageUrl" *ngIf="i.details[1]">
-        <div class="border border-4 border-secondary rounded rounded-2 gap-image-3 img-stat-2 bg-secondary"
-             *ngIf="i.details[2]">+{{ i.details.length - 2 }}
-        </div>
+        <span class="p-2 rounded rounded-circle image-pos-3 bg-secondary"
+             *ngIf="i.details[2]">+{{ i.details.length - 2 }}</span>
       </div>
       <div class="col p-3 justify-content-between align-content-center">
         <!--          <div class="row row-gap-2" >-->

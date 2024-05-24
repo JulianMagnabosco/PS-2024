@@ -197,12 +197,15 @@ public class PurchaseService {
 //                    paymentClient.create(newPayment,options);
 //                }
 
+                if(sale.getSaleState().equals(SaleState.APROBADA)){
+                    emailService.sendEmailSale(sale,
+                            sale.getUser().getEmail());
+
+                }
                 sale.setSaleState(SaleState.APROBADA);
-                saleRepository.save(sale);
+                saleRepository.saveAndFlush(sale);
             }
         }
-        emailService.sendEmail("Compra","La compra "+ sale.getId()+" esta en estado: "+
-                sale.getSaleState().toString(), sale.getUser().getEmail());
         return responce;
     }
 
@@ -277,9 +280,10 @@ public class PurchaseService {
             List<SaleDetailDto> detailDtos = new ArrayList<>();
             boolean addDto = false;
             for (SaleDetailEntity detail : sale.getDetails()) {
-                if(!pubName.isBlank() && detail.getPublication().getName().toLowerCase()
-                        .contains(pubName.toLowerCase())) addDto = true;
-
+                if(pubName.isBlank() || detail.getPublication().getName().toLowerCase()
+                        .contains(pubName.toLowerCase().toLowerCase())) {
+                    addDto = true;
+                }
                 Long imgId = 1L;
                 for (SectionEntity s : detail.getPublication().getSections()) {
                     if (s.getType() == SecType.PHOTO) {

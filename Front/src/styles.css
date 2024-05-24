@@ -73,9 +73,14 @@
 
 .btn-border-orange{
   border: 3px solid var(--shiny);
+  transition: border-bottom-color;
 }
 .btn-border-orange:hover{
-   border: 3px solid var(--warn);
+   border: 3px solid var(--accent);
+  transition: border-bottom-color 250ms,
+   border-top-color 250ms ,
+   border-left-color 250ms,
+   border-right-color 250ms;
  }
 
 .btn-border-white{
@@ -89,35 +94,35 @@
   border: 3px solid rgba(255, 255, 255, 0);
 }
 
-.gap-image-1{
+.image-pos-1{
+  position: absolute;
   top: 0;
   left: 0;
 }
 
-.gap-image-2{
+.image-pos-2{
+  position: absolute;
   bottom: 0;
   right: 0;
 }
 
-.gap-image-3{
+.image-pos-3{
+  position: absolute;
   bottom: 0;
   left: 0;
 }
+
 .img-stat-1{
-  position: absolute;
   width: 65%;
   height: 65%;
 }
 .img-stat-2{
-  position: absolute;
   width: 50%;
   height: 50%;
 }
 .img-stat-container{
-  min-width: 60px;
-  min-height: 60px;
-  max-width: 130px;
-  max-height: 130px;
+  width: 8rem;
+  height: 8rem;
 }
 
 
