@@ -72,17 +72,26 @@
     <a class="btn btn-primary text-start bi bi-coin"
        data-bs-dismiss="offcanvas" routerLink="sells"> Ventas</a>
     <a class="btn btn-primary text-start bi bi-truck"
+       *ngIf="service.user?.role == 'ADMIN' || service.user?.role == 'DELIVERY'"
        data-bs-dismiss="offcanvas" routerLink="deliveries"> Entregas</a>
 
+    <ng-container *ngIf="service.user?.role == 'ADMIN'">
+      <hr>
+      <a class="btn btn-primary text-start bi bi-person-lines-fill"
+         data-bs-dismiss="offcanvas" routerLink="users"> Listar Usuarios</a>
+      <a class="btn btn-primary text-start bi bi-bar-chart"
+         data-bs-dismiss="offcanvas" routerLink="stats/users"> Estadisticas de usuarios</a>
+      <a class="btn btn-primary text-start bi bi-bar-chart"
+         data-bs-dismiss="offcanvas" routerLink="stats/pubs"> Estadisticas de publicaciones</a>
+      <a class="btn btn-primary text-start bi bi-bar-chart"
+         data-bs-dismiss="offcanvas" routerLink="stats/sells"> Estadisticas de ventas</a>
+    </ng-container>
+
     <hr>
-    <a class="btn btn-primary text-start bi bi-person-lines-fill"
-       data-bs-dismiss="offcanvas" routerLink="users"> Listar Usuarios</a>
-    <a class="btn btn-primary text-start bi bi-bar-chart"
-       data-bs-dismiss="offcanvas" routerLink="stats/users"> Estadisticas de usuarios</a>
-    <a class="btn btn-primary text-start bi bi-bar-chart"
-       data-bs-dismiss="offcanvas" routerLink="stats/pubs"> Estadisticas de publicaciones</a>
-    <a class="btn btn-primary text-start bi bi-bar-chart"
-       data-bs-dismiss="offcanvas" routerLink="stats/sells"> Estadisticas de ventas</a>
+    <a class="btn btn-primary text-start bi bi-info-circle"
+       data-bs-dismiss="offcanvas" routerLink="terms"> Términos y condiciones</a>
+    <a class="btn btn-primary text-start bi bi-question-circle"
+       data-bs-dismiss="offcanvas" routerLink="answers"> Preguntas frecuentes</a>
   </div>
 </div>
 

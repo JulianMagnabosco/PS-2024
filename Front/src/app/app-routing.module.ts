@@ -24,6 +24,8 @@ import {
   ListPublicationsMineComponent
 } from "./components/publications/list-publications-mine/list-publications-mine.component";
 import {ResetPasswordComponent} from "./components/user/reset-password/reset-password.component";
+import {TermsComponent} from "./components/more/terms/terms.component";
+import {AnswersComponent} from "./components/more/answers/answers.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -35,6 +37,8 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'pass', component: ResetPasswordComponent },
+  { path: 'terms', component: TermsComponent },
+  { path: 'answers', component: AnswersComponent },
   { path: 'publicate', component: AddPublicationComponent, canActivate:[authGuard], canDeactivate:[authGuardSubmit] },
   { path: 'explore', component: ListPublicationsComponent, canActivate:[authGuard] },
   { path: 'mypubs', component: ListPublicationsMineComponent, canActivate:[authGuard] },
