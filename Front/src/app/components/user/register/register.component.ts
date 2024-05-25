@@ -29,7 +29,8 @@ export class RegisterComponent implements OnInit,OnDestroy {
       name: ["", [Validators.required, Validators.maxLength(50 ), this.checkName]],
       email: ["", [Validators.required, Validators.email]],
       password: ["", [Validators.required, Validators.maxLength(50)]],
-      password2: ["", [Validators.required, Validators.maxLength(50)]]
+      password2: ["", [Validators.required, Validators.maxLength(50)]],
+      terms: [false, [Validators.requiredTrue]]
     },{
       validators: [this.checkPasswords]
     });

@@ -75,6 +75,17 @@
       </ng-container>
     </div>
 
+    <div>
+      <input type="checkbox" class="btn-check" id="btn-check" formControlName="terms">
+      <label class="btn btn-secondary me-2 btn-sm" for="btn-check">
+        <i class="bi " [class.bi-x-lg]="!form.get('terms')?.value"></i>
+        <i class="bi " [class.bi-check-lg]="form.get('terms')?.value"></i>
+      </label>
+      <label for="btn-check">
+        Aceptas los <a routerLink="/terms" class="text-danger">términos y condiciones</a>.
+      </label>
+    </div>
+
     <div class="d-flex justify-content-center">
       <button type="submit" class="btn btn-primary" [disabled]="form.invalid || !tips.okEmail || !tips.okName">
         CREAR CUENTA
