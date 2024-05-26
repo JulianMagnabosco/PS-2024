@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {LoadingService} from "../loading/loading.service";
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,11 @@ export class PurchaseService {
 
   private baseUrl = "api/sell/";
 
-  constructor(private client: HttpClient) {
+  constructor(private client: HttpClient, private loadService:LoadingService) {
+  }
+
+  get loading(){
+    return this.loadService.loading
   }
 
   postSale(data: any): Observable<any> {

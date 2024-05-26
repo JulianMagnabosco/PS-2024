@@ -263,3 +263,10 @@ input[type="range"]::-moz-range-thumb {
 .point-text{
   padding: 0.1rem 1rem 0.1rem 1rem;
 }
+
+.middle-body{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%) translateY(-56px);
+}

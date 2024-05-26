@@ -13,6 +13,7 @@ import {cAlert} from "../../../services/custom-alert/custom-alert.service";
 })
 export class ResetPasswordComponent implements OnInit,OnDestroy{
   phase=0;
+  loading=true;
 
   private subs: Subscription = new Subscription();
 
@@ -21,7 +22,7 @@ export class ResetPasswordComponent implements OnInit,OnDestroy{
   form: FormGroup = this.fb.group({});
   tips: { okName:boolean, okEmail:boolean, points:number}={ okName:true,okEmail:true,points:0 }
 
-  constructor(private fb: FormBuilder, private authService: AuthService,private router: Router) {
+  constructor(private fb: FormBuilder, protected authService: AuthService, private router: Router) {
     this.emailForm = this.fb.group({
       email: ["", [Validators.required, Validators.email]],
     });
@@ -37,12 +38,12 @@ export class ResetPasswordComponent implements OnInit,OnDestroy{
   }
 
   ngOnInit(): void {
-    this.subs.add(
-      this.emailForm.valueChanges.subscribe({
-        next: value =>  {
-          this.test();
-        }
-      }));
+    // this.subs.add(
+    //   this.emailForm.valueChanges.subscribe({
+    //     next: value =>  {
+    //       this.test();
+    //     }
+    //   }));
     this.subs.add(
       this.form.valueChanges.subscribe({
         next: value =>  {
@@ -71,6 +72,7 @@ export class ResetPasswordComponent implements OnInit,OnDestroy{
   }
 
   onSubmit(){
+
     this.subs.add(this.authService.postRequestPassword(
       this.emailForm.controls["email"].value).subscribe({
       next: value => {

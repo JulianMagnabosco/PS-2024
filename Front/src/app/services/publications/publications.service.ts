@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import {Publication} from "../../models/publication/publication";
 import {AuthService} from "../user/auth.service";
 import {DomSanitizer} from "@angular/platform-browser";
+import {LoadingService} from "../loading/loading.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,12 @@ import {DomSanitizer} from "@angular/platform-browser";
 export class PublicationsService {
 
   private baseUrl = "api/pub/";
-  constructor(private client: HttpClient) { }
+  constructor(private client: HttpClient, private loadService:LoadingService) {
+  }
+
+  get loading(){
+    return this.loadService.loading
+  }
 
   postPublication(data: any):Observable<any>{
     return this.client.post(this.baseUrl + "new", data);

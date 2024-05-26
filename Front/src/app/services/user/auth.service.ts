@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {map, Observable, Subscription} from "rxjs";
 import {User} from "../../models/user/user";
 import {UserService} from "./user.service";
+import {LoadingService} from "../loading/loading.service";
 
 
 @Injectable({
@@ -13,9 +14,12 @@ export class AuthService {
 
   private baseUrl = "api/auth/";
 
-  constructor(private client: HttpClient, private userService:UserService) {
+  constructor(private client: HttpClient, private loadService:LoadingService) {
   }
 
+  get loading(){
+    return this.loadService.loading
+  }
   get user():Loginuser|undefined{
     try {
       return JSON.parse( sessionStorage.getItem("app.user") || "");

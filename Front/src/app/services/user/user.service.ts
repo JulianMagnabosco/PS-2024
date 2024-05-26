@@ -4,6 +4,7 @@ import {Observable, Subscription} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {AuthService} from "./auth.service";
 import {User} from "../../models/user/user";
+import {LoadingService} from "../loading/loading.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,11 @@ export class UserService {
 
   private baseUrl = "api/user/";
 
-  constructor(private client: HttpClient) {
+  constructor(private client: HttpClient, private loadService:LoadingService) {
+  }
 
+  get loading(){
+    return this.loadService.loading
   }
   get(id: any){
     return this.client.get<any>(this.baseUrl + id);

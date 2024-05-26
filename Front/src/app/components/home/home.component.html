@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container middle-body">
   <ng-container *ngIf="service.user">
     <div class="h1 w-100 h-75 text-center "> Bienvenido de nuevo</div>
     <div class="w-100 d-flex justify-content-center">
@@ -13,9 +13,10 @@
     <div class="h1 w-100 h-75 text-center "> Bienvenido</div>
     <div class="h3 w-100 h-75 text-center"> Para empezar a navegar
       <button class="btn btn-primary  btn-lg" routerLink="/login">Inicia sesión</button>
-    </div>
-    <div class="w-100 h-75 text-center"> o si eres usuario nuevo
+      o
       <button class="btn btn-warning" routerLink="/register">Crea tu cuenta</button>
     </div>
+<!--    <div class="w-100 h-75 text-center"> o si eres usuario nuevo-->
+<!--    </div>-->
   </ng-container>
 </div>
