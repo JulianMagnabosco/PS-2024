@@ -18,17 +18,16 @@ export class UserService {
   get(id: any){
     return this.client.get<any>(this.baseUrl + id);
   }
-  getAll(text: any){
-    if(text!=""){
-      return this.client.get<any>(this.baseUrl + "list?text="+ text);
-    }else {
-      return this.client.get<any>(this.baseUrl + "list");
-    }
+  getAll(data: any){
+    return this.client.get<any>(this.baseUrl + "list", {params: data});
   }
   getDealers(){
     return this.client.get<any>(this.baseUrl + "dealers" );
   }
   put(data: any){
     return this.client.put<any>(this.baseUrl + "mod", data);
+  }
+  putRole(data: any){
+    return this.client.put<any>(this.baseUrl + "role", null, {params: data});
   }
 }

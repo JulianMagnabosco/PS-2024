@@ -5,7 +5,8 @@ import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
 import {UserService} from "../../../services/user/user.service";
 import {User} from "../../../models/user/user";
-import {cAlert} from "../../../services/custom-alert/custom-alert.service"
+import {UserMin} from "../../../models/user/user-min";
+import {cAlert, cFire} from "../../../services/custom-alert/custom-alert.service";
 
 @Component({
   selector: 'app-list-users',
@@ -17,9 +18,7 @@ export class ListUsersComponent implements OnInit,OnDestroy {
   private subs: Subscription = new Subscription();
   form: FormGroup = this.fb.group({});
 
-  data: any ;
-
-  list: User[] = [
+  list: UserMin[] = [
   ];
 
   countTotal=1;
@@ -51,11 +50,13 @@ export class ListUsersComponent implements OnInit,OnDestroy {
       this.page=Math.ceil(this.countTotal/this.size)-1;
     }
 
-    this.data = this.form.controls['text'].value
+    let data = {text:this.form.controls["text"].value,
+      page:this.page,
+      size:this.size}
 
 
     this.subs.add(
-      this.service.getAll(this.data).subscribe(
+      this.service.getAll(data).subscribe(
         {
           next: value => {
             this.countTotal=value["countTotal"]
@@ -63,8 +64,6 @@ export class ListUsersComponent implements OnInit,OnDestroy {
           },
           error: err => {
             console.log(err)
-
-
               cAlert("error","Error inesperado en el servidor, revise su conexion a internet"); }
         }
       )
@@ -73,6 +72,38 @@ export class ListUsersComponent implements OnInit,OnDestroy {
 
   go(id:string){
     this.router.navigate(["/user/"+id])
+
+  }
+  edit(user:UserMin){
+    var options:any = {};
+    if(user.role!="ADMIN")
+      options["ADMIN"] = "ADMIN";
+    if(user.role!="USER")
+      options["USER"] = "USER";
+    if(user.role!="DELIVERY")
+      options["DELIVERY"] = "DELIVERY";
+
+    cFire({
+      title: "¿Quiere cambiar el rol del usuario? (Actualmente: "+user.role+")",
+      input: "select",
+      inputOptions: options,
+      showConfirmButton: true,
+      showCancelButton: true
+    }).then(value => {
+      if(!value.isConfirmed) return;
+
+      this.subs.add(
+        this.service.putRole({id:user.id,role:value.value}).subscribe({
+          next: value => {
+            this.charge(this.page)
+          },
+          error:err => {
+            cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
+            // alert("Hubo un error al eliminar");
+          }
+        })
+      )
+    })
 
   }
 }

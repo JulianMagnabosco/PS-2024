@@ -5,19 +5,19 @@
   </div>
   <div class="card border-orange mb-3">
     <form [formGroup]="form" class="row g-3 justify-content-center p-3 d-flex">
-      <div class="col-10">
+      <div class="col">
         <input type="text" formControlName="text" class="form-control form-orange" id="nameInput"
-               placeholder="Nombre o tags">
+               placeholder="Nombre ">
       </div>
-      <div class="col-2">
-        <button class="btn btn-primary w-100 h-100" (click)="charge(0)">
+      <div class="col-auto">
+        <button class="btn btn-primary" (click)="charge(0)">
           BUSCAR
         </button>
       </div>
     </form>
   </div>
 
-  <div class="p-1 border-orange rounded-2 mb-1">
+  <div class="p-1 border-orange rounded-2 mb-1 overflow-x-auto">
     <table class="table">
       <thead>
       <tr>
@@ -34,26 +34,35 @@
         <th scope="row" class="text-end">{{ u.id }}</th>
         <td>{{ u.username }}</td>
         <td>{{ u.email }}</td>
-        <td>&#64;mdo</td>
-        <td>&#64;mdo</td>
-        <td class="text-center"><button class="btn btn-warning" (click)="go(u.id)">VER</button></td>
-      </tr><tr *ngIf="list.length<=0">
-        <th scope="row" class="text-end" colspan="6"> Sin datos</th>
+        <td>{{ u.pubs }}</td>
+        <td>{{ u.buys}} / {{u.sells }}</td>
+        <td class="text-center dropstart"><button class="btn btn-warning me-1" (click)="go(u.id)">VER</button>
+          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          </a>
+
+          <ul class="dropdown-menu ">
+            <li><a class="dropdown-item btn" (click)="edit(u)">Cambiar Rol</a></li>
+          </ul>
+        </td>
       </tr>
       </tbody>
     </table>
+    <h1 class="text-center" *ngIf="list.length==0 ">Sin datos</h1>
   </div>
 
-  <div >
+  <div *ngIf="list.length>0 && list.length<countTotal">
     <ul class="pagination justify-content-center ">
       <li class="page-item ">
-        <button class="page-link btn-border-orange text-black" (click)="charge(page-1)">Previous</button></li>
+        <button class="page-link btn-border-orange text-black" (click)="charge(page-1)">&laquo;</button>
+      </li>
       <li class="page-item " *ngFor="let p of pages; ">
-        <button class="page-link " (click)="charge(p)"
-                [ngClass]="p == page ? 'bg-orange-low button-orange text-white':'button-orange text-black'"
-        >{{ p+1 }}</button></li>
+        <button class="page-link " [ngClass]="p != page ? 'text-black border-orange':'text-black border-orange bg-orange'"
+                (click)="charge(p)" >{{ p + 1 }}
+        </button>
+      </li>
       <li class="page-item ">
-        <button class="page-link btn-border-orange text-black" (click)="charge(page+1)">Next</button></li>
+        <button class="page-link btn-border-orange text-black" (click)="charge(page+1)">&raquo;</button>
+      </li>
     </ul>
   </div>
 </div>

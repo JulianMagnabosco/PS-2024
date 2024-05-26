@@ -119,8 +119,7 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
                     this.setForm()
                   },
                   error: err => {
-
-              cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
+                  cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
                     this.notfound=true;
                   }
                 }
@@ -131,7 +130,6 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
       )
     );
   }
-
   setForm(){
     this.form.setValue({
       name: this.publication.name,
@@ -148,13 +146,12 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
       count: this.publication.count
     })
 
-    let sectionsPhoto = this.publication.sections.filter((s) => s.type=="PHOTO");
-    let sectionsCond = this.publication.sections.filter((s) => s.type=="COND")
-      .sort((a,b) => a.number-b.number);
-    let sectionsMat = this.publication.sections.filter((s) => s.type=="MAT")
-      .sort((a,b) => a.number-b.number);
-    let sectionsStep = this.publication.sections.filter((s) => s.type=="STEP")
-      .sort((a,b) => a.number-b.number);
+    let allSections =
+      this.publication.sections.sort((a,b) => a.number-b.number);
+    let sectionsPhoto = allSections.filter((s) => s.type=="PHOTO");
+    let sectionsCond = allSections.filter((s) => s.type=="COND");
+    let sectionsMat = allSections.filter((s) => s.type=="MAT");
+    let sectionsStep = allSections.filter((s) => s.type=="STEP");
 
 
     for (let s of sectionsPhoto){
@@ -180,16 +177,16 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
       this.addDetailMaterials(s.text);
     }
     for (let s of sectionsStep){
-      if(!s.imageUrl) continue;
+      let dir = "";
+      if(s.imageUrl) dir = s.imageUrl.replace("http://localhost:8080/api/image/pub/","");
       this.subs.add(
-        this.service.getImages(s.imageUrl.replace("http://localhost:8080/api/image/pub/","")).subscribe(
+        this.service.getImages(dir).subscribe(
           {
             next: value => {
-              let v = value as Blob;
+              let blob = value as Blob;
+              this.addDetailsSteps(s.text, s.imageUrl, blob);
+            }, error: err => {
               this.addDetailsSteps(s.text, s.imageUrl);
-              this.stepImages.push(
-                {url: s.imageUrl, file: new File([v],'image', {type: v.type})}
-              )
             }
           }
         )
@@ -200,6 +197,7 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
     this.subs.unsubscribe();
   }
 
+  //conditions
   get detailsConditions(){
     return this.form.get("conditions") as FormArray
   }
@@ -214,7 +212,8 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
   removeDetailCondition(id:number){
     this.detailsConditions.removeAt(id)
   }
-//MAteriales
+
+  //materiales
   get detailsMaterials(){
     return this.form.get("materials") as FormArray
   }
@@ -229,11 +228,12 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
   removeDetailMaterials(id:number){
     this.detailsMaterials.removeAt(id)
   }
+
   //pasos
   get detailsSteps(){
     return this.form.get("steps") as FormArray
   }
-  addDetailsSteps(text:string = "" ,url:string = ""){
+  addDetailsSteps(text:string = "" ,url:string = "", blob:undefined|Blob=undefined){
     let v = this.fb.group({
       text: ["",[Validators.required,Validators.maxLength(500)]],
       image: [""]
@@ -242,7 +242,17 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
     this.detailsSteps.push(v)
     this.detailsSteps.markAsTouched()
 
-    this.stepImages.push({url:url, file:new File([],"") })
+    if(blob){
+      this.stepImages.push(
+        {url: url, file: new File(
+          [blob],
+          'image.'+blob.type.replace("image/",""),
+          {type: blob.type})}
+      );
+
+      return
+    }
+    this.stepImages.push({url:"", file:new File([],"") })
   }
   moveDetailsSteps(id:number,dir:number){
     let val = this.detailsSteps.at(id).value;
@@ -255,16 +265,54 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
     this.detailsSteps.insert(id+dir,d)
     this.detailsSteps.markAsTouched()
 
-    let img = this.stepImages[id+1]
-    this.stepImages[id+1] = this.stepImages[id+1+dir];
-    this.stepImages[id+1+dir] = img;
+    let img = this.stepImages[id]
+    this.stepImages[id] = this.stepImages[id+dir];
+    this.stepImages[id+dir] = img;
   }
-
   removeDetailsSteps(id:number){
     this.detailsSteps.removeAt(id)
     this.stepImages.slice(id)
   }
 
+  //selects
+  selectPubImages(event:any){
+    if (event.target.files) {
+      this.form.get("image")?.setValue(true)
+      this.pubImages = []
+      for (let f of event.target.files){
+        var reader = new FileReader();
+        reader.readAsDataURL(f); // read file as data url
+
+        reader.onload = (event) => { // called once readAsDataURL is completed
+          this.pubImages.push({url: event.target?.result, file: f})
+        }
+      }
+    }else {
+      this.pubImages = []
+    }
+  }
+  selectStepFile(event:any, index:number){
+    if (event.target.files && event.target.files[0] && this.stepImages.at(index)) {
+      var reader = new FileReader();
+
+      this.stepImages[index].file = event.target.files[0]
+      reader.readAsDataURL(event.target.files[0]); // read file as data url
+
+      reader.onload = (event) => { // called once readAsDataURL is completed
+        this.stepImages[index].url=event.target?.result
+      }
+    }else {
+      this.stepImages[index].file = new File([],"")
+      this.stepImages[index].url=""
+    }
+
+  }
+  changeVideo(event:any){
+    let value=event.target.value as string
+    value=value.replace("https://www.youtube.com/watch?v=","")
+      .replace("https://www.youtube.com/shorts/","")
+    this.video=value.split("&")[0];
+  }
 
   //guardar
   onSubmit(){
@@ -284,21 +332,21 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
     }
     for (let s in this.detailsConditions.controls){
       sections.push({
-        "number":s+1,
+        "number":+s+1,
         "type":"COND",
         "text":this.detailsConditions.controls[s].value["text"]
       })
     }
     for (let s in this.detailsMaterials.controls){
       sections.push({
-        "number":s+1,
+        "number":+s+1,
         "type":"MAT",
         "text":this.detailsMaterials.controls[s].value["text"]
       })
     }
     for (let s in this.detailsSteps.controls){
       sections.push({
-        "number":s+1,
+        "number":+s+1,
         "type":"STEP",
         "text":this.detailsSteps.controls[s].value["text"]
       })
@@ -325,46 +373,11 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
             this.uploadImages(value["sections"])
           },
           error: err => {
-              cAlert("error","Error inesperado en el servidor, revise su conexion a internet"); }
+            cAlert("error","Error inesperado en el servidor, revise su conexion a internet"); }
         }
       )
     );
   }
-
-  selectPubImages(event:any){
-    if (event.target.files) {
-      this.form.get("image")?.setValue(true)
-      this.pubImages = []
-      for (let f of event.target.files){
-        var reader = new FileReader();
-        reader.readAsDataURL(f); // read file as data url
-
-        reader.onload = (event) => { // called once readAsDataURL is completed
-          this.pubImages.push({url: event.target?.result, file: f})
-        }
-      }
-    }
-  }
-  selectStepFile(event:any, index:number){
-    if (event.target.files && event.target.files[0] && this.stepImages.at(index)) {
-      var reader = new FileReader();
-
-      this.stepImages[index].file = event.target.files[0]
-      reader.readAsDataURL(event.target.files[0]); // read file as data url
-
-      reader.onload = (event) => { // called once readAsDataURL is completed
-        this.stepImages[index].url=event.target?.result
-      }
-    }
-
-  }
-  changeVideo(event:any){
-    let value=event.target.value as string
-    value=value.replace("https://www.youtube.com/watch?v=","")
-      .replace("https://www.youtube.com/shorts/","")
-    this.video=value.split("&")[0];
-  }
-
   uploadImages(sections: Section[]){
     let data = new FormData()
     let indexes = ""
@@ -378,15 +391,17 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
       data.append("images",this.pubImages[i].file);
       indexes += sectionsPhoto[i].id + "_"
     }
+    console.log(this.stepImages)
 
     for (let i in sectionsStep){
-      if(this.detailsSteps.controls[i].value["image"]){
+      if(this.stepImages[i].url){
         data.append("images",this.stepImages[i].file);
         indexes += sectionsStep[i].id + "_"
       }
     }
 
     data.append("indexes",indexes);
+    console.log()
 
     this.subs.add(
       this.service.postImages(data).subscribe(

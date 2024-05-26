@@ -7,7 +7,11 @@
   --shiny: #f6751e;
   --secondary: #d78914;
   --warn: #f5cd06;
-  --accent: #eafd24;
+  --accent: #f6d21c;
+}
+
+.page-link:focus{
+  box-shadow: none;
 }
 
 .space-text{
@@ -16,6 +20,10 @@
 }
 
 .form-control:focus {
+  border-color: #501605;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6);
+}
+.form-select:focus {
   border-color: #501605;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6);
 }
@@ -250,4 +258,8 @@ input[type="range"]::-moz-range-thumb {
 .sticky-controls{
   position: sticky;
   top: 56px;
+}
+
+.point-text{
+  padding: 0.1rem 1rem 0.1rem 1rem;
 }

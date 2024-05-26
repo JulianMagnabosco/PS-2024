@@ -1,6 +1,6 @@
 
-<div class="container-lg p-1" *ngIf="!notfound">
-  <div class="p-3 mb-3 bg-light rounded-5 border border-warning-subtle border-5 d-flex justify-content-between"
+<div class="container-lg mb-2" *ngIf="!notfound">
+  <div class="p-3 mb-3 bg-secondary-subtle rounded-2 rounded-top-0 d-flex justify-content-between"
   *ngIf="userService.user?.id==publication.userId.toString()">
     <span class="fs-5 align-content-center">Editar:</span>
     <span>
@@ -9,7 +9,7 @@
     </span>
   </div>
 
-  <div class="p-3 mb-3 bg-light rounded-5 border border-warning-subtle border-5">
+  <div class="p-3 mb-3 rounded-5 border-gradient">
       <div class="row mb-3">
         <div class="col-sm-6">
           <h2 class="mb-2">
@@ -67,7 +67,7 @@
           </div>
         </div>
         <div class="col-sm-6">
-          <div id="carouselExample" class="carousel slide border border-5 border-warning-subtle rounded-2 p-1"
+          <div id="carouselExample" class="carousel slide bg-secondary-subtle  rounded-2 p-1"
                #img1>
             <div class="carousel-inner">
               <div class="carousel-item " *ngFor="let p of photos; index as i" [class.active]="i==0">
@@ -93,7 +93,7 @@
             </button>
           </div>
 
-          <div class="border border-5 border-warning-subtle rounded-2 bg-secondary-subtle p-1 text-center">
+          <div class="bg-secondary-subtle  rounded-2 bg-secondary-subtle p-1 text-center">
             <div class="">
               <button class="bi bi-star-fill text-secondary btn fs-3" *ngFor="let b of [0,1,2,3,4]"
                       (click)="calificate(b+1)"
@@ -107,13 +107,13 @@
       </div>
 
 
-      <div class="p-2 rounded-3 border border-warning-subtle border-5 mb-3" *ngIf="conditions.length>0">
+      <div class="p-2 rounded-3 bg-secondary-subtle  mb-3" *ngIf="conditions.length>0">
         <h5 class="text-uppercase">Condiciones</h5>
         <div class="">
           <div *ngFor="let d of conditions; index as i" class="d-flex mb-1">
 
             <div class="col-auto me-1 rounded-circle bg-danger text-center text-white
-            fs-4 rounded-2 align-content-center" style="width: 25px; height: 25px">!</div>
+            fs-3 rounded-2 align-content-center point-text">!</div>
             <div class="col rounded-2 bg-body-secondary p-1 text-break">{{ d.text }}</div>
 <!--            <div class="rounded-2 bg-body-secondary p-1">asdasdaaaaaaaaaaaaaaaaaaaaaaaaaaa-->
 <!--              aaaaaaaaaaaaaaaaaaaaaaaaaaaaasdasdads</div>-->
@@ -121,27 +121,26 @@
 
         </div>
       </div>
-      <div class="p-2 rounded-3 border border-warning-subtle border-5 mb-3"  *ngIf="materials.length>0">
+      <div class="p-2 rounded-3 bg-secondary-subtle  mb-3"  *ngIf="materials.length>0">
         <h5 class="text-uppercase">Materiales</h5>
         <div class="">
           <div *ngFor="let d of materials; index as i" class="d-flex mb-1">
 
             <div class="col-auto me-1 rounded-circle bg-danger text-center text-white
-            fs-4 rounded-2 align-content-center" style="width: 25px; height: 25px">{{ i + 1 }}</div>
+            fs-3 rounded-2 align-content-center point-text">{{ i + 1 }}</div>
             <div class="rounded-2 bg-body-secondary p-1">{{ d.text }}</div>
           </div>
 
         </div>
       </div>
-      <div class="p-2 rounded-3 border border-warning-subtle border-5 mb-3"  *ngIf="steps.length>0">
+      <div class="p-2 rounded-3 bg-secondary-subtle  mb-3"  *ngIf="steps.length>0">
         <h5 class="text-uppercase">Pasos</h5>
         <div class="">
           <div *ngFor="let d of steps; index as i" class="d-flex mb-1">
             <div class="col-auto me-1 rounded bg-danger text-center text-white
-            fs-4 rounded-2 align-content-center" style="width: 25px; height: 25px">{{ i + 1 }}</div>
+            fs-4 rounded-2 align-content-center point-text">{{ i + 1 }}</div>
             <div class="w-100 list-group">
-              <div class="list-group-item bg-body-secondary p-1 border
-              border-5 border-warning-subtle">{{ d.text }}</div>
+              <div class="list-group-item bg-body-secondary p-1 border-orange">{{ d.text }}</div>
               <img [src]="d.imageUrl" alt="step" class="w-100 border border-5 border-danger list-group-item
               rounded-bottom-1 border-top-0" *ngIf="d.imageUrl">
             </div>

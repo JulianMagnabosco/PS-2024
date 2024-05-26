@@ -38,12 +38,13 @@ export class DraftsComponent implements OnInit,OnDestroy {
         {
           next: value => {
             this.list=value
+            if(this.list.length <=1 ){
+              this.selectEvent.emit(0);
+            }
           },
           error: err => {
             console.log(err)
-
-
-              cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
+            cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
           }
         }
       )

@@ -1,25 +1,29 @@
-<div class="container mt-4" *ngIf="!notfound">
-  <div class="col-12 d-flex justify-content-between gap-1">
 
-    <h1>MODIFICAR OBRA</h1>
-    <button type="submit" class="btn btn-primary fs-4 px-5 text-black space-text"
+
+<div class="container mb-4" *ngIf="!notfound">
+  <div class="d-flex justify-content-between gap-1 p-2
+    bg-secondary-subtle rounded-3 sticky-controls z-1">
+
+    <h1 class="text-center me-auto"> MODIFICAR OBRA</h1>
+
+    <button type="submit" class="btn btn-primary bi bi-pencil"
             (click)="onSubmit()" [disabled]="form.invalid">GUARDAR</button>
   </div>
 
-  <div class="container mt-4 p-2 bg-light rounded-5 border border-warning-subtle border-5">
+  <div class="container mt-4 p-2 rounded-5 border-gradient">
     <form [formGroup]="form" class="row g-3 justify-content-center p-3">
       <div class="col-lg-8 col-12">
         <div class="mb-2">
           <label for="nameInput" class="form-label h5">Nombre</label>
           <input type="text" formControlName="name" class="form-control" id="nameInput"
                  [class.is-invalid]="(form.controls['name'].touched || form.controls['name'].dirty)
-                  && form.controls['name'].invalid">
+      && form.controls['name'].invalid">
           <div class="invalid-feedback" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)
-                  && form.controls['name'].hasError('required')">
+      && form.controls['name'].hasError('required')">
             El nombre es requerido.
           </div>
           <div class="invalid-feedback" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)
-                && form.controls['name'].hasError('maxlength')">
+      && form.controls['name'].hasError('maxlength')">
             El nombre no puede superar los 50 caracteres.
           </div>
         </div>
@@ -33,7 +37,7 @@
       && form.controls['description'].hasError('required')">
             La descripcion es requerida.
           </div>
-          <div class="form-text fst-italic">Puedes agregar tags en la descripción con el simbolo '#'</div>
+          <div class="form-text fst-italic">Puedes agregar tags en la descripción con el simbolo '#' </div>
 
         </div>
 
@@ -64,7 +68,7 @@
               <label for="difficultyInput" class="col-form-label">Dificultad:</label>
             </div>
             <div class="col-auto">
-              <select class="form-select" id="difficultyInput" style="width: 12rem;"
+              <select class="form-select" id="difficultyInput"  style="width: 12rem;"
                       formControlName="difficulty" [class.is-invalid]="(form.controls['difficulty'].touched
                   || form.controls['difficulty'].dirty) && form.controls['difficulty'].invalid">
                 <option value="" selected>--Seleccionar--</option>
@@ -83,10 +87,10 @@
       </div>
 
       <div class="col-lg-4 col-sm-8 col-12">
-        <div class="border border-warning-subtle border-5 card" #img1>
+        <div class="rounded-2 border-orange border-5" #img1>
           <!--        <img [src]="pubImages[0].url " class=" w-100 p-1"-->
           <!--             [alt]="pubImages[0].url" *ngIf="pubImages.length>0">-->
-          <div id="carouselExample" class="carousel slide border border-5 border-warning-subtle rounded-2 p-1"
+          <div id="carouselExample" class="carousel slide rounded-2 p-1"
                *ngIf="pubImages.length>0">
             <div class="carousel-inner">
               <div class="carousel-item " *ngFor="let p of pubImages; index as i" [class.active]="i==0">
@@ -101,17 +105,17 @@
               </div>
             </div>
 
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-              <span class="bi-caret-left-fill text-black fs-1" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-              <span class="bi-caret-right-fill text-black fs-1" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
+            <ng-container *ngIf="pubImages.length>1">
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="bi-caret-left-fill text-black fs-1" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="bi-caret-right-fill text-black fs-1" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </ng-container>
           </div>
-          <img src="assets/camera.png" class=" w-100 p-1"
-               alt="assets/camera.png" *ngIf="pubImages.length<=0">
           <!--        <video class="video-js vjs-default-skin" controls *ngIf="this.form.get('video')?.value!=''"-->
           <!--               data-setup='{ "aspectRatio":"1:1" }'>-->
           <!--          <source [src]="this.form.get('video')?.value" type='video/mp4' />-->
@@ -119,9 +123,15 @@
           <!--        </video>-->
 
 
-          <button class="text-center btn-border-white bg-white" data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar
-            o Cambiar Foto/Video
+          <button class="text-center w-100 btn btn-border-white bg-white"
+                  data-bs-toggle="modal" data-bs-target="#exampleModal">
+
+            <img src="assets/camera.png" class=" w-100 p-1"
+                 alt="assets/camera.png" *ngIf="pubImages.length<=0">
+            + Agregar o Cambiar Foto/Video
           </button>
+
+
         </div>
       </div>
 
@@ -149,19 +159,21 @@
         </div>
       </div>
 
-      <div class="col-12 rounded-3 border border-warning-subtle border-5">
-        <a class="link-underline link-underline-opacity-0 link-dark text-uppercase h5" data-bs-toggle="collapse"
-           href="#collapseConditions" (click)="showConditions = !showConditions">
-          Condiciones (Opcional)
-          <i class="bi bi-caret-left-fill text-warning" *ngIf="showConditions"></i>
-          <i class="bi bi-caret-down-fill text-warning" *ngIf="!showConditions"></i>
-        </a>
+      <div class="col-12 rounded-3 bg-secondary-subtle btn-border-orange border-2">
+        <div class="d-flex justify-content-between" data-bs-toggle="collapse" style="cursor: pointer"
+             href="#collapseConditions" (click)="showConditions = !showConditions">
+          <div class="col">
+            <div class="fw-bold fs-5">Condiciones (Opcional)</div>
+            Consideraciones o medidas a tener en cuenta al intentar replicar o manejar la obra, como seguridad.
+          </div>
+          <i class="col-auto bi  fs-2"
+             [ngClass]="{'bi-caret-left-fill':showConditions,'bi-caret-down-fill':!showConditions}"></i>
+        </div>
         <div class="collapse" id="collapseConditions" formArrayName="conditions">
           <div *ngFor="let d of detailsConditions.controls; index as i" [formGroupName]="i">
 
-            <div class="d-flex mb-1  is-invalid">
-              <button class="btn btn-danger me-1 col-auto" (click)="removeDetailCondition(i)"><i
-                class="bi bi-dash-lg"></i></button>
+            <div  class="d-flex mb-1  is-invalid">
+              <button class="btn btn-danger me-1 col-auto" (click)="removeDetailCondition(i)"><i class="bi bi-dash-lg"></i></button>
 
               <input type="text" class="form-control col" formControlName="text"
                      [placeholder]="'Condicion '+(i+1)"
@@ -177,20 +189,24 @@
             </div>
 
           </div>
-          <button class="btn btn-warning mb-2 w-100" (click)="addDetailCondition()"> Agregar Condicion</button>
+          <button class="btn btn-warning mb-2 w-100" (click)="addDetailCondition()"> + Agregar Condicion</button>
 
         </div>
       </div>
-      <div class="col-12 rounded-3 border border-warning-subtle border-5">
-        <a class="link-underline link-underline-opacity-0 link-dark text-uppercase h5" data-bs-toggle="collapse"
-           href="#collapseMaterials" (click)="showMaterials = !showMaterials">
-          Materiales (Opcional)
-          <i class="bi bi-caret-left-fill text-warning" *ngIf="showMaterials"></i>
-          <i class="bi bi-caret-down-fill text-warning" *ngIf="!showMaterials"></i>
-        </a>
+      <div class="col-12 rounded-3 bg-secondary-subtle btn-border-orange border-2">
+        <div class="d-flex justify-content-between" data-bs-toggle="collapse" style="cursor: pointer"
+             href="#collapseMaterials" (click)="showMaterials = !showMaterials">
+          <div class="col">
+            <div class="fw-bold fs-5">
+              Materiales (Opcional)</div>
+            Herramientas e insumos usados para la creación/fabricación.
+          </div>
+          <i class="col-auto bi  fs-2"
+             [ngClass]="{'bi-caret-left-fill':showMaterials,'bi-caret-down-fill':!showMaterials}"></i>
+        </div>
         <div class="collapse" id="collapseMaterials" formArrayName="materials">
           <div *ngFor="let d of detailsMaterials.controls; index as i" [formGroupName]="i">
-            <div class="d-flex mb-1  is-invalid">
+            <div  class="d-flex mb-1  is-invalid">
               <button class="btn btn-danger me-1 col-auto" (click)="removeDetailMaterials(i)">
                 <i class="bi bi-dash-lg"></i></button>
 
@@ -208,25 +224,29 @@
             </div>
 
           </div>
-          <button class="btn btn-warning mb-2 w-100" (click)="addDetailMaterials()"> Agregar Material</button>
+          <button class="btn btn-warning mb-2 w-100" (click)="addDetailMaterials()"> + Agregar Material</button>
 
         </div>
       </div>
-      <div class="col-12 rounded-3 border border-warning-subtle border-5">
-        <a class="link-underline link-underline-opacity-0 link-dark text-uppercase h5" data-bs-toggle="collapse"
-           href="#collapseSteps" (click)="showSteps = !showSteps">
-          Pasos (Opcional)
-          <i class="bi bi-caret-left-fill text-warning" *ngIf="showSteps"></i>
-          <i class="bi bi-caret-down-fill text-warning" *ngIf="!showSteps"></i>
-        </a>
+      <div class="col-12 rounded-3 bg-secondary-subtle btn-border-orange border-2">
+        <div class="d-flex justify-content-between" data-bs-toggle="collapse" style="cursor: pointer"
+             href="#collapseSteps" (click)="showSteps = !showSteps">
+          <div class="col">
+            <div class="fw-bold fs-5">
+              Pasos (Opcional)</div>
+            Pasos a seguir para recrear o replicar la obra (puede incluir imágenes).
+          </div>
+          <i class="col-auto bi  fs-2"
+             [ngClass]="{'bi-caret-left-fill':showSteps,'bi-caret-down-fill':!showSteps}"></i>
+        </div>
         <div class="collapse" id="collapseSteps" formArrayName="steps">
           <div *ngFor="let d of detailsSteps.controls; index as i" [formGroupName]="i">
-            <div class="d-flex mb-1  is-invalid">
+            <div  class="d-flex mb-3  is-invalid">
               <div class="d-flex flex-column">
-                <button class="btn btn-danger me-1 col-auto" (click)="moveDetailsSteps(i,-1)"
+                <button class="btn btn-danger me-1 mb-1 col-auto" (click)="moveDetailsSteps(i,-1)"
                         [hidden]="!(i>0)">
                   <i class="bi bi-arrow-up"></i></button>
-                <button class="btn btn-danger me-1 col-auto" (click)="removeDetailsSteps(i)">
+                <button class="btn btn-danger me-1 mb-1 col-auto" (click)="removeDetailsSteps(i)">
                   <i class="bi bi-dash-lg"></i></button>
                 <button class="btn btn-danger me-1 col-auto" (click)="moveDetailsSteps(i,1)"
                         [hidden]="!(i<detailsSteps.controls.length-1)">
@@ -247,10 +267,9 @@
 
                 <input class="form-control  form-control-sm" type="file"
                        (change)="selectStepFile($event, i)"
-                       formControlName="image" accept="image/png, image/jpeg">
+                       formControlName="image" accept="image/png, image/jpeg" >
               </div>
             </div>
-
 
             <div class="invalid-feedback" *ngIf="d.get('text')?.invalid
                      && (d.get('text')?.dirty || d.get('text')?.touched)">
@@ -260,71 +279,67 @@
             </div>
 
           </div>
-          <button class="btn btn-warning mb-2 w-100" (click)="addDetailsSteps()"> Agregar Paso</button>
+          <button class="btn btn-warning mb-2 w-100" (click)="addDetailsSteps()"> + Agregar Paso</button>
         </div>
       </div>
-      <div class="col-12 rounded-3 border border-warning-subtle border-5">
-        <a class="link-underline link-underline-opacity-0 link-dark text-uppercase h5" data-bs-toggle="collapse"
-           href="#collapsePurchasedata" (click)="showPurchasedata = !showPurchasedata">
-          Datos de venta (Opcional)
-          <i class="bi bi-caret-left-fill text-warning" *ngIf="showPurchasedata"></i>
-          <i class="bi bi-caret-down-fill text-warning" *ngIf="!showPurchasedata"></i>
-        </a>
-        <div class="collapse  p-2" id="collapsePurchasedata">
-          <div class="mb-3 text-center">
-            <label class="form-check-label me-1" for="exampleCheck1">Esta a la venta</label>
-            <input type="checkbox" class="btn-check" id="exampleCheck1" autocomplete="off" formControlName="canSold">
-            <label class="btn " for="exampleCheck1"
-                   [class.btn-danger]="!form.controls['canSold'].value"
-                   [class.btn-success]="form.controls['canSold'].value">
-              <i class="bi bi-x-lg" *ngIf="!form.controls['canSold'].value"></i>
-              <i class="bi bi-check-lg" *ngIf="form.controls['canSold'].value"></i>
-            </label>
-          </div>
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="row align-items-center mb-2">
-                <div class="col-md-6 text-sm-end">
-                  <label class="form-check-label" for="examplepriceold">Precio actual: </label>
-                </div>
-                <div class="col-md-6">
-                  <div class="input-group">
-                    <span class="input-group-text bg-secondary">$</span>
-                    <input type="number" class="form-control" id="examplepriceold" readonly [value]="publication.price">
-                  </div>
-                </div>
-              </div>
-              <div class="row align-items-center mb-2">
-                <div class="col-md-6 text-sm-end">
-                  <label class="form-check-label" for="exampleprice">Precio actualizado: </label>
-                </div>
-                <div class="col-md-6">
-                  <div class="input-group">
-                    <span class="input-group-text bg-orange">$</span>
-                    <input type="number" class="form-control bg-orange-low" id="exampleprice"
-                           formControlName="price" min="1">
-                  </div>
-                </div>
-              </div>
+
+      <div class="col-12 rounded-3 bg-secondary-subtle btn-border-orange border-2">
+        <div class="d-flex justify-content-between" data-bs-toggle="collapse" style="cursor: pointer"
+             href="#collapsePurchasedata" (click)="showPurchasedata = !showPurchasedata">
+          <div class="col">
+            <div class="fw-bold fs-5">
+              Datos de venta (Opcional)
             </div>
-            <div class="col-sm-6">
-              <div class="row align-items-center mb-2">
-                <div class="col-md-6  text-sm-end">
-                  <label class="form-check-label" for="examplecountold">Cantidad actual disponible:</label>
+            En caso de que desee vender la obra, debe incluir monto inicial y precio unitario
+            (También debe tener registrados sus datos de compra/venta).
+          </div>
+          <i class="col-auto bi fs-2"
+             [ngClass]="{'bi-caret-left-fill':showPurchasedata,'bi-caret-down-fill':!showPurchasedata}"></i>
+        </div>
+        <div class="collapse" id="collapsePurchasedata">
+          <div class="rounded-2 border bg-body-tertiary p-2 mb-2">
+
+            <div class="row gap-2 align-items-center justify-content-center">
+              <div class="col-auto row align-items-center">
+                <div class="col-auto pe-0">
+                  <input type="checkbox" class="btn-check" id="exampleCheck1" autocomplete="off" formControlName="canSold">
+                  <label class="btn btn-sm" for="exampleCheck1"
+                         [class.btn-secondary]="!form.controls['canSold'].value"
+                         [class.btn-primary]="form.controls['canSold'].value">
+                    <i class="bi" [ngClass]="{'bi-x-lg':!form.controls['canSold'].value,
+              ' bi-check-lg':form.controls['canSold'].value}"></i>
+                  </label>
                 </div>
-                <div class="col-md-6">
-                  <input type="number" class="form-control" id="examplecountold" readonly [value]="publication.count">
+                <div class="col-auto">Esta a la venta</div>
+              </div>
+
+              <div class="col-auto d-none d-md-block">|</div>
+              <br class="d-md-none">
+
+              <div class="col-auto row align-items-center">
+                <div class="col-auto">
+                  <label class="form-check-label" for="exampleprice"
+                         [class.text-decoration-line-through]="!form.controls['canSold'].value">Precio: </label>
+                </div>
+                <div class="col-auto">
+                  <div class="input-group">
+                <span class="input-group-text "
+                      [class.btn-secondary]="!form.controls['canSold'].value"
+                      [class.btn-primary]="form.controls['canSold'].value">$</span>
+                    <input type="number" class="form-control bg-orange-low" id="exampleprice" formControlName="price" min="1">
+                  </div>
                 </div>
               </div>
-              <div class="row align-items-center mb-2">
-                <div class="col-md-6 text-sm-end">
-                  <label class="form-check-label " for="examplecount">Cantidad actualizada:</label>
+              <div class="col-auto row align-items-center">
+                <div class="col-auto">
+                  <label class="form-check-label" for="examplecount"
+                         [class.text-decoration-line-through]="!form.controls['canSold'].value">Cantidad:</label>
                 </div>
-                <div class="col-md-6">
-                  <input type="number" class="form-control bg-orange-low" id="examplecount"
-                         formControlName="count" min="1">
+                <div class="col-auto">
+                  <input type="number" class="form-control bg-orange-low" id="examplecount" formControlName="count" min="1">
                 </div>
               </div>
+
             </div>
           </div>
         </div>

@@ -265,7 +265,8 @@ public class AuthService implements UserDetailsService {
   }
 
   //  Put
-  public UserDto put(String requestRaw, MultipartFile icon, UserEntity user) throws IOException {
+  public UserDto put(String requestRaw, MultipartFile icon, Jwt authentication) throws IOException {
+    UserEntity user = findUser(authentication);
 
     PutUserRequest request = objectMapper.readValue(requestRaw, PutUserRequest.class);
     if(!user.getId().equals(request.getId())) {
@@ -292,4 +293,17 @@ public class AuthService implements UserDetailsService {
     return mapUserDto(repository.save(newUser));
   }
 
+  public UserDto putRole(Long id, UserRole role, Jwt authentication) {
+    UserEntity user = findUser(authentication);
+
+    if(!user.getRole().equals(UserRole.ADMIN)) {
+      throw new IllegalArgumentException("Usuario sin permisos");
+    }
+
+    UserEntity newUser = repository.getReferenceById(id);
+
+    newUser.setRole(role);
+
+    return mapUserDto(repository.save(newUser));
+  }
 }
