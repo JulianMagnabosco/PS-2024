@@ -43,7 +43,7 @@ export class ListPublicationsMineComponent  implements OnInit,OnDestroy {
       this.activatedRoute.queryParams.subscribe({
         next: value => {
           this.form.patchValue(value)
-          this.charge(0)
+          this.charge(value["page"])
         }
       })
     )

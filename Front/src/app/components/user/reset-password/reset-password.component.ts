@@ -70,6 +70,9 @@ export class ResetPasswordComponent implements OnInit,OnDestroy{
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
+  back(){
+    this.phase=0
+  }
 
   onSubmit(){
 

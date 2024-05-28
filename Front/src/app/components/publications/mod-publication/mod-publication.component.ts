@@ -407,7 +407,7 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
       this.service.postImages(data).subscribe(
         {
           next: value => {
-            cAlert("success","Imagenes guardada con éxito").then(()=>{
+            cAlert("success","Publicación guardada").then(()=>{
               this.router.navigate(["/pub/"+this.publication.id]);
             });
 

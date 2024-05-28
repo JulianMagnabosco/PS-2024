@@ -21,7 +21,7 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
   list: PublicationMin[] = [
   ];
   countTotal=1;
-  size=3;
+  size=9;
   page=0;
 
   constructor(private fb: FormBuilder, private service: PublicationsService,
@@ -42,7 +42,7 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
       this.activatedRoute.queryParams.subscribe({
         next: value => {
           this.form.patchValue(value)
-          this.charge(0)
+          this.charge(value["page"])
         }
       })
     )
@@ -119,8 +119,8 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
     if( this.data.diffMax != "4") newParams["diffMax"] = this.data.diffMax
     if( this.data.points != "0") newParams["points"] = this.data.points
     if( this.data.mine) newParams["mine"] = true
-    if( this.data.sort != "CALF") newParams["sort"] = this.data.sort
-    if( this.data.page != "") newParams["page"] = this.page
+    newParams["sort"] = this.data.sort
+    newParams["page"] = this.page
 
 
     this.router.navigate([],{
@@ -129,7 +129,6 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
       replaceUrl: true
     })
 
-    console.log(this.data)
     this.subs.add(
       this.service.search(this.data).subscribe(
         {

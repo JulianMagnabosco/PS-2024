@@ -317,7 +317,13 @@ public class PurchaseService {
     }
     public List<DeliveryDto> getDeliveriesPending(UserEntity user) {
         List<DeliveryDto> list = new ArrayList<>();
-        for (DeliveryEntity delivery : deliveryRepository.findAllByDealer(user)) {
+        List<DeliveryEntity> entities;
+        if(user.getRole().equals(UserRole.ADMIN)){
+            entities = deliveryRepository.findAll();
+        }else {
+            entities = deliveryRepository.findAllByDealer(user);
+        }
+        for (DeliveryEntity delivery : entities) {
             SaleEntity sale = delivery.getSale();
             UserEntity buyer = delivery.getSale().getUser();
 

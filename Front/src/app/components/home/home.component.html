@@ -1,22 +1,20 @@
-<div class="container middle-body">
-  <ng-container *ngIf="service.user">
-    <div class="h1 w-100 h-75 text-center "> Bienvenido de nuevo</div>
-    <div class="w-100 d-flex justify-content-center">
+<div class="container middle-body" *ngIf="!service.user">
+  <div class="h1 w-100 h-75 text-center "> Bienvenido</div>
+  <div class="h3 w-100 h-75 text-center"> Para empezar a navegar
+    <button class="btn btn-primary  btn-lg" routerLink="/login">Inicia sesión</button>
+    o
+    <button class="btn btn-warning" routerLink="/register">Crea tu cuenta</button>
+  </div>
+  <!--    <div class="w-100 h-75 text-center"> o si eres usuario nuevo-->
+  <!--    </div>-->
+</div>
+<div class="container" *ngIf="service.user">
+  <div class="h1 w-100 h-75 text-center "> Bienvenido de nuevo</div>
+  <div class="w-100 d-flex justify-content-center">
       <span class="card bg-secondary-subtle" style="max-width: 500px" >
         <img class="img-fluid"[src]="service.user.iconUrl||'' ">
         <div class="h3 text-center w-auto"> {{ service.user.username || "" }}</div>
         <div class="h5 text-center w-auto"> {{ service.user.email || "" }}</div>
       </span>
-    </div>
-  </ng-container>
-  <ng-container *ngIf="!service.user">
-    <div class="h1 w-100 h-75 text-center "> Bienvenido</div>
-    <div class="h3 w-100 h-75 text-center"> Para empezar a navegar
-      <button class="btn btn-primary  btn-lg" routerLink="/login">Inicia sesión</button>
-      o
-      <button class="btn btn-warning" routerLink="/register">Crea tu cuenta</button>
-    </div>
-<!--    <div class="w-100 h-75 text-center"> o si eres usuario nuevo-->
-<!--    </div>-->
-  </ng-container>
+  </div>
 </div>

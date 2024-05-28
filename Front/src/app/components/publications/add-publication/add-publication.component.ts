@@ -382,9 +382,11 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
               cAlert("success","Borrador guardada");
               // alert("El borrador fue guardado con éxito");
             }else {
-              cAlert("success","Publicacion guardada");
+              cAlert("success","Publicación guardada").then(()=>{
+                this.form.markAsPristine()
+                this.router.navigate(["/mypubs"])
+              });
               // alert("La publicacion fue guardada con éxito");
-              this.router.navigate(["/mypubs"])
             }
           },
           error: err => {
