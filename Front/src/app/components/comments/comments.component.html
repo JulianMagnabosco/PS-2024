@@ -1,7 +1,12 @@
 <div class="border-orange rounded-5 p-3">
-  <div class="d-flex gap-2 mb-2">
-    <input #entrada1 class="form-control bg-secondary-subtle" placeholder="Escribe un comentario">
-    <button class="btn btn-warning text-white" (click)="submit(entrada1, 0,0)">COMENTAR</button>
+  <h5>Comentarios: {{countTotal}}</h5>
+
+  <div class="d-flex gap-2 mb-4">
+    <input #entrada0 class="form-control bg-secondary-subtle" placeholder="Escribe un comentario" required
+           maxlength="250"
+      (input)="button0.disabled=!entrada0.checkValidity()">
+    <button class="btn btn-warning text-white" #button0 disabled
+            (click)="submit(entrada0, 0,0)">COMENTAR</button>
 
   </div>
 
@@ -13,10 +18,10 @@
         </div>
         <div class="col p-1"  [class.fst-italic]="comm.deleted">
           <div class="fw-bold">{{ comm.username }}</div>
-          <div>{{ comm.text }}</div>
+          <div class="text-break">{{ comm.text }}</div>
         </div>
 
-        <div class="col-auto">
+        <div class="col-auto" *ngIf="!comm.deleted">
           <a class="btn btn-secondary btn"  role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-three-dots"></i>
           </a>
@@ -27,10 +32,15 @@
         </div>
       </div>
 
-      <div class="d-flex gap-2 p-2">
-        <input class="form-control bg-secondary-subtle" placeholder="Escribe un comentario" [id]="'entrada'+comm.id">
-        <button class="btn btn-warning text-white" (click)="submit(
-          document.getElementById('entrada'+comm.id), comm.id, comm.id)">COMENTAR
+      <div class="d-flex gap-2 p-2" *ngIf="!comm.deleted">
+        <input class="form-control bg-secondary-subtle" placeholder="Escribe un comentario"
+               [id]="'entrada'+comm.id" required
+                  maxlength="250"
+               (input)="dissableOnCheck('entrada'+comm.id,'button'+comm.id)">
+        <button class="btn btn-warning text-white"
+                [id]="'button'+comm.id"
+                (click)="submit(
+                document.getElementById('entrada'+comm.id), comm.id, comm.id)">COMENTAR
         </button>
       </div>
     </div>
@@ -58,16 +68,20 @@
                 <i class="bi bi-three-dots"></i>
               </a>
 
-              <ul class="dropdown-menu">
+              <ul class="dropdown-menu" *ngIf="!comm2.deleted">
                 <li><a class="dropdown-item btn" (click)="delete(comm2.id)">Eliminar comentario</a></li>
               </ul>
 
             </div>
           </div>
-          <div class="d-flex gap-2 p-2">
+          <div class="d-flex gap-2 p-2" *ngIf="!comm2.deleted">
             <input class="form-control bg-secondary-subtle" placeholder="Escribe un comentario"
-                   [id]="'entrada'+comm2.id">
-            <button class="btn btn-warning text-white" (click)="submit(
+                   [id]="'entrada'+comm2.id" required
+                      maxlength="250"
+                   (input)="dissableOnCheck('entrada'+comm2.id,'button'+comm2.id)">
+            <button class="btn btn-warning text-white"
+                    [id]="'button'+comm2.id"
+                    (click)="submit(
                 document.getElementById('entrada'+comm2.id), comm2.id, comm.id)">COMENTAR
             </button>
           </div>

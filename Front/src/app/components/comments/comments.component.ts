@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {Publication} from "../../models/publication/publication";
 import {PublicationsService} from "../../services/publications/publications.service";
@@ -15,46 +15,42 @@ import {cConfirm} from "../../services/custom-alert/custom-alert.service";
   templateUrl: './comments.component.html',
   styleUrl: './comments.component.css'
 })
-export class CommentsComponent implements OnInit, OnDestroy{
+export class CommentsComponent implements OnChanges, OnDestroy{
   protected readonly document = document;
 
   private subs: Subscription = new Subscription();
 
-  @Input() idUser:any;
   @Input() idPub:any;
 
-  list:Comment[]=[{
-    id: 1,
-    pub: 1,
-    userId: 1,
-    username: 'PAblo',
-    userIconUrl: '',
-    text: 'Comentario1',
-    fatherText: '',
-    childs: [{
-      id: 2,
-      pub: 1,
-      userId: 1,
-      username: 'Roller',
-      userIconUrl: '',
-      text: 'Comentario2',
-      fatherText: '',
-      childs: [],
-      deleted:false
-    }],
-    deleted:false
-  }];
+  list:Comment[]=[];
+  // list:Comment[]=[{
+  //   id: 1,
+  //   pub: 1,
+  //   userId: 1,
+  //   username: 'PAblo',
+  //   userIconUrl: '',
+  //   text: 'Comentario1',
+  //   fatherText: '',
+  //   childs: [{
+  //     id: 2,
+  //     pub: 1,
+  //     userId: 1,
+  //     username: 'Roller',
+  //     userIconUrl: '',
+  //     text: 'Comentario2',
+  //     fatherText: '',
+  //     childs: [],
+  //     deleted:false
+  //   }],
+  //   deleted:false
+  // }];
   countTotal:number=0;
   textList:string[]=[];
 
-  form: FormGroup = this.fb.group({});
-  constructor(private fb: FormBuilder,private service: CommentService) {
-    this.form = this.fb.group({
-      text: ["", [Validators.required]],
-    });
+  constructor(private service: CommentService) {
   }
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     this.charge();
   }
 
@@ -76,18 +72,15 @@ export class CommentsComponent implements OnInit, OnDestroy{
       )
     )
   }
-  submit(textInput:HTMLElement|null, id:number, grandid:number){
-    if(!textInput){
-      return
-    }
-    if(!(textInput instanceof HTMLInputElement)){
+  submit(textInput:HTMLElement|null, id:number, gId:number){
+    if(!textInput || !(textInput instanceof HTMLInputElement)){
       return
     }
 
     let data = {
       "pub":this.idPub,
       "father":id,
-      "grandfather":grandid,
+      "grandfather":gId,
       "text":textInput.value
     }
 
@@ -119,4 +112,17 @@ export class CommentsComponent implements OnInit, OnDestroy{
     })
   }
 
+  dissableOnCheck(textInputId:string,buttonInputId:string){
+    const textInput = document.getElementById(textInputId)
+    const buttonInput = document.getElementById(buttonInputId)
+    if(!textInput || !(textInput instanceof HTMLInputElement) ||
+      !buttonInput || !(buttonInput instanceof HTMLButtonElement)){
+      return
+    }
+    if(!textInput.checkValidity())
+      buttonInput.setAttribute("disabled",'true');
+    else
+      buttonInput.removeAttribute("disabled");
+    return;
+  }
 }
