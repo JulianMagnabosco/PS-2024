@@ -47,7 +47,7 @@
     <div class="row border-5 btn-border-orange rounded-5 p-2 bg-secondary-subtle mb-2" *ngFor="let i of list"
          data-bs-toggle="modal" data-bs-target="#exampleModal"
          (click)="open(i)">
-      <div class="h5">N°{{i.id}} - {{i.dateTime | date:"dd/MM/yyyy hh:mm:ss"}}</div>
+      <div class="h5">N°{{i.id}} - {{i.dateTime | date:"dd/MM/yyyy hh:mm"}}</div>
       <div class="col-2 ">
         <img class="border border-4 border-secondary rounded rounded-4 w-100"
              [src]="i.imageUrl" >

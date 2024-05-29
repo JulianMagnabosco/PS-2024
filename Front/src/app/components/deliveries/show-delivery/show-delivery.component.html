@@ -11,7 +11,7 @@
   <div class="d-flex mb-2">
     <div class="col">
       <div class="mb-1 p-1">
-        Fecha de venta: <span class="text-secondary">{{delivery?.saleDateTime | date:"dd/MM/yyyy hh:mm:ss"}}</span>
+        Fecha de venta: <span class="text-secondary">{{delivery?.saleDateTime | date:"dd/MM/yyyy hh:mm"}}</span>
       </div>
       <div class="mb-1 p-1">
         Comprador: <span class="text-secondary text-capitalize">{{delivery?.name}}</span>
@@ -41,7 +41,7 @@
       </div>
       <div class="py-1">
         Fecha de entrega:&nbsp;
-        <span class="text-secondary">{{(delivery?.deliveryDateTime | date:"dd/MM/yyyy hh:mm:ss") || "--"}}</span>
+        <span class="text-secondary">{{(delivery?.deliveryDateTime | date:"dd/MM/yyyy hh:mm") || "--"}}</span>
       </div>
       <div class="d-flex align-items-center ">
       <div class="col-auto">

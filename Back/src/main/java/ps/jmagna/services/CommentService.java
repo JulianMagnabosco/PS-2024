@@ -1,5 +1,6 @@
 package ps.jmagna.services;
 
+import org.springdoc.core.converters.models.Sort;
 import ps.jmagna.dtos.publication.CommentDto;
 import ps.jmagna.dtos.publication.ListCommentsResponce;
 import ps.jmagna.dtos.publication.CommentRequest;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,7 @@ public class CommentService {
     public CommentDto register(CommentRequest request, UserEntity user){
         CommentEntity comment = new CommentEntity();
         comment.setPublication(publicationRepository.getReferenceById(request.getPub()));
+        comment.setDateTime(LocalDateTime.now());
         comment.setUser(user);
         if(request.getFather()!=0){
             comment.setFather(commentRepository.getReferenceById(request.getFather()));
@@ -49,47 +52,49 @@ public class CommentService {
         ListCommentsResponce responce = new ListCommentsResponce();
         List<CommentDto> list = new ArrayList<>();
         int countTotal=0;
-        for (CommentEntity c : commentRepository.findAllByPublication_Id(id)) {
-            if(c.getFather()==null){
+        for (CommentEntity c : commentRepository.findAllByPublication_IdAndGrandfatherIsNull(id)) {
 //                if(c.isDeleted() && c.getChilds().isEmpty()){
 //                    continue;
 //                }
 
-                List<CommentDto> childs = new ArrayList<>();
-                for (CommentEntity cc : commentRepository.findAllByGrandfather_Id(c.getId())) {
+            List<CommentDto> childs = new ArrayList<>();
+            for (CommentEntity cc : commentRepository.findAllByGrandfather_Id(c.getId())) {
 //                    if(cc.isDeleted() && cc.getChilds().isEmpty()){
 //                        continue;
 //                    }
-                    childs.add(new CommentDto(
-                            cc.getId(),
-                            cc.getPublication().getId(),
-                            cc.getUser().getId(),
-                            cc.getUser().getUsername(),
-                            url + "/api/image/user/" + cc.getUser().getId(),
-                            cc.getText(),
-                            cc.getFather().getText(),
-                            null,
-                            cc.isDeleted()
-                            ));
-                    countTotal++;
-                }
+                childs.add(new CommentDto(
+                        cc.getId(),
+                        cc.getPublication().getId(),
+                        cc.getDateTime(),
+                        cc.getUser().getId(),
+                        cc.getUser().getUsername(),
+                        url + "/api/image/user/" + cc.getUser().getId(),
+                        cc.getText(),
+                        cc.getFather().getId(),
+                        cc.getFather().getText(),
+                        null,
+                        cc.isDeleted()
+                ));
+                countTotal++;
+            }
 
 //                if(c.isDeleted() && childs.isEmpty()){
 //                    continue;
 //                }
-                list.add(new CommentDto(
-                        c.getId(),
-                        c.getPublication().getId(),
-                        c.getUser().getId(),
-                        c.getUser().getUsername(),
-                        url + "/api/image/user/" + c.getUser().getId(),
-                        c.getText(),
-                        null,
-                        childs,
-                        c.isDeleted()
-                ));
-                countTotal++;
-            }
+            list.add(new CommentDto(
+                    c.getId(),
+                    c.getPublication().getId(),
+                    c.getDateTime(),
+                    c.getUser().getId(),
+                    c.getUser().getUsername(),
+                    url + "/api/image/user/" + c.getUser().getId(),
+                    c.getText(),
+                    null,
+                    null,
+                    childs,
+                    c.isDeleted()
+            ));
+            countTotal++;
         }
 
         responce.setList(list);

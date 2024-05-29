@@ -3,6 +3,7 @@ import {Section} from "./section";
 export interface Publication {
   id: number;
   name: string;
+  dateTime:string;
   description: string;
   type: string;
   userId: number;

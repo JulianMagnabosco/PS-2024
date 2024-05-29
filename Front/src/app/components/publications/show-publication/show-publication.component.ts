@@ -20,6 +20,7 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
 
   countBuy = 1;
   publication:Publication={
+    dateTime: "",
     difficultyValue: 0,
     video: "",
     userIconUrl: "", username: "",

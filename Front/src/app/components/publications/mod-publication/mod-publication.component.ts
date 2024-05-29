@@ -30,6 +30,7 @@ export class ModPublicationComponent implements OnInit,OnDestroy {
   @ViewChild('img1') img1?: ElementRef<HTMLDivElement>;
 
   publication:Publication={
+    dateTime: "",
     difficultyValue: 0,
     video: "",
     id: 1,

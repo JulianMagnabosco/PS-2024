@@ -14,12 +14,13 @@
         <div class="col-sm-6">
           <h2 class="mb-2">
             {{publication.name}}
+            <span class="text-secondary fs-6">{{publication.dateTime| date:"dd/MM/yyyy hh:mm"}}</span>
           </h2>
           <div class="d-flex align-items-center gap-1 mb-2">
             <div class="col-auto rounded-3 bg-warning px-1">
               {{publication.type}}
             </div>
-            <div class="col-auto rounded-3 bg-danger px-1">
+            <div class="col-auto rounded-3 bg-orange px-1">
               {{publication.difficulty}}
             </div>
           </div>
@@ -112,7 +113,7 @@
         <div class="">
           <div *ngFor="let d of conditions; index as i" class="d-flex mb-1">
 
-            <div class="col-auto me-1 rounded-circle bg-danger text-center text-white
+            <div class="col-auto me-1 rounded-circle bg-orange text-center text-white
             fs-3 rounded-2 align-content-center point-text">!</div>
             <div class="col rounded-2 bg-body-secondary p-1 text-break">{{ d.text }}</div>
 <!--            <div class="rounded-2 bg-body-secondary p-1">asdasdaaaaaaaaaaaaaaaaaaaaaaaaaaa-->
@@ -126,7 +127,7 @@
         <div class="">
           <div *ngFor="let d of materials; index as i" class="d-flex mb-1">
 
-            <div class="col-auto me-1 rounded-circle bg-danger text-center text-white
+            <div class="col-auto me-1 rounded-circle bg-orange text-center text-white
             fs-3 rounded-2 align-content-center point-text">{{ i + 1 }}</div>
             <div class="rounded-2 bg-body-secondary p-1">{{ d.text }}</div>
           </div>
@@ -134,16 +135,14 @@
         </div>
       </div>
       <div class="p-2 rounded-3 bg-secondary-subtle  mb-3"  *ngIf="steps.length>0">
-        <h5 class="text-uppercase">Pasos</h5>
+        <h5 class="text-uppercase">Pasos de fabricación</h5>
         <div class="">
-          <div *ngFor="let d of steps; index as i" class="d-flex mb-1">
-            <div class="col-auto me-1 rounded bg-danger text-center text-white
-            fs-4 rounded-2 align-content-center point-text">{{ i + 1 }}</div>
-            <div class="w-100 list-group">
-              <div class="list-group-item bg-body-secondary p-1 border-orange">{{ d.text }}</div>
-              <img [src]="d.imageUrl" alt="step" class="w-100 border border-5 border-danger list-group-item
-              rounded-bottom-1 border-top-0" *ngIf="d.imageUrl">
-            </div>
+          <div *ngFor="let d of steps; index as i" class="mb-3 list-group ">
+            <div class="list-group-item p-1 bg-orange text-white border-orange  fs-4">Paso {{ i + 1 }}</div>
+            <div class="list-group-item p-1 bg-body-secondary border-5
+             border-orange  border-top-0">{{ d.text }}</div>
+            <img [src]="d.imageUrl" alt="step" class="border-5 px-5 border-orange list-group-item
+              rounded-bottom-1 border-top-0" *ngIf="d.imageUrl" style="max-height: 50rem">
           </div>
 
         </div>
