@@ -212,7 +212,7 @@ public class PublicationService {
             PublicationMinDto dto = modelMapper.map(p, PublicationMinDto.class);
 
             dto.setCalification(cal);
-            dto.setDificulty(Difficulty.values()[p.getDifficulty()].name());
+            dto.setDifficulty(Difficulty.values()[p.getDifficulty()].name());
             SectionEntity sectionImage = sectionRepository.findFirstByPublicationAndType(p, SecType.PHOTO);
             if (sectionImage != null) {
                 dto.setImageUrl(url + "/api/image/pub/" + sectionImage.getId());
@@ -310,7 +310,7 @@ public class PublicationService {
             PublicationMinDto dto = modelMapper.map(p, PublicationMinDto.class);
 
             dto.setCalification(cal);
-            dto.setDificulty(Difficulty.values()[p.getDifficulty()].name());
+            dto.setDifficulty(Difficulty.values()[p.getDifficulty()].name());
             SectionEntity sectionImage = sectionRepository.findFirstByPublicationAndType(p, SecType.PHOTO);
             if (sectionImage != null) {
                 dto.setImageUrl(url + "/api/image/pub/" + sectionImage.getId());

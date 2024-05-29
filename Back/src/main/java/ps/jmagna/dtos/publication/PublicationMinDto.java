@@ -18,7 +18,7 @@ public class PublicationMinDto {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     LocalDateTime dateTime;
     String type;
-    String dificulty;
+    String difficulty;
     BigDecimal calification;
     String imageUrl;
     boolean canSold;

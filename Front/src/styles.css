@@ -78,6 +78,7 @@
 }
 
 .btn-border-orange{
+  cursor: pointer;
   border: 3px solid var(--shiny);
   transition: border-bottom-color;
 }
@@ -267,4 +268,22 @@ input[type="range"]::-moz-range-thumb {
   top: 50%;
   left: 50%;
   transform: translate(-50%,-50%) translateY(-56px);
+}
+
+.bg-hover{
+  transition: background-color 250ms;
+  color: transparent;
+  div{
+    display: none;
+  }
+  /*filter: brightness(50%);*/
+}
+.bg-hover:hover{
+  display: block;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.57);
+  div{
+    display: inline;
+  }
+  /*filter: brightness(50%);*/
 }

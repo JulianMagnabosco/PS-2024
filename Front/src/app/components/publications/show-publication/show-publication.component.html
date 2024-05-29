@@ -11,7 +11,7 @@
 
   <div class="p-3 mb-3 rounded-5 border-gradient  mt-4">
       <div class="row mb-3">
-        <div class="col-sm-6">
+        <div class="col-md-6">
           <h2 class="mb-2">
             {{publication.name}}
             <span class="text-secondary fs-6">{{publication.dateTime| date:"dd/MM/yyyy hh:mm"}}</span>
@@ -29,7 +29,7 @@
                  style="width: 50px; height: 50px;" class="rounded-circle">
             <span>{{publication.username}}</span>
           </div>
-          <div class="mb-4 p-1 me-1 rounded-2 bg-body-secondary">
+          <div class="mb-4 p-1 me-1 rounded-2 bg-secondary-subtle">
             {{publication.description }}
           </div>
 
@@ -67,14 +67,18 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-6">
+
+        <div class="col-md-6">
           <div id="carouselExample" class="carousel slide bg-secondary-subtle  rounded-2 p-1"
                #img1>
             <div class="carousel-inner">
-              <div class="carousel-item " *ngFor="let p of photos; index as i" [class.active]="i==0">
-                <img [src]="p.imageUrl || 'assets/camera.png'" class="d-block w-100">
+              <div class="carousel-item text-center align-content-center"
+                   *ngFor="let p of photos; index as i" [class.active]="i==0"
+                    style="height: 30rem">
+                <img [src]="p.imageUrl || 'assets/camera.png'"
+                     style="object-fit: cover; max-height: 100%; max-width: 100%">
               </div>
-              <div class="carousel-item " *ngIf="publication.video!=''">
+              <div class="carousel-item " *ngIf="publication.video" id="videoItem">
                 <youtube-player #youTubePlayer
                                 [videoId]="publication.video"
                                 [width]="img1?.clientWidth||50"

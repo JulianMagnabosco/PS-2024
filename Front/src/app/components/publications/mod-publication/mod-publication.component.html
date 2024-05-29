@@ -2,7 +2,7 @@
 
 <div class="container mb-4" *ngIf="!notfound">
   <div class="d-flex justify-content-between gap-1 p-2
-    bg-secondary-subtle rounded-3 sticky-controls z-1">
+    bg-secondary-subtle rounded-3 sticky-controls z-2">
 
     <h1 class="text-center me-auto"> EDITAR OBRA</h1>
 
@@ -142,6 +142,7 @@
               <h1 class="modal-title fs-5" id="exampleModalLabel">Seleccionar imagen/video</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
             <div class="modal-body">
               <label for="formFile" class="form-label">Imagen</label>
               <input class="form-control form-control-sm col mb-1" type="file" id="formFile"
@@ -152,6 +153,7 @@
                      formControlName="video" type="text"
                      (change)="changeVideo($event)">
             </div>
+
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>

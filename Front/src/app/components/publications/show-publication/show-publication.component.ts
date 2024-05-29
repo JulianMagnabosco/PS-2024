@@ -141,8 +141,8 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
               this.service.get(id).subscribe(
                 {
                   next: value => {
-                    //
                     this.publication=value
+                    console.log(this.publication)
                   },
                   error: err => {
                     this.notfound=true;
