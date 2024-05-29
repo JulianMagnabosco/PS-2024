@@ -4,7 +4,7 @@
   *ngIf="userService.user?.id==publication.userId.toString()">
     <span class="fs-5 align-content-center">Editar:</span>
     <span>
-      <button class="btn btn-warning me-1" routerLink="/editpub/{{publication.id}}">MODIFICAR</button>
+      <button class="btn btn-warning me-1 bi bi-pencil-fill" routerLink="/editpub/{{publication.id}}"></button>
       <button class="btn btn-danger" (click)="delete()">ELIMINAR</button>
     </span>
   </div>
@@ -20,7 +20,7 @@
             <div class="col-auto rounded-3 bg-warning px-1">
               {{publication.type}}
             </div>
-            <div class="col-auto rounded-3 bg-orange px-1">
+            <div class="col-auto rounded-3 bg-orange px-1 text-white">
               {{publication.difficulty}}
             </div>
           </div>

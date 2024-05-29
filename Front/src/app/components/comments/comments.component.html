@@ -17,7 +17,7 @@
           <img [src]="comm.userIconUrl || 'assets/camera.png'" style="width: 50px; height: 50px">
         </div>
         <div class="col p-1"  [class.fst-italic]="comm.deleted">
-          <div class="fw-bold">{{ comm.username }}
+          <div class="fw-bold">&commat;{{ comm.username }}
             <span class="text-secondary fw-normal">{{comm.dateTime | date:"dd/MM/yyyy hh:mm"}}</span></div>
           <div class="text-break">{{ comm.text }}</div>
         </div>
@@ -35,13 +35,12 @@
 
       <div class="d-flex gap-2 p-2" *ngIf="!comm.deleted">
         <input class="form-control bg-secondary-subtle" placeholder="Escribe un comentario"
-               [id]="'entrada'+comm.id" required
-                  maxlength="250"
+               [id]="'entrada'+comm.id" required maxlength="250"
                (input)="dissableOnCheck('entrada'+comm.id,'button'+comm.id)">
         <button class="btn btn-warning text-white"
-                [id]="'button'+comm.id"
-                (click)="submit(
-                document.getElementById('entrada'+comm.id), comm.id, comm.id)">COMENTAR
+                [id]="'button'+comm.id" disabled
+                (click)="submit(document.getElementById('entrada'+comm.id), comm.id, comm.id)">
+          COMENTAR
         </button>
       </div>
     </div>
@@ -55,7 +54,7 @@
               >
             </div>
             <div class="col p-1">
-              <div class="fw-bold">{{ comm2.username }}
+              <div class="fw-bold">&commat;{{ comm2.username }}
                 <span class="text-secondary fw-normal">{{comm.dateTime | date:"dd/MM/yyyy hh:mm"}}</span></div>
               <div [class.fst-italic]="comm2.deleted">
                 <span class="fst-italic text-secondary bi bi-arrow-90deg-up"
@@ -78,13 +77,12 @@
           </div>
           <div class="d-flex gap-2 p-2" *ngIf="!comm2.deleted">
             <input class="form-control bg-secondary-subtle" placeholder="Escribe un comentario"
-                   [id]="'entrada'+comm2.id" required
-                      maxlength="250"
+                   [id]="'entrada'+comm2.id" required maxlength="250"
                    (input)="dissableOnCheck('entrada'+comm2.id,'button'+comm2.id)">
-            <button class="btn btn-warning text-white"
+            <button class="btn btn-warning text-white" disabled
                     [id]="'button'+comm2.id"
-                    (click)="submit(
-                document.getElementById('entrada'+comm2.id), comm2.id, comm.id)">COMENTAR
+                    (click)="submit(document.getElementById('entrada'+comm2.id), comm2.id, comm.id)">
+              COMENTAR
             </button>
           </div>
         </div>
