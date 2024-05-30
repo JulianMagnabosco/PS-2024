@@ -16,7 +16,7 @@ export const authGuard: CanActivateFn = (route, state) => {
 };
 
 export const authGuardSubmit: CanDeactivateFn<AddPublicationComponent|ModPublicationComponent> = (component,route, state) => {
-  if(component.form.dirty){
+  if(component.form?.dirty){
     return cConfirm("¿Seguro que quieres salir? Se perderan los datos no guardados").then((result) => {
       return result.isConfirmed;
     })

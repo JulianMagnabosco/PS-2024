@@ -1,0 +1,349 @@
+
+
+<ng-container *ngIf="!notfound">
+
+  <div class="container mt-4 p-2 rounded-5 border-gradient">
+    <form [formGroup]="form" class="row g-3 justify-content-center p-3">
+      <div class="col-lg-8 col-12">
+        <div class="mb-2">
+          <label for="nameInput" class="form-label h5">Nombre</label>
+          <input type="text" formControlName="name" class="form-control" id="nameInput"
+                 [class.is-invalid]="(form.controls['name'].touched || form.controls['name'].dirty)
+      && form.controls['name'].invalid">
+          <div class="invalid-feedback" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)
+      && form.controls['name'].hasError('required')">
+            El nombre es requerido.
+          </div>
+          <div class="invalid-feedback" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)
+      && form.controls['name'].hasError('maxlength')">
+            El nombre no puede superar los 50 caracteres.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="descriptionInput" class="form-label h5">Descripcion</label>
+          <textarea class="form-control" id="descriptionInput" rows="3"
+                    formControlName="description" [class.is-invalid]="(form.controls['description'].touched
+                  || form.controls['description'].dirty) && form.controls['description'].invalid"></textarea>
+          <div class="invalid-feedback" *ngIf="(form.controls['description'].touched || form.controls['description'].dirty)
+      && form.controls['description'].hasError('required')">
+            La descripcion es requerida.
+          </div>
+          <div class="form-text fst-italic">Puedes agregar tags en la descripción con el simbolo '#' </div>
+
+        </div>
+
+        <div class="row g-3 my-3">
+          <div class="col-auto col-xl-6 row">
+            <div class="col-auto ">
+              <label for="typeInput" class="col-form-label">Tipo:</label>
+            </div>
+            <div class="col-auto ">
+              <select class="form-select" id="typeInput" style="width: 12rem;"
+                      formControlName="type" [class.is-invalid]="(form.controls['type'].touched
+                  || form.controls['type'].dirty) && form.controls['type'].invalid">
+                <option value="" selected>--Seleccionar--</option>
+                <option value="ARTE">Cientifico</option>
+                <option value="CIENCIA">Artistico</option>
+                <option value="TECNOLOGIA">Artistico</option>
+                <option value="OTRO">Otro</option>
+              </select>
+              <div class="invalid-feedback" *ngIf="(form.controls['type'].touched || form.controls['type'].dirty)
+      && form.controls['type'].hasError('required')">
+                El tipo de obra es requerido.
+              </div>
+            </div>
+          </div>
+
+          <div class="col-auto col-xl-6 row">
+            <div class="col-auto">
+              <label for="difficultyInput" class="col-form-label">Dificultad:</label>
+            </div>
+            <div class="col-auto">
+              <select class="form-select" id="difficultyInput"  style="width: 12rem;"
+                      formControlName="difficulty" [class.is-invalid]="(form.controls['difficulty'].touched
+                  || form.controls['difficulty'].dirty) && form.controls['difficulty'].invalid">
+                <option value="" selected>--Seleccionar--</option>
+                <option value="1">Facil</option>
+                <option value="2">Normal</option>
+                <option value="3">Dificil</option>
+                <option value="4">Muy Dificil</option>
+              </select>
+              <div class="invalid-feedback" *ngIf="(form.controls['difficulty'].touched || form.controls['difficulty'].dirty)
+      && form.controls['difficulty'].hasError('required')">
+                El nivel de dificultad de la obra es requerido.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-sm-8 col-12">
+        <div class="rounded-2 border-orange border-5" #img1>
+          <!--        <img [src]="pubImages[0].url " class=" w-100 p-1"-->
+          <!--             [alt]="pubImages[0].url" *ngIf="pubImages.length>0">-->
+          <div id="carouselExample" class="carousel slide rounded-2 p-1"
+               *ngIf="pubImages.length>0">
+            <div class="carousel-inner">
+              <div class="carousel-item " *ngFor="let p of pubImages; index as i" [class.active]="i==0">
+                <img [src]="p.url || 'assets/camera.png'" class="d-block w-100">
+              </div>
+              <div class="carousel-item " *ngIf="video!=''">
+                <youtube-player #youTubePlayer
+                                [videoId]="video"
+                                [width]="img1?.clientWidth||50"
+                                [height]="img1?.clientWidth||50">
+                </youtube-player>
+              </div>
+            </div>
+
+            <ng-container *ngIf="pubImages.length>1">
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="bi-caret-left-fill text-black fs-1" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="bi-caret-right-fill text-black fs-1" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </ng-container>
+          </div>
+          <!--        <video class="video-js vjs-default-skin" controls *ngIf="this.form.get('video')?.value!=''"-->
+          <!--               data-setup='{ "aspectRatio":"1:1" }'>-->
+          <!--          <source [src]="this.form.get('video')?.value" type='video/mp4' />-->
+          <!--&lt;!&ndash;          <source [src]="this.form.get('video')?.value" type='video/webm' />&ndash;&gt;-->
+          <!--        </video>-->
+
+
+          <button class="text-center w-100 btn btn-border-white bg-white"
+                  data-bs-toggle="modal" data-bs-target="#exampleModal">
+
+            <img src="assets/camera.png" class=" w-100 p-1"
+                 alt="assets/camera.png" *ngIf="pubImages.length<=0">
+            + Agregar o Cambiar Foto/Video
+          </button>
+
+
+        </div>
+      </div>
+
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Seleccionar imagen/video</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+              <label for="formFile" class="form-label">Imagen</label>
+              <input class="form-control form-control-sm col mb-1" type="file" id="formFile"
+                     accept="image/png, image/jpeg" multiple
+                     (change)="selectPubImages($event)">
+              <label for="formFile" class="form-label">Video</label>
+              <input class="form-control col" placeholder="Url del video"
+                     formControlName="video" type="text"
+                     (change)="changeVideo($event)">
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 rounded-3 bg-secondary-subtle btn-border-orange border-2">
+        <div class="d-flex justify-content-between" data-bs-toggle="collapse" style="cursor: pointer"
+             href="#collapseConditions" (click)="showConditions = !showConditions">
+          <div class="col">
+            <div class="fw-bold fs-5">Condiciones (Opcional)</div>
+            Consideraciones o medidas a tener en cuenta al intentar replicar o manejar la obra, como seguridad.
+          </div>
+          <i class="col-auto bi  fs-2"
+             [ngClass]="{'bi-caret-left-fill':showConditions,'bi-caret-down-fill':!showConditions}"></i>
+        </div>
+        <div class="collapse" id="collapseConditions" formArrayName="conditions">
+          <div *ngFor="let d of detailsConditions.controls; index as i" [formGroupName]="i">
+
+            <div  class="d-flex mb-1  is-invalid">
+              <button class="btn btn-danger me-1 col-auto" (click)="removeDetailCondition(i)"><i class="bi bi-dash-lg"></i></button>
+
+              <input type="text" class="form-control col" formControlName="text"
+                     [placeholder]="'Condicion '+(i+1)"
+                     [class.is-invalid]="d.get('text')?.invalid
+               && (d.get('text')?.dirty || d.get('text')?.touched)"></div>
+
+            <div class="invalid-feedback"
+                 *ngIf="d.get('text')?.invalid
+                     && (d.get('text')?.dirty || d.get('text')?.touched)">
+              <div *ngIf="d.get('text')?.hasError('required')">
+                Es requerido (Completar o eliminar)
+              </div>
+            </div>
+
+          </div>
+          <button class="btn btn-warning mb-2 w-100" (click)="addDetailCondition()"> + Agregar Condicion</button>
+
+        </div>
+      </div>
+      <div class="col-12 rounded-3 bg-secondary-subtle btn-border-orange border-2">
+        <div class="d-flex justify-content-between" data-bs-toggle="collapse" style="cursor: pointer"
+             href="#collapseMaterials" (click)="showMaterials = !showMaterials">
+          <div class="col">
+            <div class="fw-bold fs-5">
+              Materiales (Opcional)</div>
+            Herramientas e insumos usados para la creación/fabricación.
+          </div>
+          <i class="col-auto bi  fs-2"
+             [ngClass]="{'bi-caret-left-fill':showMaterials,'bi-caret-down-fill':!showMaterials}"></i>
+        </div>
+        <div class="collapse" id="collapseMaterials" formArrayName="materials">
+          <div *ngFor="let d of detailsMaterials.controls; index as i" [formGroupName]="i">
+            <div  class="d-flex mb-1  is-invalid">
+              <button class="btn btn-danger me-1 col-auto" (click)="removeDetailMaterials(i)">
+                <i class="bi bi-dash-lg"></i></button>
+
+              <input type="text" class="form-control col" formControlName="text"
+                     [placeholder]="'Material '+(i+1)"
+                     [class.is-invalid]="d.get('text')?.invalid
+               && (d.get('text')?.dirty || d.get('text')?.touched)"></div>
+
+
+            <div class="invalid-feedback" *ngIf="d.get('text')?.invalid
+                     && (d.get('text')?.dirty || d.get('text')?.touched)">
+              <div *ngIf="d.get('text')?.hasError('required')">
+                Es requerido (Completar o eliminar)
+              </div>
+            </div>
+
+          </div>
+          <button class="btn btn-warning mb-2 w-100" (click)="addDetailMaterials()"> + Agregar Material</button>
+
+        </div>
+      </div>
+      <div class="col-12 rounded-3 bg-secondary-subtle btn-border-orange border-2">
+        <div class="d-flex justify-content-between" data-bs-toggle="collapse" style="cursor: pointer"
+             href="#collapseSteps" (click)="showSteps = !showSteps">
+          <div class="col">
+            <div class="fw-bold fs-5">
+              Pasos (Opcional)</div>
+            Pasos a seguir para recrear o replicar la obra (puede incluir imágenes).
+          </div>
+          <i class="col-auto bi  fs-2"
+             [ngClass]="{'bi-caret-left-fill':showSteps,'bi-caret-down-fill':!showSteps}"></i>
+        </div>
+        <div class="collapse" id="collapseSteps" formArrayName="steps">
+          <div *ngFor="let d of detailsSteps.controls; index as i" [formGroupName]="i">
+            <div  class="d-flex mb-3  is-invalid">
+              <div class="d-flex flex-column">
+                <button class="btn btn-danger me-1 mb-1 col-auto" (click)="moveDetailsSteps(i,-1)"
+                        [hidden]="!(i>0)">
+                  <i class="bi bi-arrow-up"></i></button>
+                <button class="btn btn-danger me-1 mb-1 col-auto" (click)="removeDetailsSteps(i)">
+                  <i class="bi bi-dash-lg"></i></button>
+                <button class="btn btn-danger me-1 col-auto" (click)="moveDetailsSteps(i,1)"
+                        [hidden]="!(i<detailsSteps.controls.length-1)">
+                  <i class="bi bi-arrow-down"></i></button>
+              </div>
+
+              <textarea class="form-control col"
+                        formControlName="text" [placeholder]="'Paso '+(i+1)"
+                        [class.is-invalid]="d.get('text')?.invalid
+               && (d.get('text')?.dirty || d.get('text')?.touched)"></textarea>
+              <!--            <input type="text" class="form-control col" formControlName="text"-->
+              <!--                   [placeholder]="'Material '+(i+1)"-->
+              <!--                   [class.is-invalid]="d.get('text')?.invalid-->
+              <!--               && (d.get('text')?.dirty || d.get('text')?.touched)">-->
+
+              <div class="col">
+                <img [src]="stepImages[i].url" class="card w-100 border border-warning-subtle border-5">
+
+                <input class="form-control  form-control-sm" type="file"
+                       (change)="selectStepFile($event, i)"
+                       formControlName="image" accept="image/png, image/jpeg" >
+              </div>
+            </div>
+
+            <div class="invalid-feedback" *ngIf="d.get('text')?.invalid
+                     && (d.get('text')?.dirty || d.get('text')?.touched)">
+              <div *ngIf="d.get('text')?.hasError('required')">
+                Es requerido (Completar o eliminar)
+              </div>
+            </div>
+
+          </div>
+          <button class="btn btn-warning mb-2 w-100" (click)="addDetailsSteps()"> + Agregar Paso</button>
+        </div>
+      </div>
+
+      <div class="col-12 rounded-3 bg-secondary-subtle btn-border-orange border-2">
+        <div class="d-flex justify-content-between" data-bs-toggle="collapse" style="cursor: pointer"
+             href="#collapsePurchasedata" (click)="showPurchasedata = !showPurchasedata">
+          <div class="col">
+            <div class="fw-bold fs-5">
+              Datos de venta (Opcional)
+            </div>
+            En caso de que desee vender la obra, debe incluir monto inicial y precio unitario
+            (También debe tener registrados sus datos de compra/venta).
+          </div>
+          <i class="col-auto bi fs-2"
+             [ngClass]="{'bi-caret-left-fill':showPurchasedata,'bi-caret-down-fill':!showPurchasedata}"></i>
+        </div>
+        <div class="collapse" id="collapsePurchasedata">
+          <div class="rounded-2 border bg-body-tertiary p-2 mb-2">
+
+            <div class="row gap-2 align-items-center justify-content-center">
+              <div class="col-auto row align-items-center">
+                <div class="col-auto pe-0">
+                  <input type="checkbox" class="btn-check" id="exampleCheck1" autocomplete="off" formControlName="canSold">
+                  <label class="btn btn-sm" for="exampleCheck1"
+                         [class.btn-secondary]="!form.controls['canSold'].value"
+                         [class.btn-primary]="form.controls['canSold'].value">
+                    <i class="bi" [ngClass]="{'bi-x-lg':!form.controls['canSold'].value,
+              ' bi-check-lg':form.controls['canSold'].value}"></i>
+                  </label>
+                </div>
+                <div class="col-auto">Esta a la venta</div>
+              </div>
+
+              <div class="col-auto d-none d-md-block">|</div>
+              <br class="d-md-none">
+
+              <div class="col-auto row align-items-center">
+                <div class="col-auto">
+                  <label class="form-check-label" for="exampleprice"
+                         [class.text-decoration-line-through]="!form.controls['canSold'].value">Precio: </label>
+                </div>
+                <div class="col-auto">
+                  <div class="input-group">
+                <span class="input-group-text "
+                      [class.btn-secondary]="!form.controls['canSold'].value"
+                      [class.btn-primary]="form.controls['canSold'].value">$</span>
+                    <input type="number" class="form-control bg-orange-low" id="exampleprice" formControlName="price" min="1">
+                  </div>
+                </div>
+              </div>
+              <div class="col-auto row align-items-center">
+                <div class="col-auto">
+                  <label class="form-check-label" for="examplecount"
+                         [class.text-decoration-line-through]="!form.controls['canSold'].value">Cantidad:</label>
+                </div>
+                <div class="col-auto">
+                  <input type="number" class="form-control bg-orange-low" id="examplecount" formControlName="count" min="1">
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-container>
+<ng-container *ngIf="notfound">
+  <div class="text-center text-break h1 w-100">
+    NO SE ENCONTRÓ LA PUBLICACIÓN
+  </div>
+</ng-container>
+
