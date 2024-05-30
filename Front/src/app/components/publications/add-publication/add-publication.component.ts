@@ -21,21 +21,18 @@ import {FormPublicationComponent} from "../form-publication/form-publication.com
 })
 export class AddPublicationComponent implements OnInit,OnDestroy {
   selectDraft = true;
+  id=0;
 
   private subs: Subscription = new Subscription();
 
   @ViewChild(FormPublicationComponent) fp?: FormPublicationComponent;
 
-  constructor(private service: PublicationsService,
-              private router: Router) {
+  constructor() {
 
-  }
-  get form(){
-    return this.fp?.form
   }
 
   charge(id:number){
-    this.fp?.charge(id);
+    this.id=id
     this.selectDraft=false;
   }
   ngOnInit(): void {
@@ -45,8 +42,5 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     this.subs.unsubscribe();
   }
 
-  onSubmit(draft:boolean){
-    this.fp?.onSubmit(draft?"draft":"add")
-  }
 
 }

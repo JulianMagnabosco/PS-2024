@@ -67,7 +67,6 @@ export class CommentsComponent implements OnChanges, OnDestroy{
             this.countTotal=value["countTotal"]
             this.textList.fill("",0,this.countTotal-1)
             this.list=value["list"]
-            console.log(this.list)
           }
         }
       )

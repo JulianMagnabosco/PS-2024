@@ -1,6 +1,5 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {Subscription} from "rxjs";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {PublicationMin} from "../../../models/publication/publication-min";
 import {PublicationsService} from "../../../services/publications/publications.service";
 import {ActivatedRoute, Params, Router} from "@angular/router";
@@ -38,7 +37,7 @@ export class DraftsComponent implements OnInit,OnDestroy {
         {
           next: value => {
             this.list=value
-            if(this.list.length <=1 ){
+            if(this.list.length <1 ){
               this.selectEvent.emit(0);
             }
           },

@@ -70,6 +70,7 @@ import {FormPublicationComponent} from "./components/publications/form-publicati
     ListPublicationsMineComponent,
     DraftsComponent,
     ResetPasswordComponent,
+    FormPublicationComponent,
     HomeComponent
   ],
   imports: [
@@ -83,7 +84,6 @@ import {FormPublicationComponent} from "./components/publications/form-publicati
     YouTubePlayer,
     DateCustomPipe,
     FormsModule,
-    FormPublicationComponent
   ],
   providers: [
     provideHttpClient(withInterceptors([authInterceptor])),

@@ -1,6 +1,27 @@
 
 
-<ng-container *ngIf="!notfound">
+<ng-container *ngIf="!notfound; else notFoundT">
+  <div class="d-flex justify-content-between gap-1 p-2
+    bg-secondary-subtle rounded-3 rounded-top-0 sticky-controls z-1">
+
+    <ng-container *ngIf="!isPut; else elseControl">
+      <h1 class="text-center me-auto"> NUEVA OBRA </h1>
+
+      <button class="btn btn-sm btn-warning m-2 bi bi-pencil" [disabled]="!draftDirty"
+              (click)="onSubmit(true)"> GUARDAR BORRADOR</button>
+      <button class="btn btn-primary bi bi-check-lg" [disabled]="form.invalid"
+              (click)="onSubmit(false)"> PUBLICAR</button>
+    </ng-container>
+
+    <ng-template #elseControl>
+      <h1 class="text-center me-auto"> EDITAR OBRA</h1>
+
+      <button type="submit" class="btn btn-primary bi bi-pencil" [disabled]="form.invalid"
+              (click)="onSubmit(false)">GUARDAR</button>
+    </ng-template>
+  </div>
+
+
 
   <div class="container mt-4 p-2 rounded-5 border-gradient">
     <form [formGroup]="form" class="row g-3 justify-content-center p-3">
@@ -341,9 +362,10 @@
     </form>
   </div>
 </ng-container>
-<ng-container *ngIf="notfound">
+
+<ng-template #notFoundT>
   <div class="text-center text-break h1 w-100">
     NO SE ENCONTRÓ LA PUBLICACIÓN
   </div>
-</ng-container>
+</ng-template>
 

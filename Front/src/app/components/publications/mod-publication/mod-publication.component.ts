@@ -15,19 +15,18 @@ import {FormPublicationComponent} from "../form-publication/form-publication.com
   styleUrl: './mod-publication.component.css'
 })
 export class ModPublicationComponent implements OnInit, OnDestroy {
+  id=0;
+
   private subs: Subscription = new Subscription();
 
-  @ViewChild("app-form-publication") fp?: FormPublicationComponent;
+  @ViewChild(FormPublicationComponent) fp?: FormPublicationComponent;
 
   constructor( private route: ActivatedRoute) {
 
   }
-  get form(){
-    return this.fp?.form
-  }
 
   charge(id:number){
-    this.fp?.charge(id);
+    this.id=id
   }
   ngOnInit(): void {
     this.subs.add(this.route.params.subscribe({
@@ -39,10 +38,6 @@ export class ModPublicationComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
-  }
-
-  onSubmit(){
-    this.fp?.onSubmit("put")
   }
 
 }

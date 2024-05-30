@@ -142,7 +142,6 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
                 {
                   next: value => {
                     this.publication=value
-                    console.log(this.publication)
                   },
                   error: err => {
                     this.notfound=true;

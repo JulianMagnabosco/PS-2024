@@ -8,7 +8,7 @@
   </div>
 
   <div class="gap-1 row justify-content-center p-3">
-    <div class="col-1 card btn btn-primary" href="#" style="width: 15rem;"
+    <div class="col-auto card btn btn-primary" href="#" style="width: 15rem;"
          (click)="selectDraft(0)">
       <div class="d-flex justify-content-center">
         <h3 class="card-title text-white">Plantilla en blanco</h3>
@@ -17,19 +17,19 @@
         <img src="assets/camera.png" class="card-img-top" alt="Plantilla en blanco" style=" max-height: 15rem;">
       </div>
     </div>
-    <div class="col-1" *ngFor="let p of list" style="width: 15rem;" >
+    <div class="col-auto p-0 d-flex align-items-end flex-column" *ngFor="let p of list" style="width: 15rem;" >
       <div class="card btn btn-border-orange bg-body-tertiary mb-1" style="width: 15rem;"
            (click)="selectDraft(p.id)">
-        <div class="d-flex justify-content-between">
-          <h3 class="card-title">{{ p.name }}</h3>
-          <h5 class="text-secondary">{{ p.difficulty }}</h5>
-        </div>
+        <h3 class="card-title overflow-hidden">{{ p.name }}</h3>
+
         <div class="position-relative">
           <img [src]="p.imageUrl" class="card-img-top" [alt]="p.name" style=" max-height: 15rem;"
                *ngIf="p.imageUrl!=''">
         </div>
       </div>
-      <button class="btn btn-danger" style="width: 15rem;" (click)="delete(p.id)">ELIMINAR</button>
+
+      <button class="btn btn-danger w-100 mt-auto " (click)="delete(p.id)">ELIMINAR</button>
+    </div>
   </div>
 
 </div>

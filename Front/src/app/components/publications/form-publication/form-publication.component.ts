@@ -1,31 +1,22 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subscription} from "rxjs";
-import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Publication} from "../../../models/publication/publication";
 import {PublicationsService} from "../../../services/publications/publications.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {cAlert} from "../../../services/custom-alert/custom-alert.service";
 import {Section} from "../../../models/publication/section";
-import {NgClass, NgForOf, NgIf} from "@angular/common";
-import {YouTubePlayer} from "@angular/youtube-player";
 
 @Component({
   selector: 'app-form-publication',
-  standalone: true,
-  imports: [
-    NgForOf,
-    NgIf,
-    ReactiveFormsModule,
-    YouTubePlayer,
-    NgClass
-  ],
   templateUrl: './form-publication.component.html',
   styleUrl: './form-publication.component.css'
 })
-export class FormPublicationComponent implements OnInit, OnDestroy {
+export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
+  @Input() id=0;
+  @Input() isPut=false;
   notfound = false;
-
-  dirtyForDraft=false;
+  draftDirty=false;
 
   showConditions = true
   showMaterials = true
@@ -61,7 +52,7 @@ export class FormPublicationComponent implements OnInit, OnDestroy {
   };
 
   constructor(private fb: FormBuilder, private service: PublicationsService,
-              private router: Router, private activeRoute: ActivatedRoute) {
+              private router: Router) {
     this.form = this.fb.group({
       name: ["", [Validators.required, Validators.maxLength(50)]],
       description: ["", [Validators.required]],
@@ -81,11 +72,15 @@ export class FormPublicationComponent implements OnInit, OnDestroy {
 
   }
 
+  ngOnChanges(): void {
+    if(this.id!=0)
+      this.charge(this.id);
+  }
   ngOnInit(): void {
     this.subs.add(this.form.valueChanges.subscribe(
       {
         next: value => {
-          this.dirtyForDraft=true;
+          this.draftDirty=true;
         }
       }
     ))
@@ -336,11 +331,9 @@ export class FormPublicationComponent implements OnInit, OnDestroy {
   }
 
   //guardar
-  onSubmit(type:"draft"|"add"|"put") {
+  onSubmit(draft:boolean) {
     if (this.form.invalid) {
-      alert("El formulario es invalido");
       this.form.markAllAsTouched();
-      return;
     }
 
     let sections: any[] = [];
@@ -385,19 +378,19 @@ export class FormPublicationComponent implements OnInit, OnDestroy {
       "count": this.form.controls['count'].value
     }
     let action;
-    if(type=="put") {
+    if(this.isPut) {
       data.id = this.publication.id;
-      action = this.service.putPublication;
+      action = this.service.putPublication(data);
     }else {
-      data.draft = true;
-      action = this.service.postPublication;
+      data.draft = draft;
+      action = this.service.postPublication(data);
     }
 
-    this.subs.add(action(data).subscribe(
+    this.subs.add(action.subscribe(
         {
           next: value => {
             // alert("La publicacion fue guardada con éxito");
-            this.uploadImages(value["sections"])
+            this.uploadImages(value["sections"],draft)
           },
           error: err => {
             cAlert("error", "Error inesperado en el servidor, revise su conexion a internet");
@@ -407,7 +400,7 @@ export class FormPublicationComponent implements OnInit, OnDestroy {
     );
   }
 
-  uploadImages(sections: Section[]) {
+  uploadImages(sections: Section[],draft:boolean) {
     let data = new FormData()
     let indexes = ""
 
@@ -428,14 +421,25 @@ export class FormPublicationComponent implements OnInit, OnDestroy {
       }
     }
 
+    if(draft && indexes==""){
+      cAlert("success", "Borrador guardado");
+      return
+    }
+
     data.append("indexes", indexes);
 
     this.subs.add(
       this.service.postImages(data).subscribe(
         {
           next: value => {
+            if(draft){
+              cAlert("success", "Borrador guardado");
+              return
+            }
             cAlert("success", "Publicación guardada").then(() => {
-              this.router.navigate(["/pub/" + this.publication.id]);
+              this.router.navigate(["/pub/" + this.publication.id],{
+                state: {passForm:true}
+              });
             });
 
           },

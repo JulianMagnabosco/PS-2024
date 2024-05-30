@@ -1,18 +1,8 @@
 <app-drafts (selectEvent)="charge($event)" *ngIf="selectDraft"></app-drafts>
 
-<div class="container mb-4" *ngIf="!selectDraft">
-  <div class="d-flex justify-content-between gap-1 p-2
-    bg-secondary-subtle rounded-3 rounded-top-0 sticky-controls z-1">
+<div class="container mb-4" >
 
-    <h1 class="text-center me-auto"> NUEVA OBRA </h1>
-
-    <button class="btn btn-sm btn-warning m-2 bi bi-pencil" [disabled]="form?.dirty||true"
-            (click)="onSubmit(true)"> GUARDAR BORRADOR</button>
-    <button class="btn btn-primary bi bi-check-lg" [disabled]="form?.invalid||true"
-            (click)="onSubmit(false)"> PUBLICAR</button>
-  </div>
-
-  <app-form-publication>
+  <app-form-publication [id]="id" [isPut]="false" *ngIf="!selectDraft">
 
   </app-form-publication>
 </div>

@@ -130,7 +130,6 @@ export class ListPublicationsMineComponent  implements OnInit,OnDestroy {
       replaceUrl: true
     })
 
-    console.log(this.data)
     this.subs.add(
       this.service.search(this.data).subscribe(
         {
