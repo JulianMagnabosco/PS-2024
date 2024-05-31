@@ -174,8 +174,9 @@
         </div>
       </div>
 
-      <div class="col-12 rounded-3 bg-secondary-subtle btn-border-orange border-2">
-        <div class="d-flex justify-content-between" data-bs-toggle="collapse" style="cursor: pointer"
+      <div class="col-12 rounded-3 bg-secondary-subtle border-2"
+           [ngClass]="{'border-orange':!showConditions,'btn-border-orange':showConditions}">
+        <div class="d-flex justify-content-between mb-1" data-bs-toggle="collapse" style="cursor: pointer"
              href="#collapseConditions" (click)="showConditions = !showConditions">
           <div class="col">
             <div class="fw-bold fs-5">Condiciones (Opcional)</div>
@@ -188,7 +189,8 @@
           <div *ngFor="let d of detailsConditions.controls; index as i" [formGroupName]="i">
 
             <div  class="d-flex mb-1  is-invalid">
-              <button class="btn btn-danger me-1 col-auto" (click)="removeDetailCondition(i)"><i class="bi bi-dash-lg"></i></button>
+              <button class="btn btn-danger me-1 col-auto" (click)="removeDetailCondition(i)">
+                <i class="bi bi-trash-fill"></i></button>
 
               <input type="text" class="form-control col" formControlName="text"
                      [placeholder]="'Condicion '+(i+1)"
@@ -208,8 +210,9 @@
 
         </div>
       </div>
-      <div class="col-12 rounded-3 bg-secondary-subtle btn-border-orange border-2">
-        <div class="d-flex justify-content-between" data-bs-toggle="collapse" style="cursor: pointer"
+      <div class="col-12 rounded-3 bg-secondary-subtle border-2"
+           [ngClass]="{'border-orange':!showMaterials,'btn-border-orange':showMaterials}">
+        <div class="d-flex justify-content-between mb-1" data-bs-toggle="collapse" style="cursor: pointer"
              href="#collapseMaterials" (click)="showMaterials = !showMaterials">
           <div class="col">
             <div class="fw-bold fs-5">
@@ -223,7 +226,7 @@
           <div *ngFor="let d of detailsMaterials.controls; index as i" [formGroupName]="i">
             <div  class="d-flex mb-1  is-invalid">
               <button class="btn btn-danger me-1 col-auto" (click)="removeDetailMaterials(i)">
-                <i class="bi bi-dash-lg"></i></button>
+                <i class="bi bi-trash-fill"></i></button>
 
               <input type="text" class="form-control col" formControlName="text"
                      [placeholder]="'Material '+(i+1)"
@@ -243,8 +246,10 @@
 
         </div>
       </div>
-      <div class="col-12 rounded-3 bg-secondary-subtle btn-border-orange border-2">
-        <div class="d-flex justify-content-between" data-bs-toggle="collapse" style="cursor: pointer"
+
+      <div class="col-12 rounded-3 bg-secondary-subtle border-2"
+           [ngClass]="{'border-orange':!showSteps,'btn-border-orange':showSteps}">
+        <div class="d-flex justify-content-between mb-1" data-bs-toggle="collapse" style="cursor: pointer"
              href="#collapseSteps" (click)="showSteps = !showSteps">
           <div class="col">
             <div class="fw-bold fs-5">
@@ -255,51 +260,62 @@
              [ngClass]="{'bi-caret-left-fill':showSteps,'bi-caret-down-fill':!showSteps}"></i>
         </div>
         <div class="collapse" id="collapseSteps" formArrayName="steps">
-          <div *ngFor="let d of detailsSteps.controls; index as i" [formGroupName]="i">
-            <div  class="d-flex mb-3  is-invalid">
-              <div class="d-flex flex-column">
-                <button class="btn btn-danger me-1 mb-1 col-auto" (click)="moveDetailsSteps(i,-1)"
-                        [hidden]="!(i>0)">
-                  <i class="bi bi-arrow-up"></i></button>
-                <button class="btn btn-danger me-1 mb-1 col-auto" (click)="removeDetailsSteps(i)">
-                  <i class="bi bi-dash-lg"></i></button>
-                <button class="btn btn-danger me-1 col-auto" (click)="moveDetailsSteps(i,1)"
-                        [hidden]="!(i<detailsSteps.controls.length-1)">
-                  <i class="bi bi-arrow-down"></i></button>
+          <div *ngFor="let d of detailsSteps.controls; index as i" [formGroupName]="i"
+               class="mx-3 mb-3 is-invalid rounded-2 border border-white p-1">
+
+
+            <div class="list-group">
+              <div class="d-flex justify-content-end mb-1">
+                <div class="d-flex me-auto col-auto rounded-2 p-1 bg-orange text-white border-orange fw-bold align-self-start">
+                  PASO {{i+1}}
+                  <!--                  <label class="align-content-center me-1 ">PASO </label>-->
+                  <!--                  <input class="form-control form-control-sm"  type="number" style="min-width: 50px; max-width: 100px"-->
+<!--                         [value]="i+1" min="1" (change)="moveDetailsStepsValue(i, $event)">-->
+                </div>
+                <button class="btn btn-danger me-1 col-auto"
+                        (click)="moveDetailsSteps(i,-1)" [hidden]="!(i>0)">
+                  <i class="bi bi-arrow-up"></i>
+                </button>
+                <button class="btn btn-danger me-1 col-auto"
+                        (click)="moveDetailsSteps(i,1)" [hidden]="!(i<detailsSteps.controls.length-1)">
+                  <i class="bi bi-arrow-down"></i>
+                </button>
+                <button class="btn btn-danger me-1 col-auto"
+                        (click)="removeDetailsSteps(i)">
+                  <i class="bi bi-trash-fill"></i>
+                </button>
               </div>
 
-              <textarea class="form-control col"
-                        formControlName="text" [placeholder]="'Paso '+(i+1)"
+
+              <textarea class="form-control"
+                        formControlName="text" placeholder="..."
                         [class.is-invalid]="d.get('text')?.invalid
                && (d.get('text')?.dirty || d.get('text')?.touched)"></textarea>
               <!--            <input type="text" class="form-control col" formControlName="text"-->
               <!--                   [placeholder]="'Material '+(i+1)"-->
               <!--                   [class.is-invalid]="d.get('text')?.invalid-->
               <!--               && (d.get('text')?.dirty || d.get('text')?.touched)">-->
+              <img [src]="stepImages[i].url" class="card w-100 border border-warning-subtle border-5"
+                   *ngIf="stepImages[i].url">
 
-              <div class="col">
-                <img [src]="stepImages[i].url" class="card w-100 border border-warning-subtle border-5">
+              <input class="file-orange" type="file" [id]="'file'+i"
+                     (change)="selectStepFile($event, i)"
+                     formControlName="image" accept="image/png, image/jpeg" >
+              <label class="btn btn-primary" [for]="'file'+i">Cambiar imagen <i class="bi bi-image"></i></label>
 
-                <input class="form-control  form-control-sm" type="file"
-                       (change)="selectStepFile($event, i)"
-                       formControlName="image" accept="image/png, image/jpeg" >
-              </div>
             </div>
 
-            <div class="invalid-feedback" *ngIf="d.get('text')?.invalid
-                     && (d.get('text')?.dirty || d.get('text')?.touched)">
-              <div *ngIf="d.get('text')?.hasError('required')">
-                Es requerido (Completar o eliminar)
-              </div>
-            </div>
+
+
 
           </div>
           <button class="btn btn-warning mb-2 w-100" (click)="addDetailsSteps()"> + Agregar Paso</button>
         </div>
       </div>
 
-      <div class="col-12 rounded-3 bg-secondary-subtle btn-border-orange border-2">
-        <div class="d-flex justify-content-between" data-bs-toggle="collapse" style="cursor: pointer"
+      <div class="col-12 rounded-3 bg-secondary-subtle border-2"
+           [ngClass]="{'border-orange':!showPurchasedata,'btn-border-orange':showPurchasedata}">
+        <div class="d-flex justify-content-between mb-1" data-bs-toggle="collapse" style="cursor: pointer"
              href="#collapsePurchasedata" (click)="showPurchasedata = !showPurchasedata">
           <div class="col">
             <div class="fw-bold fs-5">
@@ -317,7 +333,7 @@
             <div class="row gap-2 align-items-center justify-content-center">
               <div class="col-auto row align-items-center">
                 <div class="col-auto pe-0">
-                  <input type="checkbox" class="btn-check" id="exampleCheck1" autocomplete="off" formControlName="canSold">
+                  <input type="checkbox" class="btn-check" id="exampleCheck1" formControlName="canSold">
                   <label class="btn btn-sm" for="exampleCheck1"
                          [class.btn-secondary]="!form.controls['canSold'].value"
                          [class.btn-primary]="form.controls['canSold'].value">
@@ -333,25 +349,27 @@
 
               <div class="col-auto row align-items-center">
                 <div class="col-auto">
-                  <label class="form-check-label" for="exampleprice"
+                  <label class="form-check-label" for="inputPrice"
                          [class.text-decoration-line-through]="!form.controls['canSold'].value">Precio: </label>
                 </div>
                 <div class="col-auto">
                   <div class="input-group">
-                <span class="input-group-text "
+                  <span class="input-group-text "
                       [class.btn-secondary]="!form.controls['canSold'].value"
                       [class.btn-primary]="form.controls['canSold'].value">$</span>
-                    <input type="number" class="form-control bg-orange-low" id="exampleprice" formControlName="price" min="1">
+                    <input type="number" class="form-control bg-orange-low" id="inputPrice"
+                           formControlName="price" min="1">
                   </div>
                 </div>
               </div>
               <div class="col-auto row align-items-center">
                 <div class="col-auto">
-                  <label class="form-check-label" for="examplecount"
+                  <label class="form-check-label" for="inputCount"
                          [class.text-decoration-line-through]="!form.controls['canSold'].value">Cantidad:</label>
                 </div>
                 <div class="col-auto">
-                  <input type="number" class="form-control bg-orange-low" id="examplecount" formControlName="count" min="1">
+                  <input type="number" class="form-control bg-orange-low" id="inputCount"
+                         formControlName="count" min="1">
                 </div>
               </div>
 

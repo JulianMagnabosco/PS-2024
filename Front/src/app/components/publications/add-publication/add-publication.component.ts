@@ -36,6 +36,7 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     this.selectDraft=false;
   }
   ngOnInit(): void {
+    this.charge(0);
   }
 
   ngOnDestroy(): void {

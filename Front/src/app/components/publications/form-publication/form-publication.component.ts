@@ -282,6 +282,9 @@ export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
     this.stepImages[id] = this.stepImages[id + dir];
     this.stepImages[id + dir] = img;
   }
+  moveDetailsStepsValue(id: number, event: any) {
+    this.moveDetailsSteps(id,event.target.value-1)
+  }
 
   removeDetailsSteps(id: number) {
     this.detailsSteps.removeAt(id)
