@@ -287,12 +287,3 @@ input[type="range"]::-moz-range-thumb {
   }
   /*filter: brightness(50%);*/
 }
-
-.file-orange{
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1;
-}

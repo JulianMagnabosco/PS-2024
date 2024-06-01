@@ -265,25 +265,39 @@
 
 
             <div class="list-group">
-              <div class="d-flex justify-content-end mb-1">
-                <div class="d-flex me-auto col-auto rounded-2 p-1 bg-orange text-white border-orange fw-bold align-self-start">
-                  PASO {{i+1}}
-                  <!--                  <label class="align-content-center me-1 ">PASO </label>-->
-                  <!--                  <input class="form-control form-control-sm"  type="number" style="min-width: 50px; max-width: 100px"-->
-<!--                         [value]="i+1" min="1" (change)="moveDetailsStepsValue(i, $event)">-->
+              <div class="row m-0 justify-content-start mb-1">
+                <div class="col-auto p-1 rounded-2 bg-orange text-white border-orange fw-bold
+                d-flex me-1">
+<!--                  PASO {{i+1}}-->
+                  <label class="align-content-center me-1 ">PASO </label>
+                  <input class="form-control form-control-sm"  type="number" style="min-width: 50px; max-width: 100px"
+                         [value]="i+1" min="1" [id]="'num'+i" (change)="moveDetailsStepsValue(i, $event)">
                 </div>
-                <button class="btn btn-danger me-1 col-auto"
-                        (click)="moveDetailsSteps(i,-1)" [hidden]="!(i>0)">
+
+                <input class="d-none" type="file" [id]="'file'+i"
+                       (change)="selectStepFile($event, i)"
+                       formControlName="image" accept="image/png, image/jpeg" >
+                <label class="col-auto me-1 btn btn-primary py-2" [for]="'file'+i">
+                  <i class="bi bi-image "></i>
+                </label>
+<!--                <button class="col-auto me-auto  btn btn-primary "-->
+<!--                        (click)="document.getElementById('file'+i)?.click()">-->
+<!--                  <i class="bi bi-image"></i>-->
+<!--                </button>-->
+
+                <button class="col-auto me-1 btn btn-danger "
+                        (click)="moveDetailsSteps(i,-1)" [disabled]="!(i>0)">
                   <i class="bi bi-arrow-up"></i>
                 </button>
-                <button class="btn btn-danger me-1 col-auto"
-                        (click)="moveDetailsSteps(i,1)" [hidden]="!(i<detailsSteps.controls.length-1)">
+                <button class="col-auto me-1 btn btn-danger"
+                        (click)="moveDetailsSteps(i,1)" [disabled]="!(i<detailsSteps.controls.length-1)">
                   <i class="bi bi-arrow-down"></i>
                 </button>
-                <button class="btn btn-danger me-1 col-auto"
+                <button class="col-auto ms-auto me-1 btn btn-danger"
                         (click)="removeDetailsSteps(i)">
                   <i class="bi bi-trash-fill"></i>
                 </button>
+
               </div>
 
 
@@ -295,13 +309,15 @@
               <!--                   [placeholder]="'Material '+(i+1)"-->
               <!--                   [class.is-invalid]="d.get('text')?.invalid-->
               <!--               && (d.get('text')?.dirty || d.get('text')?.touched)">-->
-              <img [src]="stepImages[i].url" class="card w-100 border border-warning-subtle border-5"
-                   *ngIf="stepImages[i].url">
 
-              <input class="file-orange" type="file" [id]="'file'+i"
-                     (change)="selectStepFile($event, i)"
-                     formControlName="image" accept="image/png, image/jpeg" >
-              <label class="btn btn-primary" [for]="'file'+i">Cambiar imagen <i class="bi bi-image"></i></label>
+              <div class="position-relative"
+                   *ngIf="stepImages[i].url">
+                <img [src]="stepImages[i].url" class="card w-100 border border-warning-subtle border-5">
+                <button class="btn btn-primary bi bi-x position-absolute top-0 end-0"
+                        (click)="selectStepFile($event, i)"></button>
+              </div>
+
+
 
             </div>
 

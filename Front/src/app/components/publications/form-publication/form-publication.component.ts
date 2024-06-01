@@ -283,7 +283,13 @@ export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
     this.stepImages[id + dir] = img;
   }
   moveDetailsStepsValue(id: number, event: any) {
-    this.moveDetailsSteps(id,event.target.value-1)
+    let moveId=event.target.value-1;
+    moveId=moveId<0?0:moveId;
+    moveId=moveId>this.detailsSteps.length-1?this.detailsSteps.length-1:moveId;
+    console.log(id+"/"+(moveId-id))
+    console.log(this.detailsSteps)
+    if(moveId-id==0) return;
+    this.moveDetailsSteps(id,moveId-id)
   }
 
   removeDetailsSteps(id: number) {
@@ -322,6 +328,7 @@ export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       this.stepImages[index].file = new File([], "")
       this.stepImages[index].url = ""
+      this.detailsSteps.controls[index].patchValue({image:""})
     }
 
   }
@@ -454,5 +461,6 @@ export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
     );
   }
 
+  protected readonly document = document;
 }
 
