@@ -130,8 +130,8 @@ public class PublicationService {
                 return true;
             }
             cart = cartAsk.get();
-            cart.setCount(request.getValue().intValue());
         }
+        cart.setCount(value);
         cartRepository.save(cart);
 
 

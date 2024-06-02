@@ -41,6 +41,7 @@ export class CartComponent implements OnInit,OnDestroy {
           next: value => {
             // this.countTotal=value["countTotal"]
             // this.list=value["list"]
+            console.log(value)
             this.list=value as Cart[]
             this.total =0;
             for (let card of this.list){
@@ -65,7 +66,8 @@ export class CartComponent implements OnInit,OnDestroy {
     this.subs.add(
       this.service.postCart(data).subscribe({
         next: value => {
-          cAlert("success","Añadido al carrito").then((value)=>{
+
+          cAlert("success",count<=0?"Eliminado":"Añadido al carrito").then((value)=>{
             this.charge()
           });
         },

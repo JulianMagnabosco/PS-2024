@@ -58,7 +58,9 @@
                 <div class="col-sm">
                   <input class="form-control form-control-sm" type="number"
                          [(ngModel)]="countBuy" style="min-width: 50px"
-                         value="1" min="1">
+                         value="1" min="1" (input)="checkValue()"
+                         (ngModelChange)="checkValue()"
+                         (focusout)="checkValue()">
                 </div>
                 <div class="col-auto">
                   &nbsp;de {{publication.count || 0}} disponibles

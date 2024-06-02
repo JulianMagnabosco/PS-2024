@@ -261,7 +261,7 @@
         </div>
         <div class="collapse" id="collapseSteps" formArrayName="steps">
           <div *ngFor="let d of detailsSteps.controls; index as i" [formGroupName]="i"
-               class="mx-3 mb-3 is-invalid rounded-2 border border-white p-1">
+               class="mx-3 mb-3 is-invalid rounded-2 border-orange p-1">
 
 
             <div class="list-group">
@@ -274,12 +274,12 @@
                          [value]="i+1" min="1" [id]="'num'+i" (change)="moveDetailsStepsValue(i, $event)">
                 </div>
 
-                <input class="d-none" type="file" [id]="'file'+i"
-                       (change)="selectStepFile($event, i)"
-                       formControlName="image" accept="image/png, image/jpeg" >
-                <label class="col-auto me-1 btn btn-primary py-2" [for]="'file'+i">
-                  <i class="bi bi-image "></i>
-                </label>
+<!--                <input class="d-none" type="file" [id]="'file'+i"-->
+<!--                       (change)="selectStepFile($event, i)"-->
+<!--                       formControlName="image" accept="image/png, image/jpeg" >-->
+<!--                <label class="col-auto me-1 btn btn-primary py-2" [for]="'file'+i">-->
+<!--                  <i class="bi bi-image "></i>-->
+<!--                </label>-->
 <!--                <button class="col-auto me-auto  btn btn-primary "-->
 <!--                        (click)="document.getElementById('file'+i)?.click()">-->
 <!--                  <i class="bi bi-image"></i>-->
@@ -293,7 +293,7 @@
                         (click)="moveDetailsSteps(i,1)" [disabled]="!(i<detailsSteps.controls.length-1)">
                   <i class="bi bi-arrow-down"></i>
                 </button>
-                <button class="col-auto ms-auto me-1 btn btn-danger"
+                <button class="col-auto ms-auto btn btn-danger"
                         (click)="removeDetailsSteps(i)">
                   <i class="bi bi-trash-fill"></i>
                 </button>
@@ -301,7 +301,7 @@
               </div>
 
 
-              <textarea class="form-control"
+              <textarea class="form-control mb-1"
                         formControlName="text" placeholder="..."
                         [class.is-invalid]="d.get('text')?.invalid
                && (d.get('text')?.dirty || d.get('text')?.touched)"></textarea>
@@ -310,19 +310,26 @@
               <!--                   [class.is-invalid]="d.get('text')?.invalid-->
               <!--               && (d.get('text')?.dirty || d.get('text')?.touched)">-->
 
-              <div class="position-relative"
+              <input class="d-none" type="file" [id]="'file'+i"
+                     (change)="selectStepFile($event, i)"
+                     formControlName="image" accept="image/png, image/jpeg" >
+              <div class="d-flex justify-content-center">
+                <label class="btn btn-primary" [for]="'file'+i" *ngIf="!stepImages[i].url">
+                  <i class="bi bi-image "></i> Agregar Imagen
+                </label>
+              </div>
+              <div class="position-relative d-flex justify-content-center"
                    *ngIf="stepImages[i].url">
-                <img [src]="stepImages[i].url" class="card w-100 border border-warning-subtle border-5">
-                <button class="btn btn-primary bi bi-x position-absolute top-0 end-0"
+                <img [src]="stepImages[i].url" class="rounded-2 " style="max-width: 100%">
+                <button class="btn btn-primary bi bi-x-lg position-absolute top-0 end-0"
                         (click)="selectStepFile($event, i)"></button>
+
+                <label class="btn btn-primary position-absolute top-0 start-0" [for]="'file'+i">
+                  <i class="bi bi-image "></i><span class="d-none d-sm-inline"> Cambiar Imagen</span>
+                </label>
               </div>
 
-
-
             </div>
-
-
-
 
           </div>
           <button class="btn btn-warning mb-2 w-100" (click)="addDetailsSteps()"> + Agregar Paso</button>

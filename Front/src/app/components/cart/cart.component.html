@@ -1,24 +1,27 @@
-<div class="container">
+<div class="container-lg">
   <h1 class="h1 text-center">Carrito</h1>
 
-  <div class="p-3 column-gap-2 rounded-2 ">
+  <div class=" column-gap-2 rounded-2 ">
     <div class="p-1"
          *ngIf="list.length<=0">
       <h2 class="text-center rounded-5 bg-secondary-subtle p-2"> Sin obras en el carrito</h2>
     </div>
-    <div class="row"
-         *ngIf="list.length>0">
-      <div class="col-8">
-        <div class="row align-items-stretch border-5 border-orange rounded-5 p-2
-        bg-secondary-subtle mb-2" *ngFor="let c of list; index as i">
-          <div class="col-sm-auto col-6 img-stat-container text-center">
-            <img class="rounded-2" [src]="c.imageUrl" [alt]="c.imageUrl" style="height: 5rem;">
+    <div class="row" *ngIf="list.length>0">
+
+      <div class="col-md-8">
+        <div class="row border-5 border-orange rounded-5 p-2 bg-secondary-subtle mb-2"
+              *ngFor="let c of list; index as i">
+          <div class="position-relative">
+            <button class="rounded-circle btn btn-danger position-absolute top-0 end-0" (click)="remove(c)">X</button>
           </div>
-          <div class="col-sm col-6">
+          <div class="col-auto align-content-center h-100">
+            <img class="rounded-2 h-100" style="max-height: 8rem" [src]="c.imageUrl" [alt]="c.imageUrl" >
+          </div>
+          <div class="col-auto align-content-center">
             <div>
               <span class="fw-bold">Precio:</span> ${{c.price || 0}}
             </div>
-            <div class="d-md-flex align-items-center">
+            <div class="d-sm-flex align-items-center">
               <div class="col-auto fw-bold">
                 Unidades:&nbsp;
               </div>
@@ -36,23 +39,25 @@
               </div>
             </div>
 
+            <div>
+              <a class="link-danger" style="cursor: pointer" (click)="buyAlone(c)">Comprar por separado</a>
+            </div>
           </div>
 
-          <div class="col-sm-auto ">
-            <button class="btn btn-primary w-100 h-100" (click)="buyAlone(c)">Comprar</button>
-          </div>
-          <div class="col-sm-auto ">
-            <button class="btn btn-danger w-100 h-100" (click)="remove(c)">X</button>
-          </div>
+<!--          <div class="col-sm-auto ">-->
+<!--            <button class="btn btn-primary w-100 h-100" (click)="buyAlone(c)">Comprar</button>-->
+<!--          </div>-->
         </div>
       </div>
-      <div class="col-4 ">
-        <div class="rounded-2 border-5 border-orange bg-secondary-subtle p-2">
-          <div >
-            Total: <span class="fw-bold">{{total}}</span>
+
+      <div class="col-md-4 ">
+        <div class="rounded-2 border-5 border-orange bg-secondary-subtle text-center p-2">
+          <h3>Resumen de Compra</h3>
+          <div class="mb-3">
+            Total: <span class="fw-bold">ARS$ {{total}}</span>
           </div>
-          <div class="text-center">
-            <button class="btn btn-primary" (click)="buy()">
+          <div>
+            <button class="btn btn-primary w-100" (click)="buy()">
               Comprar
             </button>
           </div>

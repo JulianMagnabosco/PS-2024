@@ -316,6 +316,7 @@ export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   selectStepFile(event: any, index: number) {
+    console.log(event)
     if (event.target.files && event.target.files[0] && this.stepImages.at(index)) {
       var reader = new FileReader();
 

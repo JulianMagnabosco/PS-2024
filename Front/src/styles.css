@@ -2,7 +2,7 @@
 :root{
   --text: #000000;
   --background: #f2eded;
-  --primary-dark: #8f2a07;
+  --primary-dark: #b64116;
   --primary: #d7410d;
   --shiny: #f6751e;
   --secondary: #d78914;
@@ -43,15 +43,16 @@
   background-color: var(--primary);
   border-color: var(--primary);
 }
-.btn.btn-primary:active,
-.btn.btn-primary.show{
+.btn-primary:hover,
+.btn-check:checked+.btn{
   background-color: var(--primary-dark);
   border-color: var(--primary-dark);
 }
-.btn-primary:hover,
-.btn-check:checked+.btn{
-  background-color: #f6751e;
-  border-color: #f6751e;
+.btn.btn-primary:active,
+.btn.btn-primary.show{
+  filter: brightness(70%);
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
 }
 .btn-primary:disabled {
   background-color: #cc7c4a;

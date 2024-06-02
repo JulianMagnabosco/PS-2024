@@ -192,4 +192,9 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
     )
 
   }
+
+  checkValue(){
+    this.countBuy=this.countBuy<1||!this.countBuy?1:this.countBuy
+    console.log(this.countBuy)
+  }
 }
