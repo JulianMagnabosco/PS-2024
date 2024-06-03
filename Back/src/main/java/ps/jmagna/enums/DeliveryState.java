@@ -1,5 +1,5 @@
 package ps.jmagna.enums;
 
 public enum DeliveryState {
-    CANCELADA, PERCANCE, PENDIENTE, ENTREGADO
+    NONE, CANCELADA, PERCANCE, PENDIENTE, ENTREGADO
 }

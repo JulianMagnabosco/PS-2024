@@ -31,8 +31,8 @@ export class PurchaseService {
       "&lastDate=" + lastDate + "&name=" + data);
   }
 
-  getDeliveries() {
-    return this.client.get(this.baseUrl + "deliveries");
+  getDeliveries(state:string) {
+    return this.client.get(this.baseUrl + "deliveries?state="+state);
   }
 
   putDeliveries(data: any) {

@@ -9,6 +9,7 @@ import ps.jmagna.dtos.purchase.PurchaseResponce;
 import ps.jmagna.dtos.purchase.SaleDto;
 import ps.jmagna.dtos.purchase.PurchaseRequest;
 import ps.jmagna.dtos.purchase.PutDeliveryRequest;
+import ps.jmagna.enums.DeliveryState;
 import ps.jmagna.services.AuthService;
 import ps.jmagna.services.PurchaseService;
 import com.mercadopago.exceptions.MPApiException;
@@ -59,8 +60,9 @@ public class PurchaseController {
         return service.getSells(firstDate,lastDate, name ,authService.findUser(authentication));
     }
     @GetMapping("/deliveries")
-    public List<DeliveryDto> getDeliveriesPending(@AuthenticationPrincipal Jwt authentication) {
-        return service.getDeliveriesPending(authService.findUser(authentication));
+    public List<DeliveryDto> getDeliveries(@RequestParam(defaultValue = "PENDIENTE") DeliveryState state,
+                                                  @AuthenticationPrincipal Jwt authentication) {
+        return service.getDeliveries(state,authService.findUser( authentication));
     }
 
     @PutMapping("/delivery")

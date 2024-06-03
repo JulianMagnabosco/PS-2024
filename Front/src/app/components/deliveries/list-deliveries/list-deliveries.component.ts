@@ -20,6 +20,7 @@ export class ListDeliveriesComponent implements OnInit,OnDestroy {
   ];
   selected?:Delivery;
 
+  state="PENDIENTE";
   countTotal=1;
   size=3;
   page=0;
@@ -50,7 +51,7 @@ export class ListDeliveriesComponent implements OnInit,OnDestroy {
     }
 
     this.subs.add(
-      this.service.getDeliveries().subscribe(
+      this.service.getDeliveries(this.state).subscribe(
         {
           next: value => {
             // this.countTotal=value["countTotal"]

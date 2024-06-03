@@ -1,8 +1,29 @@
 <div class="container">
   <h1 class="h1">Entregas</h1>
-<!--  <div class="row gap-2 justify-content-center">-->
-<!--    <button class="btn btn-primary" (click)="charge(0)">REGENERAR</button>-->
-<!--  </div>-->
+  <div class="card border-orange p-2 mb-3">
+    <div class="row justify-content-center ">
+
+      <div class="col">
+        <div class="d-flex mb-1 gap-2">
+          <div class="col-auto">
+            <label for="state" class="col-form-label">Estado: </label>
+          </div>
+          <div class="col-auto">
+            <select class="p-2 w-100 rounded-2 border text-uppercase text-center" [class]="stateClasses(state||'')"
+                    [(ngModel)]="state" id="state">
+              <option value="ENTREGADO" selected>ENTREGADO</option>
+              <option value="CANCELADA">CANCELADA</option>
+              <option value="PERCANCE" >PERCANCE</option>
+              <option value="PENDIENTE">PENDIENTE</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-auto">
+        <button class="btn btn-primary h-100" (click)="charge(0)">GENERAR</button>
+      </div>
+    </div>
+  </div>
   <div class="p-3 column-gap-2">
     <div class="position-absolute top-50 start-50 translate-middle"
          *ngIf="list.length<=0">
@@ -12,7 +33,7 @@
          data-bs-toggle="modal" data-bs-target="#exampleModal"
          (click)="open(i)">
       <div class="col-auto  p-0">
-        <div class="mb-2 h4 px-2">
+        <div class="mb-2 h5 px-2">
           N°{{i.id}}
         </div>
         <div class="position-relative img-stat-container p-1">
@@ -40,6 +61,16 @@
         </div>
         <div class="mb-2">
           Telefono: <span class="text-secondary"> {{i.phone}}</span>
+        </div>
+      </div>
+      <div class="col p-3 justify-content-between align-content-start">
+        <div class="mb-2">
+          Fecha de compra: <span class="text-secondary text-capitalize">
+          {{i.saleDateTime|date:"dd/MM/yyyy hh:mm"}}</span>
+        </div>
+        <div class="mb-2" *ngIf="i.deliveryState=='ENTREGADA'">
+          Fecha de entrega: <span class="text-secondary text-capitalize">
+          {{i.deliveryDateTime|date:"dd/MM/yyyy hh:mm"}}</span>
         </div>
       </div>
       <div class="col-sm-auto d-flex align-items-end justify-content-end  p-0" >

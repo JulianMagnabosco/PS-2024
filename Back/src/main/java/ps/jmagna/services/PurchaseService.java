@@ -40,10 +40,7 @@ import java.math.BigDecimal;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static ps.jmagna.services.AuthService.userCanBuy;
 
@@ -312,16 +309,25 @@ public class PurchaseService {
             }
         }
 
+        list.sort(Comparator.comparing(SaleDto::getDateTime).reversed());
         return list;
 
     }
-    public List<DeliveryDto> getDeliveriesPending(UserEntity user) {
+    public List<DeliveryDto> getDeliveries(DeliveryState state, UserEntity user) {
         List<DeliveryDto> list = new ArrayList<>();
         List<DeliveryEntity> entities;
         if(user.getRole().equals(UserRole.ADMIN)){
-            entities = deliveryRepository.findAll();
+            if(state==DeliveryState.NONE){
+                entities = deliveryRepository.findAll();
+            } else {
+                entities = deliveryRepository.findAllByDeliveryState(state);
+            }
         }else {
-            entities = deliveryRepository.findAllByDealer(user);
+            if(state==DeliveryState.NONE){
+                entities = deliveryRepository.findAllByDealer(user);
+            } else {
+                entities = deliveryRepository.findAllByDeliveryStateAndDealer(state,user);
+            }
         }
         for (DeliveryEntity delivery : entities) {
             SaleEntity sale = delivery.getSale();
@@ -365,6 +371,12 @@ public class PurchaseService {
                             delivery.getDealer().getId()
                     )
             );
+        }
+
+        if(state.equals(DeliveryState.PENDIENTE)){
+            list.sort(Comparator.comparing(DeliveryDto::getSaleDateTime));
+        }else {
+            list.sort(Comparator.comparing(DeliveryDto::getSaleDateTime).reversed());
         }
 
         return list;
@@ -452,6 +464,7 @@ public class PurchaseService {
             ));
 
         }
+        list.sort(Comparator.comparing(SellDto::getDateTime).reversed());
         return list;
     }
 
