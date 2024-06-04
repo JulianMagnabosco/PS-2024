@@ -54,6 +54,10 @@ public class PublicationController {
                                     @AuthenticationPrincipal Jwt authentication) {
         return publicationService.getAll(searchPubRequest, authService.findUser(authentication));
     }
+    @GetMapping("/sugg")
+    public List<String> getSuggestions(@RequestParam String text) {
+        return publicationService.getSuggestions(text);
+    }
     @GetMapping("/cart")
     public List<CartDto> getCart(@AuthenticationPrincipal Jwt authentication) {
         return publicationService.getCart(authService.findUser(authentication));

@@ -43,11 +43,18 @@
     </div>
 
     <div class="collapse navbar-collapse mt-1 mt-sm-0 " id="navbarSearchContent" *ngIf="service.user">
-      <form class="d-flex me-1 input-group border border-1 border-white rounded-2">
+      <form class="d-flex me-1 input-group border border-1 border-white rounded-2 position-relative">
         <input class="form-control border-orange" type="search" placeholder="Buscar obra"
-               [value]="searchBarVal" id="searchBar" #searchBar>
+               [value]="searchBarVal" (input)="chargeSuggs(searchBar.value)" id="searchBar" #searchBar>
+        <div class="position-absolute top-100
+            w-100 px-1 bg-white border border-black  rounded"
+             *ngIf="suggs.length>0 && focusSearch">
+          <div *ngFor="let s of suggs" (click)="searchBar.value=s; focusSearch=false"
+            class="btn d-block text-start p-0">{{s}}</div>
+        </div>
         <button class="btn btn-primary bi bi-search" type="submit" form="searchForm"
                 (click)="search(searchBar.value)"></button>
+
       </form>
     </div>
 

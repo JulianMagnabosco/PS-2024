@@ -258,7 +258,6 @@ public class PublicationService {
                 List<String> texts = List.of(request.getText().toLowerCase()
                         .split("\\s"));
                 List<String> users= new ArrayList<>();
-                System.out.println(texts);
                 for (String t : texts) {
                     if (t.charAt(0) == '@'){
                         users.add(t.substring(1));
@@ -282,6 +281,11 @@ public class PublicationService {
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
         }; //columnEqual() function ends
+    }
+    public List<String> getSuggestions(String text){
+
+        Pageable topFive = PageRequest.of(0, 5);
+        return publicationRepository.findNamesByNameContaining(text.toLowerCase(),topFive);
     }
     public List<CartDto> getCart(UserEntity user) {
 

@@ -2,6 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {AuthService} from "./services/user/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
+import {PublicationsService} from "./services/publications/publications.service";
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,10 @@ export class AppComponent {
 
   subs:Subscription=new Subscription();
   searchBarVal:string="";
-  constructor(public service:AuthService, private router:Router, private activeRoute:ActivatedRoute) {
+  focusSearch=false;
+  suggs:any=[]
+  constructor(public service:AuthService, private router:Router, private activeRoute:ActivatedRoute,
+              private pubService:PublicationsService) {
     this.subs.add(
       this.activeRoute.queryParams.subscribe({
         next: value => {
@@ -27,6 +31,15 @@ export class AppComponent {
   salir(){
     this.service.logout()
   }
+  chargeSuggs(value:string){
+    this.focusSearch=true;
+    this.subs.add(this.pubService.getSuggs(value).subscribe({
+      next: list => {
+        this.suggs=list;
+      }
+    }))
+  }
+
 
   search(value:string){
     this.router.navigate(["explore"], {

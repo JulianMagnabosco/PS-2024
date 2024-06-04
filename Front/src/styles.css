@@ -277,7 +277,7 @@ input[type="range"]::-moz-range-thumb {
   transform: translate(-50%,-50%) translateY(-56px);
 }
 
-.bg-hover{
+.pub-hover{
   transition: background-color 250ms;
   color: transparent;
   div{
@@ -285,7 +285,7 @@ input[type="range"]::-moz-range-thumb {
   }
   /*filter: brightness(50%);*/
 }
-.bg-hover:hover{
+.pub-hover:hover{
   display: block;
   color: white;
   background-color: rgba(0, 0, 0, 0.57);
@@ -294,3 +294,18 @@ input[type="range"]::-moz-range-thumb {
   }
   /*filter: brightness(50%);*/
 }
+
+/*.search-suggs{*/
+/*  display: none;*/
+/*  div{*/
+/*    cursor: pointer;*/
+/*  }*/
+/*  div:hover,*/
+/*  div:active{*/
+/*    filter: brightness(75%);*/
+/*  }*/
+/*}*/
+/*input:focus+.search-suggs,*/
+/*.search-suggs:focus{*/
+/*  display: inline-block;*/
+/*}*/
