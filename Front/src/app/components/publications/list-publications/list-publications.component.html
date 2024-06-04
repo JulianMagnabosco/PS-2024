@@ -1,63 +1,70 @@
 <div class="container">
   <div class="collapse" id="extraOptions">
-    <form [formGroup]="form" class="card border-gradient-sharp p-3 " (ngSubmit)="charge(0)" id="searchForm">
+    <form [formGroup]="form" class="card rounded-top-0 border-gradient-sharp p-3 " (ngSubmit)="charge(0)" id="searchForm">
       <div class="d-flex mb-1">
       </div>
       <div class="row">
         <div class="col">
           <div class="mb-1 input-group">
-            <input type="search" formControlName="materials" class="form-control form-orange" id="materialsInput"
+            <input type="search" formControlName="materials" class="form-control border-orange" id="materialsInput"
                    placeholder="Materiales (Debes escribirlos separados por comas)">
             <!--            <button class="btn button-orange form-orange bi bi-x-lg" (click)="form.get('materials')?.setValue('')"-->
             <!--                    *ngIf="form.get('materials')?.value != ''">-->
             <!--            </button>-->
           </div>
           <div class="row justify-content-evenly g-1 mb-1">
-            <div class="col-auto form-floating">
-              <select class="form-select form-orange" formControlName="diffMin" id="diffMin">
-                <option value="1" selected>FÁCIL</option>
-                <option value="2">NORMAL</option>
-                <option value="3">DIFICIL</option>
-                <option value="4">MUY DIFICIL</option>
-              </select>
-              <label class="form-label-grey" for="type">Dificultad minima</label>
+            <div class="col-auto">
+              <div class="input-float">
+                <label for="type">Dificultad minima</label>
+                <select formControlName="diffMin" id="diffMin">
+                  <option value="1" selected>FÁCIL</option>
+                  <option value="2">NORMAL</option>
+                  <option value="3">DIFICIL</option>
+                  <option value="4">MUY DIFICIL</option>
+                </select>
+              </div>
             </div>
-            <div class="col-auto form-floating">
-              <select class="form-select form-orange" formControlName="diffMax" id="diffMax">
-                <option value="1" selected>FÁCIL</option>
-                <option value="2">NORMAL</option>
-                <option value="3">DIFICIL</option>
-                <option value="4">MUY DIFICIL</option>
+            <div class="col-auto">
+              <div class="input-float">
+                <label for="diffMax">Dificultad maxima</label>
+                <select formControlName="diffMax" id="diffMax">
+                  <option value="1" selected>FÁCIL</option>
+                  <option value="2">NORMAL</option>
+                  <option value="3">DIFICIL</option>
+                  <option value="4">MUY DIFICIL</option>
+                  <label for="type">Tipo de obra</label>
+                </select>
+              </div>
+            </div>
+            <div class="col-auto">
+              <div class=" input-float">
+
                 <label for="type">Tipo de obra</label>
-              </select>
-              <label class="form-label-grey" for="diffMax">Dificultad maxima</label>
-            </div>
-            <div class="col-auto form-floating">
-              <select class="form-select form-orange" formControlName="type" id="type">
-                <option selected value="NONE">--CUALQUIER TIPO--</option>
-                <option value="ARTE">ARTE</option>
-                <option value="CIENCIA">CIENCIA</option>
-                <option value="TECNOLOGIA">TECNOLOGIA</option>
-              </select>
-              <label class="form-label-grey" for="type">Tipo de obra</label>
+                <select formControlName="type" id="type">
+                  <option selected value="NONE">--CUALQUIER TIPO--</option>
+                  <option value="ARTE">ARTE</option>
+                  <option value="CIENCIA">CIENCIA</option>
+                  <option value="TECNOLOGIA">TECNOLOGIA</option>
+                </select>
+              </div>
 
             </div>
             <div class="col-auto">
-              <div class="form-orange align-content-end h-100 position-relative p-1 pt-3">
-                <label class="position-absolute top-0 start-0 " style="transform: scale(.85)">Calificacion
-                  minima</label>
+              <div class="form-orange p-1">
+                <label class="d-block opacity-75" for="points" style="transform: scale(.80);  transform-origin: left center;">
+                  Calificación minima
+                </label>
+                <input type="range" formControlName="points" id="points" #points min="0" max="5" step="0.1"
+                       style="max-width: 8rem">
+                <span style="width: 5rem">
+                  {{ points.value|number:'1.1' }}
+                </span>
                 <!--                <ng-container *ngFor="let i of [0,1,2,3,4]">-->
                 <!--                  <input type="radio" class="btn-check" formControlName="points" [value]="i" [id]="'option'+i" checked>-->
                 <!--                  <label class="btn bi bi-star-fill text-secondary" [for]="'option'+i"-->
                 <!--                         [class.text-warning]="form.get('points')?.value>i-1">-->
                 <!--                  </label>-->
                 <!--                </ng-container>-->
-                <input type="range" formControlName="points" id="points" #points min="0" max="5" step="0.1"
-                       style="max-width: 8rem">
-                <span
-                  style="width: 5rem">
-                  {{ points.value|number:'1.1' }}
-                </span>
               </div>
             </div>
             <div class="col-auto align-items-center d-flex">

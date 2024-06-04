@@ -44,7 +44,7 @@
 
     <div class="collapse navbar-collapse mt-1 mt-sm-0 " id="navbarSearchContent" *ngIf="service.user">
       <form class="d-flex me-1 input-group border border-1 border-white rounded-2">
-        <input class="form-control form-orange" type="search" placeholder="Buscar obra"
+        <input class="form-control border-orange" type="search" placeholder="Buscar obra"
                [value]="searchBarVal" id="searchBar" #searchBar>
         <button class="btn btn-primary bi bi-search" type="submit" form="searchForm"
                 (click)="search(searchBar.value)"></button>

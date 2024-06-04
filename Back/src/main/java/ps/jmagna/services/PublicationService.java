@@ -251,24 +251,31 @@ public class PublicationService {
             }
 
             if (request.isMine()){
-                predicates.add(criteriaBuilder.equal(root.get("user"), user));
+                predicates.add(criteriaBuilder.notEqual(root.get("user"), user));
             }
 
             if (!request.getText().isBlank()) {
-                List<String> textes = List.of(request.getText().toLowerCase()
+                List<String> texts = List.of(request.getText().toLowerCase()
                         .split("\\s"));
-                for (String t : textes) {
-                    if (t.isBlank()) continue;
-                    if (t.charAt(0) == '#') {
-                        predicates.add(criteriaBuilder.like(root.get("description"), "%" + t + "%"));
+                List<String> users= new ArrayList<>();
+                System.out.println(texts);
+                for (String t : texts) {
+                    if (t.charAt(0) == '@'){
+                        users.add(t.substring(1));
                     }
-                    else if(t.charAt(0) == '@'){
-                        Join<PublicationEntity, UserEntity> join = root.join("user");
-                        predicates.add(criteriaBuilder.equal(join.get("username"), t.substring(1)));
+                    else if (t.charAt(0) == '#') {
+                        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("description"))
+                                , "%" + t + "%"));
                     }
                     else {
-                        predicates.add(criteriaBuilder.like(root.get("name"), "%" + t + "%"));
+                        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("name"))
+                                , "%" + t + "%"));
                     }
+                }
+
+                if(!users.isEmpty()){
+                    Join<PublicationEntity, UserEntity> join = root.join("user");
+                    predicates.add(join.get("username").in(users));
                 }
             }
 

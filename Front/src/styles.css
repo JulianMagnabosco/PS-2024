@@ -66,9 +66,9 @@
 
 
 .form-orange{
-  border: 2px solid var(--primary);
+  border: 2px solid var(--shiny);
   border-radius: 0.5rem;
-  background-color: #f1e8e8;
+  background-color: white;
 }
 .form-label-grey{
   background-color: rgba(241, 232, 232, 0);
@@ -143,18 +143,24 @@
 
 .input-float{
   position: relative;
-  padding: .25rem .25rem .25rem .50rem ;
-  border: 2px solid #ffe9e6 ;
+  padding: .25rem .25rem 0 .50rem ;
+  border: 2px solid var(--shiny) ;
   border-radius: 10px;
   background-color: white;
+  overflow: hidden;
   input, select{
     padding-top: 1.50rem;
+    padding-bottom: .25rem;
     outline: none;
     display: block;
     width: 100%;
     border: none;
   }
   label{
+    pointer-events: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     transform-origin: left center;
     transition: transform 250ms;
     position: absolute;
