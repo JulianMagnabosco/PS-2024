@@ -4,6 +4,7 @@ import jakarta.persistence.criteria.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import ps.jmagna.dtos.publication.*;
 import ps.jmagna.entities.*;
@@ -144,74 +145,27 @@ public class PublicationService {
 
         SearchPubResponce responce = new SearchPubResponce();
 
-        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-
+        Pageable pageable;
+        if(request.getSort().equals(SortType.CALF)){
+//            list.sort(Comparator.comparing(PublicationMinDto::getCalification).reversed());
+            pageable = PageRequest.of(request.getPage(), request.getSize(),
+                    Sort.by("calification").descending());
+        }
+        else {
+            pageable = PageRequest.of(request.getPage(), request.getSize(),
+                    Sort.by("dateTime"));
+        }
         Page<PublicationEntity> all = publicationRepository.findAll(createFilter(request, user), pageable);
 
-        int count = (int) all.getTotalElements();
+//        int count = (int) all.getTotalElements();
         List<PublicationMinDto> list = new ArrayList<>();
         for (PublicationEntity p : all) {
 
-            /*if (p.isDeleted()) {
-                continue;
-            }
-            if (request.getType() != PubType.NONE) {
-                if (request.getType() != p.getType()) {
-                    continue;
-                }
-            }
-            if (p.getDifficulty() < request.getDiffMin() || p.getDifficulty() > request.getDiffMax()) {
-                continue;
-            }
-            if (!request.getText().isBlank()) {
-                List<String> textes = List.of(request.getText().toLowerCase()
-                        .split("\\s"));
-                boolean noadd = true;
-                for (String t : textes) {
-                    if (p.getName().toLowerCase().contains(t)) {
-                        noadd = false;
-                        break;
-                    }
-                    if (t.charAt(0) == '#' &&
-                            p.getDescription().toLowerCase().contains(t)) {
-                        noadd = false;
-                        break;
-                    }
-                }
-                if (noadd) {
-                    continue;
-                }
-            }
-            */
-
-            BigDecimal cal = calificationAverage(p);
-            if (cal.compareTo(request.getPoints()) < 0) {
-                count--;
-                continue;
-            }
-
-            if (!request.getMaterials().isBlank()) {
-                List<String> mats = List.of(request.getMaterials().toLowerCase()
-                        .split("[\\s,]+"));
-                List<SectionEntity> smats = p.getSections().stream()
-                        .filter(sec -> sec.getType().equals(SecType.MAT))
-                        .toList();
-                boolean noadd = true;
-                for (SectionEntity m : smats) {
-                    if (mats.contains(m.getText().toLowerCase())) {
-                        noadd = false;
-                        break;
-                    }
-                }
-                if (noadd) {
-                    count--;
-                    continue;
-                }
-            }
+//
 
             PublicationMinDto dto = modelMapper.map(p, PublicationMinDto.class);
 
-            dto.setCalification(cal);
+//            dto.setCalification(cal);
             dto.setDifficulty(Difficulty.values()[p.getDifficulty()].name());
             SectionEntity sectionImage = sectionRepository.findFirstByPublicationAndType(p, SecType.PHOTO);
             if (sectionImage != null) {
@@ -219,16 +173,10 @@ public class PublicationService {
             }
             list.add(dto);
         }
-        if(request.getSort().equals(SortType.CALF)){
-            list.sort(Comparator.comparing(PublicationMinDto::getCalification).reversed());
-        }
-        else {
-            list.sort(Comparator.comparing(PublicationMinDto::getDateTime));
-        }
 
         responce.setList(list);
 
-        responce.setCountTotal(count);
+        responce.setCountTotal(all.getTotalElements());
 
         return responce;
     }
@@ -275,6 +223,21 @@ public class PublicationService {
                 if(!users.isEmpty()){
                     Join<PublicationEntity, UserEntity> join = root.join("user");
                     predicates.add(join.get("username").in(users));
+                }
+            }
+
+            if (request.getPoints().compareTo(BigDecimal.ZERO)==1){
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("calification"), request.getPoints()));
+            }
+
+
+            if (!request.getMaterials().isBlank()) {
+
+                List<String> mats = List.of(request.getMaterials().toLowerCase()
+                        .split("[\\s,]+"));
+                for (String m : mats) {
+                    Join<PublicationEntity, SectionEntity> join = root.join("sections", JoinType.INNER);
+                    predicates.add(criteriaBuilder.like(join.get("text"), m));
                 }
             }
 

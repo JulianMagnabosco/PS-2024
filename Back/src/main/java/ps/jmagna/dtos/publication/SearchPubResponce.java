@@ -10,6 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SearchPubResponce {
-    int countTotal;
+    Long countTotal;
     List<PublicationMinDto> list;
 }

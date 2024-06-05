@@ -1,5 +1,7 @@
 package ps.jmagna.entities;
 
+import org.hibernate.annotations.Formula;
+import org.springframework.data.jpa.repository.Query;
 import ps.jmagna.enums.PubType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
@@ -35,6 +37,9 @@ public class PublicationEntity {
     boolean canSold;
     BigDecimal price;
     Long count;
+    @Formula("(select round(coalesce(avg(h.points),0),2) from califications h where h.id_publication = id)")
+    BigDecimal calification ;
+
     @OneToMany(mappedBy="publication")
     List<SectionEntity> sections;
     @OneToMany(mappedBy="publication")
