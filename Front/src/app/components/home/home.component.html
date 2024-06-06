@@ -8,13 +8,37 @@
   <!--    <div class="w-100 h-75 text-center"> o si eres usuario nuevo-->
   <!--    </div>-->
 </div>
-<div class="container" *ngIf="service.user">
-  <div class="h1 w-100 h-75 text-center "> Bienvenido de nuevo</div>
-  <div class="w-100 d-flex justify-content-center">
-      <span class="card bg-secondary-subtle" style="max-width: 500px" >
-        <img class="img-fluid"[src]="service.user.iconUrl||'' ">
-        <div class="h3 text-center w-auto"> {{ service.user.username || "" }}</div>
-        <div class="h5 text-center w-auto"> {{ service.user.email || "" }}</div>
-      </span>
+
+<div class="container-fluid" *ngIf="service.user">
+  <div class="p-3 row align-items-center bg-gradient-grey">
+    <img class="col-sm-2 col-4"[src]="service.user.iconUrl||'' ">
+    <div class="col">
+      <div class="h4">
+        Bienvenido de nuevo, <span class="fw-bold">{{ service.user.username || "" }} </span>
+      </div>
+      <div class="h6"> {{ service.user.email || "" }}</div>
+    </div>
+  </div>
+  <div class="h5 text-center">Recomendaciones</div>
+  <div class="gap-1 row justify-content-center p-3 pt-3">
+    <div class="col-1 p-0 card btn-border-orange bg-body-tertiary h-25" style="width: 15rem;"
+         *ngFor="let p of list" (click)="go(p.id)">
+      <img [src]="p.imageUrl" class="card-img" [alt]="p.name"
+           style="height: 100%; width: 100%">
+
+      <div class="card-img-overlay pub-hover" >
+        <h5 class="card-title">{{ p.name }}</h5>
+
+        <div class="">
+          <i class="bi bi-star-fill text-warning"></i> {{p.calification}}
+        </div>
+
+        <div class="card-body">
+          <p class="card-text">{{ p.description }}</p>
+        </div>
+      </div>
+
+    </div>
+    <h2 *ngIf="list.length<=0" class="text-center text-secondary text-break">No se encontraron publicaciones...</h2>
   </div>
 </div>

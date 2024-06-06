@@ -54,6 +54,11 @@ public class PublicationController {
                                     @AuthenticationPrincipal Jwt authentication) {
         return publicationService.getAll(searchPubRequest, authService.findUser(authentication));
     }
+    @GetMapping("/recommend")
+    public SearchPubResponce getRecommended(@RequestParam int size,
+                                    @AuthenticationPrincipal Jwt authentication) {
+        return publicationService.getRecommended(size, authService.findUser(authentication));
+    }
     @GetMapping("/sugg")
     public List<String> getSuggestions(@RequestParam String text) {
         return publicationService.getSuggestions(text);

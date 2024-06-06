@@ -35,6 +35,9 @@ export class PublicationsService {
   search(search: any):Observable<any>{
     return this.client.post(this.baseUrl + "search",search)
   }
+  getRecomm(size:number):Observable<any>{
+    return this.client.get(this.baseUrl + "recommend?size="+size);
+  }
   getSuggs(text:string):Observable<any>{
     return this.client.get(this.baseUrl + "sugg?text="+text);
   }

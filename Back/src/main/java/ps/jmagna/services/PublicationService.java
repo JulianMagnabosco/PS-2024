@@ -140,32 +140,56 @@ public class PublicationService {
     }
 
     //Listar
+    public SearchPubResponce getRecommended(int size, UserEntity user) {
+
+        SearchPubResponce responce = new SearchPubResponce();
+
+        Sort sort = Sort.by("calification").descending();
+        Pageable pageable = PageRequest.of(0, size, sort);
+//        Page<PublicationEntity> all =
+//                publicationRepository.findAllByCalificationGreaterThanEqual(BigDecimal.ONE,pageable);
+        Page<PublicationEntity> all =
+                publicationRepository.findAllByDraftIsFalseAndDeletedIsFalse(pageable);
+
+//        int count = (int) all.getTotalElements();
+        List<PublicationMinDto> list = new ArrayList<>();
+        for (PublicationEntity p : all) {
+            PublicationMinDto dto = modelMapper.map(p, PublicationMinDto.class);
+
+            dto.setDifficulty(Difficulty.values()[p.getDifficulty()].name());
+            SectionEntity sectionImage = sectionRepository.findFirstByPublicationAndType(p, SecType.PHOTO);
+            if (sectionImage != null) {
+                dto.setImageUrl(url + "/api/image/pub/" + sectionImage.getId());
+            }
+            list.add(dto);
+        }
+
+        responce.setList(list);
+
+        responce.setCountTotal(all.getTotalElements());
+
+        return responce;
+    }
 
     public SearchPubResponce getAll(SearchPubRequest request, UserEntity user) {
 
         SearchPubResponce responce = new SearchPubResponce();
 
-        Pageable pageable;
+        Sort sort;
         if(request.getSort().equals(SortType.CALF)){
-//            list.sort(Comparator.comparing(PublicationMinDto::getCalification).reversed());
-            pageable = PageRequest.of(request.getPage(), request.getSize(),
-                    Sort.by("calification").descending());
+            sort = Sort.by("calification").descending();
         }
         else {
-            pageable = PageRequest.of(request.getPage(), request.getSize(),
-                    Sort.by("dateTime"));
+            sort = Sort.by("dateTime");
         }
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), sort);
         Page<PublicationEntity> all = publicationRepository.findAll(createFilter(request, user), pageable);
 
 //        int count = (int) all.getTotalElements();
         List<PublicationMinDto> list = new ArrayList<>();
         for (PublicationEntity p : all) {
-
-//
-
             PublicationMinDto dto = modelMapper.map(p, PublicationMinDto.class);
 
-//            dto.setCalification(cal);
             dto.setDifficulty(Difficulty.values()[p.getDifficulty()].name());
             SectionEntity sectionImage = sectionRepository.findFirstByPublicationAndType(p, SecType.PHOTO);
             if (sectionImage != null) {
@@ -248,7 +272,7 @@ public class PublicationService {
     public List<String> getSuggestions(String text){
 
         Pageable topFive = PageRequest.of(0, 5);
-        return publicationRepository.findNamesByNameContaining(text.toLowerCase(),topFive);
+        return publicationRepository.findNamesByNameContaining(text.toLowerCase(),topFive).stream().toList();
     }
     public List<CartDto> getCart(UserEntity user) {
 
