@@ -144,12 +144,11 @@ public class PublicationService {
 
         SearchPubResponce responce = new SearchPubResponce();
 
-        Sort sort = Sort.by("calification").descending();
-        Pageable pageable = PageRequest.of(0, size, sort);
+        Pageable pageable = PageRequest.of(0, size);
 //        Page<PublicationEntity> all =
 //                publicationRepository.findAllByCalificationGreaterThanEqual(BigDecimal.ONE,pageable);
         Page<PublicationEntity> all =
-                publicationRepository.findAllByDraftIsFalseAndDeletedIsFalse(pageable);
+                publicationRepository.findAll(createRecomendedFilter(),pageable);
 
 //        int count = (int) all.getTotalElements();
         List<PublicationMinDto> list = new ArrayList<>();
@@ -169,6 +168,18 @@ public class PublicationService {
         responce.setCountTotal(all.getTotalElements());
 
         return responce;
+    }
+
+    public static Specification<PublicationEntity> createRecomendedFilter() {
+        return (root, query, criteriaBuilder) -> {
+            query.orderBy(
+                    criteriaBuilder.desc(root.get("dateTime")),
+                    criteriaBuilder.desc(criteriaBuilder.greaterThanOrEqualTo(root.get("calification"),1)),
+                    criteriaBuilder.desc(root.get("calification"))
+            );
+            return criteriaBuilder.and(criteriaBuilder.isFalse(root.get("deleted")),
+                    criteriaBuilder.isFalse(root.get("draft")));
+        };
     }
 
     public SearchPubResponce getAll(SearchPubRequest request, UserEntity user) {
