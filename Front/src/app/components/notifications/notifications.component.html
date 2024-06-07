@@ -1,0 +1,22 @@
+<button class="btn btn-primary text-nowrap me-1" type="button" data-bs-toggle="dropdown">
+  <i class="bi bi-bell"></i>
+</button>
+<div class="dropdown-menu dropdown-menu-end bg-secondary-subtle">
+  <ul class="list-group overflow-y-auto rounded-0" style="width: 15rem; max-height: 15rem">
+    <ng-container *ngFor="let n of list;let i = index">
+      <li class="border-top border-bottom border-black">
+        <a class="dropdown-item bg-white" href="#">
+          <div class="fw-bold">{{n.title}}</div>
+          <div >&nbsp;{{n.text}}</div>
+          <div class="fst-italic text-end text-secondary">{{n.dateTime | date:"dd/MM/yyyy hh:mm"}}</div>
+        </a>
+
+      </li>
+    </ng-container>
+    <ng-container *ngIf="list.length<=0">
+      <li class="text-center bi-bell-slash">
+        Sin notificaciones
+      </li>
+    </ng-container>
+  </ul>
+</div>

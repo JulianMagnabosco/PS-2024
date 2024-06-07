@@ -40,6 +40,7 @@ import {
 import {DraftsComponent} from "./components/publications/drafts/drafts.component";
 import {ResetPasswordComponent} from "./components/user/reset-password/reset-password.component";
 import {FormPublicationComponent} from "./components/publications/form-publication/form-publication.component";
+import {NotificationsComponent} from "./components/notifications/notifications.component";
 
 
 @NgModule({
@@ -71,6 +72,7 @@ import {FormPublicationComponent} from "./components/publications/form-publicati
     DraftsComponent,
     ResetPasswordComponent,
     FormPublicationComponent,
+    NotificationsComponent,
     HomeComponent
   ],
   imports: [

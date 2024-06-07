@@ -19,7 +19,7 @@
       </button>
     </span>
 
-    <div class="justify-content-end order-sm-last" id="navbarSupportedContent">
+    <div class="justify-content-end order-sm-last ms-sm-auto" id="navbarSupportedContent">
       <button class="btn btn-primary text-nowrap me-1" routerLink="login" *ngIf="!service.user">
         <i class="bi bi-person-circle"> Iniciar Secion</i>
       </button>
@@ -29,9 +29,13 @@
           <i class="bi bi-cart"></i>
         </button>
         <div class="dropdown" *ngIf="service.user">
-          <button class="btn btn-primary text-nowrap me-1 dropdown-toggle" type="button" data-bs-toggle="dropdown">
-            <i class="bi bi-person-circle"></i>
-            <span class="px-1 d-none d-sm-inline-block">{{ service.user.username }}</span>
+          <app-notifications></app-notifications>
+        </div>
+        <div class="dropdown" *ngIf="service.user">
+          <button class="btn btn-primary text-nowrap " type="button" data-bs-toggle="dropdown">
+            <i class="bi bi-person-circle me-sm-1"></i>
+            <span class="px-1 d-none d-sm-inline-block ">{{ service.user.username }}</span>
+            <span class="dropdown-toggle d-none d-sm-inline-block"></span>
           </button>
           <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="dropdown-item" href="#" routerLink="login">Cambiar cuenta</a></li>

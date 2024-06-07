@@ -19,8 +19,6 @@ import ps.jmagna.enums.UserRole;
 import ps.jmagna.repository.*;
 import com.mercadopago.client.merchantorder.MerchantOrderClient;
 import com.mercadopago.client.payment.PaymentClient;
-import com.mercadopago.client.payment.PaymentCreateRequest;
-import com.mercadopago.client.payment.PaymentPayerRequest;
 import com.mercadopago.client.preference.*;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
@@ -59,7 +57,7 @@ public class PurchaseService {
     UserRepository userRepository;
     
     @Autowired
-    EmailService emailService;
+    NotificationService notificationService;
 
     @Autowired
     PreferenceClient preferenceClient;
@@ -195,8 +193,7 @@ public class PurchaseService {
 //                }
 
                 if(sale.getSaleState().equals(SaleState.APROBADA)){
-                    emailService.sendEmailSale(sale,
-                            sale.getUser().getEmail());
+                    notificationService.sendNotificationSale(sale);
 
                 }
                 sale.setSaleState(SaleState.APROBADA);

@@ -1,7 +1,6 @@
 package ps.jmagna.services;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.oauth2.jwt.Jwt;
 import ps.jmagna.dtos.user.*;
 import ps.jmagna.entities.StateEntity;
@@ -41,7 +40,7 @@ public class AuthService implements UserDetailsService {
   @Autowired
   StateRepository stateRepository;
   @Autowired
-  EmailService emailService;
+  NotificationService notificationService;
   @Autowired
   ModelMapper modelMapper;
   @Autowired
@@ -97,11 +96,15 @@ public class AuthService implements UserDetailsService {
             encryptedPassword, UserRole.USER, LocalDateTime.now());
     newUser.setState(stateRepository.getReferenceById(1L));
 
-    emailService.sendEmail("Nueva cuenta de Como lo hago",
-            "Se a creado una nueva cuenta con este email, de nombre: "+
-            newUser.getUsername(), newUser.getEmail());
+    newUser = repository.save(newUser);
 
-    return mapUserDto(repository.save(newUser));
+    notificationService.sendNotification("register",
+            "Nueva cuenta de Como lo hago",
+            "Se a creado una nueva cuenta con este email, de nombre: "+
+            newUser.getUsername(),
+            newUser);
+
+    return mapUserDto(newUser);
   }
   public UserTestResponce testSingUp(UserRequest data){
     UserTestResponce userTestResponce = new UserTestResponce();
@@ -138,13 +141,16 @@ public class AuthService implements UserDetailsService {
 
     UUID uuid = UUID.randomUUID();
 
-    if(repository.findByEmail(email)==null){
+    UserEntity user = repository.getByEmail(email);
+    if(user==null){
       throw new EntityNotFoundException();
     }
 
-    emailService.sendEmail("Cambio de contraseña", "Aqui esta su token para cambio de contraseña " +
-            "(introduzcalo en el campo token): "+
-            uuid, email);
+    notificationService.sendNotification("password_req_"+email,
+            "Cambio de contraseña",
+            "Aqui esta su token para cambio de contraseña " +
+            "(introduzcalo en el campo token): "+ uuid,
+            user);
 
     return true;
   }
@@ -156,6 +162,11 @@ public class AuthService implements UserDetailsService {
 
     user.setPassword(encryptedPassword);
     repository.save(user);
+
+    notificationService.sendNotification("password_change_"+user.getEmail(),
+            "Se cambio de contraseña",
+            "",
+            user);
 
     return true;
   }
