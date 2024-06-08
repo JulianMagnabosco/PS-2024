@@ -63,8 +63,7 @@ export class ListUsersComponent implements OnInit,OnDestroy {
             this.list=value["list"]
           },
           error: err => {
-            console.log(err)
-              cAlert("error","Error inesperado en el servidor, revise su conexion a internet"); }
+            cAlert("error","Error inesperado en el servidor, revise su conexion a internet"); }
         }
       )
     );

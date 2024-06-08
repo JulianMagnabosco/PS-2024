@@ -25,7 +25,7 @@
 
   <div class="container mt-4 p-2 rounded-5 border-gradient">
     <form [formGroup]="form" class="row g-3 justify-content-center p-3">
-      <div class="col-lg-8 col-12">
+      <div class="col-md-6 col-12">
         <div class="mb-2">
           <label for="nameInput" class="form-label h5">Nombre</label>
           <input type="text" formControlName="name" class="form-control" id="nameInput"
@@ -99,15 +99,18 @@
         </div>
       </div>
 
-      <div class="col-lg-4 col-sm-8 col-12">
+      <div class="col-md-6 col-sm-8 col-12">
         <div class="rounded-2 border-orange border-5" #img1>
           <!--        <img [src]="pubImages[0].url " class=" w-100 p-1"-->
           <!--             [alt]="pubImages[0].url" *ngIf="pubImages.length>0">-->
           <div id="carouselExample" class="carousel slide rounded-2 p-1"
                *ngIf="pubImages.length>0">
             <div class="carousel-inner">
-              <div class="carousel-item " *ngFor="let p of pubImages; index as i" [class.active]="i==0">
-                <img [src]="p.url || 'assets/camera.png'" class="d-block w-100">
+              <div class="carousel-item text-center align-content-center"  style="height: 30rem"
+                   *ngFor="let p of pubImages; index as i" [class.active]="i==0">
+                <img [src]="p.url || 'assets/camera.png'"
+                     class="w-100"
+                     style="object-fit: contain; max-height: 100%; max-width: 100%">
               </div>
               <div class="carousel-item " *ngIf="video!=''">
                 <youtube-player #youTubePlayer

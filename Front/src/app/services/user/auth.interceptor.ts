@@ -26,9 +26,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 };
 
 export function handleErrorRes(error: HttpErrorResponse,router:Router,service:AuthService): Observable<never> {
-  console.log(error.status)
-  service.logout();
   if (error.status === 401) {
+    service.logout();
     router.navigateByUrl("/login", {replaceUrl: true});
   }
   return throwError(() => error);

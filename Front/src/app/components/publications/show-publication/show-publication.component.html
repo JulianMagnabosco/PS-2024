@@ -78,7 +78,8 @@
                    *ngFor="let p of photos; index as i" [class.active]="i==0"
                     style="height: 30rem">
                 <img [src]="p.imageUrl || 'assets/camera.png'"
-                     style="object-fit: cover; max-height: 100%; max-width: 100%">
+                     class="w-100"
+                     style="object-fit: contain; max-height: 100%; max-width: 100%">
               </div>
               <div class="carousel-item " *ngIf="publication.video" id="videoItem">
                 <youtube-player #youTubePlayer

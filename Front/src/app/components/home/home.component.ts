@@ -40,7 +40,9 @@ export class HomeComponent implements OnInit,OnDestroy{
             this.list=value["list"]
           },
           error: err => {
-            cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
+            if(err.status!=401){
+              cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
+            }
           }
         }
       )
