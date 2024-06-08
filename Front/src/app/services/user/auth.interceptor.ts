@@ -8,6 +8,7 @@ import {LoadingService} from "../loading/loading.service";
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   const router = inject(Router);
+  const service = inject(AuthService);
   const loadingService = inject(LoadingService);
   let token = sessionStorage.getItem("app.token");
   if (token && !req.url.includes("signin")) {
@@ -20,11 +21,13 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   loadingService.start()
   return next(req).pipe(
-    catchError((error: HttpErrorResponse) => handleErrorRes(error,router))
+    catchError((error: HttpErrorResponse) => handleErrorRes(error,router,service))
   ).pipe(finalize(()=>{loadingService.end()}));
 };
 
-export function handleErrorRes(error: HttpErrorResponse,router:Router): Observable<never> {
+export function handleErrorRes(error: HttpErrorResponse,router:Router,service:AuthService): Observable<never> {
+  console.log(error.status)
+  service.logout();
   if (error.status === 401) {
     router.navigateByUrl("/login", {replaceUrl: true});
   }

@@ -2,12 +2,12 @@
   <i class="bi bi-bell"></i>
 </button>
 <div class="dropdown-menu dropdown-menu-end bg-secondary-subtle">
-  <ul class="list-group overflow-y-auto rounded-0" style="width: 15rem; max-height: 15rem">
+  <ul class="list-group overflow-y-auto rounded-0" style="width: 30rem; max-height: 15rem">
     <ng-container *ngFor="let n of list;let i = index">
       <li class="border-top border-bottom border-black">
-        <a class="dropdown-item bg-white" href="#">
-          <div class="fw-bold">{{n.title}}</div>
-          <div >&nbsp;{{n.text}}</div>
+        <a class="dropdown-item bg-white" href="#" style="white-space: initial">
+          <div class="fw-bold text-break" >{{n.title}}</div>
+          <div class="ms-2 text-break">{{n.text}}</div>
           <div class="fst-italic text-end text-secondary">{{n.dateTime | date:"dd/MM/yyyy hh:mm"}}</div>
         </a>
 

@@ -1,11 +1,13 @@
 package ps.jmagna.services;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.oauth2.jwt.Jwt;
 import ps.jmagna.dtos.user.*;
 import ps.jmagna.entities.StateEntity;
 import ps.jmagna.entities.UserEntity;
 import ps.jmagna.enums.UserRole;
+import ps.jmagna.exceptions.InvalidJwtException;
 import ps.jmagna.repository.StateRepository;
 import ps.jmagna.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -69,17 +71,25 @@ public class AuthService implements UserDetailsService {
   }
   @Override
   public UserDetails loadUserByUsername(String username) {
+    UserDetails user;
     if(username.contains("@")){
-      return repository.findByEmail(username);
+      user = repository.findByEmail(username);
+    }else {
+      user = repository.findByUsername(username);
     }
-    return repository.findByUsername(username);
+    if(user==null) throw new BadCredentialsException("");
+    return user;
   }
   public UserEntity findUser(Jwt authentication) {
     String username=authentication.getSubject();
+    UserEntity user;
     if(username.contains("@")){
-      return repository.getByEmail(username);
+      user = repository.getByEmail(username);
+    }else {
+      user = repository.getByUsername(username);
     }
-    return repository.getByUsername(username);
+    if(user==null) throw new BadCredentialsException("");
+    return user;
   }
   public UserDto register(UserRequest data) {
 

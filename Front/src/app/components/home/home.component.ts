@@ -40,7 +40,6 @@ export class HomeComponent implements OnInit,OnDestroy{
             this.list=value["list"]
           },
           error: err => {
-            console.log(err)
             cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
           }
         }

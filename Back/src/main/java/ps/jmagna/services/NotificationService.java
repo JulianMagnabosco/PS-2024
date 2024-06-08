@@ -87,6 +87,7 @@ public class NotificationService {
         notification.setText(textMessage);
         notification.setUser(user);
         repository.save(notification);
+        System.out.println("not: "+notification.getUser().getUsername());
         return true;
     }
     private boolean sendEmail(String subject, String textMessage, String receptorEmail) {

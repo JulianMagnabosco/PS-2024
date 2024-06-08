@@ -15,33 +15,33 @@ import {Notification} from "../../models/notification/notification";
 export class NotificationsComponent implements OnInit,OnDestroy{
   subs=new Subscription()
   list:Notification[]=[
-    {
-      dateTime: '1/1/1',
-      code: 'Compra',
-      title: 'Compra',
-      text: 'Algo se compro'
-    },
-
-    {
-      dateTime: '1/1/1',
-      code: 'Compra',
-      title: 'Compra',
-      text: 'Algo se compro'
-    },
-
-    {
-      dateTime: '1/1/1',
-      code: 'Compra',
-      title: 'Compra',
-      text: 'Algo se compro'
-    },
-
-    {
-      dateTime: '1/1/1',
-      code: 'Compra',
-      title: 'Compra',
-      text: 'Algo se compro'
-    }
+    // {
+    //   dateTime: '2024/12/12',
+    //   code: 'Compraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+    //   title: 'Compraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+    //   text: 'Algo se comproaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaeeee'
+    // },
+    //
+    // {
+    //   dateTime: '1/1/1',
+    //   code: 'Compra',
+    //   title: 'Compra',
+    //   text: 'Algo se compro'
+    // },
+    //
+    // {
+    //   dateTime: '1/1/1',
+    //   code: 'Compra',
+    //   title: 'Compra',
+    //   text: 'Algo se compro'
+    // },
+    //
+    // {
+    //   dateTime: '1/1/1',
+    //   code: 'Compra',
+    //   title: 'Compra',
+    //   text: 'Algo se compro'
+    // }
   ]
   constructor(private service:NotificationService) {
   }
