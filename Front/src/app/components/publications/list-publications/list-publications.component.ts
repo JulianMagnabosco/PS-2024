@@ -21,7 +21,7 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
   list: PublicationMin[] = [
   ];
   countTotal=1;
-  size=9;
+  size=10;
   page=0;
 
   constructor(private fb: FormBuilder, private service: PublicationsService,

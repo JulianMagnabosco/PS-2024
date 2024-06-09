@@ -60,15 +60,22 @@ values ('delivery','del','iver','$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe
 
 -- Publications:
 insert into publications (id_user, name, description, type, difficulty,can_sold,count,price,deleted, draft,date_time)
-values (1,'Panal artesanal', 'esto es un panal de abejas artesanal #bees', 'ARTE',1,true,5,5,false
+values (1,'Guitarra Electrica',
+        'Esto es una guitarra electrica creada por mi :D, #music',
+        'ARTE',1,true,5,5,false
        ,false,'2023-1-01 00:00:01');
 insert into sections (id_publication, type, text)
 values (1,'PHOTO', ''),
-       (1,'MAT', 'madera'),
-       (1,'COND', 'tenga cuidaddo con el panal');
+       (1,'PHOTO', ''),
+       (1,'COND', 'Pongan atención a las cuerdas'),
+       (1,'MAT', '5m3 de Madera de balso'),
+       (1,'MAT', '6m de Cuerda'),
+       (1,'MAT', '500ml de Pintura azul');
 insert into sections (id_publication, type, text, number)
-values  (1,'STEP', 'Cerrar es un panal de abejas', 2),
-        (1,'STEP', 'Abrir es un panal de abejas', 1);
+values
+    (1,'STEP', 'Crear la parte superior del mango', 1),
+    (1,'STEP', 'Crear la parte inferior del mango', 2),
+    (1,'STEP', 'Unir todas las partes', 3);
 
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,count,price,deleted, draft,date_time)
@@ -76,17 +83,52 @@ values (2,'Casa de pajaros', 'esto es ', 'ARTE',1,true,5,5,false, false,'2023-1-
 insert into sections (id_publication, type, text)
 values (2,'PHOTO', '');
 
-
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted ,draft,date_time)
-values (2,'Casa de perros ', 'pajaros', 'TECNOLOGIA',1,false,false,false,'2023-2-01 00:00:01');
+values (3,'Casa de perros ', 'pajaros', 'TECNOLOGIA',1,false,false,false,'2023-2-01 00:00:01');
 insert into sections (id_publication, type, text)
 values (3,'PHOTO', '');
 
--- Drafts:
+
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted ,draft,date_time)
-values (1,'Casa de peldos ', 'pajaros', 'TECNOLOGIA',1,false,false,true,'2023-4-01 00:00:01');
+values (4,'Casa de perros ', 'pajaros', 'TECNOLOGIA',1,false,false,false,'2022-12-01 00:00:01');
 insert into sections (id_publication, type, text)
 values (4,'PHOTO', '');
+
+insert into publications (id_user, name, description, type, difficulty,can_sold,deleted ,draft,date_time)
+values (5,'Casa de perros ', 'pajaros', 'TECNOLOGIA',1,false,false,false,'2023-2-05 00:00:01');
+insert into sections (id_publication, type, text)
+values (5,'PHOTO', '');
+
+insert into publications (id_user, name, description, type, difficulty,can_sold,count,price,deleted, draft,date_time)
+values (2,'Casa de pajaros', 'esto es ', 'ARTE',1,true,5,5,false, false,'2023-1-02 00:00:01');
+insert into sections (id_publication, type, text)
+values (6,'PHOTO', '');
+
+insert into publications (id_user, name, description, type, difficulty,can_sold,deleted ,draft,date_time)
+values (3,'Casa de perros ', 'pajaros', 'TECNOLOGIA',1,false,false,false,'2023-2-01 00:00:01');
+insert into sections (id_publication, type, text)
+values (7,'PHOTO', '');
+
+insert into publications (id_user, name, description, type, difficulty,can_sold,deleted ,draft,date_time)
+values (4,'Casa de perros ', 'pajaros', 'TECNOLOGIA',1,false,false,false,'2022-12-01 00:00:01');
+insert into sections (id_publication, type, text)
+values (8,'PHOTO', '');
+
+insert into publications (id_user, name, description, type, difficulty,can_sold,deleted ,draft,date_time)
+values (5,'Casa de perros ', 'pajaros', 'TECNOLOGIA',1,false,false,false,'2023-2-05 00:00:01');
+insert into sections (id_publication, type, text)
+values (9,'PHOTO', '');
+
+insert into publications (id_user, name, description, type, difficulty,can_sold,deleted ,draft,date_time)
+values (5,'Casa de perros ', 'pajaros', 'TECNOLOGIA',1,false,false,false,'2023-2-05 00:00:01');
+insert into sections (id_publication, type, text)
+values (10,'PHOTO', '');
+
+-- Drafts:
+insert into publications (id_user, name, description, type, difficulty,can_sold,deleted ,draft,date_time)
+values (1,'Casa de peldos ', 'pajaros', 'TECNOLOGIA',1,false,false,true,'2023-4-03 00:00:01');
+insert into sections (id_publication, type, text)
+values (11,'PHOTO', '');
 
 -- Sales:
 
@@ -123,8 +165,8 @@ insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
 values (1,4, '2024-4-09 00:00:01','PENDIENTE');
 
 insert into sales (merchant_order,id_user,date_time,sale_state)
-values (3,2, '2024-4-20 00:00:01','APROBADA');
+values (3,2, '2024-4-20 00:00:01','CANCELADA');
 insert into sale_details (id_sale,id_publication,total,count)
 values (5,1, 5,1);
 insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
-values (1,4, '2024-4-20 00:00:01','PENDIENTE');
+values (1,4, '2024-4-20 00:00:01','CANCELADA');

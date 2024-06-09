@@ -15,6 +15,8 @@ import ps.jmagna.repository.SectionRepository;
 import javax.annotation.PostConstruct;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Comparator;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -36,6 +38,7 @@ public class DBConfig implements ApplicationListener<ApplicationReadyEvent> {
                 .filter(Files::isRegularFile)
                 .collect(Collectors.toList());
 
+        images.sort(Comparator.comparing((e)->e.getFileName().toString().toLowerCase()));
         if (images.isEmpty()) {
             throw new IOException("No images found in the directory");
         }
@@ -58,7 +61,7 @@ public class DBConfig implements ApplicationListener<ApplicationReadyEvent> {
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        if(ok=="false") return;
+        if(Objects.equals(ok, "false")) return;
         try {
             test();
         }catch (Exception e){

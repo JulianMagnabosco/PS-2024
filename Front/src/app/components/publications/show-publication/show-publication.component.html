@@ -122,7 +122,8 @@
 
             <div class="col-auto me-1 rounded-circle bg-orange text-center text-white
             fs-3 rounded-2 align-content-center point-text">!</div>
-            <div class="col rounded-2 bg-body-secondary p-1 text-break">{{ d.text }}</div>
+            <div class="col rounded-2 bg-body-secondary p-1 text-break
+                         align-content-center">{{ d.text }}</div>
 <!--            <div class="rounded-2 bg-body-secondary p-1">asdasdaaaaaaaaaaaaaaaaaaaaaaaaaaa-->
 <!--              aaaaaaaaaaaaaaaaaaaaaaaaaaaaasdasdads</div>-->
           </div>
@@ -136,7 +137,7 @@
 
             <div class="col-auto me-1 rounded-circle bg-orange text-center text-white
             fs-3 rounded-2 align-content-center point-text">{{ i + 1 }}</div>
-            <div class="rounded-2 bg-body-secondary p-1">{{ d.text }}</div>
+            <div class="col rounded-2 bg-body-secondary p-1 align-content-center">{{ d.text }}</div>
           </div>
 
         </div>
@@ -148,8 +149,12 @@
             <div class="list-group-item p-1 bg-orange text-white border-orange  fs-4">Paso {{ i + 1 }}</div>
             <div class="list-group-item p-1 bg-body-secondary border-5
              border-orange  border-top-0">{{ d.text }}</div>
-            <img [src]="d.imageUrl" alt="step" class="border-5 px-5 border-orange list-group-item
-              rounded-bottom-1 border-top-0" *ngIf="d.imageUrl" style="max-height: 50rem">
+            <div class="border-5 px-5 border-orange list-group-item bg-transparent
+              rounded-bottom-1 border-top-0 justify-content-center align-content-center" style="height: 30rem">
+
+              <img [src]="d.imageUrl" alt="step" class="w-100" *ngIf="d.imageUrl"
+                   style="object-fit: contain; max-height: 100%; max-width: 100%">
+            </div>
           </div>
 
         </div>
