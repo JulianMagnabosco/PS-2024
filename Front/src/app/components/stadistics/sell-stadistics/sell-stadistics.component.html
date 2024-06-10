@@ -8,7 +8,7 @@
     </div>
     <div class="col-auto">
       <input type="date" id="firstDate" class="form-control" aria-describedby="passwordHelpInline"
-             name="firstDate" [max]="lastDate"
+             name="firstDate" [min]="minDate" [max]="lastDate" (change)="onChange()"
              [(ngModel)]="firstDate">
     </div>
     <div class="col-auto">
@@ -16,17 +16,17 @@
     </div>
     <div class="col-auto">
       <input type="date" id="lastDate" class="form-control" aria-describedby="passwordHelpInline"
-             name="lastDate" [min]="firstDate"
+             name="lastDate" [min]="firstDate" [max]="maxDate" (change)="onChange()"
              [(ngModel)]="lastDate">
     </div>
     <div class="col-auto">
-      <button class="btn btn-primary" (click)="charge(selected)">GENERAR</button>
+      <button class="btn btn-primary" (click)="charge()">GENERAR</button>
     </div>
   </div>
 
   <div class="card bg-body-tertiary">
     <div class="h5 text-center border border-bottom p-4">
-      Ventas de la semana {{ this.firstDate }} a {{ this.lastDate }}
+      Ventas de las semanas de {{ this.firstDate }} a {{ this.lastDate }}
     </div>
     <div echarts [options]="options"
          [theme]="service.coolTheme"

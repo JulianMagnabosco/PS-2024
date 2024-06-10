@@ -2,7 +2,7 @@ package ps.jmagna.enums;
 
 public enum Difficulty {
     NONE,
-    FASIL,
+    FACIL,
     NORMAL,
     DIFICIL,
     MUY_DIFICIL;

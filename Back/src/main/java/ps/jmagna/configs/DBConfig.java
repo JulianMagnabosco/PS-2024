@@ -52,7 +52,7 @@ public class DBConfig implements ApplicationListener<ApplicationReadyEvent> {
                 s.setImage(compressBytes(bytes));
                 sectionRepository.save(s);
                 index++;
-                if (index>images.size()-1) index=0;
+                if (index>images.size()-1) index=6;
             }
         }
         System.out.println("Cargadas las imagenes:"+images.size());

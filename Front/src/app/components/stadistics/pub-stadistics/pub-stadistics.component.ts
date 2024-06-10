@@ -12,8 +12,11 @@ export class PubStadisticsComponent implements OnInit, OnDestroy{
 
   private subs: Subscription = new Subscription();
 
-  months:{year:number,month:number}[]=[{year:2023,month:1}];
-  selected:{year:number,month:number}=this.months[0];
+  months:number[]=[];
+  years:number[]=[];
+
+  selectedYear:number=2023;
+  selectedMonth:number=1;
 
   nodata:string='c';
 
@@ -22,23 +25,20 @@ export class PubStadisticsComponent implements OnInit, OnDestroy{
   constructor(public service: StadisticsService) {
   }
   ngOnInit(): void {
-    let yeardiff = new Date().getFullYear()-this.months[0].year;
-    let i=0;
-    for (let y of [].constructor(yeardiff+1)){
-      let j=0;
-      for (let m of [].constructor(12)){
-        let newval = {
-          year: this.months[0].year +i,
-          month:this.months[0].month+j
-        }
-        j++;
-        if(newval.month == this.months[0].month && newval.year == this.months[0].year) {
-          continue
-        };
-        this.months.push(newval);
-      }
-      i++;
+    let m=1
+    for (let i of [].constructor(12)){
+      this.months.push(m as number);
+      m++
     }
+
+    let y=2023
+    let yeardiff = new Date().getFullYear()-y;
+    for (let i of [].constructor(yeardiff+1)){
+      this.years.push(y as number);
+      y++
+    }
+    // this.selectedYear=new Date().getFullYear()
+    // this.selectedMonth=new Date().getMonth()
     this.charge();
   }
   ngOnDestroy(): void {
@@ -49,7 +49,7 @@ export class PubStadisticsComponent implements OnInit, OnDestroy{
     const data1:any[]  = [];
 
     this.subs.add(
-      this.service.getPubsStadistics(this.selected.year.toString(),this.selected.month.toString())
+      this.service.getPubsStadistics(this.selectedYear.toString(),this.selectedMonth.toString())
         .subscribe({
         next: value => {
           if(value["nodata"]){
@@ -84,8 +84,8 @@ export class PubStadisticsComponent implements OnInit, OnDestroy{
               {
                 name: 'area',
                 type: 'pie',
-                radius: [30, 110],
-                roseType: 'area',
+                radius: '55%',
+                roseType: 'radius',
                 data: data1,
               },
             ],

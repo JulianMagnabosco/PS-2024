@@ -12,11 +12,12 @@ export class SellStadisticsComponent implements OnInit, OnDestroy{
 
   private subs: Subscription = new Subscription();
 
+  maxDate:string="";
+  minDate:string="";
 
   firstDate: string ;
   lastDate: string ;
 
-  selected:number=2023;
   nodata:string="c";
 
   options:EChartsOption={};
@@ -26,14 +27,26 @@ export class SellStadisticsComponent implements OnInit, OnDestroy{
     this.lastDate= datenow.toISOString().split("T")[0]
     datenow.setDate(datenow.getDate()-90)
     this.firstDate= datenow.toISOString().split("T")[0]
+    this.onChange()
   }
   ngOnInit(): void {
-    this.charge(2023);
+    this.charge();
   }
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
-  charge(year:number) {
+
+  onChange(){
+    let l = new Date(this.lastDate);
+    l.setDate(l.getDate()-180)
+    this.minDate=l.toISOString().split("T")[0]
+
+    l = new Date(this.firstDate);
+    l.setDate(l.getDate()+180)
+    this.maxDate=l.toISOString().split("T")[0]
+  }
+
+  charge() {
     let firstDate=this.firstDate+"T00:00:01";
     let lastDate=this.lastDate+"T23:59:59";
 
@@ -89,6 +102,7 @@ export class SellStadisticsComponent implements OnInit, OnDestroy{
                 type: 'bar',
                 name: 'Cantidad',
                 data: data1,
+                barWidth: '100%',
               },
             ],
           };

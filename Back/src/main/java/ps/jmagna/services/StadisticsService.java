@@ -118,15 +118,16 @@ public class StadisticsService {
     }
     public StatsResponce getSellsStadistics(String firstDate, String lastDate){
 
-        StatSeriesDto stats = new StatSeriesDto();
 
         LocalDateTime date1 = LocalDateTime.parse(firstDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
         LocalDateTime date2 = LocalDateTime.parse(lastDate , DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
 
 
         List<StatDto> vals = new ArrayList<>();
+        List<StatDto> vals2 = new ArrayList<>();
         for (LocalDate l : getFullWeeks(date1.toLocalDate(),date2.toLocalDate())){
             vals.add(new StatDto(l.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+            vals2.add(new StatDto(l.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
         }
 
         List<SaleEntity> entities = saleRepository.findAllByDateTimeBetween(date1,date2);
@@ -145,15 +146,30 @@ public class StadisticsService {
                             .equals(firstDayOfWeek.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
                             .findFirst();
 
+            if(statFind.isEmpty()) continue;
+
             vals.get(vals.indexOf(statFind.get())).setValue(
                     vals.get(vals.indexOf(statFind.get())).getValue().add(BigDecimal.ONE)
             );
+
+            BigDecimal total=vals2.get(vals.indexOf(statFind.get())).getValue();
+            for (SaleDetailEntity d : p.getDetails()){
+                total = total.add(d.getTotal());
+            }
+            vals2.get(vals.indexOf(statFind.get())).setValue(
+                total
+            );
         }
 
+        StatSeriesDto stats = new StatSeriesDto();
+        StatSeriesDto stats2 = new StatSeriesDto();
         stats.setName("count");
         stats.setSeries(vals);
 
-        return new StatsResponce(List.of(stats), false);
+        stats2.setName("total");
+        stats2.setSeries(vals2);
+
+        return new StatsResponce(List.of(stats,stats2), false);
     }
     public List<LocalDate> getFullWeeks(LocalDate d1, LocalDate d2){
         List<LocalDate> list = new ArrayList<>();
