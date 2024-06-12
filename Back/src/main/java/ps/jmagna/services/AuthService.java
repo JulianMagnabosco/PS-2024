@@ -1,15 +1,18 @@
 package ps.jmagna.services;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.antlr.v4.runtime.Token;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 import ps.jmagna.dtos.user.*;
 import ps.jmagna.entities.StateEntity;
+import ps.jmagna.entities.TokenEntity;
 import ps.jmagna.entities.UserEntity;
 import ps.jmagna.enums.UserRole;
 import ps.jmagna.exceptions.InvalidJwtException;
 import ps.jmagna.repository.StateRepository;
+import ps.jmagna.repository.TokenRepository;
 import ps.jmagna.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.compress.utils.IOUtils;
@@ -44,6 +47,8 @@ public class AuthService implements UserDetailsService {
   UserRepository repository;
   @Autowired
   StateRepository stateRepository;
+  @Autowired
+  TokenRepository tokenRepository;
   @Autowired
   NotificationService notificationService;
   @Autowired
@@ -113,6 +118,7 @@ public class AuthService implements UserDetailsService {
 
     notificationService.sendNotification("register",
             "Nueva cuenta de Como lo hago",
+            "Bienvenido!"+newUser.getUsername(),
             "Se a creado una nueva cuenta con este email, de nombre: "+
             newUser.getUsername(),
             newUser);
@@ -152,7 +158,9 @@ public class AuthService implements UserDetailsService {
 
   public boolean requestPasswordToken(String email) {
 
-    UUID uuid = UUID.randomUUID();
+    TokenEntity token = new TokenEntity();
+    token.setEmail(email);
+    UUID uuid = tokenRepository.save(token).getUuid();
 
     UserEntity user = repository.getByEmail(email);
     if(user==null){
@@ -161,6 +169,7 @@ public class AuthService implements UserDetailsService {
 
     notificationService.sendNotification("password_req_"+email,
             "Cambio de contraseña",
+            "Se ha solicitado un cambio de contraseña",
             "Aqui esta su token para cambio de contraseña " +
             "(introduzcalo en el campo token): "+ uuid,
             user);
@@ -170,6 +179,9 @@ public class AuthService implements UserDetailsService {
 
   public boolean changePassword(PasswordRequest data) {
 
+    TokenEntity entity = tokenRepository.getReferenceById(UUID.fromString(data.getToken()));
+    if(!entity.getEmail().equals(data.getEmail())) return false;
+
     UserEntity user= repository.getByEmail(data.getEmail());
     String encryptedPassword = new BCryptPasswordEncoder().encode(data.getPassword());
 
@@ -177,8 +189,9 @@ public class AuthService implements UserDetailsService {
     repository.save(user);
 
     notificationService.sendNotification("password_change_"+user.getEmail(),
-            "Se cambio de contraseña",
-            "",
+            "Cambio de contraseña",
+            "Se cambio la contraseña",
+            "Se cambio la contraseña",
             user);
 
     return true;

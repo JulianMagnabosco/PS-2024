@@ -192,9 +192,8 @@ public class PurchaseService {
 //                    paymentClient.create(newPayment,options);
 //                }
 
-                if(sale.getSaleState().equals(SaleState.APROBADA)){
+                if(!sale.getSaleState().equals(SaleState.APROBADA)){
                     notificationService.sendNotificationSale(sale);
-
                 }
                 sale.setSaleState(SaleState.APROBADA);
                 saleRepository.saveAndFlush(sale);

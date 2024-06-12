@@ -52,16 +52,19 @@ public class NotificationService {
         return list;
     }
     public boolean sendNotificationSale(SaleEntity sale){
+        if(repository.existsByCode("purchase_"+sale.getId())) return true;
         for (SaleDetailEntity s: sale.getDetails()) {
-            registerNotification( "sell_"+sale.getId(), "Venta Completada",
+            sendNotification( "sell_"+s.getId(), "Venta Completada",
+
                     "("+s.getCount()+")"+
-                            s.getPublication().getName(),  s.getPublication().getUser());
-            sendEmail("Venta Completada",
+                            s.getPublication().getName(),
+
                     "<div>Obra vendida: "+ s.getPublication().getName()+"</div>"+
                             "<div>Cantidad: "+ s.getCount()+"</div>"+
                             "<div>Total: "+ s.getTotal()+"</div>"+
                             "<div>Comprador: "+ sale.getUser().getUsername()+"</div>",
-                    s.getPublication().getUser().getEmail());
+
+                    s.getPublication().getUser());
         }
         registerNotification( "purchase_"+sale.getId(), "Compra Completada",
                 "("+sale.getDetails().get(0).getCount()+")"+
@@ -70,10 +73,11 @@ public class NotificationService {
 
         return true;
     }
-
-    public boolean sendNotification(String code,String subject, String textMessage, UserEntity user){
+    public boolean sendNotification(String code, String subject,
+                                    String textMessage, String emailMessage,
+                                    UserEntity user){
         registerNotification( code, subject,  textMessage,  user);
-        sendEmail( subject,  textMessage,  user.getEmail());
+        sendEmail( subject,  emailMessage,  user.getEmail());
 
         return true;
     }

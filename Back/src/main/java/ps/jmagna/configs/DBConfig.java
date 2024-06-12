@@ -67,7 +67,6 @@ public class DBConfig implements ApplicationListener<ApplicationReadyEvent> {
         for (UserEntity u : userRepository.findAll()){
             Path randomImage = userImages.get(index);
             byte[] bytes = Files.readAllBytes(randomImage);
-            System.out.println(bytes.length);
             u.setIcon(compressBytes(bytes));
             userRepository.save(u);
             index++;

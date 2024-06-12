@@ -12,4 +12,6 @@ import javax.swing.text.html.parser.Entity;
 @Repository
 public interface NotificationRepository extends JpaRepository<NotificationEntity, Long> {
     Page<NotificationEntity> findAllByDeletedIsFalseAndUser(UserEntity user, Pageable pageable);
+
+    boolean existsByCode(String code);
 }

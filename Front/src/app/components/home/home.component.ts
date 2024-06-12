@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit,OnDestroy{
   charge(){
 
     this.subs.add(
-      this.pubService.getRecomm(5).subscribe(
+      this.pubService.getRecomm(10).subscribe(
         {
           next: value => {
             this.countTotal=value["countTotal"]
