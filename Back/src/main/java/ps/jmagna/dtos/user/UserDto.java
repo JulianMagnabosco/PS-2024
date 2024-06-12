@@ -1,7 +1,10 @@
 package ps.jmagna.dtos.user;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import ps.jmagna.enums.UserRole;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Data
 public class UserDto {
@@ -10,6 +13,8 @@ public class UserDto {
     String email;
     UserRole role;
     String iconUrl;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    LocalDateTime dateTime;
 
     String name;
     String lastname;
@@ -26,4 +31,6 @@ public class UserDto {
     String room;
 
     String cvu;
+
+    boolean same;
 }

@@ -21,6 +21,7 @@ export class ShowUserComponent  implements OnInit, OnDestroy{
   private subs: Subscription = new Subscription();
 
   user:User={
+    dateTime: "",
     direction: "",
     dni: "",
     dniType: "",
@@ -38,7 +39,8 @@ export class ShowUserComponent  implements OnInit, OnDestroy{
     role: "",
     room: "",
     state: "",
-    username: ""
+    username: "",
+    same:false
   };
   constructor(private service: UserService,
               private activeRoute:ActivatedRoute, private router: Router) {

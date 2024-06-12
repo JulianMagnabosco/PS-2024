@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-sm bg-red-orange fixed-top">
+<nav class="navbar navbar-expand-sm bg-red-orange fixed-top" style="min-height: 56px">
   <div class="container-fluid">
     <button class="btn btn-outline-light me-1" data-bs-toggle="offcanvas"
             href="#sideBar"
@@ -49,10 +49,11 @@
     <div class="collapse navbar-collapse mt-1 mt-sm-0 " id="navbarSearchContent" *ngIf="service.user">
       <form class="d-flex me-1 input-group border border-1 border-white rounded-2 position-relative">
         <input class="form-control border-orange" type="search" placeholder="Buscar obra"
+               autocomplete="off"
                [value]="searchBarVal" (input)="chargeSuggs(searchBar.value)" id="searchBar" #searchBar>
         <div class="position-absolute top-100
             w-100 px-1 bg-white border border-black  rounded"
-             *ngIf="suggs.length>0 && focusSearch">
+             [hidden]="suggs.length<=0 || !focusSearch" #searchSuggs>
           <div *ngFor="let s of suggs" (click)="searchBar.value=s; focusSearch=false"
             class="btn d-block text-start p-0">{{s}}</div>
         </div>

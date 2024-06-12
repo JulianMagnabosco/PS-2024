@@ -27,7 +27,7 @@
           <div class="mb-2 p-1 me-1 btn" (click)="goUser()">
             <img [src]="publication.userIconUrl || 'assets/camera.png'" *ngIf="publication.userIconUrl!=''"
                  style="width: 50px; height: 50px;" class="rounded-circle">
-            <span>{{publication.username}}</span>
+            <span class="ms-1">{{publication.username}}</span>
           </div>
           <div class="mb-4 p-1 me-1 rounded-2 bg-secondary-subtle">
             {{publication.description }}
@@ -81,12 +81,15 @@
                      class="w-100"
                      style="object-fit: contain; max-height: 100%; max-width: 100%">
               </div>
-              <div class="carousel-item " *ngIf="publication.video" id="videoItem">
-                <youtube-player #youTubePlayer
-                                [videoId]="publication.video"
-                                [width]="img1?.clientWidth||50"
-                                [height]="img1?.clientWidth||50">
-                </youtube-player>
+              <div class="carousel-item justify-content-center align-content-center"
+                   *ngIf="publication.video" [class.active]="photos.length<=0"  style="height: 30rem; padding: 0 25px ;">
+                <div>
+                  <youtube-player #youTubePlayer
+                                  [videoId]="publication.video"
+                                  [width]="(img1?.clientWidth||50)-50"
+                                  [height]="img1?.clientWidth||50">
+                  </youtube-player>
+                </div>
               </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev"
@@ -150,9 +153,10 @@
             <div class="list-group-item p-1 bg-body-secondary border-5
              border-orange  border-top-0">{{ d.text }}</div>
             <div class="border-5 px-5 border-orange list-group-item bg-transparent
-              rounded-bottom-1 border-top-0 justify-content-center align-content-center" style="height: 30rem">
+              rounded-bottom-1 border-top-0 justify-content-center align-content-center" style="height: 30rem"
+                 *ngIf="d.imageUrl">
 
-              <img [src]="d.imageUrl" alt="step" class="w-100" *ngIf="d.imageUrl"
+              <img [src]="d.imageUrl" alt="step" class="w-100"
                    style="object-fit: contain; max-height: 100%; max-width: 100%">
             </div>
           </div>

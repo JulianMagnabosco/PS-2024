@@ -22,7 +22,7 @@ export class ListUsersComponent implements OnInit,OnDestroy {
   ];
 
   countTotal=1;
-  size=3;
+  size=10;
   page=0;
   constructor(private fb: FormBuilder, private service: UserService, private router: Router) {
     this.form = this.fb.group({

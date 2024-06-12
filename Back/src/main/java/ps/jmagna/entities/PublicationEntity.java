@@ -37,6 +37,7 @@ public class PublicationEntity {
     boolean canSold;
     BigDecimal price;
     Long count;
+    String video;
     @Formula("(select round(coalesce(avg(h.points),0),2) from califications h where h.id_publication = id)")
     BigDecimal calification ;
 

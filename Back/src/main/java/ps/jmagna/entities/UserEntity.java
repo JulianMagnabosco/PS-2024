@@ -1,5 +1,6 @@
 package ps.jmagna.entities;
 
+import org.hibernate.annotations.Formula;
 import ps.jmagna.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
@@ -10,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -52,6 +54,14 @@ public class UserEntity implements UserDetails {
 
     //ComercialData
     String cvu;
+
+
+    @Formula("(select count(p.id) from publications p where p.id_user = id)")
+    int pubs;
+    @Formula("(select count(s.id) from sale_details s join publications p where p.id_user = id and s.id_publication = p.id)")
+    int sells;
+    @Formula("(select count(s.id) from sales s where s.id_user = id)")
+    int buys;
 
     public UserEntity(String username, String email, String password, UserRole role, LocalDateTime dateTime) {
         this.username = username;

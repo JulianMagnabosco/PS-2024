@@ -1,6 +1,7 @@
 export interface User {
   id:string;
   username:string;
+  dateTime:string;
   role:string;
   email:string;
   iconUrl:string;
@@ -20,4 +21,5 @@ export interface User {
   room:string ;
 
   cvu:string;
+  same:boolean;
 }

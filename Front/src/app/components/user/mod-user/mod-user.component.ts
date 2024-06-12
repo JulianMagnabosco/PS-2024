@@ -25,6 +25,7 @@ export class ModUserComponent implements OnInit, OnDestroy {
 
   private subs: Subscription = new Subscription();
   user: User = {
+    dateTime: "",
     direction: "",
     dni: "",
     dniType: "",
@@ -42,7 +43,8 @@ export class ModUserComponent implements OnInit, OnDestroy {
     role: "",
     room: "",
     state: "",
-    username: ""
+    username: "",
+    same:false
   };
   form: FormGroup = this.fb.group({});
   iconUrl: any;

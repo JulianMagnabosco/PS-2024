@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, ViewChild} from '@angular/core';
 import {AuthService} from "./services/user/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
@@ -11,6 +11,14 @@ import {PublicationsService} from "./services/publications/publications.service"
 })
 export class AppComponent {
   title = 'COMOloHAGO';
+
+  @ViewChild('searchSuggs') searchBarE!: ElementRef;
+  @HostListener('document:click', ['$event'])
+  clickout(event:any) {
+    if(this.focusSearch && !this.searchBarE.nativeElement.parentElement.contains(event.target)){
+      this.focusSearch=false
+    }
+  }
 
   subs:Subscription=new Subscription();
   searchBarVal:string="";
@@ -49,4 +57,6 @@ export class AppComponent {
       replaceUrl: true
     })
   }
+
+  protected readonly console = console;
 }

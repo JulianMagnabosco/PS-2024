@@ -142,6 +142,7 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
                 {
                   next: value => {
                     this.publication=value
+                    console.log(value)
                   },
                   error: err => {
                     this.notfound=true;
@@ -195,6 +196,5 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
 
   checkValue(){
     this.countBuy=this.countBuy<1||!this.countBuy?1:this.countBuy
-    console.log(this.countBuy)
   }
 }

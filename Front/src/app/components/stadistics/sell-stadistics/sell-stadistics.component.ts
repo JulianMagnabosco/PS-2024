@@ -102,7 +102,7 @@ export class SellStadisticsComponent implements OnInit, OnDestroy{
                 type: 'bar',
                 name: 'Cantidad',
                 data: data1,
-                barWidth: '100%',
+                barWidth: '50%',
               },
             ],
           };

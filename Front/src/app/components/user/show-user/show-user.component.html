@@ -1,119 +1,106 @@
 
-<div class="container mt-4">
+<div class="container my-4">
 
-  <div class="mt-4 d-flex position-relative">
-    <span>
-      <button class="btn btn-warning me-1" (click)="back()"><i class="bi bi-arrow-left"></i> VOLVER</button>
-    </span>
-    <h1 class="fs-3 position-absolute top-50 start-50 translate-middle">USUARIO: #{{ user.id }}</h1>
-  </div>
-  <div class=" mt-4 p-3 px-5 bg-light rounded-5 border border-warning-subtle border-5">
-    <div class="row mb-3">
-      <div class="col-sm-8">
-        <div class="mb-2 me-1 px-3 rounded-3 bg-orange-low">
-          <div class="fs-6 fw-bold">Nombre de usuario</div>
-          <div class="fs-5 pb-2">{{user.username }}</div>
-        </div>
+  <div class="mt-2 p-3 px-5 bg-light rounded-5 border-gradient border-5">
 
-        <div class="mb-2 me-1 px-3 rounded-3 bg-orange-low">
-          <div class="fs-6 fw-bold">Email</div>
-          <div class="fs-5 pb-2">{{user.email }}</div>
-        </div>
-
-      </div>
-      <div class="col-sm-4">
-        <div class="border-orange border-5 rounded-2 p-1">
-          <img [src]="user.iconUrl || 'assets/camera.png'" class="d-block w-100">
-        </div>
+    <div class="d-flex justify-content-center mb-3">
+      <div class="border-orange border-5 rounded-circle overflow-hidden"  style="max-width: 50rem">
+        <img [src]="user.iconUrl || 'assets/camera.png'" class="w-100 h-100" >
       </div>
     </div>
+    <div  class="fs-4 fw-bolder  mb-1 text-center">{{user.username }}</div>
+    <div class="text-center">{{user.email }}</div>
+    <div class="text-center fst-italic mb-4 text-secondary">Se unio el {{user.dateTime| date:"dd/MM/yyyy"}}</div>
 
-    <h5 >Datos de entrega</h5>
+    <ng-container *ngIf="user.same">
+      <hr>
+      <h5 class="text-center">Datos de compra/venta</h5>
 
-    <div class="d-flex justify-content-between">
-     <div class="col-6 p-2">
-       <div class="px-3 rounded-3 bg-orange-low">
-         <div class="fs-6 fw-bold">Nombre</div>
-         <div class="fs-5 pb-2">{{user.name||"--" }}</div>
-       </div>
-     </div>
-
-     <div class="col-6 p-2">
-       <div class="px-3 rounded-3 bg-orange-low">
-         <div class="fs-6 fw-bold">Apellido/s</div>
-         <div class="fs-5 pb-2">{{user.lastname||"--" }}</div></div>
-     </div>
-   </div>
-    <div class="d-flex justify-content-between">
-      <div class="col-6 p-2">
-        <div class="px-3 rounded-3 bg-orange-low">
-          <div class="fs-6 fw-bold">Télefono</div>
-          <div class="fs-5 pb-2">{{user.phone||"--" }}</div>
+      <div class="d-flex justify-content-between">
+        <div class="col-6 p-2">
+          <div class="px-3 bg-secondary-subtle">
+            <div class="fw-bold">Nombre</div>
+            <div class="fs-5 pb-2">{{user.name||"--" }}</div>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <div class="d-flex justify-content-between">
-      <div class="col-6 p-2">
-        <div class="px-3 rounded-3 bg-orange-low">
-          <div class="fs-6 fw-bold">Tipo de Documento</div>
-          <div class="fs-5 pb-2">{{user.dniType||"--" }}</div>
+        <div class="col-6 p-2">
+          <div class="px-3 bg-secondary-subtle">
+            <div class="fw-bold">Apellido/s</div>
+            <div class="fs-5 pb-2">{{user.lastname||"--" }}</div></div>
         </div>
       </div>
 
-      <div class="col-6 p-2">
-        <div class="px-3 rounded-3 bg-orange-low">
-          <div class="fs-6 fw-bold">Documento</div>
-          <div class="fs-5 pb-2">{{user.dni||"--"  }}</div></div>
-      </div>
-    </div>
-
-
-    <div class="d-flex justify-content-between mb-2">
-      <div class="col-3 p-2">
-        <div class="px-3 rounded-3 bg-orange-low">
-          <div class="fs-6 fw-bold">Provincia</div>
-          <div class="fs-5 pb-2">{{user.state }}</div>
+      <div class="d-flex justify-content-between">
+        <div class="col-6 p-2">
+          <div class="px-3 bg-secondary-subtle">
+            <div class="fw-bold">Télefono</div>
+            <div class="fs-5 pb-2">{{user.phone||"--" }}</div>
+          </div>
         </div>
       </div>
 
-      <div class="col p-2">
-        <div class="px-3 rounded-3 bg-orange-low">
-          <div class="fs-6 fw-bold">Direccion o calle</div>
-          <div class="fs-5 pb-2">{{user.direction||"--" }}</div>
+      <div class="d-flex justify-content-between">
+        <div class="col-6 p-2">
+          <div class="px-3 bg-secondary-subtle">
+            <div class="fw-bold">Tipo de Documento</div>
+            <div class="fs-5 pb-2">{{user.dniType||"--" }}</div>
+          </div>
+        </div>
+
+        <div class="col-6 p-2">
+          <div class="px-3 bg-secondary-subtle">
+            <div class="fw-bold">Documento</div>
+            <div class="fs-5 pb-2">{{user.dni||"--"  }}</div></div>
         </div>
       </div>
 
-      <div class="col-3 p-2">
-        <div class="px-3 rounded-3 bg-orange-low">
-          <div class="fs-6 fw-bold">Numero</div>
-          <div class="fs-5 pb-2">{{user.numberDir||"--" }}</div>
+      <div class="d-flex justify-content-between mb-2">
+        <div class="col-3 p-2">
+          <div class="px-3 bg-secondary-subtle">
+            <div class="fw-bold">Provincia</div>
+            <div class="fs-5 pb-2">{{user.state }}</div>
+          </div>
+        </div>
+
+        <div class="col p-2">
+          <div class="px-3 bg-secondary-subtle">
+            <div class="fw-bold">Direccion o calle</div>
+            <div class="fs-5 pb-2">{{user.direction||"--" }}</div>
+          </div>
+        </div>
+
+        <div class="col-3 p-2">
+          <div class="px-3 bg-secondary-subtle">
+            <div class="fw-bold">Numero</div>
+            <div class="fs-5 pb-2">{{user.numberDir||"--" }}</div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="d-flex justify-content-between mb-2">
-      <div class="col-4 p-2">
-        <div class="px-3 rounded-3 bg-orange-low">
-          <div class="fs-6 fw-bold">Codigo Postal</div>
-          <div class="fs-5 pb-2">{{user.postalNum||"--" }}</div>
+      <div class="d-flex justify-content-between mb-2">
+        <div class="col-4 p-2">
+          <div class="px-3 bg-secondary-subtle">
+            <div class="fw-bold">Codigo Postal</div>
+            <div class="fs-5 pb-2">{{user.postalNum||"--" }}</div>
+          </div>
+        </div>
+
+
+        <div class="col-4 p-2">
+          <div class="px-3 bg-secondary-subtle">
+            <div class="fw-bold">Piso</div>
+            <div class="fs-5 pb-2">{{user.floor||"--" }}</div></div>
+        </div>
+
+
+        <div class="col-4 p-2">
+          <div class="px-3 bg-secondary-subtle">
+            <div class="fw-bold">Habitacion</div>
+            <div class="fs-5 pb-2">{{user.room||"--" }}</div></div>
         </div>
       </div>
-
-
-      <div class="col-4 p-2">
-        <div class="px-3 rounded-3 bg-orange-low">
-          <div class="fs-6 fw-bold">Piso</div>
-          <div class="fs-5 pb-2">{{user.floor||"--" }}</div></div>
-      </div>
-
-
-      <div class="col-4 p-2">
-        <div class="px-3 rounded-3 bg-orange-low">
-          <div class="fs-6 fw-bold">Habitacion</div>
-          <div class="fs-5 pb-2">{{user.room||"--" }}</div></div>
-      </div>
-    </div>
+    </ng-container>
 
   </div>
 </div>

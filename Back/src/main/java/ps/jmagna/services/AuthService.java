@@ -2,6 +2,7 @@ package ps.jmagna.services;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 import ps.jmagna.dtos.user.*;
 import ps.jmagna.entities.StateEntity;
@@ -32,6 +33,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static ps.jmagna.services.PublicationService.decompressBytes;
 
 
 @Service
@@ -114,7 +117,7 @@ public class AuthService implements UserDetailsService {
             newUser.getUsername(),
             newUser);
 
-    return mapUserDto(newUser);
+    return mapUserDto(newUser,true);
   }
   public UserTestResponce testSingUp(UserRequest data){
     UserTestResponce userTestResponce = new UserTestResponce();
@@ -217,11 +220,11 @@ public class AuthService implements UserDetailsService {
     responce.setCountTotal(list.size());
     return responce;
   }
-  public UserDto get(Long id){
+  public UserDto get(Long id, Jwt authentication){
     UserDto responce;
-
+    ;
     UserEntity u = repository.getReferenceById(id);
-    responce = mapUserDto(u);
+    responce = mapUserDto(u,findUser(authentication).getId().equals(id));
 
     return responce;
   }
@@ -249,12 +252,13 @@ public class AuthService implements UserDetailsService {
 
     return true;
   }
-  private UserDto mapUserDto(UserEntity u) {
+  private UserDto mapUserDto(UserEntity u, boolean sameUser) {
     UserDto responce = modelMapper.map(u, UserDto.class);
     if(u.getState()!=null){
       responce.setIdState(u.getState().getId());
       responce.setState(u.getState().getName());
     }
+    responce.setSame(sameUser);
     responce.setIconUrl(url + "/api/image/user/" + u.getId());
     return responce;
   }
@@ -271,7 +275,7 @@ public class AuthService implements UserDetailsService {
     UserEntity u = repository.getReferenceById(id);
     responce = u.getIcon();
     if(responce!=null && responce.length>0)   {
-      return responce;
+      return decompressBytes(responce);
     }
     else {
       Resource resource = new ClassPathResource("user.png");
@@ -311,7 +315,7 @@ public class AuthService implements UserDetailsService {
     }
 
 
-    return mapUserDto(repository.save(newUser));
+    return mapUserDto(repository.save(newUser),true);
   }
 
   public UserDto putRole(Long id, UserRole role, Jwt authentication) {
@@ -325,6 +329,6 @@ public class AuthService implements UserDetailsService {
 
     newUser.setRole(role);
 
-    return mapUserDto(repository.save(newUser));
+    return mapUserDto(repository.save(newUser),true);
   }
 }

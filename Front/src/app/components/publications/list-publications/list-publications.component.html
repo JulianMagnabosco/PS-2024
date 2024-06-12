@@ -111,7 +111,7 @@
   </div>
 
 <!--  lista-->
-  <div class="gap-1 row justify-content-start align-items-center p-3 pt-3">
+  <div class="gap-1 row justify-content-center align-items-center p-3 pt-3">
     <div class="col-1 p-0 card btn-border-orange bg-body-tertiary h-25" style="width: 15rem;"
          *ngFor="let p of list" (click)="go(p.id)">
       <img [src]="p.imageUrl" class="card-img" [alt]="p.name"
@@ -121,10 +121,13 @@
         <h5 class="card-title">{{ p.name }}</h5>
 
         <div class="">
+          <p class="card-text">Por <span class="fw-bold">{{ p.username }}</span></p>
+        </div>
+        <div class="">
           <i class="bi bi-star-fill text-warning"></i> {{p.calification}}
         </div>
 
-        <div class="card-body">
+        <div class="">
           <p class="card-text">{{ p.description }}</p>
         </div>
       </div>

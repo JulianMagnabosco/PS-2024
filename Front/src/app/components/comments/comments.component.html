@@ -14,7 +14,8 @@
     <div class=" border-orange p-1 rounded-3  mb-2">
       <div class="d-flex ">
         <div class="col-auto p-1">
-          <img [src]="comm.userIconUrl || 'assets/camera.png'" style="width: 50px; height: 50px">
+          <img [src]="comm.userIconUrl || 'assets/camera.png'" style="width: 50px; height: 50px"
+               class="rounded-circle">
         </div>
         <div class="col p-1"  [class.fst-italic]="comm.deleted">
           <div class="fw-bold">&commat;{{ comm.username }}
@@ -51,7 +52,7 @@
 
             <div class="col-auto p-1">
               <img [src]="comm2.userIconUrl || 'assets/camera.png'" style="width: 50px; height: 50px"
-              >
+              class="rounded-circle">
             </div>
             <div class="col p-1">
               <div class="fw-bold">&commat;{{ comm2.username }}

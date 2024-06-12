@@ -30,8 +30,8 @@ public class UserController {
         return service.getDealers();
     }
     @GetMapping("/{id}")
-    public UserDto get(@PathVariable Long id) {
-        return service.get(id);
+    public UserDto get(@PathVariable Long id,@AuthenticationPrincipal Jwt authentication) {
+        return service.get(id,authentication);
     }
 
 

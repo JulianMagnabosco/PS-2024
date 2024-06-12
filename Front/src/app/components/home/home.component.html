@@ -11,7 +11,8 @@
 
 <div class="container-fluid" *ngIf="service.user">
   <div class="p-3 row align-items-center bg-gradient-grey">
-    <img class="col-sm-2 col-4"[src]="service.user.iconUrl||'' ">
+    <div class="p-0 col-sm-2 col-4 rounded-circle overflow-hidden border-orange border-5 ">
+      <img class="w-100 h-100" [src]="service.user.iconUrl||'' " alt="perfil"></div>
     <div class="col">
       <div class="h4">
         Bienvenido de nuevo, <span class="fw-bold">{{ service.user.username || "" }} </span>
@@ -29,6 +30,9 @@
       <div class="card-img-overlay pub-hover" >
         <h5 class="card-title">{{ p.name }}</h5>
 
+        <div class="">
+          <p class="card-text">Por <span class="fw-bold">{{ p.username }}</span></p>
+        </div>
         <div class="">
           <i class="bi bi-star-fill text-warning"></i> {{p.calification}}
         </div>

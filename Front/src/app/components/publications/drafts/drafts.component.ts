@@ -60,7 +60,6 @@ export class DraftsComponent implements OnInit,OnDestroy {
                 this.charge()
               },
               error: err => {
-                console.log(err)
                 cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
               }
             }

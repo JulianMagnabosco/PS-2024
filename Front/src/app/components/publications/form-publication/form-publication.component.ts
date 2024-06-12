@@ -299,6 +299,15 @@ export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
 
   //selects
   selectPubImages(event: any) {
+    let size=0;
+    for (let f of event.target.files){
+      if(size > 5e+6) {
+        cAlert("error","Archivo/s muy grande/s");
+        return;
+      }
+      size+=f.size
+
+    }
     if (event.target.files) {
       this.form.get("image")?.setValue(true)
       this.pubImages = []
@@ -316,7 +325,6 @@ export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   selectStepFile(event: any, index: number) {
-    console.log(event)
     if (event.target.files && event.target.files[0] && this.stepImages.at(index)) {
       var reader = new FileReader();
 
@@ -339,6 +347,7 @@ export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
     value = value.replace("https://www.youtube.com/watch?v=", "")
       .replace("https://www.youtube.com/shorts/", "")
     this.video = value.split("&")[0];
+    console.log(this.video )
   }
 
   //guardar
@@ -382,7 +391,7 @@ export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
       "description": this.form.controls['description'].value,
       "type": this.form.controls['type'].value,
       "difficulty": this.form.controls['difficulty'].value,
-      "video": this.form.controls['video'].value,
+      "video": this.video,
       "sections": sections,
       "canSold": this.form.controls['canSold'].value,
       "price": this.form.controls['price'].value,
@@ -401,7 +410,7 @@ export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
         {
           next: value => {
             // alert("La publicacion fue guardada con éxito");
-            this.uploadImages(value["sections"],draft)
+            this.uploadImages(value["sections"],draft,value["id"])
           },
           error: err => {
             cAlert("error", "Error inesperado en el servidor, revise su conexion a internet");
@@ -411,7 +420,7 @@ export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
     );
   }
 
-  uploadImages(sections: Section[],draft:boolean) {
+  uploadImages(sections: Section[],draft:boolean,id:number) {
     let data = new FormData()
     let indexes = ""
 
@@ -448,7 +457,7 @@ export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
               return
             }
             cAlert("success", "Publicación guardada").then(() => {
-              this.router.navigate(["/pub/" + this.publication.id],{
+              this.router.navigate(["/pub/" + id],{
                 state: {passForm:true}
               });
             });

@@ -9,8 +9,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import ps.jmagna.entities.SectionEntity;
+import ps.jmagna.entities.UserEntity;
 import ps.jmagna.enums.SecType;
 import ps.jmagna.repository.SectionRepository;
+import ps.jmagna.repository.UserRepository;
 
 import javax.annotation.PostConstruct;
 import java.nio.file.Files;
@@ -29,12 +31,18 @@ import static ps.jmagna.services.PublicationService.compressBytes;
 public class DBConfig implements ApplicationListener<ApplicationReadyEvent> {
     @Autowired
     SectionRepository sectionRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @Value("${dev.test}")
     String ok;
 
     public boolean test() throws IOException {
         List<Path> images = Files.list(Paths.get("src/main/resources/test-img"))
+                .filter(Files::isRegularFile)
+                .collect(Collectors.toList());
+
+        List<Path> userImages = Files.list(Paths.get("src/main/resources/test-users"))
                 .filter(Files::isRegularFile)
                 .collect(Collectors.toList());
 
@@ -52,8 +60,18 @@ public class DBConfig implements ApplicationListener<ApplicationReadyEvent> {
                 s.setImage(compressBytes(bytes));
                 sectionRepository.save(s);
                 index++;
-                if (index>images.size()-1) index=6;
+                if (index>images.size()-1) index=9;
             }
+        }
+        index=0;
+        for (UserEntity u : userRepository.findAll()){
+            Path randomImage = userImages.get(index);
+            byte[] bytes = Files.readAllBytes(randomImage);
+            System.out.println(bytes.length);
+            u.setIcon(compressBytes(bytes));
+            userRepository.save(u);
+            index++;
+            if (index>userImages.size()-1) index=0;
         }
         System.out.println("Cargadas las imagenes:"+images.size());
         return true;

@@ -104,7 +104,7 @@
           <!--        <img [src]="pubImages[0].url " class=" w-100 p-1"-->
           <!--             [alt]="pubImages[0].url" *ngIf="pubImages.length>0">-->
           <div id="carouselExample" class="carousel slide rounded-2 p-1"
-               *ngIf="pubImages.length>0">
+               *ngIf="pubImages.length>0 || video">
             <div class="carousel-inner">
               <div class="carousel-item text-center align-content-center"  style="height: 30rem"
                    *ngFor="let p of pubImages; index as i" [class.active]="i==0">
@@ -112,16 +112,19 @@
                      class="w-100"
                      style="object-fit: contain; max-height: 100%; max-width: 100%">
               </div>
-              <div class="carousel-item " *ngIf="video!=''">
-                <youtube-player #youTubePlayer
-                                [videoId]="video"
-                                [width]="img1?.clientWidth||50"
-                                [height]="img1?.clientWidth||50">
-                </youtube-player>
+              <div class="carousel-item justify-content-center align-content-center"
+                   *ngIf="video" [class.active]="pubImages.length<=0"  style="height: 30rem; padding: 0 25px ;">
+                <div>
+                  <youtube-player #youTubePlayer
+                                  [videoId]="video"
+                                  [width]="(img1?.clientWidth||50)-50"
+                                  [height]="img1?.clientWidth||50">
+                  </youtube-player>
+                </div>
               </div>
             </div>
 
-            <ng-container *ngIf="pubImages.length>1">
+            <ng-container *ngIf="pubImages.length>1 || (pubImages.length>0 && video)">
               <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
                 <span class="bi-caret-left-fill text-black fs-1" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
@@ -143,7 +146,7 @@
                   data-bs-toggle="modal" data-bs-target="#exampleModal">
 
             <img src="assets/camera.png" class=" w-100 p-1"
-                 alt="assets/camera.png" *ngIf="pubImages.length<=0">
+                 alt="assets/camera.png" *ngIf="pubImages.length<=0 && !video">
             + Agregar o Cambiar Foto/Video
           </button>
 
@@ -160,14 +163,18 @@
             </div>
 
             <div class="modal-body">
-              <label for="formFile" class="form-label">Imagen</label>
+              <label for="formFile" class="form-label">Imagenes</label>
               <input class="form-control form-control-sm col mb-1" type="file" id="formFile"
                      accept="image/png, image/jpeg" multiple
                      (change)="selectPubImages($event)">
+              <div class="form-text">Formatos: jpeg, png</div>
+              <div class="form-text">Se recomienda que sea en formato vertical o 1x1.</div>
+              <br>
               <label for="formFile" class="form-label">Video</label>
-              <input class="form-control col" placeholder="Url del video"
+              <input class="form-control col" placeholder="URL del video"
                      formControlName="video" type="text"
                      (change)="changeVideo($event)">
+              <div class="form-text">Formato: URL de Youtube</div>
             </div>
 
             <div class="modal-footer">

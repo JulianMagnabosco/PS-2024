@@ -15,7 +15,7 @@ import { AddPublicationComponent } from './components/publications/add-publicati
 import { ShowPublicationComponent } from './components/publications/show-publication/show-publication.component';
 import {NgOptimizedImage} from "@angular/common";
 import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
-import {YouTubePlayer} from "@angular/youtube-player";
+import {YouTubePlayer, YouTubePlayerModule} from "@angular/youtube-player";
 import {authInterceptor} from "./services/user/auth.interceptor";
 import {ListUsersComponent} from "./components/user/list-users/list-users.component";
 import {ShowUserComponent} from "./components/user/show-user/show-user.component";
@@ -83,7 +83,7 @@ import {NotificationsComponent} from "./components/notifications/notifications.c
     NgxEchartsDirective,
     NgOptimizedImage,
     // SweetAlert2Module.forRoot(),
-    YouTubePlayer,
+    YouTubePlayerModule,
     DateCustomPipe,
     FormsModule,
   ],
