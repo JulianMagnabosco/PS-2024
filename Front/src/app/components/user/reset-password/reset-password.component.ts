@@ -100,7 +100,7 @@ export class ResetPasswordComponent implements OnInit,OnDestroy{
     this.subs.add(this.authService.postChangePassword(user).subscribe({
       next: value => {
         cAlert("success","Contraseña Guardada").then(value1 => {
-          this.router.navigate(["/edit"])
+          this.router.navigate(["/home"])
         });
       },
       error: err => {

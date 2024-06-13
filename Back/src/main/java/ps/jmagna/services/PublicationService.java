@@ -174,8 +174,8 @@ public class PublicationService {
     public static Specification<PublicationEntity> createRecomendedFilter() {
         return (root, query, criteriaBuilder) -> {
             query.orderBy(
-                    criteriaBuilder.desc(root.get("dateTime")),
                     criteriaBuilder.desc(criteriaBuilder.greaterThanOrEqualTo(root.get("calification"),1)),
+                    criteriaBuilder.asc(root.get("dateTime")),
                     criteriaBuilder.desc(root.get("calification"))
             );
             return criteriaBuilder.and(criteriaBuilder.isFalse(root.get("deleted")),
@@ -316,11 +316,8 @@ public class PublicationService {
 
         for (PublicationEntity p : publicationRepository.findAllByUserAndDraftIsTrueAndDeletedIsFalse(user)) {
 
-            BigDecimal cal = calificationAverage(p);
-
             PublicationMinDto dto = modelMapper.map(p, PublicationMinDto.class);
 
-            dto.setCalification(cal);
             dto.setDifficulty(Difficulty.values()[p.getDifficulty()].name());
             SectionEntity sectionImage = sectionRepository.findFirstByPublicationAndType(p, SecType.PHOTO);
             if (sectionImage != null) {
@@ -353,7 +350,7 @@ public class PublicationService {
         responce.setUserId(p.getUser().getId());
         responce.setUsername(p.getUser().getUsername());
         responce.setUserIconUrl(url + "/api/image/user/" + p.getUser().getId());
-        responce.setCalification(calificationAverage(p).toString());
+        responce.setCalification(p.getCalification().toString());
         responce.setDifficulty(Difficulty.values()[p.getDifficulty()].name());
         responce.setDifficultyValue(p.getDifficulty());
         Optional<CalificationEntity> calificationEntity =
