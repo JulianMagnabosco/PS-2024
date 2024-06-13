@@ -58,6 +58,13 @@ values ('delivery','del','iver','$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe
         ('user@a','a','a','$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2',
         'a6@a', 'USER',1,'2023-11-01 00:00:01');
 
+--notificaciones
+insert into notifications (deleted,id_user,date_time, code,title,text)
+values (false,1,'2023-6-10 00:00:01','pass_1','Cambio de contraseña', 'Se realizo un cambio');
+
+insert into notifications (deleted,id_user,date_time, code,title,text)
+values (false,1,'2023-6-07 00:00:01','req_1','Peticion de cambio de contraseña', 'Se solicito un cambio');
+
 -- Borradores:
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted ,draft,date_time)
 values (1,'Robot bola model', 'Este es un robot bola que cree', 'TECNOLOGIA',1,false,false,true,'2023-6-03 00:00:01');
@@ -132,7 +139,7 @@ insert into sections (id_publication, type, text)
 values (9,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted ,draft,date_time)
-values (5,'Montañas', 'pajaros', 'CIENCIA',1,false,false,false,'2023-1-05 00:00:01');
+values (5,'Montañas', 'pajaros', 'CIENCIA',1,false,false,false,'2023-1-05 22:00:01');
 insert into sections (id_publication, type, text)
 values (10,'PHOTO', '');
 
@@ -147,13 +154,13 @@ insert into sections (id_publication, type, text)
 values (12,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (5,'Solucionador de cubos', 'proyecto con #arduino', 'TECNOLOGIA',1,false,false, false,'2023-9-02 00:00:01');
+values (5,'Solucionador de cubos', 'proyecto con #arduino', 'TECNOLOGIA',1,false,false, false,'2023-9-02 22:00:01');
 insert into sections (id_publication, type, text)
 values (13,'PHOTO', '');
 
 --a
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (5,'Proyecto ciencias Sistema respiratorio', 'esto es ', 'CIENCIA',1,false,false, false,'2023-9-02 00:00:01');
+values (5,'Proyecto ciencias Sistema respiratorio', 'esto es ', 'CIENCIA',1,false,false, false,'2023-9-02 05:00:01');
 insert into sections (id_publication, type, text)
 values (14,'PHOTO', '');
 
@@ -173,7 +180,7 @@ insert into sections (id_publication, type, text)
 values (17,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted ,draft,date_time)
-values (4,'Montañas', 'pajaros', 'CIENCIA',1,false,false,false,'2023-2-05 00:00:01');
+values (4,'Montañas', 'pajaros', 'CIENCIA',1,false,false,false,'2023-2-05 23:00:01');
 insert into sections (id_publication, type, text)
 values (18,'PHOTO', '');
 

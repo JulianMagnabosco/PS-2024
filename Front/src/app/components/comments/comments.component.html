@@ -19,7 +19,7 @@
         </div>
         <div class="col p-1"  [class.fst-italic]="comm.deleted">
           <div class="fw-bold">&commat;{{ comm.username }}
-            <span class="text-secondary fw-normal">{{comm.dateTime | date:"dd/MM/yyyy hh:mm"}}</span></div>
+            <span class="text-secondary fw-normal">{{comm.dateTime | date:"d/MM/yyyy hh:mm"}}</span></div>
           <div class="text-break">{{ comm.text }}</div>
         </div>
 
@@ -56,7 +56,7 @@
             </div>
             <div class="col p-1">
               <div class="fw-bold">&commat;{{ comm2.username }}
-                <span class="text-secondary fw-normal">{{comm.dateTime | date:"dd/MM/yyyy hh:mm"}}</span></div>
+                <span class="text-secondary fw-normal">{{comm.dateTime | date:"d/MM/yyyy hh:mm"}}</span></div>
               <div [class.fst-italic]="comm2.deleted">
                 <span class="fst-italic text-secondary bi bi-arrow-90deg-up"
                       *ngIf="comm.id!=comm2.idFather">{{ comm2.fatherText }}

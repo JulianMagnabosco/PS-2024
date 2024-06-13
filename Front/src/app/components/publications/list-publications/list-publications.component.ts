@@ -145,8 +145,4 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
     );
   }
 
-  go(id:number){
-    this.router.navigate(["/pub/"+id])
-
-  }
 }

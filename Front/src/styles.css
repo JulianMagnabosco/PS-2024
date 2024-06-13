@@ -81,7 +81,6 @@
 .btn-border-orange{
   cursor: pointer;
   border: 3px solid var(--shiny);
-  transition: border-bottom-color;
 }
 .btn-border-orange:hover{
    border: 3px solid var(--accent);
@@ -298,4 +297,13 @@ input[type="range"]::-moz-range-thumb {
 .bg-gradient-grey{
   background-image: linear-gradient(to bottom, rgba(128, 128, 128, 0.7), transparent);
 }
-
+.bg-gradient-black-top{
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 1), transparent);
+}
+.text-clamp {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* number of lines to show */
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}

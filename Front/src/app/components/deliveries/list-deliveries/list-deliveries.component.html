@@ -66,11 +66,11 @@
       <div class="col p-3 justify-content-between align-content-start">
         <div class="mb-2">
           Fecha de compra: <span class="text-secondary text-capitalize">
-          {{i.saleDateTime|date:"dd/MM/yyyy hh:mm"}}</span>
+          {{i.saleDateTime|date:"d/MM/yyyy hh:mm"}}</span>
         </div>
         <div class="mb-2" *ngIf="i.deliveryState=='ENTREGADA'">
           Fecha de entrega: <span class="text-secondary text-capitalize">
-          {{i.deliveryDateTime|date:"dd/MM/yyyy hh:mm"}}</span>
+          {{i.deliveryDateTime|date:"d/MM/yyyy hh:mm"}}</span>
         </div>
       </div>
       <div class="col-sm-auto d-flex align-items-end justify-content-end  p-0" >

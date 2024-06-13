@@ -41,6 +41,7 @@ import {DraftsComponent} from "./components/publications/drafts/drafts.component
 import {ResetPasswordComponent} from "./components/user/reset-password/reset-password.component";
 import {FormPublicationComponent} from "./components/publications/form-publication/form-publication.component";
 import {NotificationsComponent} from "./components/notifications/notifications.component";
+import {ItemPublicationComponent} from "./components/publications/item-publication/item-publication.component";
 
 
 @NgModule({
@@ -75,18 +76,19 @@ import {NotificationsComponent} from "./components/notifications/notifications.c
     NotificationsComponent,
     HomeComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    NgxEchartsDirective,
-    NgOptimizedImage,
-    // SweetAlert2Module.forRoot(),
-    YouTubePlayerModule,
-    DateCustomPipe,
-    FormsModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        ReactiveFormsModule,
+        NgxEchartsDirective,
+        NgOptimizedImage,
+        // SweetAlert2Module.forRoot(),
+        YouTubePlayerModule,
+        DateCustomPipe,
+        FormsModule,
+        ItemPublicationComponent,
+    ],
   providers: [
     provideHttpClient(withInterceptors([authInterceptor])),
     provideEcharts()

@@ -10,7 +10,7 @@
     </div>
     <div  class="fs-4 fw-bolder  mb-1 text-center">{{user.username }}</div>
     <div class="text-center">{{user.email }}</div>
-    <div class="text-center fst-italic mb-4 text-secondary">Se unio el {{user.dateTime| date:"dd/MM/yyyy"}}</div>
+    <div class="text-center fst-italic mb-4 text-secondary">Se unio el {{user.dateTime| date:"d/MM/yyyy"}}</div>
 
     <ng-container *ngIf="user.same">
       <hr>

@@ -189,10 +189,10 @@ public class PublicationService {
 
         Sort sort;
         if(request.getSort().equals(SortType.CALF)){
-            sort = Sort.by("calification").descending();
+            sort = Sort.by("calification").descending().and(Sort.by("dateTime").descending());
         }
         else {
-            sort = Sort.by("dateTime");
+            sort = Sort.by("dateTime").descending();
         }
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), sort);
         Page<PublicationEntity> all = publicationRepository.findAll(createFilter(request, user), pageable);

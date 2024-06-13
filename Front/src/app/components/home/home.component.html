@@ -22,30 +22,12 @@
   </div>
 
   <div class="bg-secondary-subtle rounded-2">
-    <div class="h3 text-center">Recomendaciones</div>
+    <div class="text-center ">
+      <span class="h3 fw-bold">Recomendaciones</span><br>
+      <span class="h6 fst-italic">Obras que te podrían interesar</span></div>
     <div class="gap-1 row justify-content-center align-items-center p-3 pt-3">
-      <div class="col-1 p-0 card btn-border-orange bg-body-tertiary h-25" style="width: 15rem;"
-           *ngFor="let p of list" (click)="go(p.id)">
-        <img [src]="p.imageUrl" class="card-img" [alt]="p.name"
-             style="height: 100%; width: 100%">
-
-        <div class="card-img-overlay pub-hover" >
-          <h5 class="card-title">{{ p.name }}</h5>
-
-          <div class="">
-            <p class="card-text">Por <span class="fw-bold">{{ p.username }}</span></p>
-          </div>
-          <div class="">
-            <i class="bi bi-star-fill text-warning"></i> {{p.calification}}
-          </div>
-
-          <div class="card-body">
-            <p class="card-text">{{ p.description }}</p>
-          </div>
-        </div>
-
-      </div>
-      <h2 *ngIf="list.length<=0" class="text-center text-secondary text-break">No se encontraron publicaciones...</h2>
-    </div>
+      <div class="col-auto h-25"  *ngFor="let p of list" >
+        <app-item-publication [publication]="p"></app-item-publication>
+      </div></div>
   </div>
 </div>
