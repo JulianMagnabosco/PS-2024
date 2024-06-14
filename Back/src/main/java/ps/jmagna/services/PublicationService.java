@@ -350,7 +350,7 @@ public class PublicationService {
         responce.setUserId(p.getUser().getId());
         responce.setUsername(p.getUser().getUsername());
         responce.setUserIconUrl(url + "/api/image/user/" + p.getUser().getId());
-        responce.setCalification(p.getCalification().toString());
+        if(p.getCalification()!=null)responce.setCalification(p.getCalification().toString());
         responce.setDifficulty(Difficulty.values()[p.getDifficulty()].name());
         responce.setDifficultyValue(p.getDifficulty());
         Optional<CalificationEntity> calificationEntity =

@@ -2,17 +2,27 @@
 <div class="container-lg mb-2" *ngIf="!notfound">
   <div class="p-3 bg-secondary-subtle rounded-2 rounded-top-0 d-flex justify-content-between"
   *ngIf="userService.user?.id==publication.userId.toString()">
-    <span class="fs-5 align-content-center">Editar:</span>
-    <span>
-      <button class="btn btn-warning me-1 bi bi-pencil-fill" routerLink="/editpub/{{publication.id}}"></button>
-      <button class="btn btn-danger" (click)="delete()">ELIMINAR</button>
+    <span class="fs-5 align-content-center">
+      Estado:
+      <span class="text-danger fw-bold" *ngIf="publication.deleted">
+        ELIMINADO
+      </span>
+      <span class="text-success fw-bold" *ngIf="!publication.deleted">
+        PUBLICO
+      </span>
     </span>
+    <ng-container *ngIf="!publication.deleted">
+      <span>
+        <button class="btn btn-warning me-1 bi bi-pencil-fill" routerLink="/editpub/{{publication.id}}"></button>
+        <button class="btn btn-danger" (click)="delete()">ELIMINAR</button>
+      </span>
+    </ng-container>
   </div>
 
   <div class="p-3 mb-3 rounded-5 border-gradient  mt-4">
       <div class="row mb-3">
         <div class="col-md-6">
-          <h2 class="mb-2">
+          <h2 class="mb-2 text-break">
             {{publication.name}}
             <span class="text-secondary fs-6">{{publication.dateTime| date:"d/MM/yyyy hh:mm"}}</span>
           </h2>
@@ -29,8 +39,8 @@
                  style="width: 50px; height: 50px;" class="rounded-circle">
             <span class="ms-1">{{publication.username}}</span>
           </div>
-          <div class="mb-4 p-1 me-1 rounded-2 bg-secondary-subtle">
-            {{publication.description }}
+          <div class="mb-4 p-1 me-1 rounded-2 bg-secondary-subtle text-break"
+               innerHTML="{{publication.description | styledText}}">
           </div>
 
           <!--    *ngIf="publication.canSold"-->
@@ -140,7 +150,8 @@
 
             <div class="col-auto me-1 rounded-circle bg-orange text-center text-white
             fs-3 rounded-2 align-content-center point-text">{{ i + 1 }}</div>
-            <div class="col rounded-2 bg-body-secondary p-1 align-content-center">{{ d.text }}</div>
+            <div class="col rounded-2 bg-body-secondary p-1 text-break
+             align-content-center">{{ d.text }}</div>
           </div>
 
         </div>
@@ -150,7 +161,7 @@
         <div class="">
           <div *ngFor="let d of steps; index as i" class="mb-3 list-group ">
             <div class="list-group-item p-1 bg-orange text-white border-orange  fs-4">Paso {{ i + 1 }}</div>
-            <div class="list-group-item p-1 bg-body-secondary border-5
+            <div class="list-group-item p-1 bg-body-secondary border-5 text-break
              border-orange  border-top-0">{{ d.text }}</div>
             <div class="border-5 px-5 border-orange list-group-item bg-transparent
               rounded-bottom-1 border-top-0 justify-content-center align-content-center" style="height: 30rem"

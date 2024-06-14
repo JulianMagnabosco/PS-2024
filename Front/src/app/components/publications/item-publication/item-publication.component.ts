@@ -3,6 +3,7 @@ import {DatePipe, NgForOf} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {Publication} from "../../../models/publication/publication";
 import {PublicationMin} from "../../../models/publication/publication-min";
+import {StyledTextPipe} from "../../../pipes/styled-text.pipe";
 
 @Component({
   selector: 'app-item-publication',
@@ -10,7 +11,8 @@ import {PublicationMin} from "../../../models/publication/publication-min";
   imports: [
     NgForOf,
     RouterLink,
-    DatePipe
+    DatePipe,
+    StyledTextPipe
   ],
   templateUrl: './item-publication.component.html',
   styleUrl: './item-publication.component.css'

@@ -16,7 +16,8 @@
       </div>
 
       <div class="">
-        <p class="card-text">{{ p.description }}</p>
+        <p class="card-text text-break"
+           innerHTML="{{p.description | styledText}}"></p>
       </div>
     </div>
     <div class="position-absolute bottom-0 end-0

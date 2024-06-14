@@ -28,6 +28,9 @@ export class UserService {
   getDealers(){
     return this.client.get<any>(this.baseUrl + "dealers" );
   }
+  getStates(){
+    return this.client.get<any>(this.baseUrl + "states");
+  }
   put(data: any){
     return this.client.put<any>(this.baseUrl + "mod", data);
   }

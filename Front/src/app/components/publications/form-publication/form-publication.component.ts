@@ -33,6 +33,7 @@ export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
 
   publication: Publication = {
     dateTime: "",
+    deleted:false,
     difficultyValue: 0,
     video: "",
     id: 1,
@@ -54,8 +55,8 @@ export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
   constructor(private fb: FormBuilder, private service: PublicationsService,
               private router: Router) {
     this.form = this.fb.group({
-      name: ["", [Validators.required, Validators.maxLength(50)]],
-      description: ["", [Validators.required]],
+      name: ["", [Validators.required, Validators.maxLength(100)]],
+      description: ["", [Validators.required, Validators.maxLength(500)]],
       type: ["", [Validators.required]],
       difficulty: ["", [Validators.required]],
       image: [false, [Validators.requiredTrue]],

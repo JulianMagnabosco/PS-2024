@@ -17,6 +17,7 @@ public class PublicationDto {
     Long id;
     String name;
     String description;
+    boolean deleted;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     LocalDateTime dateTime;
     Long userId;

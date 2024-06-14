@@ -233,6 +233,9 @@ public class AuthService implements UserDetailsService {
     responce.setCountTotal(list.size());
     return responce;
   }
+  public List<StateEntity> getStates() {
+    return stateRepository.findAll();
+  }
   public UserDto get(Long id, Jwt authentication){
     UserDto responce;
     ;

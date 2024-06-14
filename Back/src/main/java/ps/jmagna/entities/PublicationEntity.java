@@ -30,6 +30,7 @@ public class PublicationEntity {
     @JoinColumn(name="idUser")
     UserEntity user;
     String name;
+    @Column(columnDefinition="TEXT")
     String description;
     @Enumerated(EnumType.STRING)
     PubType type;

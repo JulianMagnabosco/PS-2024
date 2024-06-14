@@ -37,7 +37,7 @@
           </div>
           <div class="invalid-feedback" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)
       && form.controls['name'].hasError('maxlength')">
-            El nombre no puede superar los 50 caracteres.
+            El nombre no puede superar los 100 caracteres.
           </div>
         </div>
 
@@ -46,9 +46,14 @@
           <textarea class="form-control" id="descriptionInput" rows="3"
                     formControlName="description" [class.is-invalid]="(form.controls['description'].touched
                   || form.controls['description'].dirty) && form.controls['description'].invalid"></textarea>
-          <div class="invalid-feedback" *ngIf="(form.controls['description'].touched || form.controls['description'].dirty)
-      && form.controls['description'].hasError('required')">
-            La descripcion es requerida.
+          <div class="invalid-feedback"
+               *ngIf="(form.controls['description'].touched || form.controls['description'].dirty)">
+            <ng-container *ngIf="form.controls['description'].hasError('required')">
+              La descripcion es requerida.
+            </ng-container>
+            <ng-container *ngIf="form.controls['description'].hasError('maxlength')">
+              No debe superar los 500 caracteres.
+            </ng-container>
           </div>
           <div class="form-text fst-italic">Puedes agregar tags en la descripción con el simbolo '#' </div>
 
@@ -59,17 +64,18 @@
             <div class="col-auto ">
               <label for="typeInput" class="col-form-label">Tipo:</label>
             </div>
-            <div class="col-auto ">
-              <select class="form-select" id="typeInput" style="width: 12rem;"
+            <div class="col-auto">
+              <select class="form-select" id="typeInput" style="width: 10rem;"
                       formControlName="type" [class.is-invalid]="(form.controls['type'].touched
                   || form.controls['type'].dirty) && form.controls['type'].invalid">
-                <option value="" selected>--Seleccionar--</option>
+                <option value="" selected hidden>-Seleccionar-</option>
                 <option value="ARTE">Cientifico</option>
                 <option value="CIENCIA">Artistico</option>
                 <option value="TECNOLOGIA">Artistico</option>
                 <option value="OTRO">Otro</option>
               </select>
-              <div class="invalid-feedback" *ngIf="(form.controls['type'].touched || form.controls['type'].dirty)
+              <div class="invalid-feedback"   style="width: 10rem;"
+                   *ngIf="(form.controls['type'].touched || form.controls['type'].dirty)
       && form.controls['type'].hasError('required')">
                 El tipo de obra es requerido.
               </div>
@@ -80,17 +86,18 @@
             <div class="col-auto">
               <label for="difficultyInput" class="col-form-label">Dificultad:</label>
             </div>
-            <div class="col-auto">
-              <select class="form-select" id="difficultyInput"  style="width: 12rem;"
+            <div class="col-auto ">
+              <select class="form-select" id="difficultyInput"  style="width: 10rem;"
                       formControlName="difficulty" [class.is-invalid]="(form.controls['difficulty'].touched
                   || form.controls['difficulty'].dirty) && form.controls['difficulty'].invalid">
-                <option value="" selected>--Seleccionar--</option>
+                <option value="" selected hidden>-Seleccionar-</option>
                 <option value="1">Facil</option>
                 <option value="2">Normal</option>
                 <option value="3">Dificil</option>
                 <option value="4">Muy Dificil</option>
               </select>
-              <div class="invalid-feedback" *ngIf="(form.controls['difficulty'].touched || form.controls['difficulty'].dirty)
+              <div class="invalid-feedback"   style="width: 10rem;"
+                   *ngIf="(form.controls['difficulty'].touched || form.controls['difficulty'].dirty)
       && form.controls['difficulty'].hasError('required')">
                 El nivel de dificultad de la obra es requerido.
               </div>
@@ -148,6 +155,7 @@
             <img src="assets/camera.png" class=" w-100 p-1"
                  alt="assets/camera.png" *ngIf="pubImages.length<=0 && !video">
             + Agregar o Cambiar Foto/Video
+            <span class="text-danger" *ngIf="pubImages.length<=0 && !video">(Minimo 1 requerida)</span>
           </button>
 
 
@@ -196,9 +204,9 @@
              [ngClass]="{'bi-caret-left-fill':showConditions,'bi-caret-down-fill':!showConditions}"></i>
         </div>
         <div class="collapse" id="collapseConditions" formArrayName="conditions">
-          <div *ngFor="let d of detailsConditions.controls; index as i" [formGroupName]="i">
+          <div *ngFor="let d of detailsConditions.controls; index as i" [formGroupName]="i" class=" mb-3" >
 
-            <div  class="d-flex mb-1  is-invalid">
+            <div  class="d-flex is-invalid">
               <button class="btn btn-danger me-1 col-auto" (click)="removeDetailCondition(i)">
                 <i class="bi bi-trash-fill"></i></button>
 
@@ -210,9 +218,12 @@
             <div class="invalid-feedback"
                  *ngIf="d.get('text')?.invalid
                      && (d.get('text')?.dirty || d.get('text')?.touched)">
-              <div *ngIf="d.get('text')?.hasError('required')">
+              <ng-container *ngIf="d.get('text')?.hasError('required')">
                 Es requerido (Completar o eliminar)
-              </div>
+              </ng-container>
+              <ng-container *ngIf="d.get('text')?.hasError('maxlength')">
+                No debe superar los 500 caracteres.
+              </ng-container>
             </div>
 
           </div>
@@ -233,8 +244,9 @@
              [ngClass]="{'bi-caret-left-fill':showMaterials,'bi-caret-down-fill':!showMaterials}"></i>
         </div>
         <div class="collapse" id="collapseMaterials" formArrayName="materials">
-          <div *ngFor="let d of detailsMaterials.controls; index as i" [formGroupName]="i">
-            <div  class="d-flex mb-1  is-invalid">
+          <div *ngFor="let d of detailsMaterials.controls; index as i" [formGroupName]="i" class=" mb-3" >
+
+            <div  class="d-flex is-invalid">
               <button class="btn btn-danger me-1 col-auto" (click)="removeDetailMaterials(i)">
                 <i class="bi bi-trash-fill"></i></button>
 
@@ -246,9 +258,12 @@
 
             <div class="invalid-feedback" *ngIf="d.get('text')?.invalid
                      && (d.get('text')?.dirty || d.get('text')?.touched)">
-              <div *ngIf="d.get('text')?.hasError('required')">
+              <ng-container *ngIf="d.get('text')?.hasError('required')">
                 Es requerido (Completar o eliminar)
-              </div>
+              </ng-container>
+              <ng-container *ngIf="d.get('text')?.hasError('maxlength')">
+                No debe superar los 500 caracteres.
+              </ng-container>
             </div>
 
           </div>
@@ -311,20 +326,31 @@
               </div>
 
 
-              <textarea class="form-control mb-1"
-                        formControlName="text" placeholder="..."
-                        [class.is-invalid]="d.get('text')?.invalid
+              <div class="mb-1">
+                <textarea class="form-control"
+                          formControlName="text" placeholder="..."
+                          [class.is-invalid]="d.get('text')?.invalid
                && (d.get('text')?.dirty || d.get('text')?.touched)"></textarea>
-              <!--            <input type="text" class="form-control col" formControlName="text"-->
-              <!--                   [placeholder]="'Material '+(i+1)"-->
-              <!--                   [class.is-invalid]="d.get('text')?.invalid-->
-              <!--               && (d.get('text')?.dirty || d.get('text')?.touched)">-->
+                <!--            <input type="text" class="form-control col" formControlName="text"-->
+                <!--                   [placeholder]="'Material '+(i+1)"-->
+                <!--                   [class.is-invalid]="d.get('text')?.invalid-->
+                <!--               && (d.get('text')?.dirty || d.get('text')?.touched)">-->
+                <div class="invalid-feedback" *ngIf="d.get('text')?.invalid
+                     && (d.get('text')?.dirty || d.get('text')?.touched)">
+                  <ng-container *ngIf="d.get('text')?.hasError('required')">
+                    Es requerido (Completar o eliminar)
+                  </ng-container>
+                  <ng-container *ngIf="d.get('text')?.hasError('maxlength')">
+                    No debe superar los 500 caracteres.
+                  </ng-container>
+                </div>
+              </div>
 
               <input class="d-none" type="file" [id]="'file'+i"
                      (change)="selectStepFile($event, i)"
                      formControlName="image" accept="image/png, image/jpeg" >
-              <div class="d-flex justify-content-center">
-                <label class="btn btn-primary" [for]="'file'+i" *ngIf="!stepImages[i].url">
+              <div class="d-flex justify-content-center" *ngIf="!stepImages[i].url">
+                <label class="btn btn-primary" [for]="'file'+i">
                   <i class="bi bi-image "></i> Agregar Imagen
                 </label>
               </div>
@@ -419,4 +445,4 @@
     NO SE ENCONTRÓ LA PUBLICACIÓN
   </div>
 </ng-template>
-
+<div>{{form.value|json}}</div>

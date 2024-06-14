@@ -110,14 +110,17 @@
     </div>
   </div>
 
+</div>
 <!--  lista-->
+<div class="container-fluid">
   <div class="gap-1 row justify-content-center align-items-center p-3 pt-3">
     <div class="col-auto h-25"  *ngFor="let p of list" >
       <app-item-publication [publication]="p"></app-item-publication>
     </div>
+
     <h2 *ngIf="list.length<=0" class="text-center text-secondary text-break">No se encontraron publicaciones...</h2>
   </div>
-
+<!-- paginacion -->
   <div *ngIf="list.length>0 && list.length<countTotal">
     <ul class="pagination justify-content-center ">
       <li class="page-item ">

@@ -4,6 +4,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import ps.jmagna.dtos.user.ListUsersResponce;
 import ps.jmagna.dtos.user.UserDto;
+import ps.jmagna.entities.StateEntity;
 import ps.jmagna.enums.UserRole;
 import ps.jmagna.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -28,6 +30,10 @@ public class UserController {
     @GetMapping("/dealers")
     public ListUsersResponce getDealers() {
         return service.getDealers();
+    }
+    @GetMapping("/states")
+    public List<StateEntity> getStates() {
+        return service.getStates();
     }
     @GetMapping("/{id}")
     public UserDto get(@PathVariable Long id,@AuthenticationPrincipal Jwt authentication) {

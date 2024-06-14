@@ -4,6 +4,7 @@ export interface Publication {
   id: number;
   name: string;
   dateTime:string;
+  deleted:boolean;
   description: string;
   type: string;
   userId: number;

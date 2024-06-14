@@ -185,7 +185,7 @@ insert into sections (id_publication, type, text)
 values (18,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (6,'Recreacion del grito', 'esto es ', 'ARTE',1,false,false, false,'2023-5-02 00:00:01');
+values (1,'Recreacion del grito ELIMINADO', 'esto es ', 'ARTE',1,false,true, false,'2023-5-02 00:00:01');
 insert into sections (id_publication, type, text)
 values (19,'PHOTO', '');
 -- Sales:

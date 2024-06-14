@@ -50,6 +50,8 @@ export class ModUserComponent implements OnInit, OnDestroy {
   iconUrl: any;
   icon: any;
 
+  listStates:{id:number,name:string}[]=[];
+
   constructor(private userService: UserService, private authService: AuthService,
               private fb: FormBuilder, private router: Router) {
     this.form = this.fb.group({
@@ -85,6 +87,12 @@ export class ModUserComponent implements OnInit, OnDestroy {
   }
 
   charge() {
+    this.subs.add(this.userService.getStates().subscribe({
+      next: value => {
+        this.listStates=value;
+      }
+    }))
+
     let id = this.authService.user?.id;
     this.subs.add(
       this.userService.get(id).subscribe(
