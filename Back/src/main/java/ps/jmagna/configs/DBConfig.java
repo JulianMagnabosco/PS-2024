@@ -7,6 +7,8 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.stereotype.Component;
 import ps.jmagna.entities.SectionEntity;
 import ps.jmagna.entities.UserEntity;
@@ -15,15 +17,14 @@ import ps.jmagna.repository.SectionRepository;
 import ps.jmagna.repository.UserRepository;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Comparator;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Random;
+import java.util.stream.Stream;
 
 import static ps.jmagna.services.PublicationService.compressBytes;
 
@@ -33,17 +34,23 @@ public class DBConfig implements ApplicationListener<ApplicationReadyEvent> {
     SectionRepository sectionRepository;
     @Autowired
     UserRepository userRepository;
-
+    @Autowired
+    ResourcePatternResolver resourcePatternResolver;
     @Value("${dev.test}")
     String ok;
 
     public boolean test() throws IOException {
-        List<Path> images = Files.list(Paths.get("src/main/resources/test-img"))
-                .filter(Files::isRegularFile)
+
+        List<Path> images = Stream.of(
+                        Objects.requireNonNull(new File("src/main/resources/test-img").listFiles()))
+                .filter(file -> !file.isDirectory())
+                .map(File::toPath)
                 .collect(Collectors.toList());
 
-        List<Path> userImages = Files.list(Paths.get("src/main/resources/test-users"))
-                .filter(Files::isRegularFile)
+        List<Path> userImages = Stream.of(
+                        Objects.requireNonNull(new File("src/main/resources/test-users").listFiles()))
+                .filter(file -> !file.isDirectory())
+                .map(File::toPath)
                 .collect(Collectors.toList());
 
         images.sort(Comparator.comparing((e)->e.getFileName().toString().toLowerCase()));
