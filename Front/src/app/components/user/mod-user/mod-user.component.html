@@ -4,19 +4,21 @@
     <h1 class="fs-3">MODIFICAR</h1>
 
     <span>
-      <button class="btn btn-primary me-1" (click)="submit()" [disabled]="form.pristine">GUARDAR PERFIL</button>
+      <button class="btn btn-primary me-1" (click)="swalSubmit()"
+              [disabled]="form.pristine || form.invalid">GUARDAR PERFIL</button>
     </span>
   </div>
   <div class=" mt-4 p-5 bg-light border-gradient">
     <form [formGroup]="form" class="g-3">
 
       <div class="row mb-3">
-        <div class="col-sm-8">
-          <div class="input-float mb-3"
+        <div class="col-md-8">
+          <div class="input-float bg-secondary-subtle mb-3"
                [class.border-danger]="(form.controls['username'].touched || form.controls['username'].dirty)
                 && form.controls['username'].invalid">
             <label class="fs-6 fw-bold" for="usernameInput">Nombre de usuario</label>
             <input type="text" readonly formControlName="username" id="usernameInput" placeholder=""
+                   class="bg-secondary-subtle"
                    [class.fst-italic]="form.controls['username'].value!=user.username">
 
             <div class="px-1 text-danger fs-6 fst-italic" *ngIf="(form.controls['username'].touched
@@ -30,12 +32,13 @@
             </div>
           </div>
 
-          <div class="input-float mb-3"
+          <div class="input-float mb-3 bg-secondary-subtle"
                [class.border-danger]="(form.controls['email'].touched || form.controls['email'].dirty)
                 && form.controls['email'].invalid">
             <label class="fs-6 fw-bold " for="emailInput">Email</label>
             <input readonly type="text" formControlName="email"  id="emailInput" placeholder=""
-                   [class.fst-italic]="form.controls['email'].value!=user.email">
+                   [class.fst-italic]="form.controls['email'].value!=user.email"
+                   class="bg-secondary-subtle">
 
             <div class="px-1 text-danger fs-6 fst-italic"
                  *ngIf="(form.controls['email'].touched || form.controls['email'].dirty)
@@ -55,15 +58,10 @@
           </div>
 
         </div>
-        <div class="col-sm-4">
-          <div class="btn btn-border-orange p-1" data-bs-toggle="modal"
-               data-bs-target="#exampleModal">
-
-            <img [src]="'assets/camera.png'" class="d-block w-100"
-            *ngIf="!form.controls['icon'].value" alt="">
-
-            <img [src]="iconUrl" class="d-block w-100"
-            *ngIf="form.controls['icon'].value" alt="">
+        <div class="col-md-4 ">
+          <div class="btn btn-border-orange p-1 w-100" data-bs-toggle="modal"
+               data-bs-target="#exampleModal" >
+            <img [src]="iconUrl || 'assets/camera.png'" class="w-100 h-100" alt="" style="aspect-ratio: 1/1" >
 
 <!--            <button class="text-center border-white-button bg-white">-->
 <!--            </button>-->
@@ -128,7 +126,7 @@
       </div>
 
       <div class="row justify-content-between">
-        <div class="col-6 p-2">
+        <div class="col-sm-6 p-2">
           <div class="input-float"
                [class.border-danger]="(form.controls['phone'].touched || form.controls['phone'].dirty)
                 && form.controls['phone'].invalid">
@@ -146,7 +144,7 @@
       </div>
 
       <div class="row justify-content-start mb-3">
-        <div class="col-3 p-2">
+        <div class="col-md-3 col-4 p-2">
           <div class="input-float"
                [class.border-danger]="(form.controls['dniType'].touched || form.controls['dniType'].dirty)
                 && form.controls['dniType'].invalid">
@@ -161,7 +159,7 @@
           </div>
         </div>
 
-        <div class="col-6 p-2">
+        <div class="col-md-6 col-sm-8 p-2">
           <div class="input-float"
                [class.border-danger]="(form.controls['dni'].touched || form.controls['dni'].dirty)
                 && form.controls['dni'].invalid">
@@ -175,7 +173,7 @@
 
 
       <div class="row justify-content-between mb-2">
-        <div class="col-3 p-2">
+        <div class="col-sm-3 p-2">
           <div class="input-float"
                [class.border-danger]="(form.controls['state'].touched || form.controls['state'].dirty)
                 && form.controls['state'].invalid">
@@ -183,7 +181,7 @@
             <select formControlName="state" id="stateInput"
                     [class.fst-italic]="form.controls['lastname'].value!=user.lastname">
               <option value="0" selected disabled hidden>---</option>
-              <option *ngFor="let s of listStates" [value]="s.id">{{s.name}}</option>
+              <option *ngFor="let s of listStates" [value]="s.id" >{{s.name}}</option>
             </select>
             <div class="invalid-feedback" *ngIf="(form.controls['lastname'].touched || form.controls['lastname'].dirty)
       && form.controls['state'].hasError('state')">
@@ -249,19 +247,35 @@
 
 
       <div class="row justify-content-start mb-3">
-        <div class="col-6 p-2 pb-0">
+        <div class="col-md-6 p-2 pb-0">
           <div class="input-float"
                [class.border-danger]="(form.controls['cvu'].touched || form.controls['cvu'].dirty)
                 && form.controls['cvu'].invalid">
             <label class="fs-6 fw-bold " for="mpClientInput">CVU</label>
             <input type="text" formControlName="cvu"  id="mpClientInput" placeholder=""
                    [class.fst-italic]="form.controls['cvu'].value!=user.cvu">
+            <div class="invalid-feedback" *ngIf="(form.controls['cvu'].touched || form.controls['cvu'].dirty)
+              && form.controls['cvu'].invalid">
+              No es un CBU valido {{form.controls['cvu'].errors|json}}
+            </div>
 
           </div>
         </div>
         <div>
 
           *Necesario para realizar venta de obras
+        </div>
+      </div>
+
+      <div class="p-1 rounded-2 bg-secondary-subtle d-flex text-break align-content-center" >
+        Los datos anteriores son necesarios para la compra y venta:
+        <div class="ms-1 p-1 rounded-2 text-white"
+             [ngClass]="{'bg-success':canBuy,'bg-danger':!canBuy}">
+          {{canBuy?"Puedes Comprar":"No puedes Comprar"}}
+        </div>
+        <div class="ms-1 p-1 rounded-2 text-white"
+             [ngClass]="{'bg-success':canSell,'bg-danger':!canSell}">
+          {{canSell?"Puedes Vender":"No puedes Vender"}}
         </div>
       </div>
 

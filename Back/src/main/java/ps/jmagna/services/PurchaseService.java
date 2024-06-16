@@ -113,7 +113,7 @@ public class PurchaseService {
                 .build();
         PreferenceRequest preferenceRequest = PreferenceRequest.builder()
                 .backUrls(PreferenceBackUrlsRequest.builder()
-                        .success("http://localhost:4200/purchases").build())
+                        .success("http://localhost:4200/explore").build())
                 .notificationUrl(tunnelUrl + "/api/sell/not?user=" + user.getId())
                 .items(items)
                 .build();
@@ -170,27 +170,6 @@ public class PurchaseService {
         if (total.compareTo(m.getTotalAmount()) >= 0) {
             if (m.getShipments().isEmpty()) { // The merchant_order don't has any shipments
                 System.out.println("Totally paid. Release your item.");
-
-//                PaymentPayerRequest payerRequest = PaymentPayerRequest.builder()
-//                        .email(emailApp)
-//                        .build();
-//
-//                for (SaleDetailEntity detail : sale.getDetails()) {
-//
-//                    String token = customMPClient.getToken(detail.getPublication().getUser().getCvu(),
-//                            detail.getPublication().getUser().getMpSecret());
-//                    System.out.println("Token Seller:"+token);
-//
-//                    MPRequestOptions options = MPRequestOptions.builder()
-//                            .accessToken(token)
-//                            .build();
-//                    PaymentCreateRequest newPayment = PaymentCreateRequest.builder()
-//                            .payer(payerRequest)
-//                            .transactionAmount(detail.getTotal())
-//                            .description("Pay by "+ detail.getPublication().getName())
-//                            .build();
-//                    paymentClient.create(newPayment,options);
-//                }
 
                 if(!sale.getSaleState().equals(SaleState.APROBADA)){
                     notificationService.sendNotificationSale(sale);

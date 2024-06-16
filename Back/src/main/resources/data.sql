@@ -94,7 +94,7 @@ insert into califications (id_publication, id_user, points)
 values (2,5, 3.5);
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,count,price,deleted ,draft,date_time)
-values (3,'Casa de pajaros ', 'pajaros blablabla', 'ARTE',1,true,22,400,false,false,'2023-1-03 00:00:01');
+values (3,'Casa de pajaros ', 'pajaros blablabla', 'ARTE',1,true,20,111,false,false,'2023-1-03 00:00:01');
 insert into sections (id_publication, type, text)
 values (3,'PHOTO', '');
 insert into califications (id_publication, id_user, points)

@@ -19,6 +19,7 @@ export class AppComponent {
       this.focusSearch=false
     }
   }
+  time;
 
   subs:Subscription=new Subscription();
   searchBarVal:string="";
@@ -26,6 +27,7 @@ export class AppComponent {
   suggs:any=[]
   constructor(public service:AuthService, private router:Router, private activeRoute:ActivatedRoute,
               private pubService:PublicationsService) {
+    this.time=Date.now()
     this.subs.add(
       this.activeRoute.queryParams.subscribe({
         next: value => {
@@ -58,5 +60,7 @@ export class AppComponent {
     })
   }
 
-  protected readonly console = console;
+  resetTime(){
+    this.time=Date.now()
+  }
 }

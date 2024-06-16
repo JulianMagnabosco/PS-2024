@@ -23,6 +23,7 @@ public class NotificationEntity {
     @ManyToOne
     @JoinColumn(name="idUser")
     UserEntity user;
+    @Column(unique = true)
     String code;
     String title;
     String text;

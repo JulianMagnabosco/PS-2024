@@ -17,10 +17,12 @@
         <img src="assets/camera.png" class="card-img-top" alt="Plantilla en blanco" style=" max-height: 15rem;">
       </div>
     </div>
+
     <div class="col-auto p-0 d-flex align-items-end flex-column" *ngFor="let p of list" style="width: 15rem;" >
       <div class="card btn btn-border-orange bg-body-tertiary mb-1" style="width: 15rem;"
            (click)="selectDraft(p.id)">
         <h3 class="card-title overflow-hidden">{{ p.name }}</h3>
+        <div class="">{{ p.dateTime | date:"d/MM/yy hh:mm" }}</div>
 
         <div class="position-relative">
           <img [src]="p.imageUrl" class="card-img-top" [alt]="p.name" style=" max-height: 15rem;"

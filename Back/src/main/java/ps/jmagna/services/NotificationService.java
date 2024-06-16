@@ -42,7 +42,7 @@ public class NotificationService {
 
 
     public List<NotificationDto> getAll(int size, UserEntity user){
-        Pageable pageable = PageRequest.of(0,size, Sort.by("dateTime"));
+        Pageable pageable = PageRequest.of(0,size, Sort.by("dateTime").descending());
         Page<NotificationEntity> entities= repository.findAllByDeletedIsFalseAndUser(user,pageable);
 
         List<NotificationDto> list = new ArrayList<>();
@@ -51,6 +51,7 @@ public class NotificationService {
         }
         return list;
     }
+
     public boolean sendNotificationSale(SaleEntity sale){
         if(repository.existsByCode("purchase_"+sale.getId())) return true;
         for (SaleDetailEntity s: sale.getDetails()) {
@@ -73,64 +74,22 @@ public class NotificationService {
 
         return true;
     }
-    public boolean sendNotification(String code, String subject,
-                                    String textMessage, String emailMessage,
-                                    UserEntity user){
-        registerNotification( code, subject,  textMessage,  user);
-        sendEmail( subject,  emailMessage,  user.getEmail());
-
-        return true;
-    }
-
-    private boolean registerNotification(String code,String subject, String textMessage, UserEntity user){
-        NotificationEntity notification = new NotificationEntity();
-        notification.setDeleted(false);
-        notification.setDateTime(LocalDateTime.now());
-        notification.setCode(code);
-        notification.setTitle(subject);
-        notification.setText(textMessage);
-        notification.setUser(user);
-        repository.save(notification);
-        System.out.println("not: "+notification.getUser().getUsername());
-        return true;
-    }
-    private boolean sendEmail(String subject, String textMessage, String receptorEmail) {
-        boolean send = false;
-        MimeMessage message = sender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
-        try {
-            helper.setFrom(new InternetAddress(from, "COMOloHAGO"));
-            helper.setTo(receptorEmail);
-            String htmlTemplate = String.valueOf(readFile("src/main/resources/templateMail.html"));
-            String text = htmlTemplate.replace("datahtml",textMessage);
-//            System.out.println("html: "+text);
-            helper.setText(text, true);
-            helper.setSubject(subject);
-            sender.send(message);
-            send = true;
-        } catch (Exception e) {
-            System.out.println("emailError: -"+e);
-        }
-        return send;
-    }
-
     private boolean sendEmailSale(SaleEntity sale, String receptorEmail) {
         BigDecimal total = BigDecimal.ZERO;
 
         String items = "";
         for (SaleDetailEntity detail : sale.getDetails()) {
             items +=
-                "<tr>"+
-                "   <th style=\"border: 1px solid #dddddd;\"scope=\"row\">"+ detail.getPublication().getId() +"</th>\n" +
-                "   <td style=\"border: 1px solid #dddddd;\">"+ detail.getPublication().getName() +"</td>\n" +
-                "   <td style=\"border: 1px solid #dddddd;\">$"+ detail.getTotal() +"</td>\n" +
-                "   <td style=\"border: 1px solid #dddddd;\">"+ detail.getCount() +"</td>" +
-                "</tr>\n";
-//            resume +=
-//                detail.getPublication().getId() +": " +
-//                detail.getPublication().getName() +
-//                "($"+ detail.getTotal() +")" +
-//                "x" + detail.getCount() +"\n";
+                    "<tr>"+
+                            "   <th style=\"border: 1px solid #dddddd;\"scope=\"row\">"+
+                            detail.getPublication().getId() +"</th>\n" +
+                            "   <td style=\"border: 1px solid #dddddd;\">"+
+                            detail.getPublication().getName() +"</td>\n" +
+                            "   <td style=\"border: 1px solid #dddddd;\">$"+
+                            detail.getTotal() +"</td>\n" +
+                            "   <td style=\"border: 1px solid #dddddd;\">"+
+                            detail.getCount() +"</td>\n" +
+                            "</tr>\n";
 
             total = total.add(detail.getTotal());
         }
@@ -164,5 +123,53 @@ public class NotificationService {
                 dataString,
                 receptorEmail);
     }
+    public boolean sendNotification(String code, String subject,
+                                    String textMessage, String emailMessage,
+                                    UserEntity user){
+        if(repository.existsByCode(code)) {
+            return false;
+        }
+        if(registerNotification( code, subject,  textMessage,  user)) {
+            return false;
+        }
+
+        return sendEmail(subject, emailMessage, user.getEmail());
+    }
+    private boolean registerNotification(String code,String subject, String textMessage, UserEntity user){
+        NotificationEntity notification = new NotificationEntity();
+        notification.setDeleted(false);
+        notification.setDateTime(LocalDateTime.now());
+        notification.setCode(code);
+        notification.setTitle(subject);
+        notification.setText(textMessage);
+        notification.setUser(user);
+        try {
+            repository.save(notification);
+        }catch (Exception e){
+            System.out.println("notificationError: -"+e);
+            return false;
+        }
+        return true;
+    }
+    private boolean sendEmail(String subject, String textMessage, String receptorEmail) {
+        boolean send = false;
+        MimeMessage message = sender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+        try {
+            helper.setFrom(new InternetAddress(from, "COMOloHAGO"));
+            helper.setTo(receptorEmail);
+            String htmlTemplate = String.valueOf(readFile("src/main/resources/templateMail.html"));
+            String text = htmlTemplate.replace("datahtml",textMessage);
+//            System.out.println("html: "+text);
+            helper.setText(text, true);
+            helper.setSubject(subject);
+            sender.send(message);
+            send = true;
+        } catch (Exception e) {
+            System.out.println("emailError: -"+e);
+        }
+        return send;
+    }
+
 
 }

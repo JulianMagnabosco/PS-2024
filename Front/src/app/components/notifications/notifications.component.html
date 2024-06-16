@@ -4,13 +4,12 @@
 <div class="dropdown-menu dropdown-menu-end bg-secondary-subtle">
   <ul class="list-group overflow-y-auto rounded-0" style="width: 30rem; max-height: 15rem">
     <ng-container *ngFor="let n of list;let i = index">
-      <li class="border-top border-bottom border-black">
-        <a class="dropdown-item bg-white" href="#" style="white-space: initial">
+      <li class="border-top border-bottom border-black" [routerLink]="n.direction">
+        <a class="dropdown-item bg-white" style="white-space: initial" >
           <div class="fw-bold text-break" >{{n.title}}</div>
           <div class="ms-2 text-break">{{n.text}}</div>
           <div class="fst-italic text-end text-secondary">{{n.dateTime | date:"d/MM/yyyy hh:mm"}}</div>
         </a>
-
       </li>
     </ng-container>
     <ng-container *ngIf="list.length<=0">

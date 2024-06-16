@@ -40,6 +40,8 @@ public class PublicationService {
     @Autowired
     PublicationRepository publicationRepository;
     @Autowired
+    NotificationService notificationService;
+    @Autowired
     SectionRepository sectionRepository;
     @Autowired
     UserRepository userRepository;
@@ -73,6 +75,12 @@ public class PublicationService {
 
         publicationRepository.saveAndFlush(publication);
 
+        notificationService.sendNotification("pub_"+publication.getId(),
+                "Nueva obra publicada",
+                "Se publico la obra:"+publication.getName(),
+                "Se publico la obra:"+publication.getName(),
+                user);
+
         return get(publication.getId(), user);
     }
 
@@ -97,6 +105,7 @@ public class PublicationService {
     public boolean calificate(CalificationRequest request, UserEntity user) {
         
         PublicationEntity p = publicationRepository.getReferenceById(request.getPubId());
+        BigDecimal oldcal=p.getCalification();
         Optional<CalificationEntity> calificationAsk = calificationRepository.getByUserAndPublication(user, p);
         CalificationEntity calification;
         if (calificationAsk.isEmpty()) {
@@ -110,6 +119,13 @@ public class PublicationService {
         calification.setPoints(request.getValue());
         calificationRepository.save(calification);
 
+        if(oldcal.compareTo(BigDecimal.ZERO)>0){
+            notificationService.sendNotification("cal_"+p.getId(),
+                    "Estrellas!!!",
+                    "Alguien calificó tu obra con "+request.getValue(),
+                    "Alguien calificó tu obra con "+request.getValue(),
+                    p.getUser());
+        }
         return true;
     }
 

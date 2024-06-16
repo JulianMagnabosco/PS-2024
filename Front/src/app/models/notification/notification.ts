@@ -4,4 +4,5 @@ export interface Notification {
   code:string ;
   title:string ;
   text:string ;
+  direction:string ;
 }

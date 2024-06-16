@@ -25,11 +25,12 @@
       </button>
 
       <div class="d-flex gap-1 justify-content-end">
-        <button class="btn btn-primary text-nowrap me-1" routerLink="cart" *ngIf="service.user?.canBuy">
+        <button class="btn btn-primary text-nowrap me-1" routerLink="cart" *ngIf="service.user?.canBuy"
+          (click)="resetTime()">
           <i class="bi bi-cart"></i>
         </button>
         <div class="dropdown" *ngIf="service.user">
-          <app-notifications></app-notifications>
+          <app-notifications [userId]="service.user.id||''" [timeEvent]="time"></app-notifications>
         </div>
         <div class="dropdown" *ngIf="service.user">
           <button class="btn btn-primary text-nowrap " type="button" data-bs-toggle="dropdown">
@@ -38,9 +39,11 @@
             <span class="dropdown-toggle d-none d-sm-inline-block"></span>
           </button>
           <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="#" routerLink="login">Cambiar cuenta</a></li>
             <li><a class="dropdown-item" href="#" routerLink="edit">Editar cuenta</a></li>
             <li><a class="dropdown-item" href="#" routerLink="user/{{service.user.id}}">Ver cuenta</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#" routerLink="login">Cambiar cuenta</a></li>
+            <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="#" routerLink="login" (click)="salir()">Salir</a></li>
           </ul>
         </div>

@@ -14,7 +14,7 @@ import {
   ValidatorFn,
   Validators
 } from "@angular/forms";
-import {cAlert} from "../../../services/custom-alert/custom-alert.service"
+import {cAlert, cConfirm} from "../../../services/custom-alert/custom-alert.service"
 
 @Component({
   selector: 'app-mod-user',
@@ -50,6 +50,8 @@ export class ModUserComponent implements OnInit, OnDestroy {
   iconUrl: any;
   icon: any;
 
+  canBuy:boolean=false;
+  canSell:boolean=false;
   listStates:{id:number,name:string}[]=[];
 
   constructor(private userService: UserService, private authService: AuthService,
@@ -59,11 +61,11 @@ export class ModUserComponent implements OnInit, OnDestroy {
       password: ["", [ Validators.maxLength(50)]],
       password2: ["", [ Validators.maxLength(50)]],
       email: ["", [Validators.required, Validators.email]],
-      icon: [""],
+      icon: false,
       name: [""],
       lastname: [""],
       phone: [""],
-      cvu: [""],
+      cvu: ["", Validators.pattern("[0-9]*")],
       dni: [""],
       dniType: [""],
       state: ["1", [Validators.required]],
@@ -80,6 +82,11 @@ export class ModUserComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.charge();
+    this.subs.add(this.form.valueChanges.subscribe({
+      next: value => {
+        this.checkBuySell()
+      }
+    }))
   }
 
   ngOnDestroy(): void {
@@ -90,6 +97,7 @@ export class ModUserComponent implements OnInit, OnDestroy {
     this.subs.add(this.userService.getStates().subscribe({
       next: value => {
         this.listStates=value;
+        this.listStates[0]={id:this.listStates[0].id,name:"-SELECCIONAR-"}
       }
     }))
 
@@ -124,6 +132,7 @@ export class ModUserComponent implements OnInit, OnDestroy {
               "cvu": this.user.cvu||""
             }
             this.form.setValue(userdata)
+            this.checkBuySell()
           },
           error: err => {
 
@@ -132,6 +141,41 @@ export class ModUserComponent implements OnInit, OnDestroy {
         }
       )
     );
+  }
+
+  checkBuySell(){
+    this.canBuy=true;
+    this.canSell=true;
+    let userdata = {
+
+      "name": this.form.controls['name'].value,
+      "lastname": this.form.controls['lastname'].value,
+      "phone": this.form.controls['phone'].value,
+      "dni": this.form.controls['dni'].value,
+      "dniType": this.form.controls['dniType'].value,
+
+      "idState": this.form.controls['state'].value,
+      "direction": this.form.controls['direction'].value,
+      "numberDir": this.form.controls['numberDir'].value,
+      "postalNum": this.form.controls['postalNum'].value,
+      "floor": this.form.controls['floor'].value,
+      "room": this.form.controls['room'].value,
+
+    }
+
+    for (let l in userdata){
+      if(!userdata[l as keyof (typeof userdata)]) this.canBuy=false;
+    }
+
+    if(!this.form.controls['cvu'].value || this.form.controls['cvu'].invalid) this.canSell=false;
+
+  }
+  swalSubmit(){
+    cConfirm("¿Guardar usuario?").then(value => {
+      if(value.isConfirmed){
+        this.submit();
+      }
+    })
   }
 
   submit() {
@@ -172,7 +216,6 @@ export class ModUserComponent implements OnInit, OnDestroy {
         {
           next: value => {
 
-            this.authService.logout()
             this.router.navigate(["/user/" + this.user.id]);
           },
           error: err => {
@@ -185,8 +228,17 @@ export class ModUserComponent implements OnInit, OnDestroy {
   }
 
   selectIcon(event: any) {
+    let size=0;
+    for (let f of event.target.files){
+      if(size > 5e+6) {
+        cAlert("error","Archivo/s muy grande/s");
+        return;
+      }
+      size+=f.size
+    }
     if (event.target.files) {
       this.form.get("icon")?.setValue(true)
+      this.form.get("icon")?.markAsDirty()
       var reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]); // read file as data url
 
@@ -194,9 +246,12 @@ export class ModUserComponent implements OnInit, OnDestroy {
       reader.onload = (event) => { // called once readAsDataURL is completed
         this.iconUrl = event.target?.result;
       }
+    }else {
+      this.form.get("icon")?.setValue(false)
+      this.form.get("icon")?.markAsDirty()
+      this.icon=""
+      this.iconUrl=""
     }
-    this.icon=""
-    this.iconUrl=""
   }
   checkPasswords: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
     let pass = group.get('password')?.value;

@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import {RouterLink} from "@angular/router";
 import {Subscription} from "rxjs";
 import {AuthService} from "../../services/user/auth.service";
@@ -12,7 +12,9 @@ import {Notification} from "../../models/notification/notification";
   templateUrl: './notifications.component.html',
   styleUrl: './notifications.component.css'
 })
-export class NotificationsComponent implements OnInit,OnDestroy{
+export class NotificationsComponent implements OnChanges,OnDestroy{
+  @Input() userId?:string;
+  @Input() timeEvent?:any;
   subs=new Subscription()
   list:Notification[]=[
     // {
@@ -46,7 +48,7 @@ export class NotificationsComponent implements OnInit,OnDestroy{
   constructor(private service:NotificationService) {
   }
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     this.charge()
   }
   charge(){
@@ -55,9 +57,19 @@ export class NotificationsComponent implements OnInit,OnDestroy{
       next: value => {
         this.list=value;
         this.list=this.list.map((c)=>{
-          c.code=c.code.split("_")[0];
+          if(c.code.includes("pass") || c.code.includes("register") || c.code.includes("req")){
+            c.direction="/user/"+this.userId;
+          }
+          else if(c.code.includes("cal")){
+            c.direction="/pub/"+c.code.split("_")[1];
+          }
+          else {
+            c.direction="/home";
+          }
           return c
         })
+
+        console.log(this.list)
       }
     }))
   }

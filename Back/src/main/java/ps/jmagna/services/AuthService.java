@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static ps.jmagna.services.PublicationService.compressBytes;
 import static ps.jmagna.services.PublicationService.decompressBytes;
 
 
@@ -116,9 +117,9 @@ public class AuthService implements UserDetailsService {
 
     newUser = repository.save(newUser);
 
-    notificationService.sendNotification("register",
+    notificationService.sendNotification("register_"+newUser.getId(),
             "Nueva cuenta de Como lo hago",
-            "Bienvenido!"+newUser.getUsername(),
+            "Bienvenido "+newUser.getUsername(),
             "Se a creado una nueva cuenta con este email, de nombre: "+
             newUser.getUsername(),
             newUser);
@@ -167,7 +168,7 @@ public class AuthService implements UserDetailsService {
       throw new EntityNotFoundException();
     }
 
-    notificationService.sendNotification("password_req_"+email,
+    notificationService.sendNotification("password_req_"+user.getId()+"_"+uuid.toString(),
             "Cambio de contraseña",
             "Se ha solicitado un cambio de contraseña",
             "Aqui esta su token para cambio de contraseña " +
@@ -179,8 +180,8 @@ public class AuthService implements UserDetailsService {
 
   public boolean changePassword(PasswordRequest data) {
 
-    TokenEntity entity = tokenRepository.getReferenceById(UUID.fromString(data.getToken()));
-    if(!entity.getEmail().equals(data.getEmail())) return false;
+    TokenEntity tokenEntity = tokenRepository.getReferenceById(UUID.fromString(data.getToken()));
+    if(!tokenEntity.getEmail().equals(data.getEmail())) return false;
 
     UserEntity user= repository.getByEmail(data.getEmail());
     String encryptedPassword = new BCryptPasswordEncoder().encode(data.getPassword());
@@ -188,7 +189,7 @@ public class AuthService implements UserDetailsService {
     user.setPassword(encryptedPassword);
     repository.save(user);
 
-    notificationService.sendNotification("password_change_"+user.getEmail(),
+    notificationService.sendNotification("password_change_"+user.getId()+"_"+tokenEntity.getUuid(),
             "Cambio de contraseña",
             "Se cambio la contraseña",
             "Se cambio la contraseña",
@@ -314,22 +315,22 @@ public class AuthService implements UserDetailsService {
       throw new IllegalArgumentException("Usuario incorrecto");
     }
     UserEntity newUser = modelMapper.map(request, UserEntity.class);
-
-    if(request.isChangePass()){
-      String encryptedPassword = new BCryptPasswordEncoder().encode(request.getPassword());
-      newUser.setPassword(encryptedPassword);
-    }else {
-      newUser.setPassword(user.getPassword());
-    }
     newUser.setRole(user.getRole());
+    newUser.setDateTime(user.getDateTime());
+
+//    if(request.isChangePass()){
+//      String encryptedPassword = new BCryptPasswordEncoder().encode(request.getPassword());
+//      newUser.setPassword(encryptedPassword);
+//    }else {
+//      newUser.setPassword(user.getPassword());
+//    }
     if(!user.getState().getId().equals(request.getIdState())){
       StateEntity state = stateRepository.getReferenceById(request.getIdState());
       newUser.setState(state);
     }
     if(icon!=null){
-      newUser.setIcon(icon.getBytes());
+      newUser.setIcon(compressBytes(icon.getBytes()));
     }
-
 
     return mapUserDto(repository.save(newUser),true);
   }

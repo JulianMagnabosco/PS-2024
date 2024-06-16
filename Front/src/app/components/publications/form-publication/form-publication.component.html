@@ -60,12 +60,12 @@
         </div>
 
         <div class="row g-3 my-3">
-          <div class="col-auto col-xl-6 row">
+          <div class="col">
             <div class="col-auto ">
               <label for="typeInput" class="col-form-label">Tipo:</label>
             </div>
             <div class="col-auto">
-              <select class="form-select" id="typeInput" style="width: 10rem;"
+              <select class="form-select text-uppercase" id="typeInput" style="width: 10rem;"
                       formControlName="type" [class.is-invalid]="(form.controls['type'].touched
                   || form.controls['type'].dirty) && form.controls['type'].invalid">
                 <option value="" selected hidden>-Seleccionar-</option>
@@ -82,12 +82,12 @@
             </div>
           </div>
 
-          <div class="col-auto col-xl-6 row">
+          <div class="col">
             <div class="col-auto">
               <label for="difficultyInput" class="col-form-label">Dificultad:</label>
             </div>
             <div class="col-auto ">
-              <select class="form-select" id="difficultyInput"  style="width: 10rem;"
+              <select class="form-select text-uppercase" id="difficultyInput"  style="width: 10rem;"
                       formControlName="difficulty" [class.is-invalid]="(form.controls['difficulty'].touched
                   || form.controls['difficulty'].dirty) && form.controls['difficulty'].invalid">
                 <option value="" selected hidden>-Seleccionar-</option>
@@ -445,4 +445,4 @@
     NO SE ENCONTRÓ LA PUBLICACIÓN
   </div>
 </ng-template>
-<div>{{form.value|json}}</div>
+<!--<div>{{form.value|json}}</div>-->
