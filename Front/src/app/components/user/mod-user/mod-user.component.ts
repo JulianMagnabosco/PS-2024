@@ -158,16 +158,18 @@ export class ModUserComponent implements OnInit, OnDestroy {
       "direction": this.form.controls['direction'].value,
       "numberDir": this.form.controls['numberDir'].value,
       "postalNum": this.form.controls['postalNum'].value,
-      "floor": this.form.controls['floor'].value,
-      "room": this.form.controls['room'].value,
 
     }
 
     for (let l in userdata){
-      if(!userdata[l as keyof (typeof userdata)]) this.canBuy=false;
+      if(!userdata[l as keyof (typeof userdata)]) {
+        this.canBuy=false;
+      }
     }
 
-    if(!this.form.controls['cvu'].value || this.form.controls['cvu'].invalid) this.canSell=false;
+    if(!this.form.controls['cvu'].value || this.form.controls['cvu'].invalid || !this.canBuy){
+      this.canSell=false;
+    }
 
   }
   swalSubmit(){

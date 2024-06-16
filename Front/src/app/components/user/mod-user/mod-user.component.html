@@ -126,7 +126,7 @@
       </div>
 
       <div class="row justify-content-between">
-        <div class="col-sm-6 p-2">
+        <div class="col-sm-10 col-md-8 p-2">
           <div class="input-float"
                [class.border-danger]="(form.controls['phone'].touched || form.controls['phone'].dirty)
                 && form.controls['phone'].invalid">
@@ -144,7 +144,7 @@
       </div>
 
       <div class="row justify-content-start mb-3">
-        <div class="col-md-3 col-4 p-2">
+        <div class="col-md-3 col-6 p-2">
           <div class="input-float"
                [class.border-danger]="(form.controls['dniType'].touched || form.controls['dniType'].dirty)
                 && form.controls['dniType'].invalid">
@@ -173,7 +173,7 @@
 
 
       <div class="row justify-content-between mb-2">
-        <div class="col-sm-3 p-2">
+        <div class="col-md-3 p-2">
           <div class="input-float"
                [class.border-danger]="(form.controls['state'].touched || form.controls['state'].dirty)
                 && form.controls['state'].invalid">
@@ -190,7 +190,7 @@
           </div>
         </div>
 
-        <div class="col p-2">
+        <div class="col-sm p-2">
           <div class="input-float"
                [class.border-danger]="(form.controls['direction'].touched || form.controls['direction'].dirty)
                 && form.controls['direction'].invalid">
@@ -200,7 +200,7 @@
           </div>
         </div>
 
-        <div class="col-3 p-2">
+        <div class="col-6 col-sm-3 p-2">
           <div class="input-float"
                [class.border-danger]="(form.controls['numberDir'].touched || form.controls['numberDir'].dirty)
                 && form.controls['numberDir'].invalid">
@@ -212,7 +212,7 @@
       </div>
 
       <div class="row justify-content-between mb-2">
-        <div class="col-4 p-2">
+        <div class="col-7 col-sm-4 p-2">
           <div class="input-float"
                [class.border-danger]="(form.controls['postalNum'].touched || form.controls['postalNum'].dirty)
                 && form.controls['postalNum'].invalid">
@@ -223,7 +223,7 @@
         </div>
 
 
-        <div class="col-4 p-2">
+        <div class="col-6 col-sm-4 p-2">
           <div class="input-float"
                [class.border-danger]="(form.controls['floor'].touched || form.controls['floor'].dirty)
                 && form.controls['floor'].invalid">
@@ -234,7 +234,7 @@
         </div>
 
 
-        <div class="col-4 p-2">
+        <div class="col-6 col-sm-4 p-2">
           <div class="input-float"
                [class.border-danger]="(form.controls['room'].touched || form.controls['room'].dirty)
                 && form.controls['room'].invalid">
@@ -263,19 +263,28 @@
         </div>
         <div>
 
-          *Necesario para realizar venta de obras
+          *Necesario solo para realizar venta de obras.
         </div>
       </div>
 
-      <div class="p-1 rounded-2 bg-secondary-subtle d-flex text-break align-content-center" >
-        Los datos anteriores son necesarios para la compra y venta:
-        <div class="ms-1 p-1 rounded-2 text-white"
-             [ngClass]="{'bg-success':canBuy,'bg-danger':!canBuy}">
+      <div class="p-1 rounded-2 bg-secondary-subtle text-break justify-content-center
+      align-content-center text-center align-items-center" >
+        <div class="d-md-flex">
+          <div>        Los datos anteriores son necesarios para la compra y venta:</div>
+          <div class="ms-1 mb-1 p-1 rounded-2 text-white"
+                [ngClass]="{'bg-success':canBuy,'bg-danger':!canBuy}">
           {{canBuy?"Puedes Comprar":"No puedes Comprar"}}
         </div>
-        <div class="ms-1 p-1 rounded-2 text-white"
-             [ngClass]="{'bg-success':canSell,'bg-danger':!canSell}">
+          <div class="ms-1 mb-1 p-1 rounded-2 text-white"
+                [ngClass]="{'bg-success':canSell,'bg-danger':!canSell}">
           {{canSell?"Puedes Vender":"No puedes Vender"}}
+        </div>
+        </div>
+        <div class="text-danger" *ngIf="!canBuy">
+          *Faltan datos.
+        </div>
+        <div class="text-danger" *ngIf="!canSell&&canBuy">
+          *Falta cvu.
         </div>
       </div>
 
