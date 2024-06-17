@@ -29,13 +29,10 @@
           <button class="btn btn-border-orange form-orange bi bi-x-lg" (click)="text=''"
                   *ngIf="text != ''">
           </button>
-          <button class="btn btn-primary bi bi-search" (click)="charge(0)">
-            BUSCAR
-          </button>
         </div>
       </div>
       <div class="col-auto">
-        <button class="btn btn-primary h-100" (click)="charge(0)">GENERAR</button>
+        <button class="btn btn-primary h-100" (click)="charge(0)">BUSCAR</button>
       </div>
     </div>
   </div>
@@ -48,9 +45,9 @@
          data-bs-toggle="modal" data-bs-target="#exampleModal"
          (click)="open(i)">
       <div class="h5">N°{{i.id}} - {{i.dateTime | date:"d/MM/yyyy hh:mm"}}</div>
-      <div class="col-2 ">
+      <div class="col-2 align-content-center">
         <img class="border border-4 border-secondary rounded rounded-4 w-100"
-             [src]="i.imageUrl" >
+             [src]="i.imageUrl" style="aspect-ratio: 1/1">
       </div>
       <div class="col p-3 justify-content-between align-content-center">
         <div class="mb-2">

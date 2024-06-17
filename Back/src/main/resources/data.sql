@@ -304,13 +304,6 @@ insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
 values (14,4, '2024-5-22 00:00:01','PENDIENTE');
 
 insert into sales (merchant_order,id_user,date_time,sale_state)
-values (14,5, '2024-5-01 00:00:01','APROBADA');
-insert into sale_details (id_sale,id_publication,total,count)
-values (14,4, 500,4);
-insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
-values (14,4, '2024-5-01 00:00:01','PENDIENTE');
-
-insert into sales (merchant_order,id_user,date_time,sale_state)
 values (15,2, '2024-4-30 00:00:01','CANCELADA');
 insert into sale_details (id_sale,id_publication,total,count)
 values (15,5, 222,1);
@@ -340,3 +333,10 @@ insert into sale_details (id_sale,id_publication,total,count)
 values (18,5, 222,1);
 insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
 values (18,4, '2024-6-30 00:00:01','CANCELADA');
+
+insert into sales (merchant_order,id_user,date_time,sale_state)
+values (19,5, '2024-5-01 00:00:01','APROBADA');
+insert into sale_details (id_sale,id_publication,total,count)
+values (19,4, 500,4);
+insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
+values (19,4, '2024-5-01 00:00:01','PENDIENTE');

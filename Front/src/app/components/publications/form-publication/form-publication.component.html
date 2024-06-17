@@ -7,6 +7,8 @@
     <ng-container *ngIf="!isPut; else elseControl">
       <h1 class="text-center me-auto"> NUEVA OBRA </h1>
 
+      <button class="btn btn-sm btn-warning my-2 bi bi-list"
+              (click)="deselect()"> </button>
       <button class="btn btn-sm btn-warning m-2 bi bi-pencil" [disabled]="!draftDirty"
               (click)="onSubmit(true)"> GUARDAR BORRADOR</button>
       <button class="btn btn-primary bi bi-check-lg" [disabled]="form.invalid"

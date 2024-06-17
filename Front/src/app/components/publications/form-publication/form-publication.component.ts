@@ -1,4 +1,14 @@
-import {Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import {Subscription} from "rxjs";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Publication} from "../../../models/publication/publication";
@@ -15,6 +25,8 @@ import {Section} from "../../../models/publication/section";
 export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
   @Input() id=0;
   @Input() isPut=false;
+  @Output() deselectEvent= new EventEmitter<any>();
+
   notfound = false;
   draftDirty=false;
 
@@ -117,7 +129,9 @@ export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
       }
     ))
   }
-
+  deselect(){
+    this.deselectEvent.emit();
+  }
   charge(id:number) {
     this.subs.add(
       this.service.get(id.toString()).subscribe(

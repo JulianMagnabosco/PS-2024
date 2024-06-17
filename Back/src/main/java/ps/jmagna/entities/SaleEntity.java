@@ -19,6 +19,7 @@ public class SaleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    @Column(unique = true)
     Long merchantOrder;
     @ManyToOne
     @JoinColumn(name="idUser")

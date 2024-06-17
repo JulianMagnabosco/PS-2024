@@ -63,6 +63,12 @@ export class NotificationsComponent implements OnChanges,OnDestroy{
           else if(c.code.includes("cal")){
             c.direction="/pub/"+c.code.split("_")[1];
           }
+          else if(c.code.includes("purc")){
+            c.direction="/purchases";
+          }
+          else if(c.code.includes("sel")){
+            c.direction="/sells";
+          }
           else {
             c.direction="/home";
           }

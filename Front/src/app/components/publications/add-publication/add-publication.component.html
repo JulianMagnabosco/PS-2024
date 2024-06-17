@@ -2,7 +2,7 @@
 
 <div class="container mb-4" >
 
-  <app-form-publication [id]="id" [isPut]="false" *ngIf="!selectDraft">
+  <app-form-publication [id]="id" [isPut]="false" (deselectEvent)="deselect()" *ngIf="!selectDraft">
 
   </app-form-publication>
 </div>

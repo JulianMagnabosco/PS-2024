@@ -19,18 +19,23 @@
     </div>
 
     <div class="col-auto p-0 d-flex align-items-end flex-column" *ngFor="let p of list" style="width: 15rem;" >
-      <div class="card btn btn-border-orange bg-body-tertiary mb-1" style="width: 15rem;"
+      <div class="card btn btn-border-orange bg-body-tertiary mb-1 w-100 h-100"
            (click)="selectDraft(p.id)">
-        <h3 class="card-title overflow-hidden">{{ p.name }}</h3>
-        <div class="">{{ p.dateTime | date:"d/MM/yy hh:mm" }}</div>
+        <h3 class="card-title overflow-hidden text-clamp">{{ p.name }}</h3>
+        <div class="fst-italic text-secondary">Creado el {{ p.dateTime | date:"d/MM/yy hh:mm" }}</div>
 
-        <div class="position-relative">
-          <img [src]="p.imageUrl" class="card-img-top" [alt]="p.name" style=" max-height: 15rem;"
-               *ngIf="p.imageUrl!=''">
+        <div class="rounded-2 border-orange overflow-hidden"
+             *ngIf="p.imageUrl">
+          <img [src]="p.imageUrl || 'assets/camera.png'"
+               class="w-100 h-100" [alt]="p.name" style="max-height: 15rem;">
+        </div>
+
+        <div class="h5" *ngIf="!p.imageUrl">
+          {{p.description}}
         </div>
       </div>
 
-      <button class="btn btn-danger w-100 mt-auto " (click)="delete(p.id)">ELIMINAR</button>
+      <button class="btn btn-danger w-100" (click)="delete(p.id)">ELIMINAR</button>
     </div>
   </div>
 

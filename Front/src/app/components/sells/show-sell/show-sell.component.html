@@ -9,7 +9,11 @@
       </a>
 
       <ul class="dropdown-menu bg-secondary">
-        <li ><button class=" btn btn-secondary" [disabled]="sell?.saleState=='CANCELADA'" (click)="delete()">Eliminar comentario</button></li>
+        <li >
+          <button class="btn btn-secondary" [disabled]="sell?.saleState=='CANCELADA'" (click)="delete()">
+            Cancelar venta
+          </button>
+        </li>
       </ul>
     </div>
   </div>

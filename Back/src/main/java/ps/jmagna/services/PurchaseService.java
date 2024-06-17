@@ -158,6 +158,7 @@ public class PurchaseService {
 //            System.out.println("+Merchandorder: "+m.getId());
 
         Optional<SaleEntity> optionalSale = saleRepository.findByMerchantOrder(m.getId());
+        System.out.println("found"+optionalSale.isPresent());
         SaleEntity sale = optionalSale.orElseGet(() -> registerSaleDelivery(userId, m));
 
         BigDecimal total = BigDecimal.ZERO;
@@ -171,7 +172,7 @@ public class PurchaseService {
             if (m.getShipments().isEmpty()) { // The merchant_order don't has any shipments
                 System.out.println("Totally paid. Release your item.");
 
-                if(!sale.getSaleState().equals(SaleState.APROBADA)){
+                if(sale.getSaleState().equals(SaleState.APROBADA)){
                     notificationService.sendNotificationSale(sale);
                 }
                 sale.setSaleState(SaleState.APROBADA);
@@ -194,6 +195,7 @@ public class PurchaseService {
         sale.setUser(user);
         sale.setSaleState(SaleState.PENDIENTE);
         sale.setMerchantOrder(m.getId());
+
 
         List<SaleDetailEntity> saleDetails = new ArrayList<>();
         for (MerchantOrderItem item : m.getItems()) {
@@ -332,7 +334,10 @@ public class PurchaseService {
                 ));
                 total = total.add(detail.getTotal());
             }
-
+            String datetime="";
+            if(delivery.getDateTime()!=null) {
+                datetime=delivery.getDateTime().toString();
+            }
             list.add(new DeliveryDto(delivery.getId(),
                             sale.getDateTime().toString(),
                             detailDtos,
@@ -340,7 +345,7 @@ public class PurchaseService {
                             buyer.getName() + " " + buyer.getLastname(),
                             buyer.getPhone(),
                             buyer.getState().getName() + ", " + buyer.getDirection(),
-                            delivery.getDateTime().toString(),
+                            datetime,
                             delivery.getDeliveryState(),
                             delivery.getDealer().getName() + " " + delivery.getDealer().getLastname(),
                             delivery.getDealer().getId()
@@ -450,6 +455,9 @@ public class PurchaseService {
         UserEntity dealer = userRepository.getReferenceById(request.getDealer());
 
         delivery.setDeliveryState(request.getDeliveryState());
+        if(delivery.getDeliveryState().equals(DeliveryState.ENTREGADO)){
+            delivery.setDateTime(LocalDateTime.now());
+        }
         delivery.setDealer(dealer);
 
         deliveryRepository.save(delivery);
@@ -459,7 +467,7 @@ public class PurchaseService {
     public boolean deleteSell(Long id, UserEntity user) {
 
         SaleEntity sell = saleRepository.getReferenceById(id);
-        if(user.getId().equals(sell.getUser().getId()))
+//        if(!user.getId().equals(sell.getUser().getId())) return false;
 
         sell.setSaleState(SaleState.CANCELADA);
 

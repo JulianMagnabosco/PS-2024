@@ -42,5 +42,8 @@ export class AddPublicationComponent implements OnInit,OnDestroy {
     this.subs.unsubscribe();
   }
 
+  deselect(){
+    this.selectDraft=true
+  }
 
 }

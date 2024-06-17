@@ -146,7 +146,7 @@ public class NotificationService {
         try {
             repository.save(notification);
         }catch (Exception e){
-            System.out.println("notificationError: -"+e);
+            System.out.println("notificationError: -"+e.getMessage());
             return false;
         }
         return true;
@@ -166,7 +166,7 @@ public class NotificationService {
             sender.send(message);
             send = true;
         } catch (Exception e) {
-            System.out.println("emailError: -"+e);
+            System.out.println("emailError: -"+e.getMessage());
         }
         return send;
     }
