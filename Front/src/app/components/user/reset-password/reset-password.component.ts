@@ -29,8 +29,8 @@ export class ResetPasswordComponent implements OnInit,OnDestroy{
 
     this.form = this.fb.group({
       token: ["", [Validators.required]],
-      password: ["", [Validators.required]],
-      password2: ["", [Validators.required]]
+      password: ["", [Validators.required, Validators.maxLength(50), Validators.minLength(8)]],
+      password2: ["", [Validators.required, Validators.maxLength(50)]]
     },{
       validators: [this.checkPasswords]
     });

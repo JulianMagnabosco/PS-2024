@@ -28,7 +28,7 @@ export class RegisterComponent implements OnInit,OnDestroy {
     this.form = this.fb.group({
       name: ["", [Validators.required, Validators.maxLength(50 ), this.checkName]],
       email: ["", [Validators.required, Validators.email]],
-      password: ["", [Validators.required, Validators.maxLength(50)]],
+      password: ["", [Validators.required, Validators.maxLength(50), Validators.minLength(8)]],
       password2: ["", [Validators.required, Validators.maxLength(50)]],
       terms: [false, [Validators.requiredTrue]]
     },{

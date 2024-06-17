@@ -64,16 +64,16 @@ export class ModUserComponent implements OnInit, OnDestroy {
       icon: false,
       name: [""],
       lastname: [""],
-      phone: [""],
-      cvu: ["", Validators.pattern("[0-9]*")],
-      dni: [""],
+      phone: ["", [Validators.pattern("[0-9]*"),Validators.minLength(7)]],
+      cvu: ["", [Validators.pattern("[0-9]*"),Validators.minLength(20)]],
+      dni: ["", [Validators.pattern("[0-9]*"),Validators.minLength(8)]],
       dniType: [""],
       state: ["1", [Validators.required]],
       direction: ["", [Validators.maxLength(200)]],
-      numberDir: [""],
-      postalNum: [""],
-      floor: [""],
-      room: [""]
+      numberDir: ["",Validators.pattern("[0-9]*")],
+      postalNum: ["",Validators.pattern("[0-9]*")],
+      floor: ["",Validators.pattern("[0-9]*")],
+      room: ["",Validators.pattern("[0-9]*")]
     }, {
       validators: this.checkPasswords
     });

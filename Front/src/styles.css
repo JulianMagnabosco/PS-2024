@@ -307,3 +307,29 @@ input[type="range"]::-moz-range-thumb {
   line-clamp: 2;
   -webkit-box-orient: vertical;
 }
+
+.hover-stars:hover{
+  background-color: gray;
+  position: relative;
+}
+.hover-stars span{
+  visibility: hidden;
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.3s;
+
+  padding: 0.5rem;
+  color: white;
+  background-color: grey;
+  border-radius: 1rem;
+  font-size: small;
+
+  text-align: center;
+  z-index: 1;
+  bottom: -125%;
+  left: -50%;
+}
+.hover-stars:hover span{
+  visibility: visible;
+  opacity: 1;
+}

@@ -90,7 +90,7 @@
         </div>
       </div>
 
-      <h5>Datos especiales</h5>
+      <h5>Datos de compra/venta</h5>
 
       <div class="row justify-content-between">
         <div class="col-6 p-2">
@@ -133,11 +133,9 @@
             <label class="fs-6 fw-bold " for="phoneInput">Teléfono</label>
             <input type="text" formControlName="phone"  id="phoneInput" placeholder=""
                    [class.fst-italic]="form.controls['phone'].value!=user.phone">
-
-
-            <div class="invalid-feedback" *ngIf="(form.controls['phone'].touched || form.controls['phone'].dirty)
-      && form.controls['phone'].hasError('maxlenght')">
-              El telefono es muy largo.
+            <div class="invalid-feedback-c" *ngIf="(form.controls['phone'].touched || form.controls['phone'].dirty)
+      && form.controls['phone'].invalid">
+              No es un telefono valido.
             </div>
           </div>
         </div>
@@ -165,8 +163,14 @@
                 && form.controls['dni'].invalid">
             <label class="fs-6 fw-bold " for="dniInput">Documento</label>
             <input type="text" formControlName="dni"  id="dniInput" placeholder=""
-                   [class.fst-italic]="form.controls['dni'].value!=user.dni">
+                   [class.fst-italic]="form.controls['dni'].value!=user.dni"
+                   [class.is-invalid]="(form.controls['dni'].touched || form.controls['dni'].dirty)">
 
+            <ng-container *ngIf="(form.controls['dni'].touched || form.controls['dni'].dirty)">
+              <div class="invalid-feedback" *ngIf="form.controls['dni'].invalid">
+                No es un DNI valido.
+              </div>
+            </ng-container>
           </div>
         </div>
       </div>
@@ -178,15 +182,10 @@
                [class.border-danger]="(form.controls['state'].touched || form.controls['state'].dirty)
                 && form.controls['state'].invalid">
             <label class="fs-6 fw-bold " for="stateInput">Provincia</label>
-            <select formControlName="state" id="stateInput"
-                    [class.fst-italic]="form.controls['lastname'].value!=user.lastname">
+            <select formControlName="state" id="stateInput">
               <option value="0" selected disabled hidden>---</option>
               <option *ngFor="let s of listStates" [value]="s.id" >{{s.name}}</option>
             </select>
-            <div class="invalid-feedback" *ngIf="(form.controls['lastname'].touched || form.controls['lastname'].dirty)
-      && form.controls['state'].hasError('state')">
-              El apellido es muy largo.
-            </div>
           </div>
         </div>
 
@@ -207,6 +206,11 @@
             <label class="fs-6 fw-bold " for="numberDirInput">Número</label>
             <input type="text" formControlName="numberDir"  id="numberDirInput" placeholder=""
                    [class.fst-italic]="form.controls['numberDir'].value!=user.numberDir">
+            <ng-container *ngIf="(form.controls['numberDir'].touched || form.controls['numberDir'].dirty)">
+              <div class="invalid-feedback-c" *ngIf="form.hasError('numberDir')">
+                Valor invalido.
+              </div>
+            </ng-container>
           </div>
         </div>
       </div>
@@ -219,6 +223,11 @@
             <label class="fs-6 fw-bold " for="postalNumInput">Código Postal</label>
             <input type="text" formControlName="postalNum"  id="postalNumInput" placeholder=""
                    [class.fst-italic]="form.controls['postalNum'].value!=user.postalNum">
+            <ng-container *ngIf="(form.controls['postalNum'].touched || form.controls['postalNum'].dirty)">
+              <div class="invalid-feedback-c" *ngIf="form.controls['postalNum'].invalid">
+                Valor invalido.
+              </div>
+            </ng-container>
           </div>
         </div>
 
@@ -230,6 +239,11 @@
             <label class="fs-6 fw-bold " for="floorInput">Piso</label>
             <input type="text" formControlName="floor"  id="floorInput" placeholder=""
                    [class.fst-italic]="form.controls['floor'].value!=user.floor">
+            <ng-container *ngIf="(form.controls['floor'].touched || form.controls['floor'].dirty)">
+              <div class="invalid-feedback-c" *ngIf="form.controls['floor'].invalid">
+                Valor invalido.
+              </div>
+            </ng-container>
           </div>
         </div>
 
@@ -241,6 +255,11 @@
             <label class="fs-6 fw-bold " for="roomInput">Habitación</label>
             <input type="text" formControlName="room"  id="roomInput" placeholder=""
                    [class.fst-italic]="form.controls['room'].value!=user.room">
+            <ng-container *ngIf="(form.controls['room'].touched || form.controls['room'].dirty)">
+              <div class="invalid-feedback-c" *ngIf="form.controls['room'].invalid">
+                Valor invalido.
+              </div>
+            </ng-container>
           </div>
         </div>
       </div>
@@ -254,16 +273,17 @@
             <label class="fs-6 fw-bold " for="mpClientInput">CVU</label>
             <input type="text" formControlName="cvu"  id="mpClientInput" placeholder=""
                    [class.fst-italic]="form.controls['cvu'].value!=user.cvu">
-            <div class="invalid-feedback" *ngIf="(form.controls['cvu'].touched || form.controls['cvu'].dirty)
-              && form.controls['cvu'].invalid">
-              No es un CBU valido {{form.controls['cvu'].errors|json}}
-            </div>
+            <ng-container *ngIf="(form.controls['cvu'].touched || form.controls['cvu'].dirty)">
+              <div class="invalid-feedback-c" *ngIf="form.controls['cvu'].invalid">
+                No es un CVU valido.
+              </div>
+            </ng-container>
 
           </div>
         </div>
         <div>
 
-          *Necesario solo para realizar venta de obras.
+          *El CVU es necesario SOLO para realizar venta de obras.
         </div>
       </div>
 
@@ -284,7 +304,7 @@
           *Faltan datos.
         </div>
         <div class="text-danger" *ngIf="!canSell&&canBuy">
-          *Falta cvu.
+          *Falta CVU.
         </div>
       </div>
 

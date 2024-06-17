@@ -119,8 +119,8 @@ public class PublicationService {
         calification.setPoints(request.getValue());
         calificationRepository.save(calification);
 
-        if(oldcal.compareTo(BigDecimal.ZERO)>0){
-            notificationService.sendNotification("cal_"+p.getId(),
+        if(request.getValue().compareTo(BigDecimal.ZERO)>0 && oldcal.compareTo(BigDecimal.ZERO)==0){ //mayor a zero
+            notificationService.sendNotification("cal1_"+p.getId(),
                     "Estrellas!!!",
                     "Alguien calificó tu obra con "+request.getValue(),
                     "Alguien calificó tu obra con "+request.getValue(),

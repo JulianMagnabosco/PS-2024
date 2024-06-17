@@ -116,13 +116,16 @@
 
           <div class="bg-secondary-subtle  rounded-2 bg-secondary-subtle p-1 text-center">
             <div class="">
-              <button class="bi bi-star-fill text-secondary btn fs-3" *ngFor="let b of [0,1,2,3,4]"
+              <button class="bi bi-star-fill text-secondary btn fs-3 hover-stars" *ngFor="let b of [0,1,2,3,4]"
                       (click)="calificate(b+1)"
-                      [class.text-warning]="publication.myCalification>b"></button>
+                      [class.text-warning]="publication.myCalification>b">
+                <span >Puntuar {{ b+1 }} Estrellas</span>
+              </button>
             </div>
             <span>Promedio: </span>
             <i class="bi bi-star-fill text-secondary"  *ngFor="let b of [0,1,2,3,4]"
                [class.text-warning]="publication.calification>b"></i>
+            <span>{{publication.calification | number:"1.1"}}</span>
           </div>
         </div>
       </div>
