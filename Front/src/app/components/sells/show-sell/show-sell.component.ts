@@ -7,7 +7,7 @@ import {Comment} from "../../../models/comment/comment";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CommentService} from "../../../services/comment/comment.service";
 import {Delivery} from "../../../models/delivery/delivery";
-import {cAlert} from "../../../services/custom-alert/custom-alert.service"
+import {cAlert, cConfirm} from "../../../services/custom-alert/custom-alert.service"
 
 @Component({
   selector: 'app-show-sell',
@@ -31,18 +31,20 @@ export class ShowSellComponent implements OnDestroy{
 
 
   delete(){
-    this.subs.add(this.service.deleteSell(this.sell?.id.toString()||"0").subscribe(
-      {
-        next: value => {
-          cAlert("success","Delivery guardado").then(()=>{
-            this.eventClose.emit();
-            this.closeModal?.nativeElement.click()
-          });
-        },
-        error: err => {
-          console.log(err)
+    cConfirm("¿Seguro que quieres cancelarla?").then(value => {
+        this.subs.add(this.service.deleteSell(this.sell?.id.toString()||"0").subscribe(
+          {
+            next: value => {
+              cAlert("success","Delivery guardado").then(()=>{
+                this.eventClose.emit();
+                this.closeModal?.nativeElement.click()
+              });
+            },
+            error: err => {
+              console.log(err)
               cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
-        }
-      }))
+            }
+          }))
+    })
   }
 }

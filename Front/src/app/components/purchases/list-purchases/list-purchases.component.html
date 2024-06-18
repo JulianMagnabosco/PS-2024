@@ -92,7 +92,7 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content bg-transparent border-transparent">
-      <app-show-purchase [purchase]="selected"></app-show-purchase>
+      <app-show-purchase [purchase]="selected" (eventClose)="charge(0)"></app-show-purchase>
     </div>
   </div>
 </div>
