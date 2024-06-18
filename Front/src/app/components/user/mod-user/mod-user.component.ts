@@ -52,6 +52,8 @@ export class ModUserComponent implements OnInit, OnDestroy {
 
   canBuy:boolean=false;
   canSell:boolean=false;
+  lackings:string[]=[];
+
   listStates:{id:number,name:string}[]=[];
 
   constructor(private userService: UserService, private authService: AuthService,
@@ -67,7 +69,7 @@ export class ModUserComponent implements OnInit, OnDestroy {
       phone: ["", [Validators.pattern("[0-9]*"),Validators.minLength(7)]],
       cvu: ["", [Validators.pattern("[0-9]*"),Validators.minLength(20)]],
       dni: ["", [Validators.pattern("[0-9]*"),Validators.minLength(8)]],
-      dniType: [""],
+      dniType: ["DNI"],
       state: ["1", [Validators.required]],
       direction: ["", [Validators.maxLength(200)]],
       numberDir: ["",Validators.pattern("[0-9]*")],
@@ -120,7 +122,7 @@ export class ModUserComponent implements OnInit, OnDestroy {
               "lastname": this.user.lastname||"",
               "phone": this.user.phone||"",
               "dni": this.user.dni||"",
-              "dniType": this.user.dniType||"",
+              "dniType": this.user.dniType||"DNI",
 
               "state": this.user.idState,
               "direction": this.user.direction||"",
@@ -132,6 +134,9 @@ export class ModUserComponent implements OnInit, OnDestroy {
               "cvu": this.user.cvu||""
             }
             this.form.setValue(userdata)
+
+            this.setIcon();
+
             this.checkBuySell()
           },
           error: err => {
@@ -143,34 +148,55 @@ export class ModUserComponent implements OnInit, OnDestroy {
     );
   }
 
+  setIcon(){
+
+    this.subs.add(
+      this.userService.getImages(this.user.id).subscribe(
+        {
+          next: value => {
+            let v = value as Blob;
+            this.icon = v
+          }
+        }
+      )
+    )
+  }
+
   checkBuySell(){
+    this.lackings=[]
     this.canBuy=true;
     this.canSell=true;
-    let userdata = {
+    let userdata:{key:string,value:any}[] = [
 
-      "name": this.form.controls['name'].value,
-      "lastname": this.form.controls['lastname'].value,
-      "phone": this.form.controls['phone'].value,
-      "dni": this.form.controls['dni'].value,
-      "dniType": this.form.controls['dniType'].value,
+      {key:"Nombre",value:this.form.controls['name'].value},
+      {key:"Apellido",value: this.form.controls['lastname'].value},
+      {key:"Teléfono",value: this.form.controls['phone'].value},
+      {key:"DNI",value: this.form.controls['dni'].value},
+      {key:"Tipo Dni",value: this.form.controls['dniType'].value},
 
-      "idState": this.form.controls['state'].value,
-      "direction": this.form.controls['direction'].value,
-      "numberDir": this.form.controls['numberDir'].value,
-      "postalNum": this.form.controls['postalNum'].value,
-
-    }
+      {key:"Provincia",value: this.form.controls['state'].value},
+      {key:"Dirección",value: this.form.controls['direction'].value},
+      {key:"Numeración",value: this.form.controls['numberDir'].value},
+      {key:"Código Postal",value: this.form.controls['postalNum'].value}
+    ]
 
     for (let l in userdata){
-      if(!userdata[l as keyof (typeof userdata)]) {
+      if(!userdata[l].value) {
         this.canBuy=false;
+        this.canSell=false;
+        this.lackings.push(userdata[l].key)
       }
     }
-
-    if(!this.form.controls['cvu'].value || this.form.controls['cvu'].invalid || !this.canBuy){
+    if(userdata.find((l)=>l.key=="Provincia")?.value==1){
+      this.canBuy=false;
       this.canSell=false;
+      this.lackings.push("Provincia")
     }
 
+    if((!this.form.controls['cvu'].value || this.form.controls['cvu'].invalid) && this.canBuy){
+      this.canSell=false;
+      this.lackings.push("CVU")
+    }
   }
   swalSubmit(){
     cConfirm("¿Guardar usuario?").then(value => {
@@ -217,7 +243,12 @@ export class ModUserComponent implements OnInit, OnDestroy {
       this.userService.put(data).subscribe(
         {
           next: value => {
-
+            let userl = this.authService.user;
+            if(userl){
+              userl.canSell=this.canSell;
+              userl.canBuy=this.canBuy;
+              this.authService.setUser(userl)
+            }
             this.router.navigate(["/user/" + this.user.id]);
           },
           error: err => {

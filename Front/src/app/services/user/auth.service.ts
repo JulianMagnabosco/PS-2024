@@ -28,6 +28,10 @@ export class AuthService {
     }
   }
 
+  setUser(user:Loginuser){
+    sessionStorage.setItem("app.user",JSON.stringify(user));
+  }
+
   login(user:Loginuser):string{
     sessionStorage.setItem("app.user",JSON.stringify(user));
     sessionStorage.setItem("app.token",user.token);

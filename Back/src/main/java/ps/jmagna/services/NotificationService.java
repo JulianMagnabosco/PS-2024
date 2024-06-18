@@ -129,7 +129,7 @@ public class NotificationService {
         if(repository.existsByCode(code)) {
             return false;
         }
-        if(registerNotification( code, subject,  textMessage,  user)) {
+        if(!registerNotification( code, subject,  textMessage,  user)) {
             return false;
         }
 

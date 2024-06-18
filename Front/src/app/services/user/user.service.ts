@@ -31,6 +31,10 @@ export class UserService {
   getStates(){
     return this.client.get<any>(this.baseUrl + "states");
   }
+
+  getImages(id:string):Observable<any>{
+    return this.client.get("api/image/user/"+id, {responseType: "blob"});
+  }
   put(data: any){
     return this.client.put<any>(this.baseUrl + "mod", data);
   }

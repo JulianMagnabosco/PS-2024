@@ -289,8 +289,8 @@
 
       <div class="p-1 rounded-2 bg-secondary-subtle text-break justify-content-center
       align-content-center text-center align-items-center" >
-        <div class="d-md-flex">
-          <div>        Los datos anteriores son necesarios para la compra y venta:</div>
+        <div class="d-md-flex justify-content-center align-items-baseline">
+          <div>Según los datos proporcionados, con esta cuenta </div>
           <div class="ms-1 mb-1 p-1 rounded-2 text-white"
                 [ngClass]="{'bg-success':canBuy,'bg-danger':!canBuy}">
           {{canBuy?"Puedes Comprar":"No puedes Comprar"}}
@@ -301,10 +301,12 @@
         </div>
         </div>
         <div class="text-danger" *ngIf="!canBuy">
-          *Faltan datos.
+          *Completa los datos si desea realizar compras en la página :
+          <span class="fw-bold"
+            *ngFor="let l of lackings; let i = index">{{i!=0?", ":""}}{{l}}</span>.
         </div>
         <div class="text-danger" *ngIf="!canSell&&canBuy">
-          *Falta CVU.
+          *Falta CVU, si el no puede realizar ventas.
         </div>
       </div>
 

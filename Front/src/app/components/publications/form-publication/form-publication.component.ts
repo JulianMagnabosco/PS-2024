@@ -16,6 +16,7 @@ import {PublicationsService} from "../../../services/publications/publications.s
 import {Router} from "@angular/router";
 import {cAlert} from "../../../services/custom-alert/custom-alert.service";
 import {Section} from "../../../models/publication/section";
+import {AuthService} from "../../../services/user/auth.service";
 
 @Component({
   selector: 'app-form-publication',
@@ -65,7 +66,7 @@ export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
   };
 
   constructor(private fb: FormBuilder, private service: PublicationsService,
-              private router: Router) {
+              private authService: AuthService, private router: Router) {
     this.form = this.fb.group({
       name: ["", [Validators.required, Validators.maxLength(100)]],
       description: ["", [Validators.required, Validators.maxLength(500)]],
@@ -86,10 +87,16 @@ export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(): void {
+    if(!this.authService.user?.canSell){
+      this.form.get("canSold")?.disable()
+    }
     if(this.id!=0)
       this.charge(this.id);
   }
   ngOnInit(): void {
+    if(!this.authService.user?.canSell){
+      this.form.get("canSold")?.disable()
+    }
     this.subs.add(this.form.valueChanges.subscribe(
       {
         next: value => {

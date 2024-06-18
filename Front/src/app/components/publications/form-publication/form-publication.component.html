@@ -71,9 +71,9 @@
                       formControlName="type" [class.is-invalid]="(form.controls['type'].touched
                   || form.controls['type'].dirty) && form.controls['type'].invalid">
                 <option value="" selected hidden>-Seleccionar-</option>
-                <option value="ARTE">Cientifico</option>
-                <option value="CIENCIA">Artistico</option>
-                <option value="TECNOLOGIA">Artistico</option>
+                <option value="ARTE">ARTE</option>
+                <option value="CIENCIA">CIENCIA</option>
+                <option value="TECNOLOGIA">TECNOLOGIA</option>
                 <option value="OTRO">Otro</option>
               </select>
               <div class="invalid-feedback"   style="width: 10rem;"
@@ -383,7 +383,8 @@
               Datos de venta (Opcional)
             </div>
             En caso de que desee vender la obra, debe incluir monto inicial y precio unitario
-            (También debe tener registrados sus datos de compra/venta).
+            <span *ngIf="form.controls['canSold'].disabled" class="text-danger"
+            >(No tiene sus datos de compra/venta, complete su perfil antes de seguir).</span>
           </div>
           <i class="col-auto bi fs-2"
              [ngClass]="{'bi-caret-left-fill':showPurchasedata,'bi-caret-down-fill':!showPurchasedata}"></i>

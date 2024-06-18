@@ -75,7 +75,6 @@ export class NotificationsComponent implements OnChanges,OnDestroy{
           return c
         })
 
-        console.log(this.list)
       }
     }))
   }

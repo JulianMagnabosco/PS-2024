@@ -168,12 +168,14 @@ public class AuthService implements UserDetailsService {
       throw new EntityNotFoundException();
     }
 
-    notificationService.sendNotification("password_req_"+user.getId()+"_"+uuid.toString(),
+    boolean result = notificationService.sendNotification("password_req_"+user.getId()+"_"+uuid.toString(),
             "Cambio de contraseña",
             "Se ha solicitado un cambio de contraseña",
             "Aqui esta su token para cambio de contraseña " +
             "(introduzcalo en el campo token): "+ uuid,
             user);
+
+    System.out.println(result);
 
     return true;
   }

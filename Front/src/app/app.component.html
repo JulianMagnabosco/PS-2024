@@ -87,7 +87,9 @@
     <a class="btn btn-primary text-start bi bi-plus-square"
        data-bs-dismiss="offcanvas" routerLink="publicate"> Nueva obra</a>
     <a class="btn btn-primary text-start bi bi-palette"
-       data-bs-dismiss="offcanvas" routerLink="mypubs"> Mis obras</a>
+       data-bs-dismiss="offcanvas" routerLink="explore" [queryParams]="{
+       text: '@'+service.user?.username
+       }"> Mis obras</a>
     <a class="btn btn-primary text-start bi bi-cart-check"
        data-bs-dismiss="offcanvas" routerLink="purchases"> Compras</a>
     <a class="btn btn-primary text-start bi bi-coin"
