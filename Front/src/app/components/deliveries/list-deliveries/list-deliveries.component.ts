@@ -25,7 +25,7 @@ export class ListDeliveriesComponent implements OnInit,OnDestroy {
   size=3;
   page=0;
 
-  constructor(private service: PurchaseService,private authService: AuthService, private router: Router) {
+  constructor(private service: PurchaseService, protected authService: AuthService, private router: Router) {
   }
   ngOnInit(): void {
     this.charge(0)

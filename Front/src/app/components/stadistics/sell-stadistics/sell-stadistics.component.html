@@ -2,24 +2,24 @@
 <div class="container">
   <div class="h1 w-100 text-center">Estadisticas de Ventas</div>
 
-  <div class="row w-100 justify-content-sm-center mb-2 row-gap-1">
-    <div class="col-auto">
+  <div class="row w-100 justify-content-center mb-2 row-gap-1">
+    <div class="col-3 col-sm-auto text-end">
       <label for="firstDate" class="col-form-label">De </label>
     </div>
-    <div class="col-auto">
+    <div class="col-6 me-3 me-sm-0  col-sm-auto">
       <input type="date" id="firstDate" class="form-control" aria-describedby="passwordHelpInline"
              name="firstDate" [min]="minDate" [max]="lastDate" (change)="onChange()"
              [(ngModel)]="firstDate">
     </div>
-    <div class="col-auto">
+    <div class="col-3 col-sm-auto text-end">
       <label for="lastDate" class="col-form-label"> A </label>
     </div>
-    <div class="col-auto">
+    <div class="col-6 me-3 me-sm-0 col-sm-auto">
       <input type="date" id="lastDate" class="form-control" aria-describedby="passwordHelpInline"
              name="lastDate" [min]="firstDate" [max]="maxDate" (change)="onChange()"
              [(ngModel)]="lastDate">
     </div>
-    <div class="col-auto">
+    <div class="col-sm-auto text-center">
       <button class="btn btn-primary" (click)="charge()">GENERAR</button>
     </div>
   </div>

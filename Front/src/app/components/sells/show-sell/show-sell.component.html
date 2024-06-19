@@ -1,7 +1,7 @@
-<div class="row border-5 btn-border-orange rounded-5 p-2 bg-secondary-subtle">
+<div class="border-5 border-orange rounded-5 p-3 bg-secondary-subtle">
   <div class="d-flex justify-content-between">
     <div class="h5">
-      N°{{ sell?.id }} - {{ sell?.dateTime | date:"d/MM/yyyy hh:mm" }}
+      {{ sell?.name }} - {{ sell?.dateTime | date:"d/MM/yyyy hh:mm" }}
     </div>
     <div>
       <a class="btn btn-secondary btn" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -17,28 +17,31 @@
       </ul>
     </div>
   </div>
-  <div class="col-3 ">
-    <img class="border border-4 border-secondary rounded rounded-4 w-100"
-         [src]="sell?.imageUrl">
-  </div>
-  <div class="col py-3 justify-content-between align-content-center">
-    <div class="mb-2">
-      Comprador: <span class="text-secondary text-capitalize"> {{ sell?.buyer }}</span>
+  <div class="row p-1">
+
+    <div class="col-auto img-stat-container p-0">
+      <img class="border border-4 border-secondary rounded rounded-4 w-100 h-100" alt=""
+           [src]="sell?.imageUrl">
     </div>
-    <div class="mb-2">
-      Obra: <span class="text-secondary"> {{ sell?.name }}</span>
+    <div class="col py-3 justify-content-between align-content-center">
+      <div class="mb-2">
+        Comprador: <span class="text-secondary text-capitalize"> {{ sell?.buyer }}</span>
+      </div>
+      <div class="mb-2">
+        Número de compra: <span class="text-secondary"> N°{{sell?.id}}</span>
+      </div>
+      <div class="mb-2">
+        Total Vendido: <span class="text-secondary">${{ sell?.total }}</span>
+      </div>
+      <div>
+        Cantidad: <span class="text-secondary">${{ sell?.count }}</span>
+      </div>
     </div>
-    <div class="mb-2">
-      Total Vendido: <span class="text-secondary">${{ sell?.total }}</span>
-    </div>
-    <div>
-      Cantidad: <span class="text-secondary">${{ sell?.count }}</span>
-    </div>
-  </div>
-  <div class="col-sm-auto d-flex align-items-end justify-content-end  p-0">
-    <div class="p-3 rounded-5 border border-2 bg-success text-uppercase text-white text-center"
-         [class]="stateClasses(sell?.saleState||'')">
-      {{ sell?.saleState }}
+    <div class="col-md-auto d-flex align-items-end justify-content-end p-0">
+      <div class="p-3 rounded-5 border border-2 bg-success text-uppercase text-white text-center"
+           [class]="stateClasses(sell?.saleState||'')">
+        {{ sell?.saleState }}
+      </div>
     </div>
   </div>
 </div>

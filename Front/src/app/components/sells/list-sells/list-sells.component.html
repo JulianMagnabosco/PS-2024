@@ -44,17 +44,17 @@
     <div class="row border-5 btn-border-orange rounded-5 p-2 bg-secondary-subtle mb-2" *ngFor="let i of list"
          data-bs-toggle="modal" data-bs-target="#exampleModal"
          (click)="open(i)">
-      <div class="h5">N°{{i.id}} - {{i.dateTime | date:"d/MM/yyyy hh:mm"}}</div>
-      <div class="col-2 align-content-center">
-        <img class="border border-4 border-secondary rounded rounded-4 w-100"
-             [src]="i.imageUrl" style="aspect-ratio: 1/1">
+      <div class="h5">{{i.name}} - {{i.dateTime | date:"d/MM/yyyy hh:mm"}}</div>
+      <div class="col-auto align-content-center img-stat-container p-0">
+        <img class="border border-4 border-secondary rounded rounded-4 w-100 h-100"
+             [src]="i.imageUrl">
       </div>
       <div class="col p-3 justify-content-between align-content-center">
         <div class="mb-2">
           Comprador: <span class="text-secondary text-capitalize"> {{i.buyer}}</span>
         </div>
         <div class="mb-2">
-          Obra: <span class="text-secondary"> {{i.name}}</span>
+          Número de compra: <span class="text-secondary"> N°{{i.id}}</span>
         </div>
         <div class="mb-2">
           Total Vendido: <span class="text-secondary">${{i.total}}</span>

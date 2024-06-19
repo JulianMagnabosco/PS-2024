@@ -53,7 +53,7 @@
       </div>
         <div class="col">
           <select class="p-2 w-100 rounded-2 border bg-secondary text-uppercase text-white text-center"
-                  [(ngModel)]="dealer">
+                  [(ngModel)]="dealer" [disabled]="authService.user?.role!='ADMIN'">
             <option [value]="dealer" hidden selected>{{ dealerDefaultName}}</option>
             <option *ngFor="let d of dealers" [value]="d.id">{{d.name+" "+d.lastname}}</option>
           </select>

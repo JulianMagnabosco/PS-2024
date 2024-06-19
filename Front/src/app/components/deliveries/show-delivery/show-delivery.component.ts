@@ -16,6 +16,7 @@ import {PurchaseService, stateClasses} from "../../../services/purchase/purchase
 import {Subscription} from "rxjs";
 import {User} from "../../../models/user/user";
 import {cAlert} from "../../../services/custom-alert/custom-alert.service"
+import {AuthService} from "../../../services/user/auth.service";
 
 @Component({
   selector: 'app-show-delivery',
@@ -35,7 +36,8 @@ export class ShowDeliveryComponent implements OnInit, OnDestroy, OnChanges {
 
   private subs: Subscription = new Subscription();
 
-  constructor(private userService: UserService, private purchaseService: PurchaseService) {
+  constructor(private userService: UserService, private purchaseService: PurchaseService,
+              protected authService:AuthService) {
   }
 
   ngOnInit(): void {

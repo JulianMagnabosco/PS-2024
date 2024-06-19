@@ -24,7 +24,7 @@ export class RegisterComponent implements OnInit,OnDestroy {
 
   tips: { okName:boolean, okEmail:boolean, points:number}={ okName:true,okEmail:true,points:0 }
 
-  constructor(private fb: FormBuilder, private service: AuthService, private router: Router) {
+  constructor(private fb: FormBuilder, protected service: AuthService, private router: Router) {
     this.form = this.fb.group({
       name: ["", [Validators.required, Validators.maxLength(50 ), this.checkName]],
       email: ["", [Validators.required, Validators.email]],

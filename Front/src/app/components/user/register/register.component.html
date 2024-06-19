@@ -90,7 +90,8 @@
     </div>
 
     <div class="d-flex justify-content-center">
-      <button type="submit" class="btn btn-primary" [disabled]="form.invalid || !tips.okEmail || !tips.okName">
+      <button type="submit" class="btn btn-primary"
+              [disabled]="form.invalid || !tips.okEmail || !tips.okName || service.loading">
         CREAR CUENTA
       </button>
     </div>

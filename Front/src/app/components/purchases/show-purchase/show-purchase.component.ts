@@ -29,7 +29,7 @@ export class ShowPurchaseComponent {
       this.subs.add(this.service.deleteSell(this.purchase?.id.toString()||"0").subscribe(
         {
           next: value => {
-            cAlert("success","Delivery guardado").then(()=>{
+            cAlert("success","Cancelada").then(()=>{
               this.eventClose.emit();
               this.closeModal?.nativeElement.click()
             });

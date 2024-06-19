@@ -30,13 +30,14 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let u of list" (dblclick)="go(u.id)">
+      <tr *ngFor="let u of list" (dblclick)="go(u.id)" >
         <th scope="row" class="text-end">{{ u.id }}</th>
         <td>{{ u.username }}</td>
         <td>{{ u.email }}</td>
         <td>{{ u.pubs }}</td>
         <td>{{ u.buys}} / {{u.sells }}</td>
-        <td class="text-center dropstart"><button class="btn btn-warning bi bi-search me-1" (click)="go(u.id)"></button>
+        <td class="text-center dropstart d-flex">
+          <button class="btn btn-warning bi bi-search me-1" (click)="go(u.id)"></button>
           <a class="btn btn-secondary bi bi-three-dots" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           </a>
 
