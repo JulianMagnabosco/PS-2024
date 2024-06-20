@@ -1,24 +1,30 @@
 
 
 <ng-container *ngIf="!notfound; else notFoundT">
-  <div class="d-flex justify-content-between gap-1 p-2
-    bg-secondary-subtle rounded-3 rounded-top-0 sticky-controls z-1">
+  <div class="d-flex justify-content-between gap-1 p-2 align-items-center
+    bg-secondary-subtle rounded-3 rounded-top-0 sticky-controls z-2">
 
     <ng-container *ngIf="!isPut; else elseControl">
       <h1 class="text-center me-auto"> NUEVA OBRA </h1>
 
-      <button class="btn btn-sm btn-warning my-2 bi bi-list"
+      <span class="spinner-border spinner-border-sm" *ngIf="loading"></span>
+      <button class="btn btn-sm btn-warning my-2 bi bi-list" [disabled]="loading"
               (click)="deselect()"> </button>
-      <button class="btn btn-sm btn-warning m-2 bi bi-pencil" [disabled]="!draftDirty"
-              (click)="onSubmit(true)"> GUARDAR BORRADOR</button>
-      <button class="btn btn-primary bi bi-check-lg" [disabled]="form.invalid"
-              (click)="onSubmit(false)"> PUBLICAR</button>
+      <button class="btn btn-sm btn-warning my-2 bi bi-pencil" [disabled]="!draftDirty || loading"
+              (click)="onSubmit(true)">
+        GUARDAR BORRADOR
+      </button>
+      <button class="btn btn-primary bi bi-check-lg" [disabled]="form.invalid || loading"
+              (click)="onSubmit(false)">
+        PUBLICAR
+      </button>
     </ng-container>
 
     <ng-template #elseControl>
       <h1 class="text-center me-auto"> EDITAR OBRA</h1>
 
-      <button type="submit" class="btn btn-primary bi bi-pencil" [disabled]="form.invalid"
+      <span class="spinner-border spinner-border-sm" *ngIf="loading"></span>
+      <button type="submit" class="btn btn-primary bi bi-pencil" [disabled]="form.invalid || loading"
               (click)="onSubmit(false)">GUARDAR</button>
     </ng-template>
   </div>
@@ -157,7 +163,7 @@
             <img src="assets/camera.png" class=" w-100 p-1"
                  alt="assets/camera.png" *ngIf="pubImages.length<=0 && !video">
             + Agregar o Cambiar Foto/Video
-            <span class="text-danger" *ngIf="pubImages.length<=0 && !video">(Minimo 1 requerida)</span>
+            <span class="text-danger" *ngIf="pubImages.length<=0">(Mínimo 1 imagen requerida)</span>
           </button>
 
 

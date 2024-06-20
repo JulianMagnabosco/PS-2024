@@ -2,51 +2,58 @@
 <div class="border-5 border-orange rounded-5 p-3 bg-secondary-subtle">
   <div class="d-flex mb-2">
     <div class="col">
-      <div class="mb-1">
+      <div class="mb-2 h4">
         N°{{purchase?.id}}
       </div>
-      <div class="mb-1">
+      <div class="mb-2">
         Fecha: <span class="text-secondary">{{purchase?.dateTime | date:"d/MM/yyyy hh:mm"}}</span>
       </div>
-      <div class="mb-1">
+      <div class="mb-2">
         Monto total: <span class="text-secondary">${{purchase?.total}}</span>
       </div>
     </div>
-    <div class="col-auto d-flex flex-column align-items-end p-2" >
+    <div class="col-auto">
+      <div class="p-2">
+        Estado:&nbsp;
+        <span class="p-3 rounded-pill border text-uppercase  text-center"
+              [class]="stateClasses(purchase?.saleState||'')">
+          {{ purchase?.saleState }}
+        </span>
+      </div>
+    </div>
+    <div class="col-auto" >
 
-      <div class="mb-2">
-        <a class="btn btn-secondary btn" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+      <div class="mb-5 d-flex justify-content-end">
+        <a class="ms btn btn-secondary btn" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="bi bi-three-dots"></i>
         </a>
 
         <ul class="dropdown-menu dropdown-menu-end bg-secondary">
           <li>
             <button class="btn btn-secondary" [disabled]="purchase?.saleState=='CANCELADA'" (click)="delete()">
-              Cancelar venta
+              Cancelar
             </button>
           </li>
         </ul>
-      </div>
-      <div class="p-2 h-auto">
-        Estado:&nbsp;
-        <span class="p-2 rounded-4 border text-uppercase  text-center"
-              [class]="stateClasses(purchase?.saleState||'')">
-          {{ purchase?.saleState }}
-        </span>
       </div>
     </div>
   </div>
 
   <div class="p-1 border-top border-secondary border-2">
-    <div *ngFor="let d of purchase?.details" class=" rounded rounded-4 border-5 border-orange d-flex">
-      <div class="col-auto p-0">
-        <img [src]="d.imageUrl" class="rounded rounded-3 border-3 border-orange" style="width: 100px; height: 100px">
+    <div *ngFor="let d of purchase?.details" class="rounded rounded-4 border-5 border-orange d-flex mt-2">
+      <div class="col-auto  img-stat-container ">
+        <img [src]="d.imageUrl" class="rounded rounded-3 border-5 border-orange w-100 h-100">
       </div>
-      <div class="col-11 row p-2 align-items-center">
-        <div class="col-sm-6">Obra: <span class="text-secondary">{{d.name}}</span></div>
-        <div class="col-sm-6">Cantidad: <span class="text-secondary">{{d.count}}</span></div>
-        <div class="col-sm-6">Total Vendido: <span class="text-secondary">${{d.total}}</span></div>
-        <div class="col-sm-6">Valor Unitario: <span class="text-secondary">${{d.total/d.count}}</span></div>
+      <div class="col text-break p-2 align-content-center d-flex flex-column justify-content-between">
+        <div>Obra: <span class="text-secondary">{{d.name}}</span></div>
+        <div>Cantidad: <span class="text-secondary">{{d.count}}</span></div>
+        <div>Total Vendido: <span class="text-secondary">${{d.total}}</span></div>
+        <div>Valor Unitario: <span class="text-secondary">${{d.total/d.count}}</span></div>
+      </div>
+      <div class="col-auto">
+        <button class="btn btn-secondary bi bi-arrow-90deg-right" [routerLink]="'/pub/'+d.pubId"
+                data-bs-dismiss="modal" aria-label="Close" ></button>
       </div>
     </div>
   </div>

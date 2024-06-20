@@ -240,11 +240,13 @@ public class PurchaseService {
         Long countSelected = 0L;
         for (UserEntity user : userRepository.findAllByRole(UserRole.DELIVERY)) {
             Long count = deliveryRepository.countAllByDealer(user);
-            if (count < countSelected) {
+            if (count < countSelected || selected==null) {
                 selected = user;
                 countSelected = count;
             }
         }
+
+
 
         return selected;
     }
@@ -351,8 +353,12 @@ public class PurchaseService {
                 total = total.add(detail.getTotal());
             }
             String datetime="";
+            String dealerName="";
             if(delivery.getDateTime()!=null) {
                 datetime=delivery.getDateTime().toString();
+            }
+            if(delivery.getDealer()!=null) {
+                dealerName=delivery.getDealer().getName() + " " + delivery.getDealer().getLastname();
             }
             list.add(new DeliveryDto(delivery.getId(),
                             sale.getDateTime().toString(),
@@ -363,7 +369,7 @@ public class PurchaseService {
                             buyer.getState().getName() + ", " + buyer.getDirection(),
                             datetime,
                             delivery.getDeliveryState(),
-                            delivery.getDealer().getName() + " " + delivery.getDealer().getLastname(),
+                            dealerName,
                             delivery.getDealer().getId()
                     )
             );

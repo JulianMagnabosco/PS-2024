@@ -28,8 +28,10 @@ export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
   @Input() isPut=false;
   @Output() deselectEvent= new EventEmitter<any>();
 
+  loading = false;
   notfound = false;
   draftDirty=false;
+  submited=false;
 
   showConditions = true
   showMaterials = true
@@ -428,6 +430,7 @@ export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
       action = this.service.postPublication(data);
     }
 
+    this.loading=true
     this.subs.add(action.subscribe(
         {
           next: value => {
@@ -436,6 +439,7 @@ export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
           },
           error: err => {
             cAlert("error", "Error inesperado en el servidor, revise su conexion a internet");
+            this.loading=false
           }
         }
       )
@@ -465,6 +469,7 @@ export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
 
     if(draft && indexes==""){
       cAlert("success", "Borrador guardado");
+      this.loading=false
       return
     }
 
@@ -474,6 +479,8 @@ export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
       this.service.postImages(data).subscribe(
         {
           next: value => {
+            this.loading=false
+            this.submited=true
             if(draft){
               cAlert("success", "Borrador guardado");
               return
@@ -487,6 +494,7 @@ export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
           },
           error: err => {
             cAlert("error", "Error inesperado en el servidor, revise su conexion a internet");
+            this.loading=false
           }
         }
       )

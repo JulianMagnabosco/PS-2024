@@ -27,7 +27,7 @@
   <div class="p-3 column-gap-2">
     <div class="position-absolute top-50 start-50 translate-middle"
          *ngIf="list.length<=0">
-      <h1 class="text-center "> Sin entregas por completar</h1>
+      <h1 class="text-center "> Sin entregas por en estado de {{state}}</h1>
     </div>
     <div class="row border-5 btn-border-orange rounded-5 p-2 bg-secondary-subtle mb-2" *ngFor="let i of list"
          data-bs-toggle="modal" data-bs-target="#exampleModal"
@@ -52,12 +52,12 @@
         <div class="mb-2">
           Comprador: <span class="text-secondary text-capitalize"> {{i.name}}</span>
         </div>
-        <div class="mb-2">
+        <div class="mb-2 text-clamp">
           Obras: <span class="text-secondary" *ngFor="let d of i.details; index as index">
             {{ index==0?'':',' }} ({{d.count}}){{d.name}}</span>
         </div>
-        <div class="mb-2">
-          Direccion: <span class="text-secondary" > {{ i.direction}}</span>
+        <div class="mb-2  text-clamp">
+          Direccion: <span class="text-secondary"> {{ i.direction}}</span>
         </div>
         <div class="mb-2">
           Telefono: <span class="text-secondary"> {{i.phone}}</span>
