@@ -43,6 +43,7 @@ import {FormPublicationComponent} from "./components/publications/form-publicati
 import {NotificationsComponent} from "./components/notifications/notifications.component";
 import {ItemPublicationComponent} from "./components/publications/item-publication/item-publication.component";
 import {StyledTextPipe} from "./pipes/styled-text.pipe";
+import {PaginationComponent} from "./components/pagination/pagination.component";
 
 
 @NgModule({
@@ -90,6 +91,7 @@ import {StyledTextPipe} from "./pipes/styled-text.pipe";
         FormsModule,
         ItemPublicationComponent,
         StyledTextPipe,
+        PaginationComponent,
     ],
   providers: [
     provideHttpClient(withInterceptors([authInterceptor])),

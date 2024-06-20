@@ -25,6 +25,7 @@
         <th scope="col">USUARIO</th>
         <th scope="col">EMAIL</th>
         <th scope="col">PUBLICACIONES</th>
+        <th scope="col">COMPRAS</th>
         <th scope="col">VENTAS</th>
         <th scope="col" class="text-center">ACCIONES</th>
       </tr>
@@ -35,7 +36,8 @@
         <td>{{ u.username }}</td>
         <td>{{ u.email }}</td>
         <td>{{ u.pubs }}</td>
-        <td>{{ u.buys}} / {{u.sells }}</td>
+        <td>{{ u.buys}}</td>
+        <td>{{ u.sells }}</td>
         <td class="text-center dropstart"><button class="btn btn-warning bi bi-search me-1" (click)="go(u.id)"></button>
           <a class="btn btn-secondary bi bi-three-dots" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           </a>
@@ -50,20 +52,9 @@
     <h1 class="text-center" *ngIf="list.length==0 ">Sin datos</h1>
   </div>
 
-  <div *ngIf="list.length>0 && list.length<countTotal">
-    <ul class="pagination justify-content-center ">
-      <li class="page-item ">
-        <button class="page-link btn-border-orange text-black" (click)="charge(page-1)">&laquo;</button>
-      </li>
-      <li class="page-item " *ngFor="let p of pages; ">
-        <button class="page-link " [ngClass]="p != page ? 'text-black border-orange':'text-black border-orange bg-orange'"
-                (click)="charge(p)" >{{ p + 1 }}
-        </button>
-      </li>
-      <li class="page-item ">
-        <button class="page-link btn-border-orange text-black" (click)="charge(page+1)">&raquo;</button>
-      </li>
-    </ul>
-  </div>
+
+  <ng-container *ngIf="pages>1">
+    <app-pagination (eventChange)="charge($event)" [pages]="pages" [page]="page"></app-pagination>
+  </ng-container>
 </div>
 <!--<div>{{form.value|json}}</div>-->

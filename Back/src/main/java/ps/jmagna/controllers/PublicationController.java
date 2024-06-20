@@ -2,6 +2,7 @@ package ps.jmagna.controllers;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
+import ps.jmagna.dtos.common.ListDto;
 import ps.jmagna.dtos.publication.*;
 import ps.jmagna.services.AuthService;
 import ps.jmagna.services.PublicationService;
@@ -50,12 +51,12 @@ public class PublicationController {
 
     //Busqueda
     @PostMapping("/search")
-    public SearchPubResponce getAll(@RequestBody SearchPubRequest searchPubRequest,
-                                    @AuthenticationPrincipal Jwt authentication) {
+    public ListDto<PublicationMinDto> getAll(@RequestBody SearchPubRequest searchPubRequest,
+                                             @AuthenticationPrincipal Jwt authentication) {
         return publicationService.getAll(searchPubRequest, authService.findUser(authentication));
     }
     @GetMapping("/recommend")
-    public SearchPubResponce getRecommended(@RequestParam int size,
+    public ListDto<PublicationMinDto>  getRecommended(@RequestParam int size,
                                     @AuthenticationPrincipal Jwt authentication) {
         return publicationService.getRecommended(size, authService.findUser(authentication));
     }

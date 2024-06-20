@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import ps.jmagna.dtos.common.ListDto;
 import ps.jmagna.dtos.publication.*;
 import ps.jmagna.entities.*;
 import ps.jmagna.enums.Difficulty;
@@ -156,9 +157,8 @@ public class PublicationService {
     }
 
     //Listar
-    public SearchPubResponce getRecommended(int size, UserEntity user) {
+    public ListDto<PublicationMinDto> getRecommended(int size, UserEntity user) {
 
-        SearchPubResponce responce = new SearchPubResponce();
 
         Pageable pageable = PageRequest.of(0, size);
 //        Page<PublicationEntity> all =
@@ -180,11 +180,7 @@ public class PublicationService {
             list.add(dto);
         }
 
-        responce.setList(list);
-
-        responce.setCountTotal(all.getTotalElements());
-
-        return responce;
+        return new ListDto<>(list, all.getTotalElements(), all.getTotalPages());
     }
 
     public static Specification<PublicationEntity> createRecomendedFilter() {
@@ -199,9 +195,8 @@ public class PublicationService {
         };
     }
 
-    public SearchPubResponce getAll(SearchPubRequest request, UserEntity user) {
+    public ListDto<PublicationMinDto> getAll(SearchPubRequest request, UserEntity user) {
 
-        SearchPubResponce responce = new SearchPubResponce();
 
         Sort sort;
         if(request.getSort().equals(SortType.CALF)){
@@ -227,11 +222,8 @@ public class PublicationService {
             list.add(dto);
         }
 
-        responce.setList(list);
 
-        responce.setCountTotal(all.getTotalElements());
-
-        return responce;
+        return new ListDto<>(list, all.getTotalElements(), all.getTotalPages());
     }
 
     public static Specification<PublicationEntity> createFilter(SearchPubRequest request, UserEntity user) {

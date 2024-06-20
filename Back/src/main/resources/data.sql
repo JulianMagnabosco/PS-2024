@@ -32,7 +32,7 @@ insert into users (username, password,date_time,role,
                    id_state,direction,number_dir,postal_num,floor,room,
                    cvu)
 values ('admin','$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2','2023-01-01 00:00:01','ADMIN',
-        'marcozlanuz@gmail.com','admin','admin', '351647', '449922', 'DNI',
+        'julian.magnabosco@gmail.com','admin','admin', '351647', '449922', 'DNI',
         2, 'Tercero Arriba', '333', '5001','1','2',
         '832032608255661')
        ,
@@ -55,8 +55,8 @@ values ('delivery','del','iver','$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe
         'a4@a', 'USER',1,'2023-09-02 00:00:01'),
         ('user5','a','a', '$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2',
         'a5@a', 'USER',1,'2023-09-04 00:00:01'),
-        ('user@a','a','a','$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2',
-        'a6@a', 'USER',1,'2023-11-01 00:00:01');
+        ('user@a','del2','iver','$2a$10$HYrDVRKzhpB0MRSSz5/lgeOiRdiFxD9bYuG3cFFe9tdDRcjjNUyX2',
+        'a6@a', 'DELIVERY',1,'2023-11-01 00:00:01');
 
 --notificaciones
 insert into notifications (deleted,id_user,date_time, code,title,text)

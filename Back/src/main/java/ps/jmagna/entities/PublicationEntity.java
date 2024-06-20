@@ -39,7 +39,7 @@ public class PublicationEntity {
     BigDecimal price;
     Long count;
     String video;
-    @Formula("(select round(coalesce(avg(h.points),0),2) from califications h where h.id_publication = id)")
+    @Formula("(select round(coalesce(avg(h.points),0),2) from califications h where h.id_publication = id )")
     BigDecimal calification ;
 
     @OneToMany(mappedBy="publication")

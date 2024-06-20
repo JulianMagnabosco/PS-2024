@@ -21,7 +21,7 @@ export class ListPublicationsMineComponent  implements OnInit,OnDestroy {
 
   list: PublicationMin[] = [
   ];
-  countTotal=1;
+  elements=1;
   size=3;
   page=0;
 
@@ -72,7 +72,7 @@ export class ListPublicationsMineComponent  implements OnInit,OnDestroy {
   }
 
   get pages(){
-    return Array(Math.ceil(this.countTotal/this.size)).fill(0).map((x,i)=>i);
+    return Array(Math.ceil(this.elements/this.size)).fill(0).map((x,i)=>i);
   }
   clear(){
     this.form.patchValue({
@@ -92,10 +92,10 @@ export class ListPublicationsMineComponent  implements OnInit,OnDestroy {
   charge(page: number){
     this.page=page;
 
-    if(page>Math.ceil(this.countTotal/this.size)-1){
-      this.page=Math.ceil(this.countTotal/this.size)-1;
+    if(this.page>Math.ceil(this.elements/this.size)-1){
+      this.page=Math.ceil(this.elements/this.size)-1;
     }
-    if(page<=0){
+    if(this.page<=0){
       this.page=0;
     }
 
@@ -134,7 +134,7 @@ export class ListPublicationsMineComponent  implements OnInit,OnDestroy {
       this.service.search(this.data).subscribe(
         {
           next: value => {
-            this.countTotal=value["countTotal"]
+            this.elements=value["elements"]
             this.list=value["list"]
           },
           error: err => {

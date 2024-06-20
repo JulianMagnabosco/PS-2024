@@ -5,6 +5,7 @@ import org.antlr.v4.runtime.Token;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
+import ps.jmagna.dtos.common.ListDto;
 import ps.jmagna.dtos.user.*;
 import ps.jmagna.entities.StateEntity;
 import ps.jmagna.entities.TokenEntity;
@@ -201,7 +202,7 @@ public class AuthService implements UserDetailsService {
   }
 
   //  Get
-  public ListUsersResponce getAll(String text, int page, int size){
+  public ListDto<UserMinDto> getAll(String text, int page, int size){
 
     ListUsersResponce responce = new ListUsersResponce();
     List<UserMinDto> list = new ArrayList<>();
@@ -218,11 +219,9 @@ public class AuthService implements UserDetailsService {
       }
     }
 
-    responce.setList(list);
-    responce.setCountTotal((int) listRaw.getTotalElements());
-    return responce;
+    return new ListDto<>(list, listRaw.getTotalElements(),listRaw.getTotalPages());
   }
-  public ListUsersResponce getDealers(){
+  public ListDto<UserMinDto> getDealers(){
     ListUsersResponce responce = new ListUsersResponce();
     List<UserMinDto> list = new ArrayList<>();
 
@@ -232,9 +231,7 @@ public class AuthService implements UserDetailsService {
       list.add(r);
     }
 
-    responce.setList(list);
-    responce.setCountTotal(list.size());
-    return responce;
+    return new ListDto<>(list, list.size(),1);
   }
   public List<StateEntity> getStates() {
     return stateRepository.findAll();

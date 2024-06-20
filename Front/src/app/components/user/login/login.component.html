@@ -33,7 +33,10 @@
 
 
     <div class="d-flex justify-content-center">
-      <button type="submit" class="btn btn-primary" [disabled]="form.invalid">INICIAR SESION</button>
+      <button type="submit" class="btn btn-primary"
+              [disabled]="form.invalid || service.loading">
+        <span class="spinner-border spinner-border-sm" *ngIf="form.valid && service.loading"></span>
+        INICIAR SESION</button>
     </div>
 
     <div class="d-flex justify-content-center gap-1" style="font-size: smaller">

@@ -20,11 +20,13 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
 
   list: PublicationMin[] = [
   ];
-  countTotal=1;
+  elements=1;
+  pages=0;
+
   size=12;
   page=0;
 
-  constructor(private fb: FormBuilder, private service: PublicationsService,
+  constructor(private fb: FormBuilder, protected service: PublicationsService,
               private router: Router, private activatedRoute: ActivatedRoute) {
     this.form = this.fb.group({
       text: [""],
@@ -70,9 +72,7 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
     this.subs.unsubscribe();
   }
 
-  get pages(){
-    return Array(Math.ceil(this.countTotal/this.size)).fill(0).map((x,i)=>i);
-  }
+
   clear(){
     this.form.patchValue({
       text: "",
@@ -91,10 +91,10 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
   charge(page: number){
     this.page=page;
 
-    if(page>Math.ceil(this.countTotal/this.size)-1){
-      this.page=Math.ceil(this.countTotal/this.size)-1;
+    if(this.page>this.pages-1){
+      this.page=this.pages-1;
     }
-    if(page<=0){
+    if(this.page<=0){
       this.page=0;
     }
 
@@ -133,7 +133,8 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
       this.service.search(this.data).subscribe(
         {
           next: value => {
-            this.countTotal=value["countTotal"]
+            this.elements=value["elements"]
+            this.pages=value["pages"]
             this.list=value["list"]
           },
           error: err => {

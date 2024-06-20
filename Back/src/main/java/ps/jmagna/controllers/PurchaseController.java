@@ -2,6 +2,7 @@ package ps.jmagna.controllers;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
+import ps.jmagna.dtos.common.ListDto;
 import ps.jmagna.dtos.purchase.DeliveryDto;
 import ps.jmagna.dtos.purchase.SellDto;
 import ps.jmagna.dtos.purchase.NotificationResponce;
@@ -46,23 +47,29 @@ public class PurchaseController {
     }
 
     @GetMapping("/purchases")
-    public List<SaleDto> getPurchases(@RequestParam String firstDate,
-                                      @RequestParam String lastDate,
-                                      @RequestParam(defaultValue = "") String name,
-                                      @AuthenticationPrincipal Jwt authentication) {
-        return service.getPurchases(firstDate,lastDate, name,authService.findUser(authentication));
+    public ListDto<SaleDto> getPurchases(@RequestParam String firstDate,
+                                         @RequestParam String lastDate,
+                                         @RequestParam(defaultValue = "") String name,
+                                         @RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(defaultValue = "10") int size,
+                                         @AuthenticationPrincipal Jwt authentication) {
+        return service.getPurchases(firstDate,lastDate, name,page,size,authService.findUser(authentication));
     }
     @GetMapping("/sells")
-    public List<SellDto> getSells(@RequestParam String firstDate,
+    public ListDto<SellDto> getSells(@RequestParam String firstDate,
                                   @RequestParam String lastDate,
                                   @RequestParam(defaultValue = "") String name,
+                                  @RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(defaultValue = "10") int size,
                                   @AuthenticationPrincipal Jwt authentication) {
-        return service.getSells(firstDate,lastDate, name ,authService.findUser(authentication));
+        return service.getSells(firstDate,lastDate, name ,page,size,authService.findUser(authentication));
     }
     @GetMapping("/deliveries")
-    public List<DeliveryDto> getDeliveries(@RequestParam(defaultValue = "PENDIENTE") DeliveryState state,
-                                                  @AuthenticationPrincipal Jwt authentication) {
-        return service.getDeliveries(state,authService.findUser( authentication));
+    public ListDto<DeliveryDto> getDeliveries(@RequestParam(defaultValue = "PENDIENTE") DeliveryState state,
+                                           @RequestParam(defaultValue = "0") int page,
+                                           @RequestParam(defaultValue = "10") int size,
+                                           @AuthenticationPrincipal Jwt authentication) {
+        return service.getDeliveries(state,page,size,authService.findUser( authentication));
     }
 
     @PutMapping("/delivery")

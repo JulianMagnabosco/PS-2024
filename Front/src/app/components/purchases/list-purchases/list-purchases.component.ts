@@ -26,9 +26,10 @@ export class ListPurchasesComponent implements OnInit,OnDestroy {
   ];
   selected?:Purchase;
 
-  countTotal=1;
-  size=3;
+  elements=1;
+  size=5;
   page=0;
+  pages=0;
 
   constructor(private service: PurchaseService,private authService: AuthService, private router: Router) {
     let datenow= new Date(Date.now());
@@ -43,19 +44,13 @@ export class ListPurchasesComponent implements OnInit,OnDestroy {
     this.subs.unsubscribe();
   }
 
-  get pages(){
-    return Array(Math.ceil(this.countTotal/this.size)).fill(0).map((x,i)=>i);
-  }
-  clear(){
-
-  }
   charge(page: number){
     this.page=page;
 
-    if(page>Math.ceil(this.countTotal/this.size)-1){
-      this.page=Math.ceil(this.countTotal/this.size)-1;
+    if(this.page>this.pages-1){
+      this.page=this.pages-1;
     }
-    if(page<=0){
+    if(this.page<=0){
       this.page=0;
     }
 
@@ -63,12 +58,12 @@ export class ListPurchasesComponent implements OnInit,OnDestroy {
     let lastDate1 = this.lastDate+"T23:59:59"
 
     this.subs.add(
-      this.service.getPurchases(firstDate1,lastDate1, this.text).subscribe(
+      this.service.getPurchases(firstDate1,lastDate1, this.text,this.page,this.size).subscribe(
         {
           next: value => {
-            // this.countTotal=value["countTotal"]
-            // this.list=value["list"]
-            this.list=value as Purchase[]
+            this.elements=value["elements"]
+            this.pages=value["pages"]
+            this.list=value["list"]
           },
           error: err => {
             console.log(err)

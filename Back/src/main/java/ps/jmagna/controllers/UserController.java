@@ -2,8 +2,10 @@ package ps.jmagna.controllers;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
+import ps.jmagna.dtos.common.ListDto;
 import ps.jmagna.dtos.user.ListUsersResponce;
 import ps.jmagna.dtos.user.UserDto;
+import ps.jmagna.dtos.user.UserMinDto;
 import ps.jmagna.entities.StateEntity;
 import ps.jmagna.enums.UserRole;
 import ps.jmagna.services.AuthService;
@@ -22,13 +24,13 @@ public class UserController {
     @Autowired
     private AuthService service;
     @GetMapping("/list")
-    public ListUsersResponce getAll(@RequestParam(required = false,defaultValue = "") String text,
+    public ListDto<UserMinDto> getAll(@RequestParam(required = false,defaultValue = "") String text,
                                     @RequestParam(required = false,defaultValue = "0") int page,
                                     @RequestParam(required = false,defaultValue = "5") int size) {
         return service.getAll(text,page,size);
     }
     @GetMapping("/dealers")
-    public ListUsersResponce getDealers() {
+    public ListDto<UserMinDto> getDealers() {
         return service.getDealers();
     }
     @GetMapping("/states")

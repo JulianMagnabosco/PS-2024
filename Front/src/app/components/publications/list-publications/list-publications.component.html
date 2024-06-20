@@ -118,23 +118,16 @@
       <app-item-publication [publication]="p"></app-item-publication>
     </div>
 
-    <h2 *ngIf="list.length<=0" class="text-center text-secondary text-break">No se encontraron publicaciones...</h2>
+    <h2 *ngIf="list.length<=0 && !service.loading" class="text-center text-secondary text-break">
+      No se encontraron publicaciones...
+    </h2>
+    <h2 *ngIf="list.length<=0 && service.loading" class="text-center text-secondary text-break">
+      <span class="spinner-border"></span> Cargando...
+    </h2>
   </div>
 <!-- paginacion -->
-  <div *ngIf="list.length>0 && list.length<countTotal">
-    <ul class="pagination justify-content-center ">
-      <li class="page-item ">
-        <button class="page-link btn-border-orange text-black" (click)="charge(page-1)">&laquo;</button>
-      </li>
-      <li class="page-item " *ngFor="let p of pages; ">
-        <button class="page-link " [ngClass]="p != page ? 'text-black border-orange':'text-black border-orange bg-orange'"
-                (click)="charge(p)" >{{ p + 1 }}
-        </button>
-      </li>
-      <li class="page-item ">
-        <button class="page-link btn-border-orange text-black" (click)="charge(page+1)">&raquo;</button>
-      </li>
-    </ul>
-  </div>
+  <ng-container *ngIf="pages>1">
+    <app-pagination (eventChange)="charge($event)" [pages]="pages" [page]="page"></app-pagination>
+  </ng-container>
 </div>
 <!--<div>{{form.value|json}}</div>-->

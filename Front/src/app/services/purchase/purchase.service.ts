@@ -21,18 +21,18 @@ export class PurchaseService {
     return this.client.post(this.baseUrl + "reg", data);
   }
 
-  getPurchases(firstDate: string, lastDate: string, data: string) {
-    return this.client.get(this.baseUrl + "purchases?firstDate=" + firstDate +
-      "&lastDate=" + lastDate + "&name=" + data);
+  getPurchases(firstDate: string, lastDate: string, data: string,page:number,size:number) {
+    return this.client.get<any>(this.baseUrl + "purchases?firstDate=" + firstDate +
+      "&lastDate=" + lastDate + "&name=" + data+ "&page=" + page+ "&size=" + size);
   }
 
-  getSells(firstDate: string, lastDate: string, data: string) {
-    return this.client.get(this.baseUrl + "sells?firstDate=" + firstDate +
-      "&lastDate=" + lastDate + "&name=" + data);
+  getSells(firstDate: string, lastDate: string, data: string,page:number,size:number) {
+    return this.client.get<any>(this.baseUrl + "sells?firstDate=" + firstDate +
+      "&lastDate=" + lastDate + "&name=" + data+ "&page=" + page+ "&size=" + size);
   }
 
-  getDeliveries(state:string) {
-    return this.client.get(this.baseUrl + "deliveries?state="+state);
+  getDeliveries(state:string,page:number,size:number) {
+    return this.client.get<any>(this.baseUrl + "deliveries?state="+state+ "&page=" + page+ "&size=" + size);
   }
 
   putDeliveries(data: any) {

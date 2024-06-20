@@ -1,6 +1,16 @@
 package ps.jmagna.services;
 
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import ps.jmagna.clients.CustomMPClient;
+import ps.jmagna.dtos.common.ListDto;
+import ps.jmagna.dtos.publication.SearchPubRequest;
 import ps.jmagna.dtos.purchase.DeliveryDetailDto;
 import ps.jmagna.dtos.purchase.DeliveryDto;
 import ps.jmagna.dtos.purchase.SellDto;
@@ -12,10 +22,7 @@ import ps.jmagna.dtos.purchase.PurchaseItemRequest;
 import ps.jmagna.dtos.purchase.PurchaseRequest;
 import ps.jmagna.dtos.purchase.PutDeliveryRequest;
 import ps.jmagna.entities.*;
-import ps.jmagna.enums.DeliveryState;
-import ps.jmagna.enums.SaleState;
-import ps.jmagna.enums.SecType;
-import ps.jmagna.enums.UserRole;
+import ps.jmagna.enums.*;
 import ps.jmagna.repository.*;
 import com.mercadopago.client.merchantorder.MerchantOrderClient;
 import com.mercadopago.client.payment.PaymentClient;
@@ -35,6 +42,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -202,11 +210,11 @@ public class PurchaseService {
             PublicationEntity publication =
                     publicationRepository.getReferenceById(Long.parseLong(item.getId()));
 
-            SaleDetailEntity detail = new SaleDetailEntity(null,
-                    sale,
-                    publication,
-                    item.getUnitPrice().multiply(BigDecimal.valueOf(item.getQuantity())),
-                    item.getQuantity());
+            SaleDetailEntity detail = new SaleDetailEntity();
+            detail.setSale(sale);
+            detail.setPublication(publication);
+            detail.setTotal(item.getUnitPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
+            detail.setCount(item.getQuantity());
             saleDetails.add(detail);
 
             publication.setCount(publication.getCount() - item.getQuantity());
@@ -240,13 +248,19 @@ public class PurchaseService {
 
         return selected;
     }
-    public List<SaleDto> getPurchases(String firstDate, String lastDate, String pubName, UserEntity user) {
+    public ListDto<SaleDto> getPurchases(String firstDate, String lastDate, String pubName,
+                                         int page, int size,
+                                         UserEntity user) {
+
+        Sort sort = Sort.by("dateTime").descending();
+
+
+        LocalDateTime l1 = LocalDateTime.parse(firstDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+        LocalDateTime l2 = LocalDateTime.parse(lastDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+        List<SaleEntity> all = saleRepository.findAllByDateTimeBetweenAndUser(l1, l2, user  ,sort);
+
         List<SaleDto> list = new ArrayList<>();
-        for (SaleEntity sale : saleRepository.findAllByDateTimeBetweenAndUser(
-                LocalDateTime.parse(firstDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
-                LocalDateTime.parse(lastDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
-                user
-        )) {
+        for (SaleEntity sale : all) {
 //            if (!user.equals(sale.getUser().getId())) {
 //                continue;
 //            }
@@ -285,12 +299,14 @@ public class PurchaseService {
                 );
             }
         }
-
-        list.sort(Comparator.comparing(SaleDto::getDateTime).reversed());
-        return list;
+        int firstIndex=Integer.min(list.size(), page*size);
+        int lastIndex=Integer.min(list.size(), (page+1)*size);
+        int pages = BigDecimal.valueOf(list.size()).divide(BigDecimal.valueOf(size), RoundingMode.UP ).intValue();
+        return new ListDto<>(list.subList(firstIndex,lastIndex), list.size(), pages);
 
     }
-    public List<DeliveryDto> getDeliveries(DeliveryState state, UserEntity user) {
+    public ListDto<DeliveryDto> getDeliveries(DeliveryState state,
+                                              int page, int size, UserEntity user) {
         List<DeliveryDto> list = new ArrayList<>();
         List<DeliveryEntity> entities;
         if(user.getRole().equals(UserRole.ADMIN)){
@@ -359,10 +375,13 @@ public class PurchaseService {
             list.sort(Comparator.comparing(DeliveryDto::getSaleDateTime).reversed());
         }
 
-        return list;
+        int firstIndex=Integer.min(list.size(), page*size);
+        int lastIndex=Integer.min(list.size(), (page+1)*size);
+        int pages = BigDecimal.valueOf(list.size()).divide(BigDecimal.valueOf(size), RoundingMode.UP ).intValue();
+        return new ListDto<>(list.subList(firstIndex,lastIndex), list.size(), pages);
 
     }
-    DeliveryDto getDeliveryDto(DeliveryEntity delivery) {
+    DeliveryDto mapDeliveryDto(DeliveryEntity delivery) {
         SaleEntity sale = delivery.getSale();
         UserEntity buyer = delivery.getSale().getUser();
 
@@ -404,7 +423,8 @@ public class PurchaseService {
                 delivery.getDealer().getId()
         );
     }
-    public List<SellDto> getSells(String firstDate, String lastDate, String buyerName, UserEntity user) {
+    public ListDto<SellDto> getSells(String firstDate, String lastDate, String buyerName,
+                                  int page, int size, UserEntity user) {
         List<SellDto> list = new ArrayList<>();
         for (SaleDetailEntity detail : saleDetailRepository.findAllBySale_DateTimeBetweenAndPublication_User(
                 LocalDateTime.parse(firstDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
@@ -445,7 +465,11 @@ public class PurchaseService {
 
         }
         list.sort(Comparator.comparing(SellDto::getDateTime).reversed());
-        return list;
+
+        int firstIndex=Integer.min(list.size(), page*size);
+        int lastIndex=Integer.min(list.size(), (page+1)*size);
+        int pages = BigDecimal.valueOf(list.size()).divide(BigDecimal.valueOf(size), RoundingMode.UP ).intValue();
+        return new ListDto<>(list.subList(firstIndex,lastIndex), list.size(), pages);
     }
 
     //Put Delete
@@ -462,7 +486,7 @@ public class PurchaseService {
 
         deliveryRepository.save(delivery);
 
-        return getDeliveryDto(delivery);
+        return mapDeliveryDto(delivery);
     }
     public boolean deleteSell(Long id, UserEntity user) {
 

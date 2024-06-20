@@ -15,8 +15,8 @@ export class LoginComponent implements OnInit,OnDestroy {
   private subs: Subscription = new Subscription();
   form: FormGroup = this.fb.group({});
 
-  constructor(private fb: FormBuilder, private service: AuthService,
-              private userService: UserService,private router: Router) {
+  constructor(private fb: FormBuilder, protected service: AuthService,
+              private userService: UserService, private router: Router) {
     this.form = this.fb.group({
       username: ["", [Validators.required, Validators.maxLength(50 )]],
       password: ["", [Validators.required, Validators.maxLength(50)]]

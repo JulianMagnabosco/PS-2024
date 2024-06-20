@@ -39,7 +39,7 @@ export class CartComponent implements OnInit,OnDestroy {
       this.service.getCart().subscribe(
         {
           next: value => {
-            // this.countTotal=value["countTotal"]
+            // this.elements=value["elements"]
             // this.list=value["list"]
             console.log(value)
             this.list=value as Cart[]

@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit,OnDestroy{
   private subs: Subscription = new Subscription();
   list: PublicationMin[] = [
   ];
-  countTotal=1;
+  elements=1;
   constructor(public service:AuthService, private pubService: PublicationsService,
               private router: Router) {
 
@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit,OnDestroy{
       this.pubService.getRecomm(10).subscribe(
         {
           next: value => {
-            this.countTotal=value["countTotal"]
+            this.elements=value["elements"]
             this.list=value["list"]
           },
           error: err => {

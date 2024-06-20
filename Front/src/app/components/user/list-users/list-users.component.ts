@@ -21,9 +21,10 @@ export class ListUsersComponent implements OnInit,OnDestroy {
   list: UserMin[] = [
   ];
 
-  countTotal=1;
-  size=10;
+  elements=1;
+  size=8;
   page=0;
+  pages=0;
   constructor(private fb: FormBuilder, private service: UserService, private router: Router) {
     this.form = this.fb.group({
       text: ["", [Validators.maxLength(200 )]]
@@ -36,18 +37,16 @@ export class ListUsersComponent implements OnInit,OnDestroy {
     this.subs.unsubscribe();
   }
 
-  get pages(){
-    return Array(Math.ceil(this.countTotal/this.size)).fill(0).map((x,i)=>i);
-  }
 
   charge(page: number){
     this.page=page;
-    if(page<0){
-      this.page=0;
+
+    if(this.page>this.pages-1){
+      this.page=this.pages-1;
     }
 
-    if(page>Math.ceil(this.countTotal/this.size)-1){
-      this.page=Math.ceil(this.countTotal/this.size)-1;
+    if(this.page<0){
+      this.page=0;
     }
 
     let data = {text:this.form.controls["text"].value,
@@ -59,7 +58,8 @@ export class ListUsersComponent implements OnInit,OnDestroy {
       this.service.getAll(data).subscribe(
         {
           next: value => {
-            this.countTotal=value["countTotal"]
+            this.elements=value["elements"]
+            this.pages=value["pages"]
             this.list=value["list"]
           },
           error: err => {

@@ -126,7 +126,7 @@
     <h2 *ngIf="list.length<=0" class="text-center text-secondary text-break">No se encontraron publicaciones...</h2>
   </div>
 
-  <div *ngIf="list.length>0 && list.length<countTotal" class="fixed-bottom">
+  <div *ngIf="list.length>0 && list.length<elements" class="fixed-bottom">
     <ul class="pagination justify-content-center ">
       <li class="page-item ">
         <button class="page-link btn-border-orange text-black" (click)="charge(page-1)">Previous</button>

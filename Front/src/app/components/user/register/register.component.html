@@ -1,6 +1,6 @@
 <div class="container mt-4 p-2 bg-light border-gradient middle-body" style="max-width: 25rem">
   <h2 class="text-center mb-2 text-uppercase space-text">Regístrate</h2>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="d-flex flex-column row-gap-3 p-2">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="d-flex flex-column row-gap-2 p-2">
     <div class="input-float">
       <label for="nameInput">Nombre de usuario</label>
       <input type="text" formControlName="name" id="nameInput" placeholder=""
@@ -90,7 +90,9 @@
     </div>
 
     <div class="d-flex justify-content-center">
-      <button type="submit" class="btn btn-primary" [disabled]="form.invalid || !tips.okEmail || !tips.okName">
+      <button type="submit" class="btn btn-primary"
+              [disabled]="form.invalid || !tips.okEmail || !tips.okName || service.loading">
+        <span class="spinner-border spinner-border-sm" *ngIf="form.valid && service.loading"></span>
         CREAR CUENTA
       </button>
     </div>

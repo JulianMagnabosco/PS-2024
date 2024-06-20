@@ -44,7 +44,7 @@ export class CommentsComponent implements OnChanges, OnDestroy{
   //   }],
   //   deleted:false
   // }];
-  countTotal:number=0;
+  elements:number=0;
   textList:string[]=[];
 
   constructor(private service: CommentService) {
@@ -64,8 +64,8 @@ export class CommentsComponent implements OnChanges, OnDestroy{
       this.service.getAll(this.idPub).subscribe(
         {
           next: value => {
-            this.countTotal=value["countTotal"]
-            this.textList.fill("",0,this.countTotal-1)
+            this.elements=value["elements"]
+            this.textList.fill("",0,this.elements-1)
             this.list=value["list"]
           }
         }

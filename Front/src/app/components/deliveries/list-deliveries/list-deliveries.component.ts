@@ -21,9 +21,10 @@ export class ListDeliveriesComponent implements OnInit,OnDestroy {
   selected?:Delivery;
 
   state="PENDIENTE";
-  countTotal=1;
+  elements=1;
   size=3;
   page=0;
+  pages=0;
 
   constructor(private service: PurchaseService,private authService: AuthService, private router: Router) {
   }
@@ -34,35 +35,30 @@ export class ListDeliveriesComponent implements OnInit,OnDestroy {
     this.subs.unsubscribe();
   }
 
-  get pages(){
-    return Array(Math.ceil(this.countTotal/this.size)).fill(0).map((x,i)=>i);
-  }
   clear(){
 
   }
   charge(page: number){
     this.page=page;
 
-    if(page>Math.ceil(this.countTotal/this.size)-1){
-      this.page=Math.ceil(this.countTotal/this.size)-1;
+    if(this.page>this.pages-1){
+      this.page=this.pages-1;
     }
-    if(page<=0){
+    if(this.page<=0){
       this.page=0;
     }
 
     this.subs.add(
-      this.service.getDeliveries(this.state).subscribe(
+      this.service.getDeliveries(this.state,this.page,this.size).subscribe(
         {
           next: value => {
-            // this.countTotal=value["countTotal"]
-            // this.list=value["list"]
-            this.list=value as Delivery[]
+            this.elements=value["elements"]
+            this.pages=value["pages"]
+            this.list=value["list"]
           },
           error: err => {
             console.log(err)
-
-
-              cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
+            cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
           }
         }
       )
