@@ -76,11 +76,13 @@ public class PublicationService {
 
         publicationRepository.saveAndFlush(publication);
 
-        notificationService.sendNotification("pub_"+publication.getId(),
-                "Nueva obra publicada",
-                "Se publico la obra:"+publication.getName(),
-                "Se publico la obra:"+publication.getName(),
-                user);
+        if (!publication.isDraft()){
+            notificationService.sendNotification("pub_"+publication.getId(),
+                    "Nueva obra publicada",
+                    "Se publico la obra:"+publication.getName(),
+                    "Se publico la obra:"+publication.getName(),
+                    user);
+        }
 
         return get(publication.getId(), user);
     }
