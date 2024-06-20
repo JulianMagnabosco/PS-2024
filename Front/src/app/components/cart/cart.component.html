@@ -12,7 +12,8 @@
         <div class="row border-5 border-orange rounded-5 p-2 bg-secondary-subtle mb-2"
               *ngFor="let c of list; index as i">
           <div class="position-relative">
-            <button class="rounded-circle btn btn-danger position-absolute top-0 end-0" (click)="remove(c)">X</button>
+            <button class="rounded-circle btn btn-danger bi bi-x-lg
+            position-absolute top-0 end-0" (click)="remove(c)"></button>
           </div>
           <div class="col-auto align-content-center h-100">
             <img class="rounded-2 h-100" style="max-height: 8rem" [src]="c.imageUrl" [alt]="c.imageUrl" >
@@ -21,18 +22,18 @@
             <div>
               <span class="fw-bold">Precio:</span> ${{c.price || 0}}
             </div>
-            <div class="d-sm-flex align-items-center">
+            <div class="d-sm-flex align-items-center" [class.text-danger]="c.count<c.selectedCount">
               <div class="col-auto fw-bold">
                 Unidades:&nbsp;
               </div>
               <div class="col-auto d-flex">
                 <input class="form-control form-control-sm" type="number"
                        style="min-width: 50px; max-width: 80px"
-                       [(ngModel)]="listCounts[i]" min="1">
-                <div *ngIf="listCounts[i]!=c.selectedCount">
+                       [(ngModel)]="listCounts[i]" min="1" [max]="c.count">
+                <ng-container *ngIf="listCounts[i]!=c.selectedCount">
                   <button class="btn btn-secondary bi bi-check" (click)="update(listCounts[i],c)"></button>
-                  <button class="btn btn-secondary" (click)="notupdate(i,c)">X</button>
-                </div>
+                  <button class="btn btn-secondary bi bi-x" (click)="notupdate(i,c)"></button>
+                </ng-container>
               </div>
               <div class="col-auto">
                 &nbsp;de {{c.count || 0}} disponibles
@@ -40,7 +41,8 @@
             </div>
 
             <div>
-              <a class="link-danger" style="cursor: pointer" (click)="buyAlone(c)">Comprar por separado</a>
+              <a class="link-danger" style="cursor: pointer" (click)="buyAlone(c)"
+               *ngIf="c.count>c.selectedCount">Comprar por separado</a>
             </div>
           </div>
 
@@ -57,9 +59,10 @@
             Total: <span class="fw-bold">ARS$ {{total}}</span>
           </div>
           <div>
-            <button class="btn btn-primary w-100" (click)="buy()">
+            <button class="btn btn-primary w-100" (click)="buy()" [disabled]="!checkCanBuy">
               Comprar
             </button>
+            <div class="text-danger" *ngIf="!checkCanBuy">*Revise que haya stock en todos los elementos a comprar.</div>
           </div>
         </div>
       </div>

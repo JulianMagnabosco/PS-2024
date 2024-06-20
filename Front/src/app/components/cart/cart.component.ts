@@ -59,6 +59,9 @@ export class CartComponent implements OnInit,OnDestroy {
   }
 
   update(count:number, cart:Cart){
+    if(count==null){
+      return
+    }
     let data = {
       pubId: cart.id,
       value: count
@@ -142,5 +145,12 @@ export class CartComponent implements OnInit,OnDestroy {
   }
   remove(cart:Cart){
     this.update(0,cart)
+  }
+
+  get checkCanBuy(){
+    for(let item of this.list){
+      if(item.count<item.selectedCount) return false;
+    }
+    return true;
   }
 }

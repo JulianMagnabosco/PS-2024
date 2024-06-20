@@ -14,7 +14,7 @@ import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Publication} from "../../../models/publication/publication";
 import {PublicationsService} from "../../../services/publications/publications.service";
 import {Router} from "@angular/router";
-import {cAlert} from "../../../services/custom-alert/custom-alert.service";
+import {cAlert, cConfirm} from "../../../services/custom-alert/custom-alert.service";
 import {Section} from "../../../models/publication/section";
 import {AuthService} from "../../../services/user/auth.service";
 
@@ -375,7 +375,22 @@ export class FormPublicationComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   //guardar
-  onSubmit(draft:boolean) {
+  onSubmit(draft:boolean){
+    let confirm = "";
+    if(draft){
+      confirm= "¿Guardar borrador?";
+    }else if(this.isPut) {
+      confirm="¿Guardar obra?";
+    }else {
+      confirm="¿Publicar obra?";
+    }
+    cConfirm(confirm).then(value => {
+      if (value.isConfirmed){
+        this.submitForm(draft);
+      }
+    });
+  }
+  submitForm(draft:boolean) {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
     }

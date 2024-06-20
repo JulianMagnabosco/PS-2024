@@ -98,13 +98,17 @@
                [class.border-danger]="(form.controls['name'].touched || form.controls['name'].dirty)
                 && form.controls['name'].invalid">
             <label class="fs-6 fw-bold " for="nameInput">Nombre</label>
-            <input type="text" formControlName="name"  id="nameInput" placeholder=""
+            <input type="text" formControlName="name"  id="nameInput" placeholder="" maxlength="200"
                    [class.fst-italic]="form.controls['name'].value!=user.name">
 
 
-            <div class="invalid-feedback" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)
-      && form.controls['name'].hasError('maxlenght')">
-              El nombre es muy largo.
+            <div class="invalid-feedback-c" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)">
+              <div *ngIf="form.controls['name'].hasError('maxlenght')">
+                El nombre es muy largo.
+              </div>
+              <div *ngIf="form.controls['name'].hasError('pattern')">
+                El nombre no debe contener dígitos o caracteres especiales.
+              </div>
             </div>
           </div>
         </div>
@@ -114,12 +118,17 @@
                [class.border-danger]="(form.controls['lastname'].touched || form.controls['lastname'].dirty)
                 && form.controls['lastname'].invalid">
             <label class="fs-6 fw-bold " for="lastnameInput">Apellido/s</label>
-            <input type="text" formControlName="lastname"  id="lastnameInput" placeholder=""
+            <input type="text" formControlName="lastname"  id="lastnameInput" placeholder="" maxlength="200"
                    [class.fst-italic]="form.controls['lastname'].value!=user.lastname">
 
-            <div class="invalid-feedback" *ngIf="(form.controls['lastname'].touched || form.controls['lastname'].dirty)
-      && form.controls['lastname'].hasError('maxlenght')">
-              El apellido es muy largo.
+            <div class="invalid-feedback-c"
+                 *ngIf="(form.controls['lastname'].touched || form.controls['lastname'].dirty)">
+              <div *ngIf="form.controls['lastname'].hasError('maxlenght')">
+                El apellido es muy largo.
+              </div>
+              <div *ngIf="form.controls['lastname'].hasError('pattern')">
+                El apellido no debe contener dígitos o caracteres especiales.
+              </div>
             </div>
           </div>
         </div>
