@@ -35,8 +35,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static ps.jmagna.services.PublicationService.compressBytes;
 import static ps.jmagna.services.PublicationService.decompressBytes;
@@ -314,6 +316,9 @@ public class AuthService implements UserDetailsService {
       throw new IllegalArgumentException("Usuario incorrecto");
     }
     UserEntity newUser = modelMapper.map(request, UserEntity.class);
+    newUser.setName(capitalize(newUser.getName()));
+    newUser.setLastname(capitalize(newUser.getLastname()));
+    newUser.setDirection(capitalize(newUser.getDirection()));
     newUser.setRole(user.getRole());
     newUser.setDateTime(user.getDateTime());
 
@@ -332,6 +337,15 @@ public class AuthService implements UserDetailsService {
     }
 
     return mapUserDto(repository.save(newUser),true);
+  }
+
+  String capitalize(String input){
+    if (input == null || input.isEmpty()) {
+      return null;
+    }
+    return Arrays.stream(input.split("\\s+"))
+            .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
+            .collect(Collectors.joining(" "));
   }
 
   public UserDto putRole(Long id, UserRole role, Jwt authentication) {

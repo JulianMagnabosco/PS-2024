@@ -270,12 +270,17 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .middle-body{
+  position: static;
+}
+@media only screen and (min-width: 576px) {
+  .middle-body{
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%,-50%) translateY(-56px);
-}
 
+}
+}
 .pub-hover{
   transition: background-color 250ms;
   color: transparent;

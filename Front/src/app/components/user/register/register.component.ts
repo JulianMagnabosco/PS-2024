@@ -26,9 +26,11 @@ export class RegisterComponent implements OnInit,OnDestroy {
 
   constructor(private fb: FormBuilder, protected service: AuthService, private router: Router) {
     this.form = this.fb.group({
-      name: ["", [Validators.required, Validators.maxLength(50 ), this.checkName]],
-      email: ["", [Validators.required, Validators.email]],
-      password: ["", [Validators.required, Validators.maxLength(50), Validators.minLength(8)]],
+      name: ["", [Validators.required, Validators.pattern("[a-zA-Z0-9_]*"),
+                  Validators.maxLength(50 )]],
+      email: ["", [Validators.required, Validators.email, Validators.maxLength(50 )]],
+      password: ["", [Validators.required, Validators.pattern("[a-zA-Z0-9^\s]*"),
+        Validators.maxLength(50), Validators.minLength(8)]],
       password2: ["", [Validators.required, Validators.maxLength(50)]],
       terms: [false, [Validators.requiredTrue]]
     },{
@@ -107,10 +109,10 @@ export class RegisterComponent implements OnInit,OnDestroy {
     let confirmPass = group.get('password2')?.value
     return pass === confirmPass ? null : { notSame: true }
   }
-  checkName: ValidatorFn = (group: AbstractControl):  ValidationErrors | null => {
-    const conditionRegex = /([^a-zA-Z0-9_\.\/\(\)\-\s])/g;
-    return !conditionRegex.test(group.value) ? null : { invalidName: true }
-  }
+  // checkName: ValidatorFn = (group: AbstractControl):  ValidationErrors | null => {
+  //   const conditionRegex = /([^a-zA-Z0-9_.\/()\-\s])/g;
+  //   return !conditionRegex.test(group.value) ? null : { invalidName: true }
+  // }
   //
   // createValidator(): AsyncValidatorFn {
   //   return (control: AbstractControl): Observable<ValidationErrors|null> => {
