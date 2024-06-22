@@ -1,25 +1,31 @@
 version: '3'
 
 services:
-
-  db:
-    container_name: db
-    image: postgres:15.4
+  ngrokcont:
+    container_name: ngrokcont
+    image: ngrok/ngrok
+    networks:
+      - backnet
     environment:
-      POSTGRES_DB: mydatabase
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: pass
+      - NGROK_AUTHTOKEN=2e3vC4sCSzrWru6zCsGTTIDznE1_7BGy49hUKFVHbq83bAhnw
+    command: http backclh:8080
     ports:
-      - "5432:5432"
+      - "4040:4040"
+
 
   backclh:
     container_name: backclh
     build:
       context: .
       dockerfile: Dockerfile
+    networks:
+      - backnet
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/mydatabase
+      - ngrok.url=http://ngrokcont:4040/api/tunnels
     depends_on:
-      - db
+      - ngrokcont
     ports:
       - "8080:8080"
+
+networks:
+  backnet:

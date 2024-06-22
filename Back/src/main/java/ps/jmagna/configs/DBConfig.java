@@ -42,13 +42,13 @@ public class DBConfig implements ApplicationListener<ApplicationReadyEvent> {
     public boolean test() throws IOException {
 
         List<Path> images = Stream.of(
-                        Objects.requireNonNull(new File("src/main/resources/test-img").listFiles()))
+                        Objects.requireNonNull(new File("src/main/resources/static/test-img").listFiles()))
                 .filter(file -> !file.isDirectory())
                 .map(File::toPath)
                 .collect(Collectors.toList());
 
         List<Path> userImages = Stream.of(
-                        Objects.requireNonNull(new File("src/main/resources/test-users").listFiles()))
+                        Objects.requireNonNull(new File("src/main/resources/static/test-users").listFiles()))
                 .filter(file -> !file.isDirectory())
                 .map(File::toPath)
                 .collect(Collectors.toList());

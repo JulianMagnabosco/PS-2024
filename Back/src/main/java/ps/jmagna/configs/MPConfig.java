@@ -17,6 +17,9 @@ public class MPConfig {
 
     @Value("${mp.access-token}")
     String accessToken;
+
+    @Value("${ngrok.url}")
+    String ngrokurl;
     @Bean
     public String ngrokForMP(){
 
@@ -25,7 +28,7 @@ public class MPConfig {
         String httpTunnel = "";
 
         try {
-            String responseData = restTemplate.getForObject("http://localhost:4040/api/tunnels", String.class);
+            String responseData = restTemplate.getForObject(ngrokurl, String.class);
             if (responseData != null) {
                 httpTunnel = responseData.substring(
                         responseData.indexOf(":",responseData.indexOf("public_url"))+2,
