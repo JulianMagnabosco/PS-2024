@@ -1,5 +1,6 @@
 package ps.jmagna.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Formula;
 import ps.jmagna.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -56,11 +57,12 @@ public class UserEntity implements UserDetails {
     String cvu;
 
 
-    @Formula("(select count(p.id) from publications p where p.id_user = id)")
+    @Formula("(SELECT COUNT(p.id) FROM publications p WHERE p.id_user = id)")
     int pubs;
-    @Formula("(select count(s.id) from sale_details s join publications p where p.id_user = id and s.id_publication = p.id)")
+    @Formula("(SELECT COUNT(s.id) FROM publications p " +
+            "JOIN sale_details s ON p.id = s.id_publication WHERE p.id_user = id)")
     int sells;
-    @Formula("(select count(s.id) from sales s where s.id_user = id)")
+    @Formula("(SELECT COUNT(s.id) FROM sales s WHERE s.id_user = id)")
     int buys;
 
     public UserEntity(String username, String email, String password, UserRole role, LocalDateTime dateTime) {

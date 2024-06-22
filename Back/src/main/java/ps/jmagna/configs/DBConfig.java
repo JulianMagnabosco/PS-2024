@@ -89,7 +89,7 @@ public class DBConfig implements ApplicationListener<ApplicationReadyEvent> {
         try {
             test();
         }catch (Exception e){
-            throw new RuntimeException(e.getMessage());
+            System.out.println(e);
         }
     }
 }

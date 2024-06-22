@@ -1,39 +1,25 @@
 version: '3'
 
 services:
-  ngrokcont:
-    container_name: ngrokcont
-    image: ngrok/ngrok
-    environment:
-      - NGROK_AUTHTOKEN=2e3vC4sCSzrWru6zCsGTTIDznE1_7BGy49hUKFVHbq83bAhnw
-    command: http 8080
-    ports:
-      - "4040:4040"
-      - "8080:8080"
 
   db:
     container_name: db
-    image: mysql:8
+    image: postgres:15.4
     environment:
-      - MYSQL_PASSWORD=1234
-      - MYSQL_ROOT_PASSWORD=1234
-      - MYSQL_DATABASE=clientsdb
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: pass
     ports:
-      - "3306:3306"
+      - "5432:5432"
 
-  api:
-    container_name: api-parcial
+  backclh:
+    container_name: backclh
     build:
       context: .
       dockerfile: Dockerfile
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/clientsdb
-      - DIRECCION_API=http://external-api:8080
-      - SERVER_PORT=8081
-      - APP_URL=http://localhost:8080
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/mydatabase
     depends_on:
-      - ngrokcont
       - db
     ports:
-      - "8081:8081"
-    restart: on-failure
+      - "8080:8080"
