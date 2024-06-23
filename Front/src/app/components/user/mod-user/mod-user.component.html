@@ -14,7 +14,7 @@
       <div class="row mb-3">
         <div class="col-md-8">
           <div class="input-float bg-secondary-subtle mb-3"
-               [class.border-danger]="(form.controls['username'].touched || form.controls['username'].dirty)
+               [class.b-danger]="(form.controls['username'].touched || form.controls['username'].dirty)
                 && form.controls['username'].invalid">
             <label class="fs-6 fw-bold" for="usernameInput">Nombre de usuario</label>
             <input type="text" readonly formControlName="username" id="usernameInput" placeholder=""
@@ -33,7 +33,7 @@
           </div>
 
           <div class="input-float mb-3 bg-secondary-subtle"
-               [class.border-danger]="(form.controls['email'].touched || form.controls['email'].dirty)
+               [class.bg-danger-subtle]="(form.controls['email'].touched || form.controls['email'].dirty)
                 && form.controls['email'].invalid">
             <label class="fs-6 fw-bold " for="emailInput">Email</label>
             <input readonly type="text" formControlName="email"  id="emailInput" placeholder=""
@@ -95,7 +95,7 @@
       <div class="row justify-content-between">
         <div class="col-6 p-2">
           <div class="input-float"
-               [class.border-danger]="(form.controls['name'].touched || form.controls['name'].dirty)
+               [class.bg-danger-subtle]="(form.controls['name'].touched || form.controls['name'].dirty)
                 && form.controls['name'].invalid">
             <label class="fs-6 fw-bold " for="nameInput">Nombre</label>
             <input type="text" formControlName="name"  id="nameInput" placeholder="" maxlength="200"
@@ -115,7 +115,7 @@
 
         <div class="col-6 p-2">
           <div class="input-float"
-               [class.border-danger]="(form.controls['lastname'].touched || form.controls['lastname'].dirty)
+               [class.bg-danger-subtle]="(form.controls['lastname'].touched || form.controls['lastname'].dirty)
                 && form.controls['lastname'].invalid">
             <label class="fs-6 fw-bold " for="lastnameInput">Apellido/s</label>
             <input type="text" formControlName="lastname"  id="lastnameInput" placeholder="" maxlength="200"
@@ -137,7 +137,7 @@
       <div class="row justify-content-between">
         <div class="col-sm-10 col-md-8 p-2">
           <div class="input-float"
-               [class.border-danger]="(form.controls['phone'].touched || form.controls['phone'].dirty)
+               [class.bg-danger-subtle]="(form.controls['phone'].touched || form.controls['phone'].dirty)
                 && form.controls['phone'].invalid">
             <label class="fs-6 fw-bold " for="phoneInput">Teléfono</label>
             <input type="text" formControlName="phone"  id="phoneInput" placeholder=""
@@ -153,7 +153,7 @@
       <div class="row justify-content-start mb-3">
         <div class="col-md-3 col-6 p-2">
           <div class="input-float"
-               [class.border-danger]="(form.controls['dniType'].touched || form.controls['dniType'].dirty)
+               [class.bg-danger-subtle]="(form.controls['dniType'].touched || form.controls['dniType'].dirty)
                 && form.controls['dniType'].invalid">
             <label class="fs-6 fw-bold " for="dniTypeInput">Tipo de Documento</label>
             <select formControlName="dniType" id="dniTypeInput"
@@ -168,7 +168,7 @@
 
         <div class="col-md-6 col-sm-8 p-2">
           <div class="input-float"
-               [class.border-danger]="(form.controls['dni'].touched || form.controls['dni'].dirty)
+               [class.bg-danger-subtle]="(form.controls['dni'].touched || form.controls['dni'].dirty)
                 && form.controls['dni'].invalid">
             <label class="fs-6 fw-bold " for="dniInput">Documento</label>
             <input type="text" formControlName="dni"  id="dniInput" placeholder=""
@@ -188,7 +188,7 @@
       <div class="row justify-content-between mb-2">
         <div class="col-md-3 p-2">
           <div class="input-float"
-               [class.border-danger]="(form.controls['state'].touched || form.controls['state'].dirty)
+               [class.bg-danger-subtle]="(form.controls['state'].touched || form.controls['state'].dirty)
                 && form.controls['state'].invalid">
             <label class="fs-6 fw-bold " for="stateInput">Provincia</label>
             <select formControlName="state" id="stateInput">
@@ -200,23 +200,30 @@
 
         <div class="col-sm p-2">
           <div class="input-float"
-               [class.border-danger]="(form.controls['direction'].touched || form.controls['direction'].dirty)
-                && form.controls['direction'].invalid">
+               [class.bg-danger-subtle]="(form.controls['direction'].touched || form.controls['direction'].dirty)
+                && form.controls['direction'].invalid"
+               [class.bg-secondary-subtle]="(form.controls['direction'].disabled)">
             <label class="fs-6 fw-bold " for="directionInput">Dirección o calle</label>
             <input type="text" formControlName="direction"  id="directionInput" placeholder=""
                    [class.fst-italic]="form.controls['direction'].value!=user.direction">
+            <ng-container *ngIf="(form.controls['direction'].touched || form.controls['direction'].dirty)">
+              <div class="invalid-feedback-c" *ngIf="form.controls['direction'].hasError('pattern')">
+                Dirección invalida.
+              </div>
+            </ng-container>
           </div>
         </div>
 
         <div class="col-6 col-sm-3 p-2">
           <div class="input-float"
-               [class.border-danger]="(form.controls['numberDir'].touched || form.controls['numberDir'].dirty)
-                && form.controls['numberDir'].invalid">
+               [class.bg-danger-subtle]="(form.controls['numberDir'].touched || form.controls['numberDir'].dirty)
+                && form.controls['numberDir'].invalid"
+               [class.bg-secondary-subtle]="(form.controls['numberDir'].disabled)">
             <label class="fs-6 fw-bold " for="numberDirInput">Número</label>
             <input type="text" formControlName="numberDir"  id="numberDirInput" placeholder=""
                    [class.fst-italic]="form.controls['numberDir'].value!=user.numberDir">
             <ng-container *ngIf="(form.controls['numberDir'].touched || form.controls['numberDir'].dirty)">
-              <div class="invalid-feedback-c" *ngIf="form.hasError('numberDir')">
+              <div class="invalid-feedback-c" *ngIf="form.controls['numberDir'].hasError('pattern')">
                 Valor invalido.
               </div>
             </ng-container>
@@ -227,8 +234,9 @@
       <div class="row justify-content-between mb-2">
         <div class="col-7 col-sm-4 p-2">
           <div class="input-float"
-               [class.border-danger]="(form.controls['postalNum'].touched || form.controls['postalNum'].dirty)
-                && form.controls['postalNum'].invalid">
+               [class.bg-danger-subtle]="(form.controls['postalNum'].touched || form.controls['postalNum'].dirty)
+                && form.controls['postalNum'].invalid"
+               [class.bg-secondary-subtle]="(form.controls['postalNum'].disabled)">
             <label class="fs-6 fw-bold " for="postalNumInput">Código Postal</label>
             <input type="text" formControlName="postalNum"  id="postalNumInput" placeholder=""
                    [class.fst-italic]="form.controls['postalNum'].value!=user.postalNum">
@@ -243,8 +251,9 @@
 
         <div class="col-6 col-sm-4 p-2">
           <div class="input-float"
-               [class.border-danger]="(form.controls['floor'].touched || form.controls['floor'].dirty)
-                && form.controls['floor'].invalid">
+               [class.bg-danger-subtle]="(form.controls['floor'].touched || form.controls['floor'].dirty)
+                && form.controls['floor'].invalid"
+               [class.bg-secondary-subtle]="(form.controls['floor'].disabled)">
             <label class="fs-6 fw-bold " for="floorInput">Piso</label>
             <input type="text" formControlName="floor"  id="floorInput" placeholder=""
                    [class.fst-italic]="form.controls['floor'].value!=user.floor">
@@ -259,8 +268,9 @@
 
         <div class="col-6 col-sm-4 p-2">
           <div class="input-float"
-               [class.border-danger]="(form.controls['room'].touched || form.controls['room'].dirty)
-                && form.controls['room'].invalid">
+               [class.bg-danger-subtle]="(form.controls['room'].touched || form.controls['room'].dirty)
+                && form.controls['room'].invalid"
+               [class.bg-secondary-subtle]="(form.controls['room'].disabled)">
             <label class="fs-6 fw-bold " for="roomInput">Habitación</label>
             <input type="text" formControlName="room"  id="roomInput" placeholder=""
                    [class.fst-italic]="form.controls['room'].value!=user.room">
@@ -277,7 +287,7 @@
       <div class="row justify-content-start mb-3">
         <div class="col-md-6 p-2 pb-0">
           <div class="input-float"
-               [class.border-danger]="(form.controls['cvu'].touched || form.controls['cvu'].dirty)
+               [class.bg-danger-subtle]="(form.controls['cvu'].touched || form.controls['cvu'].dirty)
                 && form.controls['cvu'].invalid">
             <label class="fs-6 fw-bold " for="mpClientInput">CVU</label>
             <input type="text" formControlName="cvu"  id="mpClientInput" placeholder=""

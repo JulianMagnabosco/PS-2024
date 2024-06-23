@@ -2,6 +2,7 @@ package ps.jmagna.services;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.antlr.v4.runtime.Token;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -33,6 +34,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -206,25 +209,28 @@ public class AuthService implements UserDetailsService {
   //  Get
   public ListDto<UserMinDto> getAll(String text, int page, int size){
 
-    ListUsersResponce responce = new ListUsersResponce();
     List<UserMinDto> list = new ArrayList<>();
 
-    Pageable pageable = PageRequest.of(page, size);
-    Page<UserEntity> listRaw = repository.findAll(pageable);
+    Sort sort = Sort.by("username").and(Sort.by("name")).and(Sort.by("lastname"));
+    List<UserEntity> listRaw = repository.findAll(sort);
     for (UserEntity u : listRaw.stream().toList()){
-      if((!u.getName().isEmpty() && u.getName().contains(text)) ||
-              !u.getLastname().isEmpty() && u.getLastname().contains(text) ||
-              u.getUsername().contains(text))
-      {
-        UserMinDto r = mapUserMinDto(u);
-        list.add(r);
+      for (String t : text.split(" ")){
+        if((!u.getName().isEmpty() && u.getName().contains(t)) ||
+                !u.getLastname().isEmpty() && u.getLastname().contains(t) ||
+                u.getUsername().contains(t))
+        {
+          UserMinDto r = mapUserMinDto(u);
+          list.add(r);
+        }
       }
     }
 
-    return new ListDto<>(list, listRaw.getTotalElements(),listRaw.getTotalPages());
+    int firstIndex=Integer.min(list.size(), page*size);
+    int lastIndex=Integer.min(list.size(), (page+1)*size);
+    int pages = BigDecimal.valueOf(list.size()).divide(BigDecimal.valueOf(size), RoundingMode.UP ).intValue();
+    return new ListDto<>(list.subList(firstIndex,lastIndex), list.size(), pages);
   }
   public ListDto<UserMinDto> getDealers(){
-    ListUsersResponce responce = new ListUsersResponce();
     List<UserMinDto> list = new ArrayList<>();
 
     List<UserEntity> listRaw = repository.findAllByRole(UserRole.DELIVERY);

@@ -61,6 +61,7 @@ export class ListUsersComponent implements OnInit,OnDestroy {
             this.elements=value["elements"]
             this.pages=value["pages"]
             this.list=value["list"]
+            console.log(value)
           },
           error: err => {
             cAlert("error","Error inesperado en el servidor, revise su conexion a internet"); }

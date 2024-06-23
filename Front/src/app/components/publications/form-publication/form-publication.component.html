@@ -129,23 +129,26 @@
               </div>
               <div class="carousel-item justify-content-center align-content-center"
                    *ngIf="video" [class.active]="pubImages.length<=0"  style="height: 30rem; padding: 0 25px ;">
-                <div>
+                <div class="d-flex justify-content-center">
                   <youtube-player #youTubePlayer
                                   [videoId]="video"
-                                  [width]="(img1?.clientWidth||50)-50"
-                                  [height]="img1?.clientWidth||50">
+                                  [width]="(img1?.clientWidth||50)-100"
+                                  [height]="((img1?.clientWidth||50)>(img1?.clientHeight||50)?
+                                  (img1?.clientHeight||50):(img1?.clientWidth||50))-100">
                   </youtube-player>
                 </div>
               </div>
             </div>
 
             <ng-container *ngIf="pubImages.length>1 || (pubImages.length>0 && video)">
-              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                <span class="bi-caret-left-fill text-black fs-1" aria-hidden="true"></span>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample"
+                      data-bs-slide="prev" style="max-width: 2rem">
+                <span class="bi-caret-left-fill text-warning fs-1" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
               </button>
-              <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                <span class="bi-caret-right-fill text-black fs-1" aria-hidden="true"></span>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExample"
+                      data-bs-slide="next" style="max-width: 2rem">
+                <span class="bi-caret-right-fill text-warning fs-1" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
               </button>
             </ng-container>

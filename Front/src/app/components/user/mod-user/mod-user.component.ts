@@ -71,7 +71,7 @@ export class ModUserComponent implements OnInit, OnDestroy {
       dni: ["", [Validators.pattern("[0-9]*"),Validators.minLength(8)]],
       dniType: ["DNI"],
       state: ["1", [Validators.required]],
-      direction: ["", [Validators.maxLength(200)]],
+      direction: ["", [Validators.pattern("[a-zA-Z0-9\\s]*"),Validators.maxLength(200)]],
       numberDir: ["",Validators.pattern("[0-9]*")],
       postalNum: ["",Validators.pattern("[0-9]*")],
       floor: ["",Validators.pattern("[0-9]*")],
@@ -79,11 +79,34 @@ export class ModUserComponent implements OnInit, OnDestroy {
     }, {
       validators: this.checkPasswords
     });
-
+    this.form.controls["direction"].disable()
+    this.form.controls["numberDir"].disable()
+    this.form.controls["postalNum"].disable()
+    this.form.controls["floor"].disable()
+    this.form.controls["room"].disable()
   }
 
   ngOnInit(): void {
     this.charge();
+    this.subs.add(this.form.controls["state"].valueChanges.subscribe({
+      next: value => {
+        if(value<=1){
+          this.form.controls["direction"].disable()
+          this.form.controls["numberDir"].disable()
+          this.form.controls["postalNum"].disable()
+          this.form.controls["floor"].disable()
+          this.form.controls["room"].disable()
+        }
+        else {
+
+          this.form.controls["direction"].enable()
+          this.form.controls["numberDir"].enable()
+          this.form.controls["postalNum"].enable()
+          this.form.controls["floor"].enable()
+          this.form.controls["room"].enable()
+        }
+      }
+    }))
     this.subs.add(this.form.valueChanges.subscribe({
       next: value => {
         this.checkBuySell()

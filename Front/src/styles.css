@@ -148,6 +148,7 @@
   background-color: white;
   overflow: hidden;
   input, select{
+    background-color: transparent;
     padding-top: 1.50rem;
     padding-bottom: .25rem;
     outline: none;
@@ -156,6 +157,7 @@
     border: none;
   }
   label{
+    background-color: transparent;
     pointer-events: none;
     white-space: nowrap;
     overflow: hidden;
