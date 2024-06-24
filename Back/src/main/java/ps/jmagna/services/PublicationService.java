@@ -284,7 +284,8 @@ public class PublicationService {
                         .split("[\\s,]+"));
                 for (String m : mats) {
                     Join<PublicationEntity, SectionEntity> join = root.join("sections", JoinType.INNER);
-                    predicates.add(criteriaBuilder.like(join.get("text"), m));
+                    predicates.add(criteriaBuilder.like(criteriaBuilder.lower(join.get("text"))
+                            , "%" + m + "%"));
                 }
             }
 

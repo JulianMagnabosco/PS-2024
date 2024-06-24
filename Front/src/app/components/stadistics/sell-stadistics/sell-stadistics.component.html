@@ -9,7 +9,7 @@
     <div class="col-6 me-3 me-sm-0  col-sm-auto">
       <input type="date" id="firstDate" class="form-control" aria-describedby="passwordHelpInline"
              name="firstDate" [min]="minDate" [max]="lastDate" (change)="onChange()"
-             [(ngModel)]="firstDate">
+             [(ngModel)]="firstDate" >
     </div>
     <div class="col-3 col-sm-auto text-end">
       <label for="lastDate" class="col-form-label"> A </label>
@@ -26,7 +26,7 @@
 
   <div class="card bg-body-tertiary">
     <div class="h5 text-center border border-bottom p-4">
-      Ventas de las semanas de {{ this.firstDate }} a {{ this.lastDate }}
+      Ventas de las semanas de {{ this.firstDate| date:"d/MM/yyyy" }} a {{ this.lastDate| date:"d/MM/yyyy" }}
     </div>
     <div echarts [options]="options"
          [theme]="service.coolTheme"

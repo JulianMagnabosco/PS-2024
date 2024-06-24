@@ -3,7 +3,7 @@
   <div class="h1 w-100 text-center">Estadisticas de usuarios</div>
 
   <div class="d-flex gap-2 w-100 mb-2 justify-content-center">
-    <select class="form-select w-auto bg-secondary-subtle" [(ngModel)]="selected">
+    <select class="form-select w-auto bg-secondary-subtle" [(ngModel)]="selected" (change)="charge(selected)">
       <option *ngFor="let y of years" [value]="y" >{{y}}</option>
     </select>
     <button class="btn btn-primary" (click)="charge(selected)">GENERAR</button>

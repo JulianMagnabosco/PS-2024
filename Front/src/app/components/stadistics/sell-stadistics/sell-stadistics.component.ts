@@ -44,6 +44,8 @@ export class SellStadisticsComponent implements OnInit, OnDestroy{
     l = new Date(this.firstDate);
     l.setDate(l.getDate()+180)
     this.maxDate=l.toISOString().split("T")[0]
+
+    this.charge()
   }
 
   charge() {
