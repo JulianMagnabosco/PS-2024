@@ -116,7 +116,7 @@ public class StadisticsService {
 
         return new StatsResponce(List.of(stats), false);
     }
-    public StatsResponce getSellsStadistics(String firstDate, String lastDate){
+    public StatsResponce getSellsStadistics(String type,String firstDate, String lastDate){
 
 
         LocalDateTime date1 = LocalDateTime.parse(firstDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
@@ -124,10 +124,8 @@ public class StadisticsService {
 
 
         List<StatDto> vals = new ArrayList<>();
-        List<StatDto> vals2 = new ArrayList<>();
         for (LocalDate l : getFullWeeks(date1.toLocalDate(),date2.toLocalDate())){
             vals.add(new StatDto(l.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
-            vals2.add(new StatDto(l.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
         }
 
         List<SaleEntity> entities = saleRepository.findAllByDateTimeBetween(date1,date2);
@@ -148,28 +146,27 @@ public class StadisticsService {
 
             if(statFind.isEmpty()) continue;
 
-            vals.get(vals.indexOf(statFind.get())).setValue(
-                    vals.get(vals.indexOf(statFind.get())).getValue().add(BigDecimal.ONE)
-            );
-
-            BigDecimal total=vals2.get(vals.indexOf(statFind.get())).getValue();
-            for (SaleDetailEntity d : p.getDetails()){
-                total = total.add(d.getTotal());
+            if(type.contains("c")){
+                vals.get(vals.indexOf(statFind.get())).setValue(
+                        vals.get(vals.indexOf(statFind.get())).getValue().add(BigDecimal.ONE)
+                );
+            }else {
+                BigDecimal total=vals.get(vals.indexOf(statFind.get())).getValue();
+                for (SaleDetailEntity d : p.getDetails()){
+                    total = total.add(d.getTotal());
+                }
+                vals.get(vals.indexOf(statFind.get())).setValue(
+                        total
+                );
             }
-            vals2.get(vals.indexOf(statFind.get())).setValue(
-                total
-            );
         }
 
         StatSeriesDto stats = new StatSeriesDto();
-        StatSeriesDto stats2 = new StatSeriesDto();
-        stats.setName("count");
+        stats.setName(type);
         stats.setSeries(vals);
 
-        stats2.setName("total");
-        stats2.setSeries(vals2);
 
-        return new StatsResponce(List.of(stats,stats2), false);
+        return new StatsResponce(List.of(stats), false);
     }
     public List<LocalDate> getFullWeeks(LocalDate d1, LocalDate d2){
         List<LocalDate> list = new ArrayList<>();

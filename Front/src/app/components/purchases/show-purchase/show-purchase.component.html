@@ -48,8 +48,8 @@
       <div class="col text-break p-2 align-content-center d-flex flex-column justify-content-between">
         <div>Obra: <span class="text-secondary">{{d.name}}</span></div>
         <div>Cantidad: <span class="text-secondary">{{d.count}}</span></div>
-        <div>Total Vendido: <span class="text-secondary">${{d.total}}</span></div>
-        <div>Valor Unitario: <span class="text-secondary">${{d.total/d.count}}</span></div>
+        <div>Total Vendido: <span class="text-secondary">${{d.total | number:"1.0-2"}}</span></div>
+        <div>Valor Unitario: <span class="text-secondary">${{d.total/d.count | number:"1.0-2"}}</span></div>
       </div>
       <div class="col-auto">
         <button class="btn btn-secondary bi bi-arrow-90deg-right" [routerLink]="'/pub/'+d.pubId"

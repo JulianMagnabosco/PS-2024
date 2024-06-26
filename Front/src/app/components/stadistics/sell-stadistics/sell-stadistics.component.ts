@@ -18,6 +18,8 @@ export class SellStadisticsComponent implements OnInit, OnDestroy{
   firstDate: string ;
   lastDate: string ;
 
+  type: string ="count";
+
   nodata:string="c";
 
   options:EChartsOption={};
@@ -56,9 +58,10 @@ export class SellStadisticsComponent implements OnInit, OnDestroy{
     const data1:number[]  = [];
 
     this.subs.add(
-      this.service.getSellsStadistics(firstDate,lastDate).subscribe({
+      this.service.getSellsStadistics(this.type,firstDate,lastDate).subscribe({
         next: value => {
 
+          console.log(value)
           if(value["nodata"]){
             this.nodata="y"
             return
@@ -80,7 +83,9 @@ export class SellStadisticsComponent implements OnInit, OnDestroy{
             // },
             tooltip: {
               trigger: 'item',
-              formatter: '<div class="text-white"> {b} : {c} Ventas</div>',
+              formatter: this.type=="count"?
+                '<div class="text-white"> {b} : {c} Ventas</div>':
+                '<div class="text-white"> {b} : ${c}</div>',
             },
             xAxis: {
               data: xAxisData,
@@ -102,7 +107,7 @@ export class SellStadisticsComponent implements OnInit, OnDestroy{
             series: [
               {
                 type: 'bar',
-                name: 'Cantidad',
+                name: this.type=="count"?'Cantidad':'Total',
                 data: data1,
                 barWidth: '50%',
               },

@@ -20,7 +20,7 @@ public class StadisticsController {
         return service.getPublicationStadistics(year,month);
     }
     @GetMapping("/sells")
-    public StatsResponce getAll(@RequestParam String date1,@RequestParam String date2) {
-        return service.getSellsStadistics(date1,date2);
+    public StatsResponce getAll(@RequestParam String type,@RequestParam String date1,@RequestParam String date2) {
+        return service.getSellsStadistics(type,date1,date2);
     }
 }

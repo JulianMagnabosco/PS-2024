@@ -2,7 +2,7 @@
 <div class="container">
   <div class="h1 w-100 text-center">Estadisticas de Ventas</div>
 
-  <div class="row w-100 justify-content-center mb-2 row-gap-1">
+  <div class="row m-0 w-100 justify-content-center mb-2 row-gap-1">
     <div class="col-3 col-sm-auto text-end">
       <label for="firstDate" class="col-form-label">De </label>
     </div>
@@ -18,6 +18,12 @@
       <input type="date" id="lastDate" class="form-control" aria-describedby="passwordHelpInline"
              name="lastDate" [min]="firstDate" [max]="maxDate" (change)="onChange()"
              [(ngModel)]="lastDate">
+    </div>
+    <div class="col-sm-auto text-end">
+      <select class="form-select bg-secondary text-white" [(ngModel)]="type" (change)="onChange()">
+        <option value="count">CANTIDAD DE VENTAS</option>
+        <option value="total">TOTAL DE VENTAS</option>
+      </select>
     </div>
     <div class="col-sm-auto text-center">
       <button class="btn btn-primary" (click)="charge()">GENERAR</button>

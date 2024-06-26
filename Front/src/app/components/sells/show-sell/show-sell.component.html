@@ -31,7 +31,7 @@
         Número de compra: <span class="text-secondary"> N°{{sell?.id}}</span>
       </div>
       <div class="mb-2">
-        Total Vendido: <span class="text-secondary">${{ sell?.total }}</span>
+        Total Vendido: <span class="text-secondary">${{ sell?.total | number:"1.0-2" }}</span>
       </div>
       <div>
         Cantidad: <span class="text-secondary">${{ sell?.count }}</span>

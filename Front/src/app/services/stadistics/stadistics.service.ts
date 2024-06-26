@@ -150,7 +150,7 @@ export class StadisticsService {
   getPubsStadistics(year: any, month:any):Observable<any>{
     return this.client.get(this.baseUrl + "pubs/"+year+"/"+month);
   }
-  getSellsStadistics(date1: string,date2: string):Observable<any>{
-    return this.client.get(this.baseUrl + "sells?date1="+date1+"&date2="+date2);
+  getSellsStadistics(type:string,date1: string,date2: string):Observable<any>{
+    return this.client.get(this.baseUrl + "sells?date1="+date1+"&date2="+date2+"&type="+type);
   }
 }
