@@ -44,7 +44,7 @@
     <div class="row border-5 btn-border-orange rounded-5 p-2 bg-secondary-subtle mb-2" *ngFor="let i of list"
          data-bs-toggle="modal" data-bs-target="#exampleModal"
          (click)="open(i)">
-      <div class="h5">{{i.name}} - {{i.dateTime | date:"d/MM/yyyy hh:mm"}}</div>
+      <div class="h5">{{i.name}} - {{i.dateTime | date:"d/MM/yyyy H:mm"}}</div>
       <div class="col-auto align-content-center img-stat-container p-0">
         <img class="border border-4 border-secondary rounded rounded-4 w-100 h-100"
              [src]="i.imageUrl">

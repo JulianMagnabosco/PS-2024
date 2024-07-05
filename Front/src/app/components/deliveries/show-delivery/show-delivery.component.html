@@ -11,7 +11,7 @@
   <div class="d-flex mb-2">
     <div class="col">
       <div class="mb-1 p-1">
-        Fecha de venta: <span class="text-secondary">{{delivery?.saleDateTime | date:"d/MM/yyyy hh:mm"}}</span>
+        Fecha de venta: <span class="text-secondary">{{delivery?.saleDateTime | date:"d/MM/yyyy H:mm"}}</span>
       </div>
       <div class="mb-1 p-1">
         Comprador: <span class="text-secondary text-capitalize">{{delivery?.name}}</span>
@@ -42,7 +42,7 @@
       <div class="py-1">
         Fecha de entrega:&nbsp;
         <span class="text-secondary" *ngIf="state=='ENTREGADO'">
-          {{(delivery?.deliveryDateTime | date:"d/MM/yyyy hh:mm") || "--"}}
+          {{(delivery?.deliveryDateTime | date:"d/MM/yyyy H:mm") || "--"}}
         </span>
         <span class="text-secondary" *ngIf="state!='ENTREGADO'">--
         </span>

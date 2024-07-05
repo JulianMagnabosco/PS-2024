@@ -22,7 +22,7 @@
       <div class="card btn btn-border-orange bg-body-tertiary mb-1 w-100 h-100"
            (click)="selectDraft(p.id)">
         <h3 class="card-title overflow-hidden text-clamp">{{ p.name }}</h3>
-        <div class="fst-italic text-secondary">Creado el {{ p.dateTime | date:"d/MM/yy hh:mm" }}</div>
+        <div class="fst-italic text-secondary">Creado el {{ p.dateTime | date:"d/MM/yy H:mm" }}</div>
 
         <div class="rounded-2 border-orange overflow-hidden"
              *ngIf="p.imageUrl">

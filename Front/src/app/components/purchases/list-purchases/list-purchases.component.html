@@ -58,7 +58,7 @@
       <div class="col p-3 justify-content-between align-content-center">
         <!--          <div class="row row-gap-2" >-->
         <!--            <div class="col-lg-4 col-12">-->
-        <!--              N°{{i.id}} - {{i.dateTime | date:"d/MM/yyyy hh:mm"}}-->
+        <!--              N°{{i.id}} - {{i.dateTime | date:"d/MM/yyyy H:mm"}}-->
         <!--            </div>-->
         <!--            <div class="col-lg-4 col-12">-->
         <!--              Obras: <span class="text-secondary" *ngFor="let d of i.details; index as index">-->
@@ -70,7 +70,7 @@
 
         <!--          </div>-->
         <div class="mb-2 h5">
-          N°{{ i.id }} - {{ i.dateTime | date:"d/MM/yyyy hh:mm" }}
+          N°{{ i.id }} - {{ i.dateTime | date:"d/MM/yyyy H:mm" }}
         </div>
         <div class="mb-2">
           Obras: <span class="text-secondary" *ngFor="let d of i.details; index as index">
