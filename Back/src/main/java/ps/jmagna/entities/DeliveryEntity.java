@@ -18,6 +18,7 @@ public class DeliveryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    @Column(unique = true)
     Long shipmment;
     @ManyToOne
     @JoinColumn(name="idSale")

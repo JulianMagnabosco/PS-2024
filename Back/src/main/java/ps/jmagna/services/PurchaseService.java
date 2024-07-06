@@ -166,14 +166,25 @@ public class PurchaseService {
 //            System.out.println("+Merchandorder: "+m.getId());
 
         Optional<SaleEntity> optionalSale = saleRepository.findByMerchantOrder(m.getId());
-        System.out.println("found"+optionalSale.isPresent());
+//        System.out.println("found"+optionalSale.isPresent());
         SaleEntity sale = optionalSale.orElseGet(() -> registerSaleDelivery(userId, m));
 
+        boolean canceled = false;
         BigDecimal total = BigDecimal.ZERO;
         for (MerchantOrderPayment mpay : m.getPayments()) {
             if (mpay.getStatus().equals("approved")) {
                 total = total.add(mpay.getTotalPaidAmount());
+            }else if (mpay.getStatus().equals("cancelled")){
+                canceled = true;
             }
+            System.out.print(mpay.getStatus()+", ");
+        }
+        System.out.println("total:"+m.getStatus());
+
+        if (canceled){
+            System.out.println("cancelado");
+            putSale(sale, SaleState.CANCELADA);
+            return responce;
         }
 
         if (total.compareTo(m.getTotalAmount()) >= 0) {
@@ -183,8 +194,7 @@ public class PurchaseService {
                 if(sale.getSaleState().equals(SaleState.APROBADA)){
                     notificationService.sendNotificationSale(sale);
                 }
-                sale.setSaleState(SaleState.APROBADA);
-                saleRepository.saveAndFlush(sale);
+                putSale(sale, SaleState.APROBADA);
             }
         }
         return responce;
@@ -224,15 +234,39 @@ public class PurchaseService {
 
         sale = saleRepository.saveAndFlush(sale);
 
-        DeliveryEntity delivery = new DeliveryEntity();
-        delivery.setId(sale.getId());
-        delivery.setSale(sale);
-        delivery.setShipmment(m.getId());
-        delivery.setDealer(getDeliveryFree());
-        delivery.setDeliveryState(DeliveryState.PENDIENTE);
-        deliveryRepository.save(delivery);
         return sale;
     }
+
+    //Put
+    private SaleEntity putSale(SaleEntity saleEntity, SaleState state) {
+        SaleEntity sale = saleEntity;
+        if(sale.getSaleState().equals(state)) return sale;
+        if(state.equals(SaleState.CANCELADA)){
+            for (SaleDetailEntity item : saleEntity.getDetails()) {
+                PublicationEntity publication = item.getPublication();
+
+                publication.setCount(publication.getCount() + item.getCount());
+                publicationRepository.saveAndFlush(publication);
+            }
+            saleEntity.setSaleState(SaleState.CANCELADA);
+            sale = saleRepository.saveAndFlush(saleEntity);
+        }else if(state.equals(SaleState.APROBADA)){
+            saleEntity.setSaleState(SaleState.APROBADA);
+            sale = saleRepository.saveAndFlush(saleEntity);
+
+            DeliveryEntity delivery = new DeliveryEntity();
+            delivery.setId(sale.getId());
+            delivery.setSale(sale);
+            delivery.setShipmment(saleEntity.getMerchantOrder());
+            delivery.setDealer(getDeliveryFree());
+            delivery.setDeliveryState(DeliveryState.PENDIENTE);
+            deliveryRepository.save(delivery);
+        }
+        System.out.println(state);
+
+        return sale;
+    }
+
     
     //Get
     UserEntity getDeliveryFree() {
