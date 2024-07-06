@@ -22,7 +22,7 @@
     <div class="col-sm-auto text-end">
       <select class="form-select bg-secondary text-white" [(ngModel)]="type" (change)="onChange()">
         <option value="count">CANTIDAD DE VENTAS</option>
-        <option value="total">TOTAL DE VENTAS</option>
+        <option value="total">TOTAL DE VENTAS (ARS$)</option>
       </select>
     </div>
     <div class="col-sm-auto text-center">
@@ -30,17 +30,19 @@
     </div>
   </div>
 
-  <div class="card bg-body-tertiary">
+  <div class="card bg-body-tertiary overflow-x-auto">
     <div class="h5 text-center border border-bottom p-4">
       Ventas de las semanas de {{ this.firstDate| date:"d/MM/yyyy" }} a {{ this.lastDate| date:"d/MM/yyyy" }}
     </div>
-    <div echarts [options]="options"
-         [theme]="service.coolTheme"
-         class="demo-chart"
-         *ngIf="nodata=='n'"></div>
-    <div class="h2 fst-italic w-100 text-center"
-         *ngIf="nodata=='y'"> Sin Datos</div>
-    <div class="h2 fst-italic w-100 text-center"
-         *ngIf="nodata=='c'"> Cargando...</div>
+    <div class="overflow-x-auto">
+      <div echarts [options]="options"
+           [theme]="service.coolTheme"
+           class="demo-chart"
+           *ngIf="nodata=='n'"></div>
+      <div class="h2 fst-italic w-100 text-center"
+           *ngIf="nodata=='y'"> Sin Datos</div>
+      <div class="h2 fst-italic w-100 text-center"
+           *ngIf="nodata=='c'"> Cargando...</div>
+    </div>
   </div>
 </div>

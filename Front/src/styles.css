@@ -340,3 +340,7 @@ input[type="range"]::-moz-range-thumb {
   visibility: visible;
   opacity: 1;
 }
+
+.demo-chart{
+  min-width: var(--bs-breakpoint-sm);
+}

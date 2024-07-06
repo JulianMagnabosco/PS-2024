@@ -17,13 +17,15 @@
     <div class="h5 text-center border border-bottom p-4">
       Publicaciones del mes {{selectedMonth | dateCustom}} {{selectedYear}}
     </div>
-    <div echarts [options]="options"
-         [theme]="service.coolTheme"
-         class="demo-chart"
-          *ngIf="nodata=='n'"></div>
-    <div class="h2 fst-italic  w-100 text-center"
-         *ngIf="nodata=='y'"> Sin Datos</div>
-    <div class="h2 fst-italic  w-100 text-center"
-         *ngIf="nodata=='c'"> Cargando...</div>
+    <div class="overflow-x-auto">
+      <div echarts [options]="options"
+           [theme]="service.coolTheme"
+           class="demo-chart"
+           *ngIf="nodata=='n'"></div>
+      <div class="h2 fst-italic w-100 text-center"
+           *ngIf="nodata=='y'"> Sin Datos</div>
+      <div class="h2 fst-italic w-100 text-center"
+           *ngIf="nodata=='c'"> Cargando...</div>
+    </div>
   </div>
 </div>
