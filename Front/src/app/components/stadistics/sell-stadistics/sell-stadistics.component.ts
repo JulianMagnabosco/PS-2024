@@ -18,11 +18,12 @@ export class SellStadisticsComponent implements OnInit, OnDestroy{
   firstDate: string ;
   lastDate: string ;
 
-  type: string ="count";
+  type: string ="NONE";
 
   nodata:string="c";
 
   options:EChartsOption={};
+  options2:EChartsOption={};
 
   constructor(public service: StadisticsService) {
     let datenow= new Date(Date.now());
@@ -56,6 +57,7 @@ export class SellStadisticsComponent implements OnInit, OnDestroy{
 
     const xAxisData:string[] = [];
     const data1:number[]  = [];
+    const data2:number[]  = [];
 
     this.subs.add(
       this.service.getSellsStadistics(this.type,firstDate,lastDate).subscribe({
@@ -70,22 +72,14 @@ export class SellStadisticsComponent implements OnInit, OnDestroy{
           for (let i = 0; i < value["stats"][0]["series"].length; i++) {
             xAxisData.push(value["stats"][0]["series"][i]["name"]);
             data1.push(value["stats"][0]["series"][i]["value"]);
+            data2.push(value["stats"][1]["series"][i]["value"]);
           }
 
           this.options = {
-
-            // tooltip: {
-            //   // formatter: params => {
-            //   //   return '<div style="width:300px; height: 400px">working</div>';
-            //   // },
-            //   formatter: this.getTooltipFormatter(),
-            //   confine: true,
-            // },
             tooltip: {
               trigger: 'item',
-              formatter: this.type=="count"?
-                '<div class="text-white"> {b} : {c} Ventas</div>':
-                '<div class="text-white"> {b} : ${c}</div>',
+              formatter:
+                '<div class="text-white"> {b} : {c} Ventas</div>'
             },
             xAxis: {
               data: xAxisData,
@@ -107,12 +101,27 @@ export class SellStadisticsComponent implements OnInit, OnDestroy{
             series: [
               {
                 type: 'bar',
-                name: this.type=="count"?'Cantidad':'Total',
+                name: 'Cantidad',
                 data: data1,
                 barWidth: '50%',
               },
             ],
           };
+
+          this.options2 = { ...this.options };
+          this.options2.series=[
+            {
+              type: 'bar',
+              name: 'Total',
+              data: data2,
+              barWidth: '50%'
+            },
+          ]
+          this.options2.tooltip={
+            trigger: 'item',
+            formatter:
+              '<div class="text-white"> {b} : ${c}</div>'
+          }
         }
       })
     )
