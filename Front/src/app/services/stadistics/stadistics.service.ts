@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {LoadingService} from "../loading/loading.service";
+import {EChartsOption} from "echarts";
 
 @Injectable({
   providedIn: 'root'
@@ -9,10 +10,10 @@ import {LoadingService} from "../loading/loading.service";
 export class StadisticsService {
 
   private baseUrl = "api/stats/";
-  coolTheme = {
+  coolTheme:EChartsOption  = {
     color: [
       '#fc7300',
-      '#ff0000',
+      '#fc7300',
       '#ff9100',
       '#ffbf70',
       '#fae563',
@@ -24,16 +25,16 @@ export class StadisticsService {
     ],
 
     title: {
-      fontWeight: 'normal',
-      color: '#8d0000',
+      // fontWeight: 'normal',
+      // color: '#8d0000',
     },
 
     visualMap: {
-      color: ['#00aecd', '#a2d4e6'],
+      color: ['#fc7300', '#a2d4e6'],
     },
 
     toolbox: {
-      color: ['#00aecd', '#00aecd', '#00aecd', '#00aecd'],
+      // color: ['#fc7300', '#fc7300', '#fc7300', '#fc7300'],
     },
 
     tooltip: {
@@ -43,11 +44,11 @@ export class StadisticsService {
         type: 'line', // The default is a straight line： 'line' | 'shadow'
         lineStyle: {
           // Straight line indicator style settings
-          color: '#00aecd',
+          color: '#fc7300',
           type: 'dashed',
         },
         crossStyle: {
-          color: '#00aecd',
+          color: '#fc7300',
         },
         shadowStyle: {
           // Shadow indicator style settings
@@ -58,41 +59,41 @@ export class StadisticsService {
 
     // Area scaling controller
     dataZoom: {
-      dataBackgroundColor: '#eee', // Data background color
+      // dataBackgroundColor: '#eee', // Data background color
       fillerColor: 'rgba(144,197,237,0.2)', // Fill the color
-      handleColor: '#00aecd', // Handle color
+      // handleColor: '#fc7300', // Handle color
     },
 
     timeline: {
       lineStyle: {
-        color: '#00aecd',
+        color: '#fc7300',
       },
       controlStyle: {
-        color: '#00aecd',
-        borderColor: '00aecd',
+        color: '#fc7300',
+        borderColor: 'fc7300',
       },
     },
 
     candlestick: {
       itemStyle: {
-        color: '#00aecd',
+        color: '#fc7300',
         color0: '#a2d4e6',
       },
       lineStyle: {
         width: 1,
-        color: '#00aecd',
+        color: '#fc7300',
         color0: '#a2d4e6',
       },
       areaStyle: {
-        color: '#b21ab4',
-        color0: '#0b5ea8',
+        color: '#fc7300',
+        color0: '#ff2a04',
       },
     },
 
     chord: {
       padding: 4,
       itemStyle: {
-        color: '#b21ab4',
+        color: '#fc7300',
         borderWidth: 1,
         borderColor: 'rgba(128, 128, 128, 0.5)',
       },
@@ -100,13 +101,13 @@ export class StadisticsService {
         color: 'rgba(128, 128, 128, 0.5)',
       },
       areaStyle: {
-        color: '#0b5ea8',
+        color: '#ff2a04',
       },
     },
 
     graph: {
       itemStyle: {
-        color: '#b21ab4',
+        color: '#fc7300',
       },
       linkStyle: {
         color: '#2a2073',
@@ -130,7 +131,7 @@ export class StadisticsService {
         lineStyle: {
           color: [
             [0.2, '#dddddd'],
-            [0.8, '#00aecd'],
+            [0.8, '#fc7300'],
             [1, '#f5ccff'],
           ],
           width: 8,

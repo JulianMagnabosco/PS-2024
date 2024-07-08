@@ -34,24 +34,30 @@
 
   <div class="card bg-body-tertiary">
     <div class="h5 text-center border border-bottom p-4">
-      Cantidad Ventas de las semanas de {{ this.firstDate| date:"d/MM/yyyy" }} a {{ this.lastDate| date:"d/MM/yyyy" }}
+      Cantidad de Ventas de las semanas de {{ this.firstDate| date:"d/MM/yyyy" }} a {{ this.lastDate| date:"d/MM/yyyy" }}
     </div>
-    <div echarts [options]="options"
-         [theme]="service.coolTheme"
-         class="demo-chart"
-         *ngIf="nodata=='n'"></div>
+    <div class="overflow-x-auto">
+      <div echarts [options]="options"
+           [theme]="service.coolTheme"
+           class="demo-chart"
+           *ngIf="nodata=='n'"></div>
+      <div class="h2 fst-italic w-100 text-center"
+           *ngIf="nodata=='y'"> Sin Datos</div>
+      <div class="h2 fst-italic w-100 text-center"
+           *ngIf="nodata=='c'"> Cargando...</div>
+    </div>
     <div class="h5 text-center border border-bottom p-4">
-      Total Ventas de las semanas de {{ this.firstDate| date:"d/MM/yyyy" }} a {{ this.lastDate| date:"d/MM/yyyy" }}
+      Total de Ventas de las semanas de {{ this.firstDate| date:"d/MM/yyyy" }} a {{ this.lastDate| date:"d/MM/yyyy" }}
     </div>
-    <div echarts [options]="options2"
-         [theme]="service.coolTheme"
-         class="demo-chart"
-         *ngIf="nodata=='n'"></div>
-    <div class="h2 fst-italic w-100 text-center"
-         *ngIf="nodata=='y'"> Sin Datos</div>
-    <div class="h2 fst-italic w-100 text-center"
-         *ngIf="nodata=='c'"> Cargando...</div>
-
-
+    <div class="overflow-x-auto">
+      <div echarts [options]="options2"
+           [theme]="service.coolTheme"
+           class="demo-chart"
+           *ngIf="nodata=='n'"></div>
+      <div class="h2 fst-italic w-100 text-center"
+           *ngIf="nodata=='y'"> Sin Datos</div>
+      <div class="h2 fst-italic w-100 text-center"
+           *ngIf="nodata=='c'"> Cargando...</div>
+    </div>
   </div>
 </div>
