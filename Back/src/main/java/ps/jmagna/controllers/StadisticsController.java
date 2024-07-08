@@ -1,6 +1,7 @@
 package ps.jmagna.controllers;
 
 import ps.jmagna.dtos.stadistics.StatsResponce;
+import ps.jmagna.enums.PubType;
 import ps.jmagna.services.StadisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class StadisticsController {
         return service.getPublicationStadistics(year,month);
     }
     @GetMapping("/sells")
-    public StatsResponce getAll(@RequestParam String type,@RequestParam String date1,@RequestParam String date2) {
+    public StatsResponce getAll(@RequestParam PubType type, @RequestParam String date1, @RequestParam String date2) {
         return service.getSellsStadistics(type,date1,date2);
     }
 }
