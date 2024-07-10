@@ -64,7 +64,6 @@ public class DBConfig implements ApplicationListener<ApplicationReadyEvent> {
             if(s.getType().equals(SecType.PHOTO)||s.getType().equals(SecType.STEP)){
                 Path randomImage = images.get(index);
                 byte[] bytes = Files.readAllBytes(randomImage);
-                System.out.println("imagene:"+randomImage.getFileName());
                 s.setImage(compressBytes(bytes));
                 sectionRepository.save(s);
                 index++;

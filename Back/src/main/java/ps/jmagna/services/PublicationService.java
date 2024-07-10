@@ -175,6 +175,8 @@ public class PublicationService {
 
             dto.setDifficulty(Difficulty.values()[p.getDifficulty()].name());
             dto.setUsername(p.getUser().getUsername());
+            dto.setUserId(p.getUser().getId());
+            dto.setUserIconUrl(url + "/api/image/user/" + p.getUser().getId());
             SectionEntity sectionImage = sectionRepository.findFirstByPublicationAndType(p, SecType.PHOTO);
             if (sectionImage != null) {
                 dto.setImageUrl(url + "/api/image/pub/" + sectionImage.getId());
@@ -217,6 +219,8 @@ public class PublicationService {
 
             dto.setDifficulty(Difficulty.values()[p.getDifficulty()].name());
             dto.setUsername(p.getUser().getUsername());
+            dto.setUserId(p.getUser().getId());
+            dto.setUserIconUrl(url + "/api/image/user/" + p.getUser().getId());
             SectionEntity sectionImage = sectionRepository.findFirstByPublicationAndType(p, SecType.PHOTO);
             if (sectionImage != null) {
                 dto.setImageUrl(url + "/api/image/pub/" + sectionImage.getId());

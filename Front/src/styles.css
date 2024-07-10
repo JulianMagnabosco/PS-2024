@@ -344,3 +344,9 @@ input[type="range"]::-moz-range-thumb {
 .demo-chart{
   min-width: var(--bs-breakpoint-sm);
 }
+
+.shadow-x:hover{
+  -webkit-box-shadow:0px 0px 37px 1px rgba(0, 0, 0, 0.9);
+  -moz-box-shadow: 0px 0px 37px 1px rgba(0, 0, 0, 0.9);
+  box-shadow: 0px 0px 37px 1px rgba(0, 0, 0, 0.9);
+}

@@ -10,6 +10,7 @@ import {Loginuser} from "../../../models/user/loginuser";
 import {UserService} from "../../../services/user/user.service";
 import {User} from "../../../models/user/user";
 import {cAlert} from "../../../services/custom-alert/custom-alert.service"
+import {PublicationMin} from "../../../models/publication/publication-min";
 
 @Component({
   selector: 'app-show-user',
@@ -42,7 +43,18 @@ export class ShowUserComponent  implements OnInit, OnDestroy{
     username: "",
     same:false
   };
-  constructor(private service: UserService,
+
+
+  list: PublicationMin[] = [
+  ];
+  elements=1;
+  pages=0;
+
+  size=10;
+  page=0;
+
+  sort="CALF"
+  constructor(private service: UserService,protected pubService: PublicationsService,
               private activeRoute:ActivatedRoute, private router: Router) {
 
   }
@@ -57,6 +69,47 @@ export class ShowUserComponent  implements OnInit, OnDestroy{
     this.router.navigate(["/users"])
   }
 
+  changeSort(sort:string){
+    this.sort=sort
+    this.chargeList(0)
+  }
+  chargeList(page:number){
+    this.page=page;
+
+    if(this.page>this.pages-1){
+      this.page=this.pages-1;
+    }
+    if(this.page<=0){
+      this.page=0;
+    }
+    let data = {
+      "text": "@"+this.user.username,
+      "materials": "",
+      "type": "NONE",
+      "diffMin": "1",
+      "diffMax": "4",
+      "points": "0",
+      "mine": false,
+      "sort": this.sort,
+      "page": this.page,
+      "size": this.size
+    }
+    this.subs.add(
+      this.pubService.search(data).subscribe(
+        {
+          next: value => {
+            this.elements=value["elements"]
+            this.pages=value["pages"]
+            this.list=value["list"]
+          },
+          error: err => {
+            console.log(err)
+            cAlert("error","Error inesperado en el servidor, revise su conexion a internet");
+          }
+        }
+      )
+    );
+  }
   charge(){
     let id="" ;
     this.subs.add(
@@ -70,6 +123,7 @@ export class ShowUserComponent  implements OnInit, OnDestroy{
                   next: value => {
 
                     this.user=value
+                    this.chargeList(0);
                   },
                   error: err => {
 

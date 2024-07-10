@@ -12,8 +12,44 @@
     <div class="text-center">{{user.email }}</div>
     <div class="text-center fst-italic mb-4 text-secondary">Se unio el {{user.dateTime| date:"d/MM/yyyy"}}</div>
 
+    <hr>
+
+    <div class="gap-1 row justify-content-center align-items-center ">
+      <div class="row justify-content-between">
+        <div class="col-auto h5 fw-bold">
+          Obras publicadas: {{elements}}
+        </div>
+        <div class="col-auto dropdown">
+          <button class="btn btn-light dropdown-toggle" type="button"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+            Ordenar Por: {{ sort == 'CALF' ? 'Mejor Calificado' : 'Más Reciente' }}
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <button class="dropdown-item" (click)="changeSort('DATE')">Más Reciente</button>
+            </li>
+            <li>
+              <button class="dropdown-item" (click)="changeSort('CALF')">Mejor Calificado</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-auto h-25"  *ngFor="let p of list" >
+        <app-item-publication [publication]="p" [showAll]="false"></app-item-publication>
+      </div>
+
+      <h2 *ngIf="list.length<=0 && !pubService.loading" class="text-center text-secondary text-break">
+        No tiene publicaciones...
+      </h2>
+      <h2 *ngIf="list.length<=0 && pubService.loading" class="text-center text-secondary text-break">
+        <span class="spinner-border"></span> Cargando...
+      </h2>
+      <!-- paginacion -->
+      <ng-container *ngIf="pages>1">
+        <app-pagination (eventChange)="chargeList($event)" [pages]="pages" [page]="page"></app-pagination>
+      </ng-container>
+    </div>
     <ng-container *ngIf="user.same">
-      <hr>
       <h5 class="text-center">Datos de compra/venta</h5>
 
       <div class="row justify-content-between">

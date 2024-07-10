@@ -112,7 +112,7 @@ insert into califications (id_publication, id_user, points)
 values (4,5, 1.5);
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,count,price,deleted ,draft,date_time)
-values (5,'Carrito esquiva obstaculos ',
+values (4,'Carrito esquiva obstaculos ',
         'robot esquiva obstaculos. Espero que les guste #arduino',
         'TECNOLOGIA',1,true,41,5000,false,false,'2023-1-05 00:00:01');
 insert into sections (id_publication, type, text)
@@ -138,17 +138,17 @@ insert into sections (id_publication, type, text)
 values (8,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted ,draft,date_time)
-values (5,'EXPERIMENTO BATERIAS🤑', 'pajaros', 'CIENCIA',1,false,false,false,'2023-1-25 00:00:01');
+values (3,'EXPERIMENTO BATERIAS🤑', 'pajaros', 'CIENCIA',1,false,false,false,'2023-1-25 00:00:01');
 insert into sections (id_publication, type, text)
 values (9,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted ,draft,date_time)
-values (5,'Montañas', 'pajaros', 'CIENCIA',1,false,false,false,'2023-1-05 22:00:01');
+values (2,'Montañas', 'pajaros', 'CIENCIA',1,false,false,false,'2023-1-05 22:00:01');
 insert into sections (id_publication, type, text)
 values (10,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (2,'Recreacion del grito', 'esto es ', 'ARTE',1,false,false, false,'2023-7-02 00:00:01');
+values (7,'Recreacion del grito', 'esto es ', 'ARTE',1,false,false, false,'2023-7-02 00:00:01');
 insert into sections (id_publication, type, text)
 values (11,'PHOTO', '');
 
@@ -158,7 +158,7 @@ insert into sections (id_publication, type, text)
 values (12,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (5,'Solucionador de cubos', 'proyecto con #arduino', 'TECNOLOGIA',1,false,false, false,'2023-9-02 22:00:01');
+values (6,'Solucionador de cubos', 'proyecto con #arduino', 'TECNOLOGIA',1,false,false, false,'2023-9-02 22:00:01');
 insert into sections (id_publication, type, text)
 values (13,'PHOTO', '');
 
@@ -168,12 +168,12 @@ insert into sections (id_publication, type, text)
 values (14,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (5,'MACETAS', 'contecte para macetas', 'ARTE',1,false,false, false,'2023-8-02 22:00:01');
+values (8,'MACETAS', 'contecte para macetas', 'ARTE',1,false,false, false,'2023-8-02 22:00:01');
 insert into sections (id_publication, type, text)
 values (15,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (5,'Escupe humo', 'proyecto de botella escupe humo circular', 'CIENCIA',1,false,false, false,'2023-1-02 22:00:01');
+values (6,'Escupe humo', 'proyecto de botella escupe humo circular', 'CIENCIA',1,false,false, false,'2023-1-02 22:00:01');
 insert into sections (id_publication, type, text)
 values (16,'PHOTO', '');
 
@@ -183,7 +183,7 @@ insert into sections (id_publication, type, text)
 values (17,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (5,'Reloj esculpido en piedra', 'Hola, esculpi un reloj en piedra', 'CIENCIA',1,false,false, false,'2023-9-02 22:00:01');
+values (9,'Reloj esculpido en piedra', 'Hola, esculpi un reloj en piedra', 'CIENCIA',1,false,false, false,'2023-9-02 22:00:01');
 insert into sections (id_publication, type, text)
 values (18,'PHOTO', '');
 
@@ -193,27 +193,27 @@ insert into sections (id_publication, type, text)
 values (19,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (5,'DIY Caminante', 'Mano robot impresa en 3d #mano #arduino #robot', 'TECNOLOGIA',1,false,false, false,'2023-5-02 22:00:01');
+values (6,'DIY Caminante', 'Mano robot impresa en 3d #mano #arduino #robot', 'TECNOLOGIA',1,false,false, false,'2023-5-02 22:00:01');
 insert into sections (id_publication, type, text)
 values (20,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (5,'Arduino Balancin', 'Mano robot impresa en 3d #mano #arduino #robot', 'TECNOLOGIA',1,false,false, false,'2023-6-02 22:00:01');
+values (4,'Arduino Balancin', 'Mano robot impresa en 3d #mano #arduino #robot', 'TECNOLOGIA',1,false,false, false,'2023-6-02 22:00:01');
 insert into sections (id_publication, type, text)
 values (20,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (5,'Vaquita de tela', '#telares', 'ARTE',1,false,false, false,'2023-4-02 22:00:01');
+values (7,'Vaquita de tela', '#telares', 'ARTE',1,false,false, false,'2023-4-02 22:00:01');
 insert into sections (id_publication, type, text)
 values (21,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (5,'POCOYO', 'Pocoyo de tela', 'ARTE',1,false,false, false,'2023-1-02 22:00:01');
+values (7,'POCOYO', 'Pocoyo de tela', 'ARTE',1,false,false, false,'2023-1-02 22:00:01');
 insert into sections (id_publication, type, text)
 values (22,'PHOTO', '');
 --a
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (5,'Proyecto ciencias Sistema respiratorio', 'esto es ', 'CIENCIA',1,false,false, false,'2023-2-02 05:00:01');
+values (9,'Proyecto ciencias Sistema respiratorio', 'esto es ', 'CIENCIA',1,false,false, false,'2023-2-02 05:00:01');
 insert into sections (id_publication, type, text)
 values (23,'PHOTO', '');
 

@@ -1,16 +1,14 @@
 
-<div class="card btn-border-orange bg-body-tertiary rounded-3 overflow-hidden" style="width: 15rem;"
-  [routerLink]="'/pub/'+p.id" >
-  <img [src]="p.imageUrl" class="card-img" [alt]="p.name"
-       style="height: 100%; width: 100%; min-height: 9rem">
+<div class="card btn-border-orange bg-body-tertiary rounded-3 overflow-hidden shadow-x mb-4" style="width: 15rem;">
+  <img [src]="p.imageUrl" class="card-img rounded-bottom-0" [alt]="p.name"
+       style="height: 100%; width: 100%; min-height: 9rem"
+       [routerLink]="'/pub/'+p.id" >
 
-  <div class="card-img-overlay pub-hover" >
+  <div class="card-img-overlay pub-hover"
+       [routerLink]="'/pub/'+p.id" >
     <div class="d-inline-block overflow-hidden" style="max-height: 100%">
       <h5 class="card-title text-clamp">{{ p.name }}</h5>
 
-      <div class="">
-        <p class="card-text">Por <span class="fw-bold">{{ p.username }}</span></p>
-      </div>
       <div class="">
         <i class="bi bi-star-fill text-warning"></i> {{p.calification}}
       </div>
@@ -21,9 +19,18 @@
       </div>
     </div>
     <div class="position-absolute bottom-0 end-0
-      text-end align-text-bottom fst-italic p-2 pt-4 w-100 bg-gradient-black-top">
+      text-end align-text-bottom fst-italic p-2 pt-4 w-100 bg-gradient-black-top"
+     *ngIf="!showAll">
       {{ p.dateTime | date:"d/MM/YY H:mm"}}
     </div>
+  </div>
+  <div class="p-1 bg-secondary-subtle position-relative" [routerLink]="'/user/'+p.userId" *ngIf="showAll">
+    <img [src]="p.userIconUrl || 'assets/camera.png'" *ngIf="p.userIconUrl!=''"
+         style="width: 50px; height: 50px;" class="rounded-circle">
+    <a class="ms-1 link-dark link-underline link-underline-opacity-0
+                    link-underline-opacity-100-hover">{{p.username}}</a>
+    <span class="position-absolute end-0 bottom-0 px-1 text-secondary fst-italic">
+      {{ p.dateTime | date:"d/MM/YY H:mm"}}</span>
   </div>
 
 </div>
