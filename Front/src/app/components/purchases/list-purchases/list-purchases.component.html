@@ -41,7 +41,7 @@
          *ngIf="list.length<=0">
       <h1 class="text-center "> Sin compras registradas</h1>
     </div>
-    <div class="row border-5 btn-border-orange rounded-5 p-2 bg-secondary-subtle mb-2" *ngFor="let i of list"
+    <div class="row border-5 btn-border-orange rounded-5 p-2 bg-secondary-subtle mb-2 shadow-x" *ngFor="let i of list"
          data-bs-toggle="modal" data-bs-target="#exampleModal"
          (click)="open(i)">
       <div class="col-auto position-relative img-stat-container p-1">
@@ -73,8 +73,9 @@
           N°{{ i.id }} - {{ i.dateTime | date:"d/MM/yyyy H:mm" }}
         </div>
         <div class="mb-2">
-          Obras: <span class="text-secondary" *ngFor="let d of i.details; index as index">
-            {{ index == 0 ? '' : ',' }} ({{ d.count }}){{ d.name }}</span>
+          Obras: <span class="text-secondary"
+          *ngFor="let d of i.details; index as index"
+          >{{ index == 0 ? '' : ', ' }}({{ d.count }}){{ d.name }}</span>
         </div>
         <div>
           Monto total: <span class="text-secondary">${{ i.total | number:"1.0-2"}}</span>

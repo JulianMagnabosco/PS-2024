@@ -98,7 +98,7 @@ insert into califications (id_publication, id_user, points)
 values (2,5, 3.5);
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,count,price,deleted ,draft,date_time)
-values (3,'Casa de pajaros ', 'pajaros blablabla', 'ARTE',1,true,20,111,false,false,'2023-1-03 00:00:01');
+values (3,'Casa de pajaros', 'pajaros blablabla', 'ARTE',1,true,20,111,false,false,'2023-1-03 00:00:01');
 insert into sections (id_publication, type, text)
 values (3,'PHOTO', '');
 insert into califications (id_publication, id_user, points)
@@ -112,7 +112,7 @@ insert into califications (id_publication, id_user, points)
 values (4,5, 1.5);
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,count,price,deleted ,draft,date_time)
-values (4,'Carrito esquiva obstaculos ',
+values (4,'Carrito esquiva obstaculos',
         'robot esquiva obstaculos. Espero que les guste #arduino',
         'TECNOLOGIA',1,true,41,5000,false,false,'2023-1-05 00:00:01');
 insert into sections (id_publication, type, text)
@@ -121,7 +121,7 @@ insert into califications (id_publication, id_user, points)
 values (5,5, 1.5);
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,count,price,deleted, draft,date_time)
-values (2,'Proyecto ciencias Sistema respiratorio', 'esto es ', 'CIENCIA',1,true,50,33,false, false,'2023-1-22 00:00:01');
+values (2,'Proyecto ciencias Sistema respiratorio', 'esto es', 'CIENCIA',1,true,50,33,false, false,'2023-1-22 00:00:01');
 insert into sections (id_publication, type, text)
 values (6,'PHOTO', '');
 insert into califications (id_publication, id_user, points)
@@ -148,7 +148,7 @@ insert into sections (id_publication, type, text)
 values (10,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (7,'Recreacion del grito', 'esto es ', 'ARTE',1,false,false, false,'2023-7-02 00:00:01');
+values (7,'Recreacion del grito', 'esto es', 'ARTE',1,false,false, false,'2023-7-02 00:00:01');
 insert into sections (id_publication, type, text)
 values (11,'PHOTO', '');
 
@@ -213,7 +213,7 @@ insert into sections (id_publication, type, text)
 values (22,'PHOTO', '');
 --a
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (9,'Proyecto ciencias Sistema respiratorio', 'esto es ', 'CIENCIA',1,false,false, false,'2023-2-02 05:00:01');
+values (9,'Proyecto ciencias Sistema respiratorio', 'esto es', 'CIENCIA',1,false,false, false,'2023-2-02 05:00:01');
 insert into sections (id_publication, type, text)
 values (23,'PHOTO', '');
 
@@ -238,7 +238,7 @@ insert into sections (id_publication, type, text)
 values (27,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (1,'Recreacion del grito ELIMINADO', 'esto es ', 'ARTE',1,false,true, false,'2023-5-02 00:00:01');
+values (1,'Recreacion del grito ELIMINADO', 'esto es', 'ARTE',1,false,true, false,'2023-5-02 00:00:01');
 insert into sections (id_publication, type, text)
 values (28,'PHOTO', '');
 -- Sales:
