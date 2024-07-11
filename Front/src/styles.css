@@ -333,8 +333,9 @@ input[type="range"]::-moz-range-thumb {
 
   text-align: center;
   z-index: 1;
-  bottom: -125%;
-  left: -50%;
+
+  transform-origin: top center;
+  transform: translate(-100%, 50%);
 }
 .hover-stars:hover span{
   visibility: visible;
