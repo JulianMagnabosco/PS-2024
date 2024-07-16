@@ -23,7 +23,7 @@ export class ListPublicationsComponent  implements OnInit,OnDestroy {
   elements=1;
   pages=0;
 
-  size=10;
+  size=18;
   page=0;
 
   constructor(private fb: FormBuilder, protected service: PublicationsService,

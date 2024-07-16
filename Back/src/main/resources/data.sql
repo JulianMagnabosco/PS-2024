@@ -85,14 +85,14 @@ values (1,'Guitarra Electrica',
 insert into sections (id_publication, type, text)
 values (2,'PHOTO', ''),
        (2,'PHOTO', ''),
-       (2,'COND', 'Pongan atención a las cuerdas'),
+       (2,'COND', 'Pongan atención a las cuerdas, no se les vayan a romper'),
        (2,'MAT', '5m3 de Madera de balso'),
        (2,'MAT', '6m de Cuerda'),
-       (2,'MAT', '500ml de Pintura azul');
+       (2,'MAT', '500ml de Pintura azul(opcional)');
 insert into sections (id_publication, type, text, number)
 values
-    (2,'STEP', 'Crear la parte superior del mango', 1),
-    (2,'STEP', 'Crear la parte inferior del mango', 2),
+    (2,'STEP', 'Dibujar o descargar los siguientes planos', 1),
+    (2,'STEP', 'Cortar la madera segun los planos y preparar los electronicos', 2),
     (2,'STEP', 'Unir todas las partes', 3);
 insert into califications (id_publication, id_user, points)
 values (2,5, 3.5);
