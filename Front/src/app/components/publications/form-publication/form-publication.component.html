@@ -36,7 +36,7 @@
       <div class="col-md-6 col-12">
         <div class="mb-2">
           <label for="nameInput" class="form-label h5">Nombre</label>
-          <input type="text" formControlName="name" class="form-control" id="nameInput"
+          <input type="text" formControlName="name" class="form-control border-orange" id="nameInput"
                  [class.is-invalid]="(form.controls['name'].touched || form.controls['name'].dirty)
       && form.controls['name'].invalid">
           <div class="invalid-feedback" *ngIf="(form.controls['name'].touched || form.controls['name'].dirty)
@@ -51,7 +51,7 @@
 
         <div class="mb-3">
           <label for="descriptionInput" class="form-label h5">Descripcion</label>
-          <textarea class="form-control" id="descriptionInput" rows="3"
+          <textarea class="form-control border-orange" id="descriptionInput" rows="3"
                     formControlName="description" [class.is-invalid]="(form.controls['description'].touched
                   || form.controls['description'].dirty) && form.controls['description'].invalid"></textarea>
           <div class="invalid-feedback"
@@ -70,10 +70,10 @@
         <div class="row g-3 my-3">
           <div class="col">
             <div class="col-auto ">
-              <label for="typeInput" class="col-form-label">Tipo:</label>
+              <label for="typeInput" class="col-form-label h5">Tipo</label>
             </div>
             <div class="col-auto">
-              <select class="form-select text-uppercase" id="typeInput" style="width: 10rem;"
+              <select class="form-select text-uppercase border-orange" id="typeInput" style="width: 13rem;"
                       formControlName="type" [class.is-invalid]="(form.controls['type'].touched
                   || form.controls['type'].dirty) && form.controls['type'].invalid">
                 <option value="" selected hidden>-Seleccionar-</option>
@@ -82,7 +82,7 @@
                 <option value="TECNOLOGIA">TECNOLOGIA</option>
                 <option value="OTRO">Otro</option>
               </select>
-              <div class="invalid-feedback"   style="width: 10rem;"
+              <div class="invalid-feedback"   style="width: 13rem;"
                    *ngIf="(form.controls['type'].touched || form.controls['type'].dirty)
       && form.controls['type'].hasError('required')">
                 El tipo de obra es requerido.
@@ -92,10 +92,10 @@
 
           <div class="col">
             <div class="col-auto">
-              <label for="difficultyInput" class="col-form-label">Dificultad:</label>
+              <label for="difficultyInput" class="col-form-label h5">Dificultad</label>
             </div>
             <div class="col-auto ">
-              <select class="form-select text-uppercase" id="difficultyInput"  style="width: 10rem;"
+              <select class="form-select text-uppercase border-orange" id="difficultyInput"  style="width: 13rem;"
                       formControlName="difficulty" [class.is-invalid]="(form.controls['difficulty'].touched
                   || form.controls['difficulty'].dirty) && form.controls['difficulty'].invalid">
                 <option value="" selected hidden>-Seleccionar-</option>
@@ -104,7 +104,7 @@
                 <option value="3">Dificil</option>
                 <option value="4">Muy Dificil</option>
               </select>
-              <div class="invalid-feedback"   style="width: 10rem;"
+              <div class="invalid-feedback"   style="width: 13rem;"
                    *ngIf="(form.controls['difficulty'].touched || form.controls['difficulty'].dirty)
       && form.controls['difficulty'].hasError('required')">
                 El nivel de dificultad de la obra es requerido.
@@ -173,9 +173,9 @@
         </div>
       </div>
 
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content">
+          <div class="modal-content border-orange">
             <div class="modal-header">
               <h1 class="modal-title fs-5" id="exampleModalLabel">Seleccionar imagen/video</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -183,14 +183,14 @@
 
             <div class="modal-body">
               <label for="formFile" class="form-label">Imagenes</label>
-              <input class="form-control form-control-sm col mb-1" type="file" id="formFile"
+              <input class="form-control form-control-sm col mb-1 border-orange" type="file" id="formFile"
                      accept="image/png, image/jpeg" multiple
                      (change)="selectPubImages($event)">
               <div class="form-text">Formatos: jpeg, png</div>
               <div class="form-text">Se recomienda que sea en formato vertical o 1x1.</div>
               <br>
               <label for="formFile" class="form-label">Video</label>
-              <input class="form-control col" placeholder="URL del video"
+              <input class="form-control col border-orange" placeholder="URL del video"
                      formControlName="video" type="text"
                      (change)="changeVideo($event)">
               <div class="form-text">Formato: URL de Youtube</div>

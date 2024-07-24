@@ -91,7 +91,7 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
             //   icon: "error"
             // });
             // alert("Calificado")
-            this.charge()
+            this.partCharge()
           }
         }
       )
@@ -130,7 +130,33 @@ export class ShowPublicationComponent implements OnInit, OnDestroy{
       )
     );
   }
+  partCharge(){
+    let id="" ;
+    this.subs.add(
+      this.activeRoute.params.subscribe(
+        {
+          next: value => {
+            id = value["id"]
+            this.subs.add(
+              this.service.get(id).subscribe(
+                {
+                  next: value => {
+                    this.publication.myCalification=value["myCalification"]
+                    this.publication.calification=value["calification"]
+                    console.log(value)
+                  },
+                  error: err => {
+                    this.notfound=true;
+                  }
+                }
+              )
+            );
+          }
+        }
+      )
+    );
 
+  }
   charge(){
     let id="" ;
     this.subs.add(

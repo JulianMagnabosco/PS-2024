@@ -85,20 +85,20 @@ values (1,'Guitarra Electrica',
 insert into sections (id_publication, type, text)
 values (2,'PHOTO', ''),
        (2,'PHOTO', ''),
-       (2,'COND', 'Pongan atención a las cuerdas'),
+       (2,'COND', 'Pongan atención a las cuerdas, no se les vayan a romper'),
        (2,'MAT', '5m3 de Madera de balso'),
        (2,'MAT', '6m de Cuerda'),
-       (2,'MAT', '500ml de Pintura azul');
+       (2,'MAT', '500ml de Pintura azul(opcional)');
 insert into sections (id_publication, type, text, number)
 values
-    (2,'STEP', 'Crear la parte superior del mango', 1),
-    (2,'STEP', 'Crear la parte inferior del mango', 2),
+    (2,'STEP', 'Dibujar o descargar los siguientes planos', 1),
+    (2,'STEP', 'Cortar la madera segun los planos y preparar los electronicos', 2),
     (2,'STEP', 'Unir todas las partes', 3);
 insert into califications (id_publication, id_user, points)
 values (2,5, 3.5);
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,count,price,deleted ,draft,date_time)
-values (3,'Casa de pajaros ', 'pajaros blablabla', 'ARTE',1,true,20,111,false,false,'2023-1-03 00:00:01');
+values (3,'Casa de pajaros', 'pajaros blablabla', 'ARTE',1,true,20,111,false,false,'2023-1-03 00:00:01');
 insert into sections (id_publication, type, text)
 values (3,'PHOTO', '');
 insert into califications (id_publication, id_user, points)
@@ -112,7 +112,7 @@ insert into califications (id_publication, id_user, points)
 values (4,5, 1.5);
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,count,price,deleted ,draft,date_time)
-values (4,'Carrito esquiva obstaculos ',
+values (4,'Carrito esquiva obstaculos',
         'robot esquiva obstaculos. Espero que les guste #arduino',
         'TECNOLOGIA',1,true,41,5000,false,false,'2023-1-05 00:00:01');
 insert into sections (id_publication, type, text)

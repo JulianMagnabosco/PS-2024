@@ -19,6 +19,11 @@
   letter-spacing: 0.2em
 }
 
+.carousel-control-prev:hover, .carousel-control-next:hover{
+  background-color: rgba(0, 0, 0, 0.48);
+  border-radius: var(--bs-border-radius);
+}
+
 .form-control:focus {
   border-color: #501605;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6);
@@ -333,8 +338,9 @@ input[type="range"]::-moz-range-thumb {
 
   text-align: center;
   z-index: 1;
-  bottom: -125%;
-  left: -50%;
+
+  transform-origin: top center;
+  transform: translate(-100%, 50%);
 }
 .hover-stars:hover span{
   visibility: visible;

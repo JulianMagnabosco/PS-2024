@@ -41,7 +41,7 @@
          *ngIf="list.length<=0">
       <h1 class="text-center "> Sin ventas registradas</h1>
     </div>
-    <div class="row border-5 btn-border-orange rounded-5 p-2 bg-secondary-subtle mb-2" *ngFor="let i of list"
+    <div class="row border-5 btn-border-orange rounded-5 p-2 bg-secondary-subtle mb-2 shadow-x" *ngFor="let i of list"
          data-bs-toggle="modal" data-bs-target="#exampleModal"
          (click)="open(i)">
       <div class="h5">{{i.name}} - {{i.dateTime | date:"d/MM/yyyy H:mm"}}</div>

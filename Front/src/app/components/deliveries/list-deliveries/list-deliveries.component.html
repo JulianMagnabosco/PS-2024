@@ -29,7 +29,7 @@
          *ngIf="list.length<=0">
       <h1 class="text-center "> Sin entregas por en estado de {{state}}</h1>
     </div>
-    <div class="row border-5 btn-border-orange rounded-5 p-2 bg-secondary-subtle mb-2" *ngFor="let i of list"
+    <div class="row border-5 btn-border-orange rounded-5 p-2 bg-secondary-subtle mb-2 shadow-x" *ngFor="let i of list"
          data-bs-toggle="modal" data-bs-target="#exampleModal"
          (click)="open(i)">
       <div class="col-auto  p-0">
@@ -53,8 +53,8 @@
           Comprador: <span class="text-secondary text-capitalize"> {{i.name}}</span>
         </div>
         <div class="mb-2 text-clamp">
-          Obras: <span class="text-secondary" *ngFor="let d of i.details; index as index">
-            {{ index==0?'':',' }} ({{d.count}}){{d.name}}</span>
+          Obras: <span class="text-secondary" *ngFor="let d of i.details; index as index"
+          >{{ index==0?'':',' }} ({{d.count}}){{d.name}}</span>
         </div>
         <div class="mb-2  text-clamp">
           Direccion: <span class="text-secondary"> {{ i.direction}}</span>

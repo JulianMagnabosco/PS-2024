@@ -14,8 +14,8 @@
 
     <hr>
 
-    <div class="gap-1 row justify-content-center align-items-center ">
-      <div class="row justify-content-between mb-3">
+    <div class="gap-1 row justify-content-center align-items-center " *ngIf="!user.same">
+      <div class="row justify-content-between">
         <div class="col-auto h5 fw-bold">
           Obras publicadas: {{elements}}
         </div>
