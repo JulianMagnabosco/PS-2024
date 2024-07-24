@@ -12,7 +12,8 @@ export class StadisticsService {
   private baseUrl = "api/stats/";
   coolTheme:EChartsOption  = {
     color: [
-      '#fc7300',
+      '#fc4300',
+      '#fae563',
       '#fc7300',
       '#ff9100',
       '#ffbf70',
@@ -20,7 +21,6 @@ export class StadisticsService {
       '#ffc400',
       '#d52e2e',
       '#fc8f00',
-      '#ff2a04',
       '#fdc433',
     ],
 

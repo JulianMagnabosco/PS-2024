@@ -77,7 +77,7 @@ export class SellStadisticsComponent implements OnInit, OnDestroy{
 
           this.options = {
             tooltip: {
-              trigger: 'item',
+              trigger: 'axis',
               formatter:
                 '<div class="text-white"> {b} : {c} Ventas</div>'
             },
@@ -97,6 +97,7 @@ export class SellStadisticsComponent implements OnInit, OnDestroy{
               z: 10,
             },
             yAxis: {
+              minInterval: 1
             },
             series: [
               {
@@ -104,23 +105,36 @@ export class SellStadisticsComponent implements OnInit, OnDestroy{
                 name: 'Cantidad',
                 data: data1,
                 barWidth: '50%',
+                showBackground:true,
+                barMinHeight: 5,
+                backgroundStyle:{
+                  color: 'rgb(220,220,220)',
+                }
               },
             ],
           };
 
           this.options2 = { ...this.options };
+          this.options2.yAxis={
+            minInterval: 0.9
+          }
           this.options2.series=[
             {
               type: 'bar',
               name: 'Total',
               data: data2,
-              barWidth: '50%'
+              barWidth: '50%',
+              barMinHeight: 5,
+              showBackground:true,
+              backgroundStyle:{
+                color: 'rgb(220,220,220)',
+              }
             },
           ]
           this.options2.tooltip={
-            trigger: 'item',
+            trigger: 'axis',
             formatter:
-              '<div class="text-white"> {b} : ${c}</div>'
+              '<div class="text-white"> {b} : ${c} Total</div>'
           }
         }
       })

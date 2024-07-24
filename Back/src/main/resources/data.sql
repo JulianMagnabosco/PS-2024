@@ -71,7 +71,7 @@ values (false,1,'2023-6-07 00:00:01','req_1','Peticion de cambio de contraseña'
 
 -- Borradores:
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted ,draft,date_time)
-values (1,'Robot bola model', 'Este es un robot bola que cree', 'TECNOLOGIA',1,false,false,true,'2023-6-03 00:00:01');
+values (1,'Robot bola model', 'Este es un robot bola que cree', 'TECNOLOGIA',1,false,false,true,'2023-2-03 00:00:01');
 insert into sections (id_publication, type, text)
 values (1,'PHOTO', '');
 
@@ -132,8 +132,8 @@ values (3,'ROSTRO ROBOT', 'rostro robotico #arduino', 'TECNOLOGIA',1,true,230,20
 insert into sections (id_publication, type, text)
 values (7,'PHOTO', '');
 
-insert into publications (id_user, name, description, type, difficulty,can_sold,deleted ,draft,date_time)
-values (4,'Proyecto de motor cacero', 'proyecto de ciencias', 'OTRO',1,false,false,false,'2023-1-27 00:00:01');
+insert into publications (id_user, name, description, type, difficulty,can_sold,count,price,deleted ,draft,date_time)
+values (4,'Proyecto de motor cacero', 'proyecto de ciencias', 'OTRO',1,true,230,200,false,false,'2023-1-27 00:00:01');
 insert into sections (id_publication, type, text)
 values (8,'PHOTO', '');
 
@@ -148,17 +148,17 @@ insert into sections (id_publication, type, text)
 values (10,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (7,'Recreacion del grito', 'esto es ', 'ARTE',1,false,false, false,'2023-7-02 00:00:01');
+values (7,'Recreacion del grito', 'esto es ', 'ARTE',1,false,false, false,'2024-1-02 00:00:01');
 insert into sections (id_publication, type, text)
 values (11,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (5,'Artesania', 'esto es #acuarela2023', 'CIENCIA',1,false,false, false,'2023-7-02 00:00:01');
+values (5,'Artesania', 'esto es #acuarela2023', 'CIENCIA',1,false,false, false,'2024-1-02 00:00:01');
 insert into sections (id_publication, type, text)
 values (12,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (6,'Solucionador de cubos', 'proyecto con #arduino', 'TECNOLOGIA',1,false,false, false,'2023-9-02 22:00:01');
+values (6,'Solucionador de cubos', 'proyecto con #arduino', 'TECNOLOGIA',1,false,false, false,'2023-2-02 22:00:01');
 insert into sections (id_publication, type, text)
 values (13,'PHOTO', '');
 
@@ -183,27 +183,27 @@ insert into sections (id_publication, type, text)
 values (17,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (9,'Reloj esculpido en piedra', 'Hola, esculpi un reloj en piedra', 'CIENCIA',1,false,false, false,'2023-9-02 22:00:01');
+values (9,'Reloj esculpido en piedra', 'Hola, esculpi un reloj en piedra', 'CIENCIA',1,false,false, false,'2023-8-02 22:00:01');
 insert into sections (id_publication, type, text)
 values (18,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (5,'Mano robot', 'Mano robot impresa en 3d #mano #arduino #robot', 'TECNOLOGIA',1,false,false, false,'2023-7-02 22:00:01');
+values (5,'Mano robot', 'Mano robot impresa en 3d #mano #arduino #robot', 'TECNOLOGIA',1,false,false, false,'2023-8-02 22:00:01');
 insert into sections (id_publication, type, text)
 values (19,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (6,'DIY Caminante', 'Mano robot impresa en 3d #mano #arduino #robot', 'TECNOLOGIA',1,false,false, false,'2023-5-02 22:00:01');
+values (6,'DIY Caminante', 'Mano robot impresa en 3d #mano #arduino #robot', 'TECNOLOGIA',1,false,false, false,'2023-2-02 22:00:01');
 insert into sections (id_publication, type, text)
 values (20,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (4,'Arduino Balancin', 'Mano robot impresa en 3d #mano #arduino #robot', 'TECNOLOGIA',1,false,false, false,'2023-6-02 22:00:01');
+values (4,'Arduino Balancin', 'Mano robot impresa en 3d #mano #arduino #robot', 'TECNOLOGIA',1,false,false, false,'2023-8-02 22:00:01');
 insert into sections (id_publication, type, text)
 values (20,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (7,'Vaquita de tela', '#telares', 'ARTE',1,false,false, false,'2023-4-02 22:00:01');
+values (7,'Vaquita de tela', '#telares', 'ARTE',1,false,false, false,'2023-2-02 22:00:01');
 insert into sections (id_publication, type, text)
 values (21,'PHOTO', '');
 
@@ -223,7 +223,7 @@ insert into sections (id_publication, type, text)
 values (24,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted ,draft,date_time)
-values (3,'Proyecto de motor cacero', 'proyecto de ciencias', 'TECNOLOGIA',1,false,false,false,'2022-12-01 00:00:01');
+values (3,'Proyecto de motor cacero', 'proyecto de ciencias', 'TECNOLOGIA',1,false,false,false,'2024-1-01 00:00:01');
 insert into sections (id_publication, type, text)
 values (25,'PHOTO', '');
 
@@ -238,7 +238,7 @@ insert into sections (id_publication, type, text)
 values (27,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
-values (1,'Recreacion del grito ELIMINADO', 'esto es ', 'ARTE',1,false,true, false,'2023-5-02 00:00:01');
+values (1,'Recreacion del grito ELIMINADO', 'esto es ', 'ARTE',1,false,true, false,'2024-1-02 00:00:01');
 insert into sections (id_publication, type, text)
 values (28,'PHOTO', '');
 -- Sales:
@@ -375,7 +375,7 @@ values (16,4, '2024-5-30 00:00:01','CANCELADA');
 insert into sales (merchant_order,id_user,date_time,sale_state)
 values (17,2, '2024-3-30 00:00:01','CANCELADA');
 insert into sale_details (id_sale,id_publication,total,count)
-values (17,5, 222,1);
+values (17,6, 222,1);
 insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
 values (17,4, '2024-3-30 00:00:01','CANCELADA');
 
@@ -393,3 +393,123 @@ insert into sale_details (id_sale,id_publication,total,count)
 values (19,4, 500,4);
 insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
 values (19,4, '2024-5-01 00:00:01','PENDIENTE');
+
+insert into sales (merchant_order,id_user,date_time,sale_state)
+values (20,5, '2024-5-07 00:00:01','APROBADA');
+insert into sale_details (id_sale,id_publication,total,count)
+values (20,4, 500,4);
+insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
+values (20,4, '2024-5-07 00:00:01','PENDIENTE');
+
+
+insert into sales (merchant_order,id_user,date_time,sale_state)
+values (21,2, '2024-6-30 00:00:01','CANCELADA');
+insert into sale_details (id_sale,id_publication,total,count)
+values (21,7, 222,1);
+insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
+values (21,4, '2024-6-30 00:00:01','CANCELADA');
+
+insert into sales (merchant_order,id_user,date_time,sale_state)
+values (22,5, '2024-2-01 00:00:01','APROBADA');
+insert into sale_details (id_sale,id_publication,total,count)
+values (22,4, 3,4);
+insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
+values (22,4, '2024-2-01 00:00:01','PENDIENTE');
+
+
+insert into sales (merchant_order,id_user,date_time,sale_state)
+values (23,5, '2024-7-08 00:00:01','APROBADA');
+insert into sale_details (id_sale,id_publication,total,count)
+values (23,4, 3,4);
+insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
+values (23,4, '2024-7-08 00:00:01','PENDIENTE');
+
+
+insert into sales (merchant_order,id_user,date_time,sale_state)
+values (24,5, '2024-7-22 00:00:01','APROBADA');
+insert into sale_details (id_sale,id_publication,total,count)
+values (24,6, 222,1);
+insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
+values (24,4, '2024-7-22 00:00:01','PENDIENTE');
+
+
+insert into sales (merchant_order,id_user,date_time,sale_state)
+values (25,5, '2024-2-12 00:00:01','APROBADA');
+insert into sale_details (id_sale,id_publication,total,count)
+values (25,6, 222,1);
+insert into sale_details (id_sale,id_publication,total,count)
+values (25,3, 700,3);
+insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
+values (25,4, '2024-2-12 00:00:01','PENDIENTE');
+
+insert into sales (merchant_order,id_user,date_time,sale_state)
+values (26,5, '2024-2-22 00:00:01','APROBADA');
+insert into sale_details (id_sale,id_publication,total,count)
+values (26,6, 222,1);
+insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
+values (26,4, '2024-2-22 00:00:01','PENDIENTE');
+
+insert into sales (merchant_order,id_user,date_time,sale_state)
+values (27,5, '2024-2-20 00:00:01','APROBADA');
+insert into sale_details (id_sale,id_publication,total,count)
+values (27,6, 2555,1);
+insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
+values (27,4, '2024-2-20 00:00:01','PENDIENTE');
+
+---8
+insert into sales (merchant_order,id_user,date_time,sale_state)
+values (28,5, '2024-2-20 00:00:01','APROBADA');
+insert into sale_details (id_sale,id_publication,total,count)
+values (28,8, 2555,1);
+insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
+values (28,4, '2024-2-20 00:00:01','PENDIENTE');
+
+insert into sales (merchant_order,id_user,date_time,sale_state)
+values (29,5, '2024-2-29 00:00:01','APROBADA');
+insert into sale_details (id_sale,id_publication,total,count)
+values (29,8, 3333,1);
+insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
+values (29,4, '2024-2-29 00:00:01','PENDIENTE');
+
+insert into sales (merchant_order,id_user,date_time,sale_state)
+values (30,5, '2024-5-01 00:00:01','APROBADA');
+insert into sale_details (id_sale,id_publication,total,count)
+values (30,8, 2555,1);
+insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
+values (30,4, '2024-5-01 00:00:01','PENDIENTE');
+
+insert into sales (merchant_order,id_user,date_time,sale_state)
+values (31,5, '2024-6-20 00:00:01','APROBADA');
+insert into sale_details (id_sale,id_publication,total,count)
+values (31,8, 2555,1);
+insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
+values (31,4, '2024-6-20 00:00:01','PENDIENTE');
+
+insert into sales (merchant_order,id_user,date_time,sale_state)
+values (32,5, '2024-7-20 00:00:01','APROBADA');
+insert into sale_details (id_sale,id_publication,total,count)
+values (32,8, 444,1);
+insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
+values (32,4, '2024-7-20 00:00:01','PENDIENTE');
+
+
+insert into sales (merchant_order,id_user,date_time,sale_state)
+values (33,5, '2024-3-20 00:00:01','APROBADA');
+insert into sale_details (id_sale,id_publication,total,count)
+values (33,8, 200,1);
+insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
+values (33,4, '2024-3-20 00:00:01','PENDIENTE');
+
+insert into sales (merchant_order,id_user,date_time,sale_state)
+values (34,5, '2024-3-20 00:00:01','APROBADA');
+insert into sale_details (id_sale,id_publication,total,count)
+values (34,8, 200,1);
+insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
+values (34,4, '2024-3-20 00:00:01','PENDIENTE');
+
+insert into sales (merchant_order,id_user,date_time,sale_state)
+values (35,5, '2024-6-20 00:00:01','APROBADA');
+insert into sale_details (id_sale,id_publication,total,count)
+values (35,8, 2555,1);
+insert into deliveries (id_sale,id_dealer,date_time,delivery_state)
+values (35,4, '2024-6-20 00:00:01','PENDIENTE');

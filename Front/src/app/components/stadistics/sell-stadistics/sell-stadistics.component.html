@@ -19,12 +19,16 @@
              name="lastDate" [min]="firstDate" [max]="maxDate" (change)="onChange()"
              [(ngModel)]="lastDate">
     </div>
-    <div class="col-sm-auto text-end">
-      <select class="form-select bg-secondary text-white" [(ngModel)]="type" (change)="onChange()">
-        <option selected value="NONE">TODOS</option>
+    <div class="col-12 d-xl-none"></div>
+    <div class="col-sm-auto w-auto text-center align-content-center pe-0">Tipo de publicación:</div>
+    <div class="col-sm-auto text-end" style="max-width: 12rem">
+      <select class="form-select bg-secondary text-white" id="type"
+              [(ngModel)]="type" (change)="onChange()">
+        <option selected value="NONE">TODAS</option>
         <option value="ARTE">ARTE</option>
         <option value="CIENCIA">CIENCIA</option>
         <option value="TECNOLOGIA">TECNOLOGIA</option>
+        <option value="OTRO">OTRO</option>
       </select>
     </div>
     <div class="col-sm-auto text-center">

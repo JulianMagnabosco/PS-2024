@@ -342,7 +342,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .demo-chart{
-  min-width: var(--bs-breakpoint-sm);
+  min-width: var(--bs-breakpoint-md);
 }
 
 .shadow-x:hover{
