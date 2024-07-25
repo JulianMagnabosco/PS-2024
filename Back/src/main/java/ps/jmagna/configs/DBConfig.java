@@ -65,6 +65,7 @@ public class DBConfig implements ApplicationListener<ApplicationReadyEvent> {
                 Path randomImage = images.get(index);
                 byte[] bytes = Files.readAllBytes(randomImage);
                 s.setImage(compressBytes(bytes));
+                System.out.println(randomImage+": "+s.getPublication().getName());
                 sectionRepository.save(s);
                 index++;
                 if (index>images.size()-1) index=9;

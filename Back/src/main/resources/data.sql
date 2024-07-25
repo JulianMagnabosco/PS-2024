@@ -200,47 +200,47 @@ values (20,'PHOTO', '');
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
 values (4,'Arduino Balancin', 'Mano robot impresa en 3d #mano #arduino #robot', 'TECNOLOGIA',1,false,false, false,'2023-8-02 22:00:01');
 insert into sections (id_publication, type, text)
-values (20,'PHOTO', '');
+values (21,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
 values (7,'Vaquita de tela', '#telares', 'ARTE',1,false,false, false,'2023-2-02 22:00:01');
 insert into sections (id_publication, type, text)
-values (21,'PHOTO', '');
+values (22,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
 values (7,'POCOYO', 'Pocoyo de tela', 'ARTE',1,false,false, false,'2023-1-02 22:00:01');
 insert into sections (id_publication, type, text)
-values (22,'PHOTO', '');
+values (23,'PHOTO', '');
 --a
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
 values (9,'Proyecto ciencias Sistema respiratorio', 'esto es ', 'CIENCIA',1,false,false, false,'2023-2-02 05:00:01');
 insert into sections (id_publication, type, text)
-values (23,'PHOTO', '');
+values (24,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted ,draft,date_time)
 values (4,'ROSTRO ROBOT', 'rostro robotico', 'TECNOLOGIA',1,false,false,false,'2023-2-01 00:00:01');
 insert into sections (id_publication, type, text)
-values (24,'PHOTO', '');
+values (25,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted ,draft,date_time)
 values (3,'Proyecto de motor cacero', 'proyecto de ciencias', 'TECNOLOGIA',1,false,false,false,'2024-1-01 00:00:01');
 insert into sections (id_publication, type, text)
-values (25,'PHOTO', '');
+values (26,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted ,draft,date_time)
 values (2,'EXPERIMENTO BATERIAS🤑', 'pajaros', 'CIENCIA',1,false,false,false,'2023-2-05 00:00:01');
 insert into sections (id_publication, type, text)
-values (26,'PHOTO', '');
+values (27,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted ,draft,date_time)
 values (4,'Montañas', 'pajaros', 'CIENCIA',1,false,false,false,'2023-2-05 23:00:01');
 insert into sections (id_publication, type, text)
-values (27,'PHOTO', '');
+values (28,'PHOTO', '');
 
 insert into publications (id_user, name, description, type, difficulty,can_sold,deleted, draft,date_time)
 values (1,'Recreacion del grito ELIMINADO', 'esto es ', 'ARTE',1,false,true, false,'2024-1-02 00:00:01');
 insert into sections (id_publication, type, text)
-values (28,'PHOTO', '');
+values (29,'PHOTO', '');
 -- Sales:
 
 insert into sales (merchant_order,id_user,date_time,sale_state)
