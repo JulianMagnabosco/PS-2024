@@ -13,7 +13,7 @@ export class StadisticsService {
   coolTheme:EChartsOption  = {
     color: [
       '#fc4300',
-      '#fae563',
+      '#ffc400',
       '#fc7300',
       '#ff9100',
       '#ffbf70',
