@@ -10,7 +10,7 @@
           </div>
           <div class="col-auto">
             <select class="p-2 w-100 rounded-2 border text-uppercase text-center" [class]="stateClasses(state||'')"
-                    [(ngModel)]="state" id="state">
+                    [(ngModel)]="state" id="state" (ngModelChange)="charge(0)">
               <option value="ENTREGADO" selected>ENTREGADO</option>
               <option value="CANCELADA">CANCELADA</option>
               <option value="PERCANCE" >PERCANCE</option>
@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="col-auto">
-        <button class="btn btn-primary h-100" (click)="charge(0)">GENERAR</button>
+        <button class="btn btn-primary h-100" (click)="charge(0)">REGENERAR</button>
       </div>
     </div>
   </div>
@@ -62,13 +62,23 @@
         <div class="mb-2">
           Telefono: <span class="text-secondary"> {{i.phone}}</span>
         </div>
+        <div class="d-md-none">
+          <div class="mb-2">
+            Fecha de compra: <span class="text-secondary text-capitalize">
+          {{i.saleDateTime|date:"d/MM/yyyy H:mm"}}</span>
+          </div>
+          <div class="mb-2" *ngIf="i.deliveryState=='ENTREGADO'">
+            Fecha de entrega: <span class="text-secondary text-capitalize">
+          {{i.deliveryDateTime|date:"d/MM/yyyy H:mm"}}</span>
+          </div>
+        </div>
       </div>
-      <div class="col p-3 justify-content-between align-content-start">
+      <div class="col p-3 justify-content-between align-content-start d-none d-md-inline-block">
         <div class="mb-2">
           Fecha de compra: <span class="text-secondary text-capitalize">
           {{i.saleDateTime|date:"d/MM/yyyy H:mm"}}</span>
         </div>
-        <div class="mb-2" *ngIf="i.deliveryState=='ENTREGADA'">
+        <div class="mb-2" *ngIf="i.deliveryState=='ENTREGADO'">
           Fecha de entrega: <span class="text-secondary text-capitalize">
           {{i.deliveryDateTime|date:"d/MM/yyyy H:mm"}}</span>
         </div>

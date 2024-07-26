@@ -44,6 +44,7 @@ import {NotificationsComponent} from "./components/notifications/notifications.c
 import {ItemPublicationComponent} from "./components/publications/item-publication/item-publication.component";
 import {StyledTextPipe} from "./pipes/styled-text.pipe";
 import {PaginationComponent} from "./components/pagination/pagination.component";
+import {RemovesubPipe} from "./pipes/removesub.pipe";
 
 
 @NgModule({
@@ -78,21 +79,22 @@ import {PaginationComponent} from "./components/pagination/pagination.component"
     NotificationsComponent,
     HomeComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        ReactiveFormsModule,
-        NgxEchartsDirective,
-        NgOptimizedImage,
-        // SweetAlert2Module.forRoot(),
-        YouTubePlayerModule,
-        DateCustomPipe,
-        FormsModule,
-        ItemPublicationComponent,
-        StyledTextPipe,
-        PaginationComponent,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    NgxEchartsDirective,
+    NgOptimizedImage,
+    // SweetAlert2Module.forRoot(),
+    YouTubePlayerModule,
+    DateCustomPipe,
+    FormsModule,
+    ItemPublicationComponent,
+    StyledTextPipe,
+    PaginationComponent,
+    RemovesubPipe,
+  ],
   providers: [
     provideHttpClient(withInterceptors([authInterceptor])),
     provideEcharts()

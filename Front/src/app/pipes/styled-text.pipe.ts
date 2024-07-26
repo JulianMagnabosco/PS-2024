@@ -12,8 +12,10 @@ export class StyledTextPipe implements PipeTransform {
       .replace(/([\s]+$)/g,"")
       .replace(/\r\n|\r|\n/g, '<br>')
       .replace(/(\#\w+)/g,
-      '<span class="fw-bold">$1</span>'
-    );
+        '<span class="fw-bold">$1</span>'
+      ).replace(/(https?\S+)/g,
+        '<a href="$1" class="color-i">$1</a>'
+      );
   }
 
 }

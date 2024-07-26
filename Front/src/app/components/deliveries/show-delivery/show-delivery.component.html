@@ -8,7 +8,7 @@
   <div class="h5">
     N°{{delivery?.id}}
   </div>
-  <div class="d-flex mb-2">
+  <div class="d-sm-flex mb-2">
     <div class="col">
       <div class="mb-1 p-1">
         Fecha de venta: <span class="text-secondary">{{delivery?.saleDateTime | date:"d/MM/yyyy H:mm"}}</span>
@@ -63,16 +63,23 @@
   </div>
 
   <div class="p-1 border-top border-secondary border-2">
-    <div *ngFor="let d of delivery?.details" class=" rounded rounded-4 border-5 border-orange d-flex">
-      <div class="col-auto p-1">
-        <img [src]="d.imageUrl" class="rounded rounded-3 border-3 border-orange" style="width: 100px; height: 100px">
+    <div *ngFor="let d of delivery?.details" class=" rounded rounded-4 border-5 border-orange">
+      <div class=" d-flex">
+        <div class="col-auto p-1 align-content-center">
+          <img [src]="d.imageUrl" class="rounded rounded-3 border-3 border-orange" style="width: 100px; height: 100px">
+        </div>
+        <div class="col col-md-5 row p-2 align-items-center">
+          <div class="p-1">Obra: <span class="text-secondary">{{d.name}}</span></div>
+          <div class="p-1">Cantidad: <span class="text-secondary ">{{d.count}}</span></div>
+          <div class="p-1">Total: <span class="text-secondary">${{d.total}}</span></div>
+        </div>
+        <div class="d-none d-md-inline-block col-5 row p-2 align-items-center">
+          <div class="p-1">Vendedor: <span class="text-secondary text-capitalize">{{d.sellername}}</span></div>
+          <div class="p-1">Direccion de retiro: <span class="text-secondary text-capitalize">{{d.direction}}</span></div>
+          <div class="p-1">Telefono: <span class="text-secondary">${{d.phone}}</span></div>
+        </div>
       </div>
-      <div class="col-5 row p-2 align-items-center">
-        <div class="p-1">Obra: <span class="text-secondary">{{d.name}}</span></div>
-        <div class="p-1">Cantidad: <span class="text-secondary ">{{d.count}}</span></div>
-        <div class="p-1">Total: <span class="text-secondary">${{d.total}}</span></div>
-      </div>
-      <div class="col-5 row p-2 align-items-center">
+      <div class="d-md-none p-2 align-items-center">
         <div class="p-1">Vendedor: <span class="text-secondary text-capitalize">{{d.sellername}}</span></div>
         <div class="p-1">Direccion de retiro: <span class="text-secondary text-capitalize">{{d.direction}}</span></div>
         <div class="p-1">Telefono: <span class="text-secondary">${{d.phone}}</span></div>

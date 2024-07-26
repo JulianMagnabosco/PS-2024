@@ -55,6 +55,7 @@ export class ListDeliveriesComponent implements OnInit,OnDestroy {
             this.elements=value["elements"]
             this.pages=value["pages"]
             this.list=value["list"]
+            console.log(this.list)
           },
           error: err => {
             console.log(err)

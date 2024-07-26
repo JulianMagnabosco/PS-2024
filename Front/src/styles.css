@@ -356,3 +356,7 @@ input[type="range"]::-moz-range-thumb {
   -moz-box-shadow: 0px 0px 37px 1px rgba(0, 0, 0, 0.9);
   box-shadow: 0px 0px 37px 1px rgba(0, 0, 0, 0.9);
 }
+
+.color-i{
+  color: inherit;
+}

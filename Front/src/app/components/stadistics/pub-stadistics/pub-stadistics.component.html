@@ -10,7 +10,7 @@
     <select class="form-select w-auto bg-secondary-subtle" [(ngModel)]="selectedMonth" (change)="charge()">
       <option *ngFor="let y of months" [ngValue]="y">{{y | dateCustom}}</option>
     </select>
-    <button class="btn btn-primary" (click)="charge()">GENERAR</button>
+    <button class="btn btn-primary" (click)="charge()">FILTRAR</button>
   </div>
 
   <div class="card bg-body-tertiary">

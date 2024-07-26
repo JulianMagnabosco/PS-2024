@@ -6,7 +6,7 @@
     <select class="form-select w-auto bg-secondary-subtle" [(ngModel)]="selected" (change)="charge(selected)">
       <option *ngFor="let y of years" [value]="y" >{{y}}</option>
     </select>
-    <button class="btn btn-primary" (click)="charge(selected)">GENERAR</button>
+    <button class="btn btn-primary" (click)="charge(selected)">FILTRAR</button>
   </div>
 
   <div class="card bg-body-tertiary">

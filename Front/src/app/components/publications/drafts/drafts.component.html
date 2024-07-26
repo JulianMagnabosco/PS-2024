@@ -14,7 +14,7 @@
         <h3 class="card-title text-white">Plantilla en blanco</h3>
       </div>
       <div class="position-relative">
-        <img src="assets/camera.png" class="card-img-top" alt="Plantilla en blanco" style=" max-height: 15rem;">
+        <img src="assets/mas.svg" class="card-img-top" alt="Plantilla en blanco" style=" max-height: 15rem;">
       </div>
     </div>
 
@@ -24,8 +24,7 @@
         <h3 class="card-title overflow-hidden text-clamp">{{ p.name }}</h3>
         <div class="fst-italic text-secondary">Creado el {{ p.dateTime | date:"d/MM/yy H:mm" }}</div>
 
-        <div class="rounded-2 border-orange overflow-hidden"
-             *ngIf="p.imageUrl">
+        <div class="rounded-2 border-orange overflow-hidden">
           <img [src]="p.imageUrl || 'assets/camera.png'"
                class="w-100 h-100" [alt]="p.name" style="max-height: 15rem;">
         </div>
