@@ -1,5 +1,7 @@
 # PSFront
 
+Repositorio original (cuenta de la facultad): https://github.com/114211-Magnabosco-Julian/PS-2024
+
 ## Test
 
 ### USUARIO
